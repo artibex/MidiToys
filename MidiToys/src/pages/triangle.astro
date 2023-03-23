@@ -1,0 +1,17 @@
+---
+---
+
+<body>
+    <h1> MIDI TEST </h1>
+    <script>
+        import { MIDIInputModule } from "./js/MIDIInputModule";
+        let inputReader;
+
+        if (typeof window !== 'undefined') {
+            inputReader = new MIDIInputModule();
+            console.log("CREATED new MIDIInputModule");
+        }
+
+        console.log("END Javascript code");
+    </script>
+</body>

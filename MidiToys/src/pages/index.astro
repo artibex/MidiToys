@@ -1,20 +1,33 @@
 ---
+import { pageTitle } from "./js/testjava"
+import { getCurrentDate } from "./js/testjava"
 ---
+
+<a href="/">Home</a>
+<a href="/about/">About</a>
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Katzen Webseite</title>
+    <title>{ pageTitle }</title>
 </head>
 <body>
     <header>
-        <h1>Willkommen auf der Katzen-Website</h1>
+        <h1>{ pageTitle }</h1>
     </header>
     <main>
         <h2>Über Katzen</h2>
         <p>Katzen sind beliebte Haustiere auf der ganzen Welt. Sie sind bekannt für ihre Unabhängigkeit, ihr liebevolles Wesen und ihre Fähigkeit, Mäuse und andere Schädlinge zu fangen.</p>
         <p>Auf dieser Webseite finden Sie Informationen zu verschiedenen Katzenrassen, Tipps zur Pflege von Katzen und vieles mehr.</p>
+    <br>
+    
+    <p>The current date is {getCurrentDate()}</p>
+
+    <ul>
+        <li><a href="/markdown/firstMarkdown/">Markdown Test</a></li>
+      </ul>
+
     </main>
     <footer>
         <p>Copyright © 2023 Katzen-Website </p>
