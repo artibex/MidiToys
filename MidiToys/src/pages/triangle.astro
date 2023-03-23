@@ -1,17 +1,28 @@
 ---
+
 ---
 
 <body>
     <h1> MIDI TEST </h1>
     <script>
         import { MIDIInputModule } from "./js/MIDIInputModule";
+        import { InputManager } from "./js/InputManager";
+
+        let inputManager = new InputManager();
         let inputReader;
+        let BPM = 0;
 
         if (typeof window !== 'undefined') {
-            inputReader = new MIDIInputModule();
+            inputReader = new MIDIInputModule(inputManager);
             console.log("CREATED new MIDIInputModule");
+            
+            setInterval(() => {
+                document.getElementById("BPM").innerHTML = inputManager.GetBPM();
+            }, 1000);
         }
-
+        
         console.log("END Javascript code");
-    </script>
+        </script>
+        <h2> BPM goes here </h2> <h2 id="BPM"></h2>
+
 </body>

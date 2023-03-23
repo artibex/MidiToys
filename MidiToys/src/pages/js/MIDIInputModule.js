@@ -1,10 +1,13 @@
 //Takes input from a MIDI capable device and sends it into the InputManager
-import { MIDIDataTable } from "./MIDIDataTable";
 
 export class MIDIInputModule 
 {
-    constructor() {
+    inputManager;
+
+    constructor(inputManager) {
         this.inputs = [];
+        this.inputManager = inputManager; 
+
         // navigator.requestMIDIAccess();
 
         if (navigator.requestMIDIAccess) {
@@ -22,14 +25,8 @@ export class MIDIInputModule
 
     handleMidiMessage(message) {
         //console.log("HANDLE MIDI Message");
-        let [command, note, velocity] = message.data;
+        this.inputManager.GetMIDIInput(message);
 
-        let stringCommand = MIDIDataTable.MIDICommandToString(command);
-        let stringNote = MIDIDataTable.MIDINoteToString(note);
-
-        if(stringCommand !== "") {
-          console.log('command:', stringCommand, ' note:', stringNote, ' velocity:', velocity);
-        }
       
         // if(velocity !== undefined) {
           //   // console.log(`command: ${stringCommand}, note: ${note}, velocity: ${velocity}`);
