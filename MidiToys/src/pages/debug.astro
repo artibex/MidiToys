@@ -10,7 +10,7 @@
 
         let inputManager = new InputManager();
         let inputReader;
-        let BPM = 0;
+        // let BPM = 0;
 
         if (typeof window !== 'undefined') {
             inputReader = new MIDIInputModule(inputManager);
@@ -19,24 +19,133 @@
             setInterval(() => {
                 let deviceData = "Connected MIDI Devices: " + inputReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.GetBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
-
-                // if(document.getElementById("BPM").innerHTML != inputManager.GetBPM().toString()) {
-                //     document.getElementById("BPM").innerHTML = "BPM: " + inputManager.GetBPM();
-                // }
-                // document.getElementById("MIDIDevices").innerHTML = "Connected MIDI Devices: " + inputReader.GetMIDIInputs();  
             }, 100);
+
+            // Get a reference to the canvas element
+            const cSquare = document.getElementById("cCanvas");
+            const cisSquare = document.getElementById("c#Canvas");
+            const dSquare = document.getElementById("dCanvas");
+            const disSquare = document.getElementById("d#Canvas");
+            const eSquare = document.getElementById("eCanvas");
+            const fSquare = document.getElementById("fCanvas");
+            const fisSquare = document.getElementById("f#Canvas");
+            const gSquare = document.getElementById("gCanvas");
+            const gisSquare = document.getElementById("g#Canvas");
+            const aSquare = document.getElementById("aCanvas");
+            const aisSquare = document.getElementById("a#Canvas");
+            const bSquare = document.getElementById("bCanvas");
+
+
+            // Get a 2D drawing context from the canvas
+            const cContext = (cSquare as HTMLCanvasElement).getContext("2d");
+            const cisContext = (cisSquare as HTMLCanvasElement).getContext("2d");
+            const dContext = (dSquare as HTMLCanvasElement).getContext("2d");
+            const disContext = (disSquare as HTMLCanvasElement).getContext("2d");
+            const eContext = (eSquare as HTMLCanvasElement).getContext("2d");
+            const fContext = (fSquare as HTMLCanvasElement).getContext("2d");
+            const fisContext = (fisSquare as HTMLCanvasElement).getContext("2d");
+            const gContext = (gSquare as HTMLCanvasElement).getContext("2d");
+            const gisContext = (gisSquare as HTMLCanvasElement).getContext("2d");
+            const aContext = (aSquare as HTMLCanvasElement).getContext("2d");
+            const aisContext = (aisSquare as HTMLCanvasElement).getContext("2d");
+            const bContext = (bSquare as HTMLCanvasElement).getContext("2d");
+
+
+            //Needed regular expression
+            let cRegEx = new RegExp("C" + "(?!#)");
+            let cisRegEx = new RegExp("C#");
+            let dRegEx = new RegExp("D" + "(?!#)");
+            let disRegEx = new RegExp("D#");
+            let eRegEx = new RegExp("E");
+            let fRegEx = new RegExp("F" + "(?!#)");
+            let fisRegEx = new RegExp("F#");
+            let gRegEx = new RegExp("G" + "(?!#)");
+            let gisRegEx = new RegExp("G#");
+            let aRegEx = new RegExp("A" + "(?!#)");
+            let aisRegEx = new RegExp("A#");
+            let bRegEx = new RegExp("B");
 
             //Notes that are playe on channel 1 - 4
             setInterval(() => {
                 // let channelInfo = "Channel 1: " + inputManager.GetHoldingKeys(1) + "  Channel 2: " + inputManager.GetHoldingKeys(2);
                 // channelInfo += " Channel 3: " + inputManager.GetHoldingKeys(3) + " Channel 4: " + inputManager.GetHoldingKeys(4);
                 // document.getElementById("CH1Keys").innerHTML = channelInfo;
-                
+                let ch1 = inputManager.GetHoldingKeys(1);
+
+                //let cPlayed = ch1.some(element => element.includes ("C" + " (?!#)"));
+                let cPlayed = ch1.some(element => element.match (cRegEx));
+                let cisPlayed = ch1.some(element => element.match (cisRegEx));
+                let dPlayed = ch1.some(element => element.match (dRegEx));
+                let disPlayed = ch1.some(element => element.match (disRegEx));
+                let ePlayed = ch1.some(element => element.match (eRegEx));
+                let fPlayed = ch1.some(element => element.match (fRegEx));
+                let fisPlayed = ch1.some(element => element.match (fisRegEx));
+                let gPlayed = ch1.some(element => element.match (gRegEx));
+                let gisPlayed = ch1.some(element => element.match (gisRegEx));
+                let aPlayed = ch1.some(element => element.match (aRegEx));
+                let aisPlayed = ch1.some(element => element.match (aisRegEx));
+                let bPlayed = ch1.some(element => element.match (bRegEx));
+
+                //C Note
+                if(cPlayed) cContext.fillStyle = "red";
+                else cContext.fillStyle = "black";
+                //C# Note
+                if(cisPlayed) cisContext.fillStyle = "red";
+                else cisContext.fillStyle = "black";
+                //D Note
+                if(dPlayed) dContext.fillStyle = "red";
+                else dContext.fillStyle = "black";
+                //D# Note
+                if(disPlayed) disContext.fillStyle = "red";
+                else disContext.fillStyle = "black";
+                //E Note
+                if(ePlayed) eContext.fillStyle = "red";
+                else eContext.fillStyle = "black";
+                //F Note
+                if(fPlayed) fContext.fillStyle = "red";
+                else fContext.fillStyle = "black";
+                //F# Note
+                if(fisPlayed) fisContext.fillStyle = "red";
+                else fisContext.fillStyle = "black";
+                //G Note
+                if(gPlayed) gContext.fillStyle = "red";
+                else gContext.fillStyle = "black";
+                //G# Note
+                if(gisPlayed) gisContext.fillStyle = "red";
+                else gisContext.fillStyle = "black";
+                //A Note
+                if(aPlayed) aContext.fillStyle = "red";
+                else aContext.fillStyle = "black";
+                //A# Note
+                if(aisPlayed) aisContext.fillStyle = "red";
+                else aisContext.fillStyle = "black";
+                //B Note
+                if(bPlayed) bContext.fillStyle = "red";
+                else bContext.fillStyle = "black";
+
+                //Draw Context
+                cContext.fillRect(100, 100, 200, 200);
+                cisContext.fillRect(100, 100, 200, 200);
+                dContext.fillRect(100, 100, 200, 200);
+                disContext.fillRect(100, 100, 200, 200);
+                eContext.fillRect(100, 100, 200, 200);
+                fContext.fillRect(100, 100, 200, 200);
+                fisContext.fillRect(100, 100, 200, 200);
+                gContext.fillRect(100, 100, 200, 200);
+                gisContext.fillRect(100, 100, 200, 200);
+                aContext.fillRect(100, 100, 200, 200);
+                aisContext.fillRect(100, 100, 200, 200);
+                bContext.fillRect(100, 100, 200, 200);
+
                 document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1);
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2);
                 document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.GetHoldingKeys(3);
                 document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.GetHoldingKeys(4);
-            }, 10);
+            }, 1);
+        
+            // Set the fill style to a color
+            // Draw a filled rectangle with the fillRect method
+            // The parameters are x, y, width and height
         }
         
         // console.log("END Javascript code");
@@ -47,4 +156,25 @@
         <h2 id="CH2Keys"></h2>
         <h2 id="CH3Keys"></h2>
         <h2 id="CH4Keys"></h2>
+        <br>
+
+        <h2>(C,D,E,F,G,A,B)</h2>
+        <canvas id="cCanvas" width="200" height="200"></canvas>
+        <canvas id="dCanvas" width="200" height="200"></canvas>
+        <canvas id="eCanvas" width="200" height="200"></canvas>
+        <canvas id="fCanvas" width="200" height="200"></canvas>
+        <canvas id="gCanvas" width="200" height="200"></canvas>
+        <canvas id="aCanvas" width="200" height="200"></canvas>
+        <canvas id="bCanvas" width="200" height="200"></canvas>
+       
+        <br>
+
+
+        <h2>(C#,D#,F#,G#,A#)</h2>
+        <canvas id="c#Canvas" width="200" height="200"></canvas>
+        <canvas id="d#Canvas" width="200" height="200"></canvas>
+        <canvas id="f#Canvas" width="200" height="200"></canvas>
+        <canvas id="g#Canvas" width="200" height="200"></canvas>
+        <canvas id="a#Canvas" width="200" height="200"></canvas>
+
 </body>
