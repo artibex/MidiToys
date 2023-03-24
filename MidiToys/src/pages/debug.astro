@@ -17,29 +17,34 @@
             console.log("CREATED new MIDIInputModule");
             
             setInterval(() => {
-                if(document.getElementById("BPM").innerHTML != inputManager.GetBPM().toString()) {
-                    document.getElementById("BPM").innerHTML = "BPM: " + inputManager.GetBPM();
-                }
-                document.getElementById("MIDIDevices").innerHTML = "Connected MIDI Devices: " + inputReader.GetMIDIInputs();  
+                let deviceData = "Connected MIDI Devices: " + inputReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.GetBPM();
+                document.getElementById("DeviceAndBPM").innerHTML = deviceData;
+
+                // if(document.getElementById("BPM").innerHTML != inputManager.GetBPM().toString()) {
+                //     document.getElementById("BPM").innerHTML = "BPM: " + inputManager.GetBPM();
+                // }
+                // document.getElementById("MIDIDevices").innerHTML = "Connected MIDI Devices: " + inputReader.GetMIDIInputs();  
             }, 100);
 
+            //Notes that are playe on channel 1 - 4
             setInterval(() => {
+                // let channelInfo = "Channel 1: " + inputManager.GetHoldingKeys(1) + "  Channel 2: " + inputManager.GetHoldingKeys(2);
+                // channelInfo += " Channel 3: " + inputManager.GetHoldingKeys(3) + " Channel 4: " + inputManager.GetHoldingKeys(4);
+                // document.getElementById("CH1Keys").innerHTML = channelInfo;
+                
                 document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1);
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2);
                 document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.GetHoldingKeys(3);
                 document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.GetHoldingKeys(4);
             }, 10);
-
         }
         
         // console.log("END Javascript code");
         </script>
-        <h2 id="BPM"></h2>
-        <h2 id="MIDIDevices"></h2>
+        <h2 id="DeviceAndBPM">No device found</h2>
 
         <h2 id="CH1Keys"></h2>
         <h2 id="CH2Keys"></h2>
         <h2 id="CH3Keys"></h2>
         <h2 id="CH4Keys"></h2>
-
 </body>

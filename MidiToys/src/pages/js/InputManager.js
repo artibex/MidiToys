@@ -95,60 +95,35 @@ export class InputManager {
             // }
         }
         
-        // if(stringCommand.includes("NoteOn") {
-        //     //this.UpdateHoldingKeys(message);
-                
-        //     // if(stringCommand.includes("CH: 1")) {
-        //     //     this.UpdateHoldingKeys(stringCommand, 1, stringNote);
-        //     // }
-        //     // else if(stringCommand.includes ("CH: 2")) {
-        //     //     this.UpdateHoldingKeys(stringCommand, 2, stringNote);
-        //     // }
-        //     // else if(stringCommand.includes ("CH: 3")) {
-        //     //     this.UpdateHoldingKeys(stringCommand, 3, stringNote);
-        //     // }
-        //     // else if(stringCommand.includes ("CH: 4")) {
-        //     //     this.UpdateHoldingKeys(stringCommand, 4, stringNote);
-        //     // }
-        // }
-        // else if(stringCommand.includes("NoteOff"))) {
-        //     let stringNote = MIDIDataTable.MIDINoteToString(note);
-        //     if(stringCommand.includes("CH: 1")) {
-        //         this.UpdateHoldingKeys(stringCommand, 1, stringNote);
-        //     }
-        //     else if(stringCommand.includes ("CH: 2")) {
-        //         this.UpdateHoldingKeys(stringCommand, 2, stringNote);
-        //     }
-        //     else if(stringCommand.includes ("CH: 3")) {
-        //         this.UpdateHoldingKeys(stringCommand, 3, stringNote);
-        //     }
-        //     else if(stringCommand.includes ("CH: 4")) {
-        //         this.UpdateHoldingKeys(stringCommand, 4, stringNote);
-        //     } 
-
-        // }
 
 
         // if(stringCommand !== "") {
         //   console.log('command:', stringCommand, ' note:', stringNote, ' velocity:', velocity);
         // }
     }
-       
     UpdateHoldingKeys(stringCommand, channel, stringNote) {
         //If command includes NoteOn
         if(stringCommand.includes("NoteOn")) {
             switch(channel) {
                 case 1:
-                    this.ch1HoldingKeys.push(stringNote);
+                    if(!this.ch1HoldingKeys.includes(stringNote)) {
+                        this.ch1HoldingKeys.push(stringNote);
+                    }
                     break;
                 case 2:
-                    this.ch2HoldingKeys.push(stringNote);
+                    if(!this.ch2HoldingKeys.includes(stringNote)) {
+                        this.ch2HoldingKeys.push(stringNote);
+                    }
                     break;
                 case 3:
-                    this.ch3HoldingKeys.push(stringNote);
+                    if(!this.ch3HoldingKeys.includes(stringNote)) {
+                        this.ch3HoldingKeys.push(stringNote);
+                    }
                     break;
                 case 4:
-                    this.ch4HoldingKeys.push(stringNote);
+                    if(!this.ch4HoldingKeys.includes(stringNote)) {
+                        this.ch4HoldingKeys.push(stringNote);
+                    }
                     break;
             }
             // console.log("Turn on Note " + stringNote + " on channel CH: " + channel);
@@ -158,16 +133,29 @@ export class InputManager {
             // console.log("Turn off Note " + stringNote + " on channel CH: " + channel);
             switch(channel) {
                 case 1:
-                    this.ch1HoldingKeys.pop(stringNote);
+                    if(this.ch1HoldingKeys.includes(stringNote)) {
+                        //console.log("Remove " + stringNote + " from array");
+                        this.ch1HoldingKeys.splice(this.ch1HoldingKeys.indexOf(stringNote), 1);
+                        // this.ch1HoldingKeys.pop(stringNote);
+                    }
                     break;
                 case 2:
-                    this.ch2HoldingKeys.pop(stringNote);
+                    if(this.ch2HoldingKeys.includes(stringNote)) {
+                        this.ch2HoldingKeys.splice(this.ch2HoldingKeys.indexOf(stringNote), 1);
+                        //this.ch2HoldingKeys.pop(stringNote);
+                    }
                     break;
                 case 3:
-                    this.ch3HoldingKeys.pop(stringNote);
+                    if(this.ch3HoldingKeys.includes(stringNote)) {
+                        this.ch3HoldingKeys.splice(this.ch3HoldingKeys.indexOf(stringNote), 1);
+                        //this.ch3HoldingKeys.pop(stringNote);
+                    }
                     break;
                 case 4:
-                    this.ch4HoldingKeys.pop(stringNote);
+                    if(this.ch4HoldingKeys.includes(stringNote)) {
+                        this.ch4HoldingKeys.splice(this.ch4HoldingKeys.indexOf(stringNote), 1);
+                        //this.ch4HoldingKeys.pop(stringNote);
+                    }
                     break;
             }
         }
@@ -192,7 +180,6 @@ export class InputManager {
         // this.ch4PrevHoldingKeys = Array.from(this.ch4HoldingKeys);
 
     }
-
     GetHoldingKeys(channel) {
         switch(channel) {
             case 1: return this.ch1HoldingKeys;
@@ -228,6 +215,5 @@ export class InputManager {
 
     GetKeyboardInput() {
         
-
     }
 }
