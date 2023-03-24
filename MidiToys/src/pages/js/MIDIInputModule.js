@@ -39,14 +39,6 @@ export class MIDIInputModule
       }
 
     GetMIDIInputs() {
-      // console.log("Available MIDI Devices:" + this.inputDevices);
-      // console.log(this.inputDevices);
-      // console.log(this.inputDevices[0]);
       return this.inputDevices;
-      // for(let i = 0; i < this.inputDevices.length; i++) {
-      //   console.log(this.inputDevices[i]);
-      //   console.log("WRITE midi device name");
-      // }
-
   }
 }

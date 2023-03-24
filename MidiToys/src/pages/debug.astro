@@ -17,10 +17,10 @@
             console.log("CREATED new MIDIInputModule");
             
             setInterval(() => {
-                if(document.getElementById("BPM").innerHTML != inputManager.GetBPM()) {
+                if(document.getElementById("BPM").innerHTML != inputManager.GetBPM().toString()) {
                     document.getElementById("BPM").innerHTML = "BPM: " + inputManager.GetBPM();
                 }
-                document.getElementById("MIDIDevices").innerHTML = "Midi Devices: " + inputReader.GetMIDIInputs();  
+                document.getElementById("MIDIDevices").innerHTML = "Connected MIDI Devices: " + inputReader.GetMIDIInputs();  
             }, 100);
 
             setInterval(() => {
