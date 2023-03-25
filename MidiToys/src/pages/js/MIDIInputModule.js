@@ -2,8 +2,6 @@
 
 export class MIDIInputModule 
 {
-    inputManager;
-
     constructor(inputManager) {
         this.inputs = [];
         this.inputDevices = [];
@@ -14,6 +12,7 @@ export class MIDIInputModule
 
         //setTimeout(this.GetMIDIInputs(), 2000);
         this.GetMIDIInputs();
+        console.log("CREATED new MIDIInputModule");
       }
 
     ConnectMIDIDevice() {
@@ -25,7 +24,7 @@ export class MIDIInputModule
                 this.inputDevices.push(input.name);
                 
                 //console.log(input.name);
-              input.onmidimessage = this.HandleMidiMessage.bind(this);
+              input.onmidimessage = this.HandleMIDIMessage.bind(this);
             }
           });
       } else {
@@ -33,8 +32,8 @@ export class MIDIInputModule
       }
     }
 
-    HandleMidiMessage(message) {
-        //console.log("HANDLE MIDI Message");
+    HandleMIDIMessage(message) {
+        // console.log("HANDLE MIDI Message");
         this.inputManager.GetMIDIInput(message);
       }
 

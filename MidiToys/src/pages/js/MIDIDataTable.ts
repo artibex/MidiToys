@@ -177,4 +177,47 @@ export class MIDIDataTable {
         }
         return note;
     }
+
+    //Takes a note converted into string and returns the correct RegEx
+    static MIDIStringNoteToRegExp(stringNote) {
+        let rawNote = stringNote.replace(/[0-9]/g, '');
+        
+        //Regular Note
+        let cRegEx = new RegExp("C" + "(?!#)");
+        let dRegEx = new RegExp("D" + "(?!#)");
+        let eRegEx = new RegExp("E");
+        let fRegEx = new RegExp("F" + "(?!#)");
+        let gRegEx = new RegExp("G" + "(?!#)");
+        let aRegEx = new RegExp("A" + "(?!#)");
+        let bRegEx = new RegExp("B");
+        //Halftone Note
+        let cisRegEx = new RegExp("C#");
+        let disRegEx = new RegExp("D#");
+        let fisRegEx = new RegExp("F#");
+        let gisRegEx = new RegExp("G#");
+        let aisRegEx = new RegExp("A#");
+        
+        //Regular Note Check
+        if(!rawNote.includes("#")) {
+            switch(rawNote) {
+                case "C": return cRegEx as RegExp;
+                case "D": return dRegEx as RegExp;
+                case "E": return eRegEx as RegExp;
+                case "F": return fRegEx as RegExp;
+                case "G": return gRegEx as RegExp;
+                case "A": return aRegEx as RegExp;
+                case "B": return bRegEx as RegExp;
+            }
+        } 
+        //Halftone Check
+        else {
+            switch(rawNote) {
+                case "C#": return cisRegEx as RegExp;
+                case "D#": return disRegEx as RegExp;
+                case "F#": return fisRegEx as RegExp;
+                case "G#": return gisRegEx as RegExp;
+                case "A#": return aisRegEx as RegExp;
+            }
+        }
+    }
 }

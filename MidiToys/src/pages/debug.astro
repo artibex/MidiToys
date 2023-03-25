@@ -7,14 +7,15 @@
     <script>
         import { MIDIInputModule } from "./js/MIDIInputModule";
         import { InputManager } from "./js/InputManager";
+        import { NoteSquare } from "./js/NoteSquare";
+        import { MIDIDataTable } from "./js/MIDIDataTable";
 
-        let inputManager = new InputManager();
+        let inputManager = new InputManager() as InputManager;
         let inputReader;
         // let BPM = 0;
 
         if (typeof window !== 'undefined') {
-            inputReader = new MIDIInputModule(inputManager);
-            console.log("CREATED new MIDIInputModule");
+            inputReader = new MIDIInputModule(inputManager) as MIDIInputModule;
             
             setInterval(() => {
                 let deviceData = "Connected MIDI Devices: " + inputReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.GetBPM();
@@ -22,120 +23,49 @@
             }, 100);
 
             // Get a reference to the canvas element
-            const cSquare = document.getElementById("cCanvas");
-            const cisSquare = document.getElementById("c#Canvas");
-            const dSquare = document.getElementById("dCanvas");
-            const disSquare = document.getElementById("d#Canvas");
-            const eSquare = document.getElementById("eCanvas");
-            const fSquare = document.getElementById("fCanvas");
-            const fisSquare = document.getElementById("f#Canvas");
-            const gSquare = document.getElementById("gCanvas");
-            const gisSquare = document.getElementById("g#Canvas");
-            const aSquare = document.getElementById("aCanvas");
-            const aisSquare = document.getElementById("a#Canvas");
-            const bSquare = document.getElementById("bCanvas");
+            const cCanvas = document.getElementById("cCanvas");
+            const cisCanvas = document.getElementById("c#Canvas");
+            const dCanvas = document.getElementById("dCanvas");
+            const disCanvas = document.getElementById("d#Canvas");
+            const eCanvas = document.getElementById("eCanvas");
+            const fCanvas = document.getElementById("fCanvas");
+            const fisCanvas = document.getElementById("f#Canvas");
+            const gCanvas = document.getElementById("gCanvas");
+            const gisCanvas = document.getElementById("g#Canvas");
+            const aCanvas = document.getElementById("aCanvas");
+            const aisCanvas = document.getElementById("a#Canvas");
+            const bCanvas = document.getElementById("bCanvas");
 
+            let cSquare = new NoteSquare(inputManager, 1, "C", cCanvas);
+            let dSquare = new NoteSquare(inputManager, 1, "D", dCanvas);
+            let eSquare = new NoteSquare(inputManager, 1, "E", eCanvas);
+            let fSquare = new NoteSquare(inputManager, 1, "F", fCanvas);
+            let gSquare = new NoteSquare(inputManager, 1, "G", gCanvas);
+            let aSquare = new NoteSquare(inputManager, 1, "A", aCanvas);
+            let bSquare = new NoteSquare(inputManager, 1, "B", bCanvas);
 
-            // Get a 2D drawing context from the canvas
-            const cContext = (cSquare as HTMLCanvasElement).getContext("2d");
-            const cisContext = (cisSquare as HTMLCanvasElement).getContext("2d");
-            const dContext = (dSquare as HTMLCanvasElement).getContext("2d");
-            const disContext = (disSquare as HTMLCanvasElement).getContext("2d");
-            const eContext = (eSquare as HTMLCanvasElement).getContext("2d");
-            const fContext = (fSquare as HTMLCanvasElement).getContext("2d");
-            const fisContext = (fisSquare as HTMLCanvasElement).getContext("2d");
-            const gContext = (gSquare as HTMLCanvasElement).getContext("2d");
-            const gisContext = (gisSquare as HTMLCanvasElement).getContext("2d");
-            const aContext = (aSquare as HTMLCanvasElement).getContext("2d");
-            const aisContext = (aisSquare as HTMLCanvasElement).getContext("2d");
-            const bContext = (bSquare as HTMLCanvasElement).getContext("2d");
+            let cisSquare = new NoteSquare(inputManager, 1, "C#", cisCanvas);
+            let disSquare = new NoteSquare(inputManager, 1, "D#", disCanvas);
+            let fisSquare = new NoteSquare(inputManager, 1, "F#", fisCanvas);
+            let gisSquare = new NoteSquare(inputManager, 1, "G#", gisCanvas);
+            let aisSquare = new NoteSquare(inputManager, 1, "A#", aisCanvas);
 
-
-            //Needed regular expression
-            let cRegEx = new RegExp("C" + "(?!#)");
-            let cisRegEx = new RegExp("C#");
-            let dRegEx = new RegExp("D" + "(?!#)");
-            let disRegEx = new RegExp("D#");
-            let eRegEx = new RegExp("E");
-            let fRegEx = new RegExp("F" + "(?!#)");
-            let fisRegEx = new RegExp("F#");
-            let gRegEx = new RegExp("G" + "(?!#)");
-            let gisRegEx = new RegExp("G#");
-            let aRegEx = new RegExp("A" + "(?!#)");
-            let aisRegEx = new RegExp("A#");
-            let bRegEx = new RegExp("B");
 
             //Notes that are playe on channel 1 - 4
             setInterval(() => {
-                // let channelInfo = "Channel 1: " + inputManager.GetHoldingKeys(1) + "  Channel 2: " + inputManager.GetHoldingKeys(2);
-                // channelInfo += " Channel 3: " + inputManager.GetHoldingKeys(3) + " Channel 4: " + inputManager.GetHoldingKeys(4);
-                // document.getElementById("CH1Keys").innerHTML = channelInfo;
-                let ch1 = inputManager.GetHoldingKeys(1);
+                cSquare.GetMIDIInput();
+                dSquare.GetMIDIInput();
+                eSquare.GetMIDIInput();
+                fSquare.GetMIDIInput();
+                gSquare.GetMIDIInput();
+                aSquare.GetMIDIInput();
+                bSquare.GetMIDIInput();                
 
-                //let cPlayed = ch1.some(element => element.includes ("C" + " (?!#)"));
-                let cPlayed = ch1.some(element => element.match (cRegEx));
-                let cisPlayed = ch1.some(element => element.match (cisRegEx));
-                let dPlayed = ch1.some(element => element.match (dRegEx));
-                let disPlayed = ch1.some(element => element.match (disRegEx));
-                let ePlayed = ch1.some(element => element.match (eRegEx));
-                let fPlayed = ch1.some(element => element.match (fRegEx));
-                let fisPlayed = ch1.some(element => element.match (fisRegEx));
-                let gPlayed = ch1.some(element => element.match (gRegEx));
-                let gisPlayed = ch1.some(element => element.match (gisRegEx));
-                let aPlayed = ch1.some(element => element.match (aRegEx));
-                let aisPlayed = ch1.some(element => element.match (aisRegEx));
-                let bPlayed = ch1.some(element => element.match (bRegEx));
-
-                //C Note
-                if(cPlayed) cContext.fillStyle = "red";
-                else cContext.fillStyle = "black";
-                //C# Note
-                if(cisPlayed) cisContext.fillStyle = "red";
-                else cisContext.fillStyle = "black";
-                //D Note
-                if(dPlayed) dContext.fillStyle = "red";
-                else dContext.fillStyle = "black";
-                //D# Note
-                if(disPlayed) disContext.fillStyle = "red";
-                else disContext.fillStyle = "black";
-                //E Note
-                if(ePlayed) eContext.fillStyle = "red";
-                else eContext.fillStyle = "black";
-                //F Note
-                if(fPlayed) fContext.fillStyle = "red";
-                else fContext.fillStyle = "black";
-                //F# Note
-                if(fisPlayed) fisContext.fillStyle = "red";
-                else fisContext.fillStyle = "black";
-                //G Note
-                if(gPlayed) gContext.fillStyle = "red";
-                else gContext.fillStyle = "black";
-                //G# Note
-                if(gisPlayed) gisContext.fillStyle = "red";
-                else gisContext.fillStyle = "black";
-                //A Note
-                if(aPlayed) aContext.fillStyle = "red";
-                else aContext.fillStyle = "black";
-                //A# Note
-                if(aisPlayed) aisContext.fillStyle = "red";
-                else aisContext.fillStyle = "black";
-                //B Note
-                if(bPlayed) bContext.fillStyle = "red";
-                else bContext.fillStyle = "black";
-
-                //Draw Context
-                cContext.fillRect(100, 100, 200, 200);
-                cisContext.fillRect(100, 100, 200, 200);
-                dContext.fillRect(100, 100, 200, 200);
-                disContext.fillRect(100, 100, 200, 200);
-                eContext.fillRect(100, 100, 200, 200);
-                fContext.fillRect(100, 100, 200, 200);
-                fisContext.fillRect(100, 100, 200, 200);
-                gContext.fillRect(100, 100, 200, 200);
-                gisContext.fillRect(100, 100, 200, 200);
-                aContext.fillRect(100, 100, 200, 200);
-                aisContext.fillRect(100, 100, 200, 200);
-                bContext.fillRect(100, 100, 200, 200);
+                cisSquare.GetMIDIInput();
+                disSquare.GetMIDIInput();
+                fisSquare.GetMIDIInput();
+                gisSquare.GetMIDIInput();
+                aisSquare.GetMIDIInput();
 
                 document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1);
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2);
