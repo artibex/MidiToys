@@ -6,13 +6,12 @@ export class NoteSquare extends MIDIReceiver {
     //inputManager: InputManager; //in MIDIReceiver
     //targetChannel: number; //in MIDIReceiver
     // htmlID: HTMLElement; //in MIDIReceiver
-    targetNote: string;
+    //targetNote: string; //in MIDIReceiver
     targetRegExp: RegExp;
     canvas: CanvasRenderingContext2D;
 
     constructor(inputManager: InputManager, targetChannel: number, targetNote: string, htmlID: HTMLElement) {
-        super(inputManager, targetChannel, htmlID);
-        this.targetNote = targetNote;
+        super(inputManager, targetChannel, targetNote, htmlID);
         this.canvas = htmlID.getContext("2d") as CanvasRenderingContext2D;
         this.targetRegExp = new RegExp(MIDIDataTable.MIDIStringNoteToRegExp(targetNote) as RegExp);
     }
@@ -28,9 +27,15 @@ export class NoteSquare extends MIDIReceiver {
     UpdateElement(on) {
         if(on == true) {
             this.canvas.fillStyle = "red";
+            this.canvas.fillRect(0,0,200,200);
+
+            this.canvas.fillStyle = "white";
+            this.canvas.font = "100px Arial";
+            this.canvas.fillText(this.targetNote, 20,100);
+    
         } else {
             this.canvas.fillStyle = "black";
+            this.canvas.fillRect(0,0,200,200);
         }
-        this.canvas.fillRect(100,100,200,200);
     }
 }

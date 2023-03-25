@@ -4,11 +4,14 @@ import { InputManager } from "./InputManager";
 export class MIDIReceiver {
     inputManager: InputManager;
     targetChannel: number;
+    targetNote: string;
     htmlID: HTMLElement;
 
-    constructor(inputManager: InputManager, targetChannel: number, htmlID) {
+
+    constructor(inputManager: InputManager, targetChannel: number, targetNote: string, htmlID: HTMLElement) {
         this.inputManager = inputManager; 
         this.targetChannel = targetChannel;
+        this.targetNote = targetNote;
         this.htmlID = htmlID;
     }
 }
