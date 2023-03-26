@@ -19,7 +19,7 @@ export class SquareKeyboard {
             let html = element as HTMLElement;
             let rawNote = html.id.replace("Canvas", "");
             let regExp = MIDIDataTable.MIDIStringNoteToRegExp(rawNote);
-            this.noteSquares.push(new NoteSquare(this.inputManager as InputManager, targetChannel, rawNote, element as HTMLCanvasElement))
+            this.noteSquares.push(new NoteSquare(this.inputManager, targetChannel, rawNote, element))
 
             // console.log(rawNote);
             // console.log(regExp);
