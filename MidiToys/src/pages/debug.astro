@@ -8,6 +8,7 @@
         import { MIDIInputModule } from "./js/MIDIInputModule";
         import { InputManager } from "./js/InputManager";
         import { NoteSquare } from "./js/NoteSquare";
+        import { SquareKeyboard } from "./js/SquareKeyboard"
 
         let inputManager = new InputManager() as InputManager;
         let inputReader;
@@ -21,50 +22,26 @@
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }, 100);
 
-            // Get a reference to the canvas element
-            const cCanvas = document.getElementById("cCanvas");
-            const cisCanvas = document.getElementById("c#Canvas");
-            const dCanvas = document.getElementById("dCanvas");
-            const disCanvas = document.getElementById("d#Canvas");
-            const eCanvas = document.getElementById("eCanvas");
-            const fCanvas = document.getElementById("fCanvas");
-            const fisCanvas = document.getElementById("f#Canvas");
-            const gCanvas = document.getElementById("gCanvas");
-            const gisCanvas = document.getElementById("g#Canvas");
-            const aCanvas = document.getElementById("aCanvas");
-            const aisCanvas = document.getElementById("a#Canvas");
-            const bCanvas = document.getElementById("bCanvas");
+            const canvasReverences = [
+            document.getElementById("cCanvas") as HTMLCanvasElement,
+            document.getElementById("c#Canvas") as HTMLCanvasElement,
+            document.getElementById("dCanvas") as HTMLCanvasElement,
+            document.getElementById("d#Canvas") as HTMLCanvasElement,
+            document.getElementById("eCanvas") as HTMLCanvasElement,
+            document.getElementById("fCanvas") as HTMLCanvasElement,
+            document.getElementById("f#Canvas") as HTMLCanvasElement,
+            document.getElementById("gCanvas") as HTMLCanvasElement,
+            document.getElementById("g#Canvas") as HTMLCanvasElement,
+            document.getElementById("aCanvas") as HTMLCanvasElement,
+            document.getElementById("a#Canvas") as HTMLCanvasElement,
+            document.getElementById("bCanvas") as HTMLCanvasElement
+            ]
 
-            let cSquare = new NoteSquare(inputManager, 1, "C", cCanvas);
-            let dSquare = new NoteSquare(inputManager, 1, "D", dCanvas);
-            let eSquare = new NoteSquare(inputManager, 1, "E", eCanvas);
-            let fSquare = new NoteSquare(inputManager, 1, "F", fCanvas);
-            let gSquare = new NoteSquare(inputManager, 1, "G", gCanvas);
-            let aSquare = new NoteSquare(inputManager, 1, "A", aCanvas);
-            let bSquare = new NoteSquare(inputManager, 1, "B", bCanvas);
-
-            let cisSquare = new NoteSquare(inputManager, 1, "C#", cisCanvas);
-            let disSquare = new NoteSquare(inputManager, 1, "D#", disCanvas);
-            let fisSquare = new NoteSquare(inputManager, 1, "F#", fisCanvas);
-            let gisSquare = new NoteSquare(inputManager, 1, "G#", gisCanvas);
-            let aisSquare = new NoteSquare(inputManager, 1, "A#", aisCanvas);
-
+            const keyboard = new SquareKeyboard(canvasReverences, inputManager as InputManager, 1);
 
             //Notes that are playe on channel 1 - 4
             setInterval(() => {
-                cSquare.GetMIDIInput();
-                dSquare.GetMIDIInput();
-                eSquare.GetMIDIInput();
-                fSquare.GetMIDIInput();
-                gSquare.GetMIDIInput();
-                aSquare.GetMIDIInput();
-                bSquare.GetMIDIInput();                
-
-                cisSquare.GetMIDIInput();
-                disSquare.GetMIDIInput();
-                fisSquare.GetMIDIInput();
-                gisSquare.GetMIDIInput();
-                aisSquare.GetMIDIInput();
+                keyboard.GetMIDIInput();
 
                 document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1);
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2);

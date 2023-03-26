@@ -180,23 +180,25 @@ export class MIDIDataTable {
 
     //Takes a note converted into string and returns the correct RegEx
     static MIDIStringNoteToRegExp(stringNote) {
-        let rawNote = stringNote.replace(/[0-9]/g, '');
-        
+        let rawNote = stringNote.replace(/[0-9]/g, ''); //Remove all numbers
+        rawNote = rawNote.toUpperCase(); //Convert it to Uppercase for switch statement
+
         //Regular Note
-        let cRegEx = new RegExp("C" + "(?!#)");
-        let dRegEx = new RegExp("D" + "(?!#)");
-        let eRegEx = new RegExp("E");
-        let fRegEx = new RegExp("F" + "(?!#)");
-        let gRegEx = new RegExp("G" + "(?!#)");
-        let aRegEx = new RegExp("A" + "(?!#)");
-        let bRegEx = new RegExp("B");
+        let cRegEx = new RegExp("C" + "(?!#)", "i");
+        let dRegEx = new RegExp("D" + "(?!#)", "i");
+        let eRegEx = new RegExp("E", "i");
+        let fRegEx = new RegExp("F" + "(?!#)", "i");
+        let gRegEx = new RegExp("G" + "(?!#)", "i");
+        let aRegEx = new RegExp("A" + "(?!#)", "i");
+        let bRegEx = new RegExp("B", "i");
         //Halftone Note
-        let cisRegEx = new RegExp("C#");
-        let disRegEx = new RegExp("D#");
-        let fisRegEx = new RegExp("F#");
-        let gisRegEx = new RegExp("G#");
-        let aisRegEx = new RegExp("A#");
+        let cisRegEx = new RegExp("C#", "i");
+        let disRegEx = new RegExp("D#", "i");
+        let fisRegEx = new RegExp("F#", "i");
+        let gisRegEx = new RegExp("G#", "i");
+        let aisRegEx = new RegExp("A#", "i");
         
+        //SWitch statements, return the correct regular expression
         //Regular Note Check
         if(!rawNote.includes("#")) {
             switch(rawNote) {

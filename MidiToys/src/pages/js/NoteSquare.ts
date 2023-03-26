@@ -7,12 +7,11 @@ export class NoteSquare extends MIDIReceiver {
     //targetChannel: number; //in MIDIReceiver
     // htmlID: HTMLElement; //in MIDIReceiver
     //targetNote: string; //in MIDIReceiver
-    targetRegExp: RegExp;
-    canvas: CanvasRenderingContext2D;
+    //canvas: CanvasRenderingContext2D; in MIDIReceiver
+    //targetRegExp: RegExp; in MIDIReceiver
 
-    constructor(inputManager: InputManager, targetChannel: number, targetNote: string, htmlID: HTMLElement) {
-        super(inputManager, targetChannel, targetNote, htmlID);
-        this.canvas = htmlID.getContext("2d") as CanvasRenderingContext2D;
+    constructor(inputManager: InputManager, targetChannel: number, targetNote: string, htmlCanvas: HTMLCanvasElement) {
+        super(inputManager, targetChannel, targetNote, htmlCanvas);
         this.targetRegExp = new RegExp(MIDIDataTable.MIDIStringNoteToRegExp(targetNote) as RegExp);
     }
 
@@ -26,16 +25,16 @@ export class NoteSquare extends MIDIReceiver {
 
     UpdateElement(on) {
         if(on == true) {
-            this.canvas.fillStyle = "red";
-            this.canvas.fillRect(0,0,200,200);
+            this.canvasContext.fillStyle = "red";
+            this.canvasContext.fillRect(0,0,200,200);
 
-            this.canvas.fillStyle = "white";
-            this.canvas.font = "100px Arial";
-            this.canvas.fillText(this.targetNote, 20,100);
+            this.canvasContext.fillStyle = "white";
+            this.canvasContext.font = "100px Arial";
+            this.canvasContext.fillText(this.targetNote.toUpperCase(), 20,100);
     
         } else {
-            this.canvas.fillStyle = "black";
-            this.canvas.fillRect(0,0,200,200);
+            this.canvasContext.fillStyle = "black";
+            this.canvasContext.fillRect(0,0,200,200);
         }
     }
 }
