@@ -113,7 +113,7 @@ export class KeyboardInputModule {
     // do something with the key
     let midiCommand = this.GetMIDICommand(downPress);
     let midiNote = this.GetMIDINote(key);
-    let midiVelocity = 200;
+    let midiVelocity = 127;
 
     this.inputManager.GetInputKeyboard(midiCommand, midiNote, midiVelocity);
 

@@ -11,6 +11,9 @@ export class MIDIReceiver {
     canvasContext: CanvasRenderingContext2D;
     targetRegExp: RegExp;
 
+    // attackTime: number = 10; //attack in MS, how long is the delay before the impact happens?
+    // releaseTime: number = 1; //how long is the impact visible in MS
+
     constructor(inputManager: InputManager, targetChannel: number, targetNote: string, htmlCanvas: HTMLCanvasElement) {
         this.inputManager = inputManager; 
         this.targetChannel = targetChannel;

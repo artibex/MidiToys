@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Canvas Malen</title>
+<style>
+canvas { border: 1px solid black; }
+</style>
+</head>
+<body>
+<canvas id="myCanvas" width="500" height="500"></canvas>
+<script>
+var canvas = document.getElementById('myCanvas');
+var context = canvas.getContext('2d');
+
+var lastX;
+var lastY;
+
+canvas.addEventListener('mousedown', function(e) {
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+});
+
+canvas.addEventListener('mousemove', function(e) {
+    if (e.buttons !== 1) {
+        return;
+    }
+
+    context.beginPath();
+    context.moveTo(lastX, lastY);
+    context.lineTo(e.offsetX, e.offsetY);
+    context.stroke();
+
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+});
+
+</script>
+</body>
+</html>
