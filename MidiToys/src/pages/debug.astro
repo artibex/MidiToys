@@ -46,10 +46,10 @@
             setInterval(() => {
                 keyboard.GetMIDIInput();
 
-                document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1);
-                document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2);
-                document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.GetHoldingKeys(3);
-                document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.GetHoldingKeys(4);
+                document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1) + " Velocity: " + inputManager.GetVelocityHoldingKeys(1);
+                document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2) + " Velocity: " + inputManager.GetVelocityHoldingKeys(2);
+                document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.GetHoldingKeys(3) + " Velocity: " + inputManager.GetVelocityHoldingKeys(3);
+                document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.GetHoldingKeys(4) + " Velocity: " + inputManager.GetVelocityHoldingKeys(4);
             }, 1);
         
             // Set the fill style to a color

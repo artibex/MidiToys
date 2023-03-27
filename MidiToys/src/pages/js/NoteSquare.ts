@@ -18,14 +18,24 @@ export class NoteSquare extends MIDIReceiver {
     GetMIDIInput() {
         //console.log("UPDATE NoteSquare");
         let keys: string[] = this.inputManager.GetHoldingKeys(this.targetChannel) as string[];
-        if(keys.some(element => element.match(this.targetRegExp))) {
-            this.UpdateElement(true);
-        } else this.UpdateElement(false);
+        let velocity: number[] = this.inputManager.GetVelocityHoldingKeys(this.targetChannel) as number[];
+
+        let targetIndex = keys.findIndex(element => element.match(this.targetRegExp));
+        if(targetIndex !== -1) {
+            this.UpdateElement(true, velocity[targetIndex]);
+
+        } else this.UpdateElement(false, 0);
+        
+        // if(keys.some(element => element.match(this.targetRegExp))) {
+        //     this.UpdateElement(true, 1);
+
+        // } else this.UpdateElement(false, 0);
     }
 
-    UpdateElement(on) {
+    UpdateElement(on, velocity) {
         if(on == true) {
-            this.canvasContext.fillStyle = "red";
+
+            this.canvasContext.fillStyle = "rgb(" + velocity*1.5 +"," + velocity*0.3 + "," +  "0)";
             this.canvasContext.fillRect(0,0,200,200);
 
             this.canvasContext.fillStyle = "white";
