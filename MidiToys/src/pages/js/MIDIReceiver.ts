@@ -17,6 +17,7 @@ export class MIDIReceiver {
         this.targetNote = targetNote;
         this.htmlCanvas = htmlCanvas;
         this.targetRegExp = new RegExp(MIDIDataTable.MIDIStringNoteToRegExp(targetNote) as RegExp);
+        
         if(htmlCanvas != null) this.canvasContext = htmlCanvas.getContext("2d")!;
         else (console.log("ERROR: htmlCanvas is NULL"));
     }

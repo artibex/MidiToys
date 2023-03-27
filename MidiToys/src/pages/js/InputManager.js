@@ -85,22 +85,64 @@ export class InputManager {
                     break;
 
             }
+        }
+    }
+    GetInputKeyboard(command, note, velocity) {
+        console.log("KEYBOARD detected");
+        // console.log("command:" + command);
+        // console.log("note:" + note);
+        // console.log("velocity:" + velocity);
+        let stringCommand = MIDIDataTable.MIDICommandToString(command);
 
 
+        if(stringCommand.includes("NoteOn")) {
+            let ch = Number(stringCommand.replace(/\D+/g, "")); 
+            let stringNote = MIDIDataTable.MIDINoteToString(note);
+            switch(ch) {
+                case 1:
+                    this.UpdateHoldingKeys(stringCommand, 1, stringNote);
+                    break;
+                case 2:
+                    this.UpdateHoldingKeys(stringCommand, 2, stringNote);
+                    break;
+                case 3:
+                    this.UpdateHoldingKeys(stringCommand, 3, stringNote);
+                    break;
+                case 4:
+                    this.UpdateHoldingKeys(stringCommand, 4, stringNote);
+                    break;
+            }
+            
             // if(stringCommand.includes("CH: 1")) {
             //     this.UpdateHoldingKeys(stringCommand, 1, stringNote);
             // }
             // if(stringCommand.includes("CH: 2")) {
             //     this.UpdateHoldingKeys(stringCommand, 2, stringNote);
             // }
+
+
+        } else if(stringCommand.includes("NoteOff")) {
+            let ch = Number(stringCommand.replace(/\D+/g, "")); 
+            let stringNote = MIDIDataTable.MIDINoteToString(note);
+            
+            switch(ch) {
+                case 1:
+                    this.UpdateHoldingKeys(stringCommand, 1, stringNote);
+                    break;
+                case 2:
+                    this.UpdateHoldingKeys(stringCommand, 2, stringNote);
+                    break;
+                case 3:
+                    this.UpdateHoldingKeys(stringCommand, 3, stringNote);
+                    break;
+                case 4:
+                    this.UpdateHoldingKeys(stringCommand, 4, stringNote);
+                    break;
+
+            }
         }
-        
-
-
-        // if(stringCommand !== "") {
-        //   console.log('command:', stringCommand, ' note:', stringNote, ' velocity:', velocity);
-        // }
     }
+
     UpdateHoldingKeys(stringCommand, channel, stringNote) {
         //If command includes NoteOn
         if(stringCommand.includes("NoteOn")) {
@@ -210,9 +252,5 @@ export class InputManager {
     GetBPM() {
         // console.log("GETTING BPM for website");
         return this.bpm;
-    }
-    
-    GetKeyboardInput() {
-        
     }
 }

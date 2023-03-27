@@ -7,16 +7,19 @@
     <script>
         import { MIDIInputModule } from "./js/MIDIInputModule";
         import { InputManager } from "./js/InputManager";
-        import { NoteSquare } from "./js/NoteSquare";
-        import { SquareKeyboard } from "./js/SquareKeyboard"
+        // import { NoteSquare } from "./js/NoteSquare";
+        import { SquareKeyboard } from "./js/SquareKeyboard";
+        import { KeyboardInputModule } from "./js/KeyboardInputModule";
 
         let inputManager = new InputManager() as InputManager;
+        let keyboardReader = new KeyboardInputModule(inputManager);
         let inputReader;
         // let BPM = 0;
-
+        
         if (typeof window !== 'undefined') {
+            // keyboardReader = new KeyboardInputModule(inputManager) as KeyboardInputModule;
             inputReader = new MIDIInputModule(inputManager) as MIDIInputModule;
-            
+
             setInterval(() => {
                 let deviceData = "Connected MIDI Devices: " + inputReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.GetBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
@@ -37,7 +40,7 @@
             document.getElementById("bCanvas") as HTMLCanvasElement
             ]
 
-            const keyboard = new SquareKeyboard(canvasReverences, inputManager as InputManager, 2);
+            const keyboard = new SquareKeyboard(canvasReverences, inputManager as InputManager, 1);
 
             //Notes that are playe on channel 1 - 4
             setInterval(() => {
