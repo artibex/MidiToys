@@ -3,6 +3,9 @@ import { MIDIDataTable } from "./MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
 
 export class NoteSquare extends MIDIReceiver {
+    htmlCanvas: HTMLCanvasElement; //Obsolete, do not use
+    inputManager: InputManager;
+
     targetSize = 100;
     calculatedSize = this.targetSize;
     lastTargetIndex = -1;
@@ -13,24 +16,27 @@ export class NoteSquare extends MIDIReceiver {
     triggerAlpha = 1;
     calculatedAlpha = this.triggerAlpha;
 
+
     constructor(inputManager: InputManager, targetChannel: number, targetNote: string, htmlCanvas: HTMLCanvasElement) {
-        super(inputManager, targetChannel, targetNote, htmlCanvas);
+        super(targetChannel, targetNote);
+        this.htmlCanvas = htmlCanvas;
+        this.inputManager = inputManager;
         //this.targetRegExp = MIDIDataTable.MIDIStringNoteToRegExp(targetNote);
     }
 
-    GetMIDIInput() {
-        const keys = this.inputManager.getHoldingKeys(this.targetChannel) as string[];
-        const velocity = this.inputManager.getVelocity(this.targetChannel) as number[];
-        const targetIndex = keys.findIndex((element) => element.match(this.targetRegExp));
+    // GetMIDIInput() {
+    //     const keys = this.inputManager.getHoldingKeys(this.targetChannel) as string[];
+    //     const velocity = this.inputManager.getVelocity(this.targetChannel) as number[];
+    //     const targetIndex = keys.findIndex((element) => element.match(this.targetRegExp));
 
-        if (targetIndex !== -1) {
-            this.UpdateElement(true, velocity[targetIndex]);
-        } else {
-            this.UpdateElement(false, 0);
-        }
+    //     if (targetIndex !== -1) {
+    //         this.UpdateElement(true, velocity[targetIndex]);
+    //     } else {
+    //         this.UpdateElement(false, 0);
+    //     }
 
-        this.lastTargetIndex = targetIndex;
-    }
+    //     this.lastTargetIndex = targetIndex;
+    // }
 
     UpdateElement(on: boolean, velocity: number) {
         const canWidth = this.htmlCanvas.width;

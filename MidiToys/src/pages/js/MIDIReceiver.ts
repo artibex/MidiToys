@@ -4,24 +4,40 @@ import { MIDIDataTable } from "./MIDIDataTable";
 // Generic class that can listen to midi events
 // Holds all important information
 export class MIDIReceiver {
-  inputManager: InputManager;
+  // inputManager: InputManager;
+  canvasContext: CanvasRenderingContext2D;
   targetChannel: number;
   targetNote: string;
-  htmlCanvas: HTMLCanvasElement;
-  canvasContext: CanvasRenderingContext2D;
-  targetRegExp: RegExp;
 
-  constructor(inputManager: InputManager, targetChannel: number, targetNote: string, htmlCanvas: HTMLCanvasElement) {
-    this.inputManager = inputManager; 
+  targetRegExp: RegExp;
+  
+  velocityValue: number = 0;
+  holdingKeys: string[]; //Stores last detected holding keys
+  velocityValues: number[]; //Stores last detected velocityValues
+
+  constructor(targetChannel: number, targetNote: string) {
+    // this.inputManager = inputManager; 
     this.targetChannel = targetChannel;
     this.targetNote = targetNote;
-    this.htmlCanvas = htmlCanvas;
     this.targetRegExp = new RegExp(MIDIDataTable.MIDIStringNoteToRegExp(targetNote) as RegExp);
+    console.log("CREATED MIDI Receiver. TargetNote: " + targetNote);
+  }
+
+  //Get's currently Holding keys and velocity, if it's under these one, return true, else return false
+  GetMIDIInput(holdingKeys: string[], velocityValues: number[]) {
+    this.holdingKeys = holdingKeys;
+    this.velocityValues = velocityValues;
     
-    if(htmlCanvas != null) {
-      this.canvasContext = htmlCanvas.getContext("2d")!;
+    const targetIndex = holdingKeys.findIndex((element) => element.match(this.targetNote));
+    if (targetIndex !== -1) {
+        this.velocityValue = velocityValues[targetIndex];
+        return true;
     } else {
-      console.log("ERROR: htmlCanvas is NULL");
+      return false;
     }
+  }
+
+  GetVelocity() {
+    return this.velocityValue;
   }
 }
