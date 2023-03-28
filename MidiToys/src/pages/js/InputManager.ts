@@ -61,12 +61,26 @@ export class InputManager {
         }
     }
 
-    calcBPM(message: any) {
-        
+    calcBPM(message) {
+        if (message.data[0] == 248) { // MIDI Clock message
+            this.clockCount++;
+            if (this.clockCount == 96) {
+                //Calculate deltaTime
+                let deltaTime = message.timeStamp - this.prevTimestamp;
+                
+                //Update values
+                this.oldBPM = this.bpm; //Store current BPM
+                this.bpm = Math.round(60 / (deltaTime / 1000) * 4);
+                this.prevTimestamp = message.timeStamp;
+              
+                //If bpm changed, put it into console
+                if(this.oldBPM != this.bpm) console.log("BPM:" + this.bpm);
+              
+                this.clockCount = 0;
+            }
+        }
     }
     
-
-
     getBPM() {
         return this.bpm;
     }
