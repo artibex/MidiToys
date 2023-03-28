@@ -19,8 +19,8 @@ export class NoteSquare extends MIDIReceiver {
     }
 
     GetMIDIInput() {
-        const keys = this.inputManager.GetHoldingKeys(this.targetChannel) as string[];
-        const velocity = this.inputManager.GetVelocityHoldingKeys(this.targetChannel) as number[];
+        const keys = this.inputManager.getHoldingKeys(this.targetChannel) as string[];
+        const velocity = this.inputManager.getVelocity(this.targetChannel) as number[];
         const targetIndex = keys.findIndex((element) => element.match(this.targetRegExp));
 
         if (targetIndex !== -1) {

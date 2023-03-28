@@ -35,7 +35,7 @@ private ConnectMIDIDevice(): void {
 
 private HandleMIDIMessage(message: WebMidi.MIDIMessageEvent): void {
     // console.log("HANDLE MIDI Message");
-    this.inputManager.GetMIDIInput(message);
+    this.inputManager.getMIDIInput(message);
 }
 
 public GetMIDIInputs(): string[] {

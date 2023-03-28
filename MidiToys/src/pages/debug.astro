@@ -21,7 +21,7 @@
             inputReader = new MIDIInputModule(inputManager) as MIDIInputModule;
 
             setInterval(() => {
-                let deviceData = "Connected MIDI Devices: " + inputReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.GetBPM();
+                let deviceData = "Connected MIDI Devices: " + inputReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }, 100);
 
@@ -46,10 +46,10 @@
             setInterval(() => {
                 keyboard.GetMIDIInput();
 
-                document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1) + " Velocity: " + inputManager.GetVelocityHoldingKeys(1);
-                document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2) + " Velocity: " + inputManager.GetVelocityHoldingKeys(2);
-                document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.GetHoldingKeys(3) + " Velocity: " + inputManager.GetVelocityHoldingKeys(3);
-                document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.GetHoldingKeys(4) + " Velocity: " + inputManager.GetVelocityHoldingKeys(4);
+                document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.getHoldingKeys(1) + " Velocity: " + inputManager.getVelocity(1);
+                document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.getHoldingKeys(2) + " Velocity: " + inputManager.getVelocity(2);
+                document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.getHoldingKeys(3) + " Velocity: " + inputManager.getVelocity(3);
+                document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.getHoldingKeys(4) + " Velocity: " + inputManager.getVelocity(4);
             }, 1);
         
             // Set the fill style to a color
@@ -61,7 +61,7 @@
         </script>
         <h2 id="DeviceAndBPM">No device found</h2>
 
-        <h2 id="CH1Keys"></h2>
+        <h2 id="CH1Keys">Ch 1</h2>
         <h2 id="CH2Keys"></h2>
         <h2 id="CH3Keys"></h2>
         <h2 id="CH4Keys"></h2>
