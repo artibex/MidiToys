@@ -49,7 +49,6 @@ export class InputManager {
     updateHoldingKeys(command, ch, note, velocity) {
         let holdingKeysIndex = ch - 1;
         if (command.includes("NoteOn")) {
-            console.log("TRIGGER NoteOn for key " + note);
             if (!this.holdingKeys[holdingKeysIndex].includes(note)) {
                 this.holdingKeys[holdingKeysIndex].push(note);
                 this.velocity[holdingKeysIndex].push(velocity);
