@@ -25,26 +25,26 @@
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }, 100);
 
-            const canvasReverences = [
-            document.getElementById("cCanvas") as HTMLCanvasElement,
-            document.getElementById("c#Canvas") as HTMLCanvasElement,
-            document.getElementById("dCanvas") as HTMLCanvasElement,
-            document.getElementById("d#Canvas") as HTMLCanvasElement,
-            document.getElementById("eCanvas") as HTMLCanvasElement,
-            document.getElementById("fCanvas") as HTMLCanvasElement,
-            document.getElementById("f#Canvas") as HTMLCanvasElement,
-            document.getElementById("gCanvas") as HTMLCanvasElement,
-            document.getElementById("g#Canvas") as HTMLCanvasElement,
-            document.getElementById("aCanvas") as HTMLCanvasElement,
-            document.getElementById("a#Canvas") as HTMLCanvasElement,
-            document.getElementById("bCanvas") as HTMLCanvasElement
-            ]
+            // const canvasReverences = [
+            // document.getElementById("cCanvas") as HTMLCanvasElement,
+            // document.getElementById("c#Canvas") as HTMLCanvasElement,
+            // document.getElementById("dCanvas") as HTMLCanvasElement,
+            // document.getElementById("d#Canvas") as HTMLCanvasElement,
+            // document.getElementById("eCanvas") as HTMLCanvasElement,
+            // document.getElementById("fCanvas") as HTMLCanvasElement,
+            // document.getElementById("f#Canvas") as HTMLCanvasElement,
+            // document.getElementById("gCanvas") as HTMLCanvasElement,
+            // document.getElementById("g#Canvas") as HTMLCanvasElement,
+            // document.getElementById("aCanvas") as HTMLCanvasElement,
+            // document.getElementById("a#Canvas") as HTMLCanvasElement,
+            // document.getElementById("bCanvas") as HTMLCanvasElement
+            // ]
 
-            const keyboard = new SquareKeyboard(canvasReverences, inputManager as InputManager, 1);
+            // const keyboard = new SquareKeyboard(canvasReverences, inputManager as InputManager, 1);
 
             //Notes that are playe on channel 1 - 4
             setInterval(() => {
-                keyboard.GetMIDIInput();
+                // keyboard.GetMIDIInput();
 
                 document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.getHoldingKeys(1) + " Velocity: " + inputManager.getVelocity(1);
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.getHoldingKeys(2) + " Velocity: " + inputManager.getVelocity(2);

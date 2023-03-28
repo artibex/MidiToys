@@ -1,6 +1,7 @@
 import { InputManager } from "./InputManager";
 import { MIDIDataTable } from "./MIDIDataTable";
 import { NoteSquare } from "./NoteSquare";
+import { MIDIReceiver } from "./MIDIReceiver";
 
 //The goal of this class is to take all canvas references
 //and link it to a MIDI device

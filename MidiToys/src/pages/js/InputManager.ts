@@ -23,6 +23,7 @@ export class InputManager {
         }
     }
 
+    //MIDI and Keyboard Input methods
     getMIDIInput(message) {
         let [command, note, velocity] = message.data;
         this.calcBPM(message);
@@ -34,7 +35,6 @@ export class InputManager {
             this.updateHoldingKeys(stringCommand, ch, stringNote, velocity);
         }
     }
-
     getInputKeyboard(command, note, velocity) {
         console.log("KEYBOARD detected");
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
@@ -46,6 +46,7 @@ export class InputManager {
         }
     }
 
+    //Updating What keys are currently beeing hold
     updateHoldingKeys(command, ch, note, velocity) {
         let holdingKeysIndex = ch - 1;
         if (command.includes("NoteOn")) {
@@ -60,6 +61,7 @@ export class InputManager {
         }
     }
 
+    //BPM stuff
     calcBPM(message) {
         if (message.data[0] == 248) { // MIDI Clock message
             this.clockCount++;
@@ -79,10 +81,11 @@ export class InputManager {
             }
         }
     }
-    
     getBPM() {
         return this.bpm;
     }
+
+    //Getter methods
     getHoldingKeys(channel: number) {
         // console.log(this.holdingKeys[channel][0]);
         return this.holdingKeys[channel - 1];

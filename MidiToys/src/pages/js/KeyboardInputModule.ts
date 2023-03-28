@@ -7,8 +7,6 @@ import { MIDIDataTable } from "./MIDIDataTable";
 export class KeyboardInputModule {
   inputManager: InputManager;
 
-
-
   constructor(inputManager: InputManager) {
     console.log("CREATED new KeyboardInputModule");
     this.inputManager = inputManager;
@@ -129,6 +127,7 @@ export class KeyboardInputModule {
     // }
   }
 
+  //Takes a keyboard key and returns a string note
   GetStringNote(key) {
     switch(key) {
       case "A": return MIDIDataTable.MIDINoteToString(60);  //C 
