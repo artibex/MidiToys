@@ -48,16 +48,19 @@ export class InputManager {
 
     //Updating What keys are currently beeing hold
     updateHoldingKeys(command, ch, note, velocity) {
-        let holdingKeysIndex = ch - 1;
+        let channelIndex = ch - 1;
         if (command.includes("NoteOn")) {
-            if (!this.holdingKeys[holdingKeysIndex].includes(note)) {
-                this.holdingKeys[holdingKeysIndex].push(note);
-                this.velocity[holdingKeysIndex].push(velocity);
-              }            
+            if (!this.holdingKeys[channelIndex].includes(note)) {
+                this.holdingKeys[channelIndex].push(note);
+                this.velocity[channelIndex].push(velocity);
+              }
         } else {
-            let noteIndex = this.holdingKeys[holdingKeysIndex].indexOf(note);
-            this.holdingKeys[holdingKeysIndex].splice(noteIndex, 1);
-            this.velocity[holdingKeysIndex].splice(noteIndex, 1);
+            if(this.holdingKeys[channelIndex].includes(note)) {
+                console.log("REMOVE holding key: " + note);
+                let noteIndex = this.holdingKeys[channelIndex].indexOf(note);
+                this.holdingKeys[channelIndex].splice(noteIndex, 1);
+                this.velocity[channelIndex].splice(noteIndex, 1);
+            }
         }
     }
 
