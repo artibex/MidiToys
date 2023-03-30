@@ -56,7 +56,7 @@ export class InputManager {
               }
         } else {
             if(this.holdingKeys[channelIndex].includes(note)) {
-                console.log("REMOVE holding key: " + note);
+                //console.log("REMOVE holding key: " + note);
                 let noteIndex = this.holdingKeys[channelIndex].indexOf(note);
                 this.holdingKeys[channelIndex].splice(noteIndex, 1);
                 this.velocity[channelIndex].splice(noteIndex, 1);
