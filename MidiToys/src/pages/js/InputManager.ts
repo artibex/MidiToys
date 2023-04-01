@@ -1,6 +1,12 @@
 import { MIDIDataTable } from "./MIDIDataTable";
+import { KeyboardInputModule } from "./KeyboardInputModule";
+import { MIDIInputModule } from "./MIDIInputModule";
+
 
 export class InputManager {
+    keyboardReader: KeyboardInputModule;
+    midiReader: MIDIInputModule;
+
     prevHoldingKeys: string[][] = [];
     holdingKeys: string[][] = [];
     velocity: number[][] = [];
@@ -10,11 +16,21 @@ export class InputManager {
     clockCount: number = 0;
     
     constructor() {
-        this.initVariables();
+        this.InitVariables();
+        this.InitReaderModules();
+
         console.log("CREATED InputManager");
     }
 
-    initVariables() {
+    InitReaderModules() {
+        if(typeof window !== "undefined") {
+            this.keyboardReader = new KeyboardInputModule(this);
+            this.midiReader = new MIDIInputModule(this);
+            console.log("CREATED ReaderModules");
+        }
+    }
+
+    InitVariables() {
         for (let i = 0; i < 4; i++) {
             this.prevHoldingKeys[i] = [];
             this.holdingKeys[i] = [];

@@ -12,8 +12,8 @@
         import { KeyboardInputModule } from "./js/KeyboardInputModule";
 
         let inputManager = new InputManager() as InputManager;
-        let keyboardReader = new KeyboardInputModule(inputManager);
-        let inputReader;
+        // let keyboardReader = new KeyboardInputModule(inputManager);
+        // let inputReader;
         let ch1SquareKeyboard;
         let ch2SquareKeyboard;
 
@@ -26,9 +26,9 @@
             ch1SquareKeyboard = new SquareKeyboard(ch1Can, inputManager, 1, 64, 24) as SquareKeyboard;
             ch2SquareKeyboard = new SquareKeyboard(ch2Can, inputManager, 2, 64, 24) as SquareKeyboard;
 
-            //Input classes
-            keyboardReader = new KeyboardInputModule(inputManager) as KeyboardInputModule;
-            inputReader = new MIDIInputModule(inputManager) as MIDIInputModule;
+            // //Input classes
+            // keyboardReader = new KeyboardInputModule(inputManager) as KeyboardInputModule;
+            // inputReader = new MIDIInputModule(inputManager) as MIDIInputModule;
 
             setInterval(() => {
                 ch1SquareKeyboard.UpdateKeyboard();
@@ -36,7 +36,7 @@
             }, 1)
 
             setInterval(() => {
-                let deviceData = "Connected MIDI Devices: " + inputReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
+                let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }, 100);
 
@@ -63,9 +63,9 @@
         <h2 id="CH4Keys"></h2>
         <br>
 
-        <canvas id="ch1Canvas" style="width: 100%;" height="40%"></canvas>
+        <canvas id="ch1Canvas" style="width: 99%;" height="200px"></canvas>
         <br>
-        <canvas id="ch2Canvas" style="width: 100%;" height="40%"></canvas>
+        <canvas id="ch2Canvas" style="width: 99%;" height="200px"></canvas>
 
         <!-- <canvas id="c#Canvas" style="width: 8%" height="1000"></canvas>
         
