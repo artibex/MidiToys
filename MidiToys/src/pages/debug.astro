@@ -1,27 +1,32 @@
 ---
-
+import "./css/global.css";
 ---
+<html>
 
+<head>
+
+</head>
 <body>
+
     <h1> MIDI Debugging Page </h1>
     <script>
         import { InputManager } from "./js/InputManager";
         import { SquareKeyboard } from "./js/SquareKeyboard";
-        import paper, { Color } from "paper";
-        import { view } from "paper/dist/paper-core";
+        import * as paper from "paper";
 
         let inputManager = new InputManager() as InputManager;
         let ch1SquareKeyboard;
         let ch2SquareKeyboard;
 
         // let BPM = 0;
-        let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
-        paper.setup(toyCanvas);
-        paper.view.autoUpdate = true;
         
         
         if (typeof window !== 'undefined') {
-            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 1, 64, 24) as SquareKeyboard;
+            let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
+            paper.setup(toyCanvas);
+            paper.view.autoUpdate = true;
+
+            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 1, 100, 24) as SquareKeyboard;
             //ch2SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 2, 10, 24) as SquareKeyboard;
             
             // var path = new paper.Path.Rectangle({
@@ -43,30 +48,9 @@
                 let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }
-
-
-            // setInterval(() => {
-            //     //ch1SquareKeyboard.UpdateKeyboard();
-            //     //ch2SquareKeyboard.UpdateKeyboard();
-            //     //ch1SquareKeyboard.PaperDraw();
-            //     //ch2SquareKeyboard.PaperDraw();
-            // }, 1)
-            
-
-            // setInterval(() => {
-            // }, 100);
-
-            //Notes that are playe on channel 1 - 4
-            // setInterval(() => {
-            // }, 1);
-        
-            // Set the fill style to a color
-            // Draw a filled rectangle with the fillRect method
-            // The parameters are x, y, width and height
         }
-        
-        // console.log("END Javascript code");
         </script>
+
         <h2 id="DeviceAndBPM">No device found</h2>
 
         <h2 id="CH1Keys">Ch 1</h2>
@@ -75,7 +59,9 @@
         <h2 id="CH4Keys"></h2>
         <br>
 
-        <canvas id="toyCanvas" width="1000" height="500"></canvas>
+        <canvas id="toyCanvas" class="toyCanvas"></canvas>
         <br>
         <!-- <canvas id="ch2Canvas" width="1000" height="200"></canvas> -->
 </body>
+
+</html>

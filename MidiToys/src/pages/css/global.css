@@ -1,0 +1,11 @@
+
+body {
+background-color: black;
+color: white;
+}
+
+#toyCanvas {
+    width: 100vw;
+    height: 40vh;
+    /* add other styles as desired */
+  }

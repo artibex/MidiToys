@@ -9,8 +9,10 @@ export class MIDIReceiver {
   targetChannel: number;
   targetNote: string;
 
+  useRegExp: boolean = false;
   targetRegExp: RegExp;
   
+  lastIndexValue: number = -1;
   velocityValue: number = 0;
   holdingKeys: string[]; //Stores last detected holding keys
   velocityValues: number[]; //Stores last detected velocityValues
@@ -25,11 +27,19 @@ export class MIDIReceiver {
 
   //Get's currently Holding keys and velocity, if it's under these one, return true, else return false
   GetMIDIInput(holdingKeys: string[], velocityValues: number[]) {
-    this.holdingKeys = holdingKeys;
-    this.velocityValues = velocityValues;
+    this.holdingKeys = holdingKeys; //Save information
+    this.velocityValues = velocityValues; //Save information
+    let targetIndex = -1;
+
+    //Check for corresponding key, one way or another
+    if(this.useRegExp) {
+      targetIndex = holdingKeys.findIndex((element) => element.match(this.targetRegExp));
+    } else {
+      targetIndex = holdingKeys.findIndex((element) => element.match(this.targetNote));
+    }
     
-    const targetIndex = holdingKeys.findIndex((element) => element.match(this.targetNote));
     if (targetIndex !== -1) {
+        this.lastIndexValue = targetIndex;
         this.velocityValue = velocityValues[targetIndex];
         return true;
     } else {

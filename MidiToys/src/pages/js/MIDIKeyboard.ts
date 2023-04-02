@@ -21,49 +21,40 @@ export class MIDIKeyboard {
     //MIDI Receiver settings
     numberOfKeys: number = 12; //How many keys are on this keyboard?
     startNote: number = 12; //The note from where you count up
+    useRegExp: boolean;
     receiver: MIDIReceiver[] = [];
     
     //Vector Positions as array
     drawPositions: Vector2D[] = [];
 
     //Construct everything basic that is needed for a MIDIKeyboard
-    constructor(inputManager: InputManager, targetChannel: number, canvas:HTMLCanvasElement, numberOfKeys: number, startNote: number) {
+    constructor(inputManager: InputManager, targetChannel: number, canvas:HTMLCanvasElement, numberOfKeys: number, startNote: number, useRegExp: boolean) {
         this.inputManager = inputManager; //The Input Manager
         this.targetChannel = targetChannel; //The target channel
         this.canvas = canvas; //Canvas element to draw on
         this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
         
-        //Paper.js stuff
-        // paper.setup(this.canvas);
-        //this.paperProject = new paper.Project(this.canvas);
-        // this.paperLayer = new paper.Layer();
-        // this.paperProject = paper.project;
-        // this.paperProject.addLayer(this.paperLayer);
-
         //Setup Keys
         this.numberOfKeys = numberOfKeys;
         this.startNote = startNote;
-    
+        this.useRegExp = useRegExp;
+
         this.ResizeCanvas();
         // window.addEventListener("resize", this.ResizeCanvas);
-        
+        this.SetupMidiReceiver();
         console.log("CREATED new MIDIKeyboard on channel " + this.targetChannel);
     }
 
-    // PaperTest() {
-    //     const circle = new paper.Path.Circle(new paper.Point(100, 100), 500);
-    //     circle.fillColor = new Color(200);
-    //     this.project.view.draw();
-    // }
-
-    PaperDraw() {
-        // const circle = new paper.Path.Circle({
-        //     center: [100 * this.targetChannel, 100],
-        //     radius: 15,
-        //     fillColor: 'red'
-        //   });    
-        //   this.paperLayer.addChild(circle);
+    SetupMidiReceiver() {
+        this.receiver.length = 0;
+        let note = this.startNote;
+        for(let i = 0; i < this.numberOfKeys; i++) {
+            var rec = new MIDIReceiver(this.targetChannel, MIDIDataTable.MIDINoteToString(note));
+            if(this.useRegExp) rec.useRegExp = true;
+            this.receiver.push(rec);
+            note++;
         }
+    }
 
     ResizeCanvas = () => {
         console.log("RESIZE keyboard")
