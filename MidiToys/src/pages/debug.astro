@@ -26,8 +26,8 @@ import "./css/global.css";
             paper.setup(toyCanvas);
             paper.view.autoUpdate = true;
 
-            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 1, 100, 24) as SquareKeyboard;
-            //ch2SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 2, 10, 24) as SquareKeyboard;
+            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 1, 20, 24) as SquareKeyboard;
+            ch2SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 2, 40, 24) as SquareKeyboard;
             
             // var path = new paper.Path.Rectangle({
             // point: [100, 100],
@@ -40,6 +40,7 @@ import "./css/global.css";
                 // paper.view.clear;
                 //path.rotate(3);
                 ch1SquareKeyboard.UpdateKeyboard();
+                ch2SquareKeyboard.UpdateKeyboard();
 
                 document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.getHoldingKeys(1) + " Velocity: " + inputManager.getVelocity(1);
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.getHoldingKeys(2) + " Velocity: " + inputManager.getVelocity(2);

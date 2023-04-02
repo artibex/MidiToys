@@ -11,7 +11,7 @@ export class SquareKeyboard extends MIDIKeyboard {
     squareSize: number[] = [];
     targetSquareSize: number = 10;
     paperKeys: paper.Path.Circle[] = [];
-
+    bpm: number = 0;
 
     constructor(canvas: HTMLCanvasElement, inputManager: InputManager, targetChannel: number, numberOfKeys: number, startNote: number) {
         super(inputManager, targetChannel, canvas, numberOfKeys, startNote, true);
@@ -22,7 +22,7 @@ export class SquareKeyboard extends MIDIKeyboard {
         // window.addEventListener("resize", this.CalculateXValues);
     }
 
-    CalculateXValues = () => {
+    CalculateDrawPositions = () => {
         this.drawPositions.length = 0;
 
         const {width} = this.canvas.getBoundingClientRect();
@@ -44,7 +44,8 @@ export class SquareKeyboard extends MIDIKeyboard {
     }
 
     SetupKeyboard() {
-        this.CalculateXValues();
+        this.CalculateDrawPositions();
+
         for(let i = 0; i < this.numberOfKeys; i++) {
             this.squareSize.push(this.targetSquareSize);
             
@@ -65,6 +66,7 @@ export class SquareKeyboard extends MIDIKeyboard {
     UpdateKeyboard = () => {
         let holdingKeys = this.inputManager.getHoldingKeys(this.targetChannel);
         let velocities = this.inputManager.getVelocity(this.targetChannel);
+        this.bpm = this.inputManager.getBPM();
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -120,31 +122,52 @@ export class SquareKeyboard extends MIDIKeyboard {
         var y = this.drawPositions[indexValue].y;
         let size = this.squareSize[indexValue];
         const {width} = this.canvas.getBoundingClientRect();
+        const {height} = this.canvas.getBoundingClientRect();
 
-        let square = this.paperKeys[indexValue];
+        let square = this.paperKeys[indexValue] as paper.Path.Rectangle;
         let pos = square.position;
-        //this.paperKeys[indexValue]
-        // this.paperKeys[indexValue].position.x = x;
-        // this.paperKeys[indexValue].position.y = y + 50;
         
-        if(pos.x >= width) pos.x = 0;
-        else pos.x += 1; 
+        square.bounds.center = square.bounds.topCenter;
+
+        if(pos.x > width) pos.x = 0;
+        else {
+            if(this.bpm > 70) pos.x += 1 + Math.round(this.bpm * 0.01 * this.targetChannel);
+            else pos.x += 1 + Math.round(this.bpm * 0.02 * this.targetChannel);
+        }
 
         if(triggerd) {
-            if(pos.y < this.canvas.height / 2) {
+            if(square.bounds.height < 15 * 6 + midiReceiver.velocityValue* 0.01) {
+                var calc = square.bounds.height * 1.001 + midiReceiver.velocityValue* 0.001;
+                pos.y += calc;
+                square.bounds.height += calc;
+                square.bounds.width += calc;
+            }
+
+            if(pos.y < y*2*this.targetChannel) {
                 pos.y *= 1.05 + midiReceiver.velocityValue* 0.001;
-            } else pos.y = this.canvas.height / 2;
-            square.position = pos;
-            square.fillColor = new Color(0);
-            // square.rotate(3);
+            } else pos.y = y*2*this.targetChannel;
+            square.fillColor = new Color(0.2 + midiReceiver.velocityValue * 0.001);
         } 
         else {  
-            if(pos.y > y) {
-                pos.y *= 0.95;
-            } else pos.y = y; 
+            if(square.bounds.height > 15) {
+                var calc = square.bounds.height * 0.05;
+                pos.y -= calc;
+                square.bounds.width -= calc;
+                square.bounds.height -= calc;
+            }
+            else {
+                square.bounds.height = 15;
+                square.bounds.width = 15;
+
+                pos.y = y;
+            }
             
-            square.position = pos;
-            square.fillColor = new Color(1);
+            // if(pos.y > y) pos.y *= 0.95;
+            // else pos.y = y;
+
+            square.fillColor = new Color(0);
         }
+
+        square.position = pos;
     }
 }
