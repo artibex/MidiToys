@@ -5,48 +5,60 @@
 <body>
     <h1> MIDI Debugging Page </h1>
     <script>
-        import { MIDIInputModule } from "./js/MIDIInputModule";
         import { InputManager } from "./js/InputManager";
-        // import { NoteSquare } from "./js/NoteSquare";
         import { SquareKeyboard } from "./js/SquareKeyboard";
-        import { KeyboardInputModule } from "./js/KeyboardInputModule";
+        import paper, { Color } from "paper";
+        import { view } from "paper/dist/paper-core";
 
         let inputManager = new InputManager() as InputManager;
-        // let keyboardReader = new KeyboardInputModule(inputManager);
-        // let inputReader;
         let ch1SquareKeyboard;
         let ch2SquareKeyboard;
 
         // let BPM = 0;
+        let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
+        paper.setup(toyCanvas);
+        paper.view.autoUpdate = true;
+        
         
         if (typeof window !== 'undefined') {
-            let ch1Can = document.getElementById("ch1Canvas") as HTMLCanvasElement;
-            let ch2Can = document.getElementById("ch2Canvas") as HTMLCanvasElement;
+            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 1, 64, 24) as SquareKeyboard;
+            //ch2SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 2, 10, 24) as SquareKeyboard;
+            
+            // var path = new paper.Path.Rectangle({
+            // point: [100, 100],
+            // size: [75, 75],
+            // strokeColor: 'white'
+            // });
 
-            ch1SquareKeyboard = new SquareKeyboard(ch1Can, inputManager, 1, 64, 24) as SquareKeyboard;
-            ch2SquareKeyboard = new SquareKeyboard(ch2Can, inputManager, 2, 64, 24) as SquareKeyboard;
-
-            // //Input classes
-            // keyboardReader = new KeyboardInputModule(inputManager) as KeyboardInputModule;
-            // inputReader = new MIDIInputModule(inputManager) as MIDIInputModule;
-
-            setInterval(() => {
+            paper.view.onFrame = function(event) {
+                // Hier kommt deine onFrame-Logik hin
+                // paper.view.clear;
+                //path.rotate(3);
                 ch1SquareKeyboard.UpdateKeyboard();
-                ch2SquareKeyboard.UpdateKeyboard();
-            }, 1)
 
-            setInterval(() => {
-                let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
-                document.getElementById("DeviceAndBPM").innerHTML = deviceData;
-            }, 100);
-
-            //Notes that are playe on channel 1 - 4
-            setInterval(() => {
                 document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.getHoldingKeys(1) + " Velocity: " + inputManager.getVelocity(1);
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.getHoldingKeys(2) + " Velocity: " + inputManager.getVelocity(2);
                 document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.getHoldingKeys(3) + " Velocity: " + inputManager.getVelocity(3);
                 document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.getHoldingKeys(4) + " Velocity: " + inputManager.getVelocity(4);
-            }, 1);
+                let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
+                document.getElementById("DeviceAndBPM").innerHTML = deviceData;
+            }
+
+
+            // setInterval(() => {
+            //     //ch1SquareKeyboard.UpdateKeyboard();
+            //     //ch2SquareKeyboard.UpdateKeyboard();
+            //     //ch1SquareKeyboard.PaperDraw();
+            //     //ch2SquareKeyboard.PaperDraw();
+            // }, 1)
+            
+
+            // setInterval(() => {
+            // }, 100);
+
+            //Notes that are playe on channel 1 - 4
+            // setInterval(() => {
+            // }, 1);
         
             // Set the fill style to a color
             // Draw a filled rectangle with the fillRect method
@@ -63,24 +75,7 @@
         <h2 id="CH4Keys"></h2>
         <br>
 
-        <canvas id="ch1Canvas" style="width: 99%;" height="200px"></canvas>
+        <canvas id="toyCanvas" width="2000" height="500"></canvas>
         <br>
-        <canvas id="ch2Canvas" style="width: 99%;" height="200px"></canvas>
-
-        <!-- <canvas id="c#Canvas" style="width: 8%" height="1000"></canvas>
-        
-        <canvas id="dCanvas" style="width: 8%;" height="1000"></canvas>
-        <canvas id="d#Canvas" style="width: 8%;" height="1000"></canvas>
-        
-        <canvas id="eCanvas" style="width: 8%;" height="1000"></canvas>
-        <canvas id="fCanvas" style="width: 8%;" height="1000"></canvas>
-        <canvas id="f#Canvas" style="width: 8%;" height="1000"></canvas>
-        
-        <canvas id="gCanvas" style="width: 8%;" height="1000"></canvas>
-        <canvas id="g#Canvas" style="width: 8%;" height="1000"></canvas>
-        
-        <canvas id="aCanvas" style="width: 8%;" height="1000"></canvas>
-        <canvas id="a#Canvas" style="width: 8%;" height="1000"></canvas>
-        
-        <canvas id="bCanvas" style="width: 8%;" height="1000"></canvas> -->
+        <!-- <canvas id="ch2Canvas" width="1000" height="200"></canvas> -->
 </body>
