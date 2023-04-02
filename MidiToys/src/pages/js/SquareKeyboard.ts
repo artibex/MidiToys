@@ -52,7 +52,7 @@ export class SquareKeyboard extends MIDIKeyboard {
     CalculateXValues = () => {
         this.drawPositions.length = 0;
 
-        let avgCellSize = this.canvas.width / (this.numberOfKeys*2);
+        let avgCellSize = (this.canvas.width + 15) / (this.numberOfKeys);
         //let avgCellSize = 60;
         console.log("canvas width = " + this.canvas.width)
         let xCalc = 0;
@@ -134,8 +134,13 @@ export class SquareKeyboard extends MIDIKeyboard {
         // this.paperKeys[indexValue].position.x = x;
         // this.paperKeys[indexValue].position.y = y + 50;
         
+        if(pos.x > this.canvas.width) pos.x = 0;
+        else pos.x += 1; 
+
         if(triggerd) {
-            if(pos.y < this.canvas.height / 2) pos.y *= 1.05;
+            if(pos.y < this.canvas.height / 2) {
+                pos.y *= 1.05 + midiReceiver.velocityValue* 0.001;
+            } else pos.y = this.canvas.height / 2;
             square.position = pos;
             square.fillColor = new Color(0);
             // square.rotate(3);
