@@ -13,12 +13,14 @@ export class MIDIKeyboard {
     //Basic information
     inputManager: InputManager;
     targetChannel: number;
+    bpm: number = 0;
     
     //Canvas settings
     devicePixelRatio: number;
     canvas: HTMLCanvasElement; //The canvas
-    ctx: CanvasRenderingContext2D; //The canvas context
-
+    w: number;
+    h: number;
+    
     //MIDI Receiver settings
     numberOfKeys: number = 12; //How many keys are on this keyboard?
     startNote: number = 12; //The note from where you count up
@@ -34,6 +36,9 @@ export class MIDIKeyboard {
         this.targetChannel = targetChannel; //The target channel
         this.canvas = canvas; //Canvas element to draw on
         
+        this.w = this.canvas.getBoundingClientRect().width;
+        this.h = this.canvas.getBoundingClientRect().height;
+
         //Setup Keys
         this.numberOfKeys = numberOfKeys;
         this.startNote = startNote;

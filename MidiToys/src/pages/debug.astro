@@ -10,16 +10,15 @@ import "./css/global.css";
 
     <h1> MIDI Debugging Page </h1>
     <script>
+        import * as paper from "paper";
         import { InputManager } from "./js/input/InputManager";
         import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
-        import * as paper from "paper";
 
         let inputManager = new InputManager() as InputManager;
         let ch1SquareKeyboard;
         let ch2SquareKeyboard;
 
         // let BPM = 0;
-        
         
         if (typeof window !== 'undefined') {
             let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;

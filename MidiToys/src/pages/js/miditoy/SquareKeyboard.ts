@@ -1,17 +1,13 @@
-import { InputManager } from "../input/InputManager";
-import { MIDIDataTable } from "../MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIKeyboard } from "./MIDIKeyboard";
 import { Vector2D } from "./MIDIKeyboard";
 import paper, { Color } from "paper";
-import { Size } from "paper/dist/paper-core";
 
 //Takes a canvas HTMLElement and draws cool things on it
 export class SquareKeyboard extends MIDIKeyboard {
     // squareSize: number[] = [];
     targetSquareSize = 20;
-    paperKeys: paper.Path.Circle[] = [];
-    bpm: number = 0;
+    paperKeys: paper.Path.Rectangle[] = [];
 
     constructor(canvas: HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number) {
         super(canvas, targetChannel, numberOfKeys, startNote, true);
@@ -23,17 +19,14 @@ export class SquareKeyboard extends MIDIKeyboard {
 
     CalculateDrawPositions = () => {
         this.drawPositions.length = 0;
-
-        const {width} = this.canvas.getBoundingClientRect();
-        const {height} = this.canvas.getBoundingClientRect();
-        let avgCellSize = width / this.numberOfKeys;
+        let avgCellSize = this.w / this.numberOfKeys;
 
         this.targetSquareSize = avgCellSize;
         var s = this.targetSquareSize;
 
         for(let i = 0; i < this.numberOfKeys; i++) {
             let xCalc = avgCellSize*i ;
-            let vec: Vector2D = ({x: xCalc, y: height / 2 - s / 4});
+            let vec: Vector2D = ({x: xCalc, y: this.h / 2 - s / 4});
             this.drawPositions.push(vec);
         }
     }
@@ -42,8 +35,6 @@ export class SquareKeyboard extends MIDIKeyboard {
         this.CalculateDrawPositions();
 
         for(let i = 0; i < this.numberOfKeys; i++) {
-            // this.squareSize.push(this.targetSquareSize);
-
             var x = this.drawPositions[i].x;
             var y = this.drawPositions[i].y;
             let s = this.targetSquareSize;
@@ -78,16 +69,10 @@ export class SquareKeyboard extends MIDIKeyboard {
     }
 
     UpdatePaperKey(midiReceiver: MIDIReceiver, indexValue: number, triggerd: boolean) {
-        // let size = this.squareSize[indexValue];
-        const {width} = this.canvas.getBoundingClientRect();
-        const {height} = this.canvas.getBoundingClientRect();
-
-        // var x = this.drawPositions[indexValue].x;
-        // var y = this.drawPositions[indexValue].y;
         var s = this.targetSquareSize;
-        var maxY = height - s;
+        var maxY = this.h - s;
         var targetY = 0;
-        var minY = s / 4;
+        // var minY = s / 4;
         
         let square = this.paperKeys[indexValue] as paper.Path.Rectangle;
         var fillColor = square.fillColor as paper.Color;
@@ -95,7 +80,7 @@ export class SquareKeyboard extends MIDIKeyboard {
         let pos = square.position;
 
         //X movement
-        if(pos.x > width) pos.x = 0;
+        if(pos.x > this.w) pos.x = 0;
         else {
             pos.x += this.targetChannel/2 + Math.round(this.bpm * 0.01);
         }
@@ -106,8 +91,8 @@ export class SquareKeyboard extends MIDIKeyboard {
             if(fillColor.alpha < 1) fillColor.alpha += midiReceiver.velocityValue * 0.01;
             
             //Height adjustment
-            if(square.bounds.height < height) square.bounds.height *= 1.01 + midiReceiver.velocityValue * 0.0005;
-            else square.bounds.height = height;
+            if(square.bounds.height < this.h) square.bounds.height *= 1.01 + midiReceiver.velocityValue * 0.0005;
+            else square.bounds.height = this.h;
 
             // square.fillColor = new Color(0.5 + midiReceiver.velocityValue * 0.001);
             if(pos.y < maxY) {

@@ -39,7 +39,7 @@ export class InputManager {
     }
 
     InitVariables() {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 16; i++) {
             this.prevHoldingKeys[i] = [];
             this.holdingKeys[i] = [];
             this.velocity[i] = [];
@@ -52,6 +52,7 @@ export class InputManager {
         let [command, note, velocity] = message.data;
         this.calcBPM(message);
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
+        // console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
 
         if (stringCommand.includes("NoteOn") || stringCommand.includes("NoteOff")) {
             let ch = Number(stringCommand.replace(/\D+/g, ""));
