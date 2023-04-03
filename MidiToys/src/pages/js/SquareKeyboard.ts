@@ -132,14 +132,17 @@ export class SquareKeyboard extends MIDIKeyboard {
         //X movement
         if(pos.x > width) pos.x = 0;
         else {
-            pos.x += 0.5 + Math.round(this.bpm * 0.01 * this.targetChannel);
+            pos.x += this.targetChannel/2 + Math.round(this.bpm * 0.01);
         }
 
         //If key is triggerd
         if(triggerd) {
+            //Color adjustment
             if(fillColor.alpha < 1) fillColor.alpha += midiReceiver.velocityValue * 0.01;
-            if(square.bounds.height < height*0.9) square.bounds.height *= 1.01 + midiReceiver.velocityValue * 0.0005;
-            else square.bounds.height = height*0.9;
+            
+            //Height adjustment
+            if(square.bounds.height < height) square.bounds.height *= 1.01 + midiReceiver.velocityValue * 0.0005;
+            else square.bounds.height = height;
 
             // square.fillColor = new Color(0.5 + midiReceiver.velocityValue * 0.001);
             if(pos.y < maxY) {
