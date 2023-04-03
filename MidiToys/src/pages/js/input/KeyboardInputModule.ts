@@ -2,7 +2,7 @@
 //and convertes it into MIDI signal
 
 import { InputManager } from "./InputManager";
-import { MIDIDataTable } from "./MIDIDataTable";
+import { MIDIDataTable } from "../MIDIDataTable";
 
 export class KeyboardInputModule {
   inputManager: InputManager;
@@ -56,7 +56,7 @@ export class KeyboardInputModule {
           this.SendMIDIMessage("K", true);
           break;
         default:
-          console.log("Eine andere Taste wurde gedrückt.");
+          // console.log("Eine andere Taste wurde gedrückt.");
       }
     });
 

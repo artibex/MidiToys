@@ -1,12 +1,13 @@
-import { MIDIDataTable } from "./MIDIDataTable";
+import { MIDIDataTable } from "../MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
-import { InputManager } from "./InputManager";
+import { InputManager } from "../input/InputManager";
 import paper, { Color } from "paper";
 
 export interface Vector2D {
     x: number;
     y: number;
   }
+  
 export class MIDIKeyboard {
     
     //Basic information
@@ -28,19 +29,17 @@ export class MIDIKeyboard {
     drawPositions: Vector2D[] = [];
 
     //Construct everything basic that is needed for a MIDIKeyboard
-    constructor(inputManager: InputManager, targetChannel: number, canvas:HTMLCanvasElement, numberOfKeys: number, startNote: number, useRegExp: boolean) {
-        this.inputManager = inputManager; //The Input Manager
+    constructor(canvas:HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number, useRegExp: boolean) {
+        this.inputManager = InputManager.GetInstance(); //The Input Manager
         this.targetChannel = targetChannel; //The target channel
         this.canvas = canvas; //Canvas element to draw on
-        this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
         
         //Setup Keys
         this.numberOfKeys = numberOfKeys;
         this.startNote = startNote;
         this.useRegExp = useRegExp;
 
-        this.ResizeCanvas();
-        // window.addEventListener("resize", this.ResizeCanvas);
+        // this.ResizeCanvas();
         this.SetupMidiReceiver();
         console.log("CREATED new MIDIKeyboard on channel " + this.targetChannel);
     }
@@ -54,22 +53,5 @@ export class MIDIKeyboard {
             this.receiver.push(rec);
             note++;
         }
-    }
-
-    ResizeCanvas = () => {
-        console.log("RESIZE keyboard")
-        // this.devicePixelRatio = window.devicePixelRatio || 1;
-
-        // const devicePixelRatio = window.devicePixelRatio || 1;
-        // let pxWidth = this.canvas.width;
-        // let pxHeight = this.canvas.height;
-
-        // this.canvas.width = pxWidth;
-        // this.canvas.height = pxHeight;
-
-        // this.canvas.style.width = pxWidth + "px";
-        // this.canvas.style.height = pxHeight + "px";
-
-        // this.ctx.scale(devicePixelRatio, devicePixelRatio);
     }
 }

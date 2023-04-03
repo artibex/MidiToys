@@ -1,36 +1,51 @@
 ---
-import { pageTitle } from "./js/testjava"
-import { getCurrentDate } from "./js/testjava"
+import "./css/global.css";
 ---
 
-<a href="/">Home</a>
-<a href="/about/">About</a>
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>{ pageTitle }</title>
+    <title>MIDI Toys</title>
 </head>
 <body>
-    <header>
-        <h1>{ pageTitle }</h1>
-    </header>
-    <main>
-        <h2>Über Katzen</h2>
-        <p>Katzen sind beliebte Haustiere auf der ganzen Welt. Sie sind bekannt für ihre Unabhängigkeit, ihr liebevolles Wesen und ihre Fähigkeit, Mäuse und andere Schädlinge zu fangen.</p>
-        <p>Auf dieser Webseite finden Sie Informationen zu verschiedenen Katzenrassen, Tipps zur Pflege von Katzen und vieles mehr.</p>
-    <br>
-    
-    <p>The current date is {getCurrentDate()}</p>
+    <!-- <header>
+        <h1></h1>
+    </header> -->
+    <script>
+        //Import
+        import { InputManager } from "./js/input/InputManager";
+        import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
+        import * as paper from "paper";
+        
+        //Base Toys setup
+        let inputManager = new InputManager() as InputManager;
+        let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
+        paper.setup(toyCanvas); //Paper setup
+        
+        let channel1Toy;
+        let channel2Toy;
+        let channel3Toy;
+        let channel4Toy;
 
-    <ul>
-        <li><a href="/markdown/firstMarkdown/">Markdown Test</a></li>
-      </ul>
+        //If browser window
+        if (typeof window !== 'undefined') {
+            channel1Toy = new SquareKeyboard(toyCanvas, 1, 100, 24) as SquareKeyboard;
+            channel2Toy = new SquareKeyboard(toyCanvas, 2, 100, 24) as SquareKeyboard;
 
-    </main>
+            paper.view.onFrame = function(event) {
+                channel1Toy.UpdateKeyboard();
+                channel2Toy.UpdateKeyboard();
+            }
+        }
+
+    </script>
+
+    <canvas id="toyCanvas" class="toyCanvas"></canvas>
+
     <footer>
-        <p>Copyright © 2023 Katzen-Website </p>
+        <p>Copyright © 2023 Korbinian Maag </p>
     </footer>
 </body>
 </html>

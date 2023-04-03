@@ -1,9 +1,11 @@
-import { MIDIDataTable } from "./MIDIDataTable";
+import { MIDIDataTable } from "../MIDIDataTable";
 import { KeyboardInputModule } from "./KeyboardInputModule";
 import { MIDIInputModule } from "./MIDIInputModule";
 
 
 export class InputManager {
+    private static instance: InputManager;
+
     keyboardReader: KeyboardInputModule;
     midiReader: MIDIInputModule;
 
@@ -18,9 +20,15 @@ export class InputManager {
     constructor() {
         this.InitVariables();
         this.InitReaderModules();
-
         console.log("CREATED InputManager");
     }
+
+    static GetInstance(): InputManager {
+        if (!InputManager.instance) {
+          InputManager.instance = new InputManager();
+        }
+        return InputManager.instance;
+      }
 
     InitReaderModules() {
         if(typeof window !== "undefined") {

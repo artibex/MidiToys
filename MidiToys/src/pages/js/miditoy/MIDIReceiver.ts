@@ -1,11 +1,10 @@
-import { InputManager } from "./InputManager";
-import { MIDIDataTable } from "./MIDIDataTable";
+import { MIDIDataTable } from "../MIDIDataTable";
 
 // Generic class that can listen to midi events
 // Holds all important information
 export class MIDIReceiver {
   // inputManager: InputManager;
-  canvasContext: CanvasRenderingContext2D;
+  // canvasContext: CanvasRenderingContext2D;
   targetChannel: number;
   targetNote: string;
 
@@ -18,11 +17,10 @@ export class MIDIReceiver {
   velocityValues: number[]; //Stores last detected velocityValues
 
   constructor(targetChannel: number, targetNote: string) {
-    // this.inputManager = inputManager; 
     this.targetChannel = targetChannel;
     this.targetNote = targetNote;
     this.targetRegExp = new RegExp(MIDIDataTable.MIDIStringNoteToRegExp(targetNote) as RegExp);
-    console.log("CREATED MIDI Receiver. TargetNote: " + targetNote);
+    //console.log("CREATED MIDI Receiver. TargetNote: " + targetNote);
   }
 
   //Get's currently Holding keys and velocity, if it's under these one, return true, else return false

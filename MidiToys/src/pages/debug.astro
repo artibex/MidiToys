@@ -10,8 +10,8 @@ import "./css/global.css";
 
     <h1> MIDI Debugging Page </h1>
     <script>
-        import { InputManager } from "./js/InputManager";
-        import { SquareKeyboard } from "./js/SquareKeyboard";
+        import { InputManager } from "./js/input/InputManager";
+        import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
         import * as paper from "paper";
 
         let inputManager = new InputManager() as InputManager;
@@ -26,8 +26,8 @@ import "./css/global.css";
             paper.setup(toyCanvas);
             paper.view.autoUpdate = true;
 
-            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 1, 30, 24) as SquareKeyboard;
-            ch2SquareKeyboard = new SquareKeyboard(toyCanvas, inputManager, 2, 60, 24) as SquareKeyboard;
+            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, 1, 30, 24) as SquareKeyboard;
+            ch2SquareKeyboard = new SquareKeyboard(toyCanvas, 2, 60, 24) as SquareKeyboard;
             
             paper.view.onFrame = function(event) {
                 // Hier kommt deine onFrame-Logik hin
@@ -40,6 +40,7 @@ import "./css/global.css";
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.getHoldingKeys(2) + " Velocity: " + inputManager.getVelocity(2);
                 document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.getHoldingKeys(3) + " Velocity: " + inputManager.getVelocity(3);
                 document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.getHoldingKeys(4) + " Velocity: " + inputManager.getVelocity(4);
+                
                 let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }
@@ -55,8 +56,6 @@ import "./css/global.css";
         <br>
 
         <canvas id="toyCanvas" class="toyCanvas"></canvas>
-        <br>
-        <!-- <canvas id="ch2Canvas" width="1000" height="200"></canvas> -->
 </body>
 
 </html>
