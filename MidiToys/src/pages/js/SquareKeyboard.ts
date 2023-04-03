@@ -51,7 +51,8 @@ export class SquareKeyboard extends MIDIKeyboard {
             var square = new paper.Path.Rectangle({
                 point: [x, y],
                 size: [s, s/2],
-                strokeColor: 'white'
+                //strokeColor: 'white',
+                fillColor: "white"
                 });
             this.paperKeys.push(square);
         }
@@ -122,8 +123,10 @@ export class SquareKeyboard extends MIDIKeyboard {
         var maxY = height - s;
         var targetY = 0;
         var minY = s / 4;
-
+        
         let square = this.paperKeys[indexValue] as paper.Path.Rectangle;
+        var fillColor = square.fillColor as paper.Color;
+        // var strokeColor = square.strokeColor as paper.Color;
         let pos = square.position;
 
         //X movement
@@ -134,51 +137,29 @@ export class SquareKeyboard extends MIDIKeyboard {
 
         //If key is triggerd
         if(triggerd) {
-            square.fillColor = new Color(0.5 + midiReceiver.velocityValue * 0.001);
+            if(fillColor.alpha < 1) fillColor.alpha += midiReceiver.velocityValue * 0.01;
+            if(square.bounds.height < height*0.9) square.bounds.height *= 1.01 + midiReceiver.velocityValue * 0.0005;
+            else square.bounds.height = height*0.9;
+
+            // square.fillColor = new Color(0.5 + midiReceiver.velocityValue * 0.001);
             if(pos.y < maxY) {
-                var calc = (maxY - pos.y) / 4; 
+                var calc = (maxY - pos.y) / 8 + midiReceiver.velocityValue * 0.01; 
                 pos.y += calc;
             } else pos.y = maxY;
-            // if(pos.y < maxY) {
-            //     pos.y *= 1.01 + midiReceiver.velocityValue * 0.005;
-            // } else pos.y = maxY;
-
-            // if(square.bounds.height < 15 * 6 + midiReceiver.velocityValue* 0.01) {
-            //     var calc = square.bounds.height * 1.001 + midiReceiver.velocityValue* 0.001;
-            //     pos.y += calc;
-            //     square.bounds.height += calc;
-            //     square.bounds.width += calc;
-            // }
-
-            // if(pos.y < y*2*this.targetChannel) {
-            //     pos.y *= 1.05 + midiReceiver.velocityValue* 0.001;
-            // } else pos.y = y*2*this.targetChannel;
         }
         else //If key is not triggerd
         {
-            square.fillColor = new Color(0);
-            if(pos.y > targetY) pos.y *= 0.98;
+            if(fillColor.alpha > 0.01) fillColor.alpha -= fillColor.alpha / 16;
+            
+            if(square.bounds.height > this.targetSquareSize /2) {
+                square.bounds.height *= 0.95;
+            } else square.bounds.height = this.targetSquareSize /2;
+            if(pos.y > targetY) pos.y *= 0.95;
             else pos.y = targetY;
-
-            // if(pos.y < midY) pos.y *= 1.05;
-
-            // if(square.bounds.height > 15) {
-            //     var calc = square.bounds.height * 0.05;
-            //     pos.y -= calc;
-            //     square.bounds.width -= calc;
-            //     square.bounds.height -= calc;
-            // }
-            // else {
-            //     square.bounds.height = 15;
-            //     square.bounds.width = 15;
-            //     pos.y = y;
-            // }
-
-            // if(pos.y > y) pos.y *= 0.95;
-            // else pos.y = y;
-
         }
 
+        square.fillColor = fillColor;
+        // square.strokeColor = strokeColor;
         square.position = pos;
     }
 }
