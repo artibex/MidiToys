@@ -112,7 +112,7 @@ export class SquareKeyboard extends MIDIKeyboard {
         }
 
         square.fillColor = fillColor;
-        // square.strokeColor = strokeColor;
         square.position = pos;
+        // square.strokeColor = strokeColor;
     }
 }

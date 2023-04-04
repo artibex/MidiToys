@@ -17,10 +17,11 @@ import "./css/global.css";
         //Import
         import { InputManager } from "./js/input/InputManager";
         import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
+        import { DrumMaschin } from "./js/miditoy/DrumMaschin";
         import * as paper from "paper";
         
         //Base Toys setup
-        let inputManager = new InputManager() as InputManager;
+        let inputManager = InputManager.GetInstance();
         let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
         paper.setup(toyCanvas); //Paper setup
         
@@ -31,12 +32,15 @@ import "./css/global.css";
 
         //If browser window
         if (typeof window !== 'undefined') {
-            channel1Toy = new SquareKeyboard(toyCanvas, 1, 100, 24) as SquareKeyboard;
-            channel2Toy = new SquareKeyboard(toyCanvas, 2, 100, 24) as SquareKeyboard;
+            channel1Toy = new DrumMaschin(toyCanvas, 15, 10, 60);
+            channel2Toy = new SquareKeyboard(toyCanvas, 1, 24, 61);
+            channel3Toy = new SquareKeyboard(toyCanvas, 2, 24, 62);
+
 
             paper.view.onFrame = function(event) {
                 channel1Toy.UpdateKeyboard();
                 channel2Toy.UpdateKeyboard();
+                channel3Toy.UpdateKeyboard();
             }
         }
 

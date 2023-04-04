@@ -21,18 +21,19 @@ private ConnectMIDIDevice(): void {
         navigator.requestMIDIAccess()
             .then((midiAccess) => {
                 for (let input of midiAccess.inputs.values()) {
-                    this.inputs.push(input);
-                    this.inputDevices.push(input.name as string);
-
-                    //console.log(input.name);
-                    input.onmidimessage = this.HandleMIDIMessage.bind(this);
+                    if (!this.inputs.includes(input)) {
+                        this.inputs.push(input);
+                        this.inputDevices.push(input.name as string);
+                        input.onmidimessage = this.HandleMIDIMessage.bind(this);
+                    }
+                    // break;
                 }
             });
-    } else {
-        console.log('WebMIDI is not supported in this browser.');
+            console.log("Detected midi inputs =" + this.inputs.length);
+        } else {
     }
+        console.log('WebMIDI is not supported in this browser.');
 }
-
 private HandleMIDIMessage(message: WebMidi.MIDIMessageEvent): void {
     // console.log("HANDLE MIDI Message");
     this.inputManager.getMIDIInput(message);

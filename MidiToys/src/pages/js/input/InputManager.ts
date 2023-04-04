@@ -47,19 +47,23 @@ export class InputManager {
         }
     }
 
+    debounceTimeoutId: number | null = null;
+    debounceTime: number = 100; // the time to wait before executing the function
+
     //MIDI and Keyboard Input methods
     getMIDIInput(message) {
         let [command, note, velocity] = message.data;
-        this.calcBPM(message);
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
-        // console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
-
+        
         if (stringCommand.includes("NoteOn") || stringCommand.includes("NoteOff")) {
+            console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
             let ch = Number(stringCommand.replace(/\D+/g, ""));
             let stringNote = MIDIDataTable.MIDINoteToString(note);
             this.updateHoldingKeys(stringCommand, ch, stringNote, velocity);
         }
+        this.calcBPM(message);
     }
+
     getInputKeyboard(command, note, velocity) {
         console.log("KEYBOARD detected");
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
@@ -74,14 +78,16 @@ export class InputManager {
     //Updating What keys are currently beeing hold
     updateHoldingKeys(command, ch, note, velocity) {
         let channelIndex = ch - 1;
+
         if (command.includes("NoteOn")) {
+            console.log("ADD holding key: " + note);
             if (!this.holdingKeys[channelIndex].includes(note)) {
                 this.holdingKeys[channelIndex].push(note);
                 this.velocity[channelIndex].push(velocity);
               }
-        } else {
+        } else if(command.includes("NoteOff")) {
+            console.log("REMOVE holding key: " + note);
             if(this.holdingKeys[channelIndex].includes(note)) {
-                //console.log("REMOVE holding key: " + note);
                 let noteIndex = this.holdingKeys[channelIndex].indexOf(note);
                 this.holdingKeys[channelIndex].splice(noteIndex, 1);
                 this.velocity[channelIndex].splice(noteIndex, 1);

@@ -14,7 +14,7 @@ import "./css/global.css";
         import { InputManager } from "./js/input/InputManager";
         import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
 
-        let inputManager = new InputManager() as InputManager;
+        let inputManager = InputManager.GetInstance();
         let ch1SquareKeyboard;
         let ch2SquareKeyboard;
 
@@ -39,7 +39,8 @@ import "./css/global.css";
                 document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.getHoldingKeys(2) + " Velocity: " + inputManager.getVelocity(2);
                 document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.getHoldingKeys(3) + " Velocity: " + inputManager.getVelocity(3);
                 document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.getHoldingKeys(4) + " Velocity: " + inputManager.getVelocity(4);
-                
+                document.getElementById("CH15Keys").innerHTML = "Channel 15: " + inputManager.getHoldingKeys(15) + " Velocity: " + inputManager.getVelocity(15);
+
                 let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }
@@ -52,6 +53,7 @@ import "./css/global.css";
         <h2 id="CH2Keys"></h2>
         <h2 id="CH3Keys"></h2>
         <h2 id="CH4Keys"></h2>
+        <h2 id="CH15Keys"></h2>
         <br>
 
         <canvas id="toyCanvas" class="toyCanvas"></canvas>
