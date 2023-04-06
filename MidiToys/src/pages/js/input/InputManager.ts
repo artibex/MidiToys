@@ -8,7 +8,23 @@ interface UpdateEvent {
 
 export class InputManager {
     private static instance: InputManager;
-    private subscribers: ((event: UpdateEvent) => void)[] = [];
+    //Channel events to subscribe
+    private channel1: ((event: UpdateEvent) => void)[] = [];
+    private channel2: ((event: UpdateEvent) => void)[] = [];
+    private channel3: ((event: UpdateEvent) => void)[] = [];
+    private channel4: ((event: UpdateEvent) => void)[] = [];
+    private channel5: ((event: UpdateEvent) => void)[] = [];
+    private channel6: ((event: UpdateEvent) => void)[] = [];
+    private channel7: ((event: UpdateEvent) => void)[] = [];
+    private channel8: ((event: UpdateEvent) => void)[] = [];
+    private channel9: ((event: UpdateEvent) => void)[] = [];
+    private channel10: ((event: UpdateEvent) => void)[] = [];
+    private channel11: ((event: UpdateEvent) => void)[] = [];
+    private channel12: ((event: UpdateEvent) => void)[] = [];
+    private channel13: ((event: UpdateEvent) => void)[] = [];
+    private channel14: ((event: UpdateEvent) => void)[] = [];
+    private channel15: ((event: UpdateEvent) => void)[] = [];
+    private channel16: ((event: UpdateEvent) => void)[] = [];
 
     keyboardReader: KeyboardInputModule;
     midiReader: MIDIInputModule;
@@ -28,12 +44,48 @@ export class InputManager {
     }
 
 
-    public Subscribe(callback: (event: UpdateEvent) => void) {
-        this.subscribers.push(callback);
+    public Subscribe(channel: number, callback: (event: UpdateEvent) => void) {
+        switch(channel) {
+            case 1: this.channel1.push(callback); break;
+            case 2: this.channel2.push(callback); break;
+            case 3: this.channel3.push(callback); break;
+            case 4: this.channel4.push(callback); break;
+            case 5: this.channel5.push(callback); break;
+            case 6: this.channel6.push(callback); break;
+            case 7: this.channel7.push(callback); break;
+            case 8: this.channel8.push(callback); break;
+            case 9: this.channel9.push(callback); break;
+            case 10: this.channel10.push(callback); break;
+            case 11: this.channel11.push(callback); break;
+            case 12: this.channel12.push(callback); break;
+            case 13: this.channel13.push(callback); break;
+            case 14: this.channel14.push(callback); break;
+            case 15: this.channel15.push(callback); break;
+            case 16: this.channel16.push(callback); break;
+        }
       }
     
-      UpdateKeysEvent(event: UpdateEvent) {
-        this.subscribers.forEach((subscriber) => subscriber(event));
+    //Call every function that subscribed to this
+    CallKeysEvent(channel: number, event: UpdateEvent) {
+        console.log("CALL key event");
+        switch(channel) {
+            case 1: this.channel1.forEach((subscriber) => subscriber(event)); break;
+            case 2: this.channel2.forEach((subscriber) => subscriber(event)); break;
+            case 3: this.channel3.forEach((subscriber) => subscriber(event)); break;
+            case 4: this.channel4.forEach((subscriber) => subscriber(event)); break;
+            case 5: this.channel5.forEach((subscriber) => subscriber(event)); break;
+            case 6: this.channel6.forEach((subscriber) => subscriber(event)); break;
+            case 7: this.channel7.forEach((subscriber) => subscriber(event)); break;
+            case 8: this.channel8.forEach((subscriber) => subscriber(event)); break;
+            case 9: this.channel9.forEach((subscriber) => subscriber(event)); break;
+            case 10: this.channel10.forEach((subscriber) => subscriber(event)); break;
+            case 11: this.channel11.forEach((subscriber) => subscriber(event)); break;
+            case 12: this.channel12.forEach((subscriber) => subscriber(event)); break;
+            case 13: this.channel13.forEach((subscriber) => subscriber(event)); break;
+            case 14: this.channel14.forEach((subscriber) => subscriber(event)); break;
+            case 15: this.channel15.forEach((subscriber) => subscriber(event)); break;
+            case 16: this.channel16.forEach((subscriber) => subscriber(event)); break;
+        }
     }
 
       
@@ -68,9 +120,9 @@ export class InputManager {
     getMIDIInput(message) {
         let [command, note, velocity] = message.data;
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
+        // console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
         
         if (stringCommand.includes("NoteOn") || stringCommand.includes("NoteOff")) {
-            console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
             let ch = Number(stringCommand.replace(/\D+/g, ""));
             let stringNote = MIDIDataTable.MIDINoteToString(note);
             this.updateHoldingKeys(stringCommand, ch, stringNote, velocity);
@@ -107,7 +159,7 @@ export class InputManager {
                 this.velocity[channelIndex].splice(noteIndex, 1);
             }
         }
-        this.UpdateKeysEvent(this);
+        this.CallKeysEvent(ch, this);
     }
 
 

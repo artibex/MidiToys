@@ -32,9 +32,9 @@ import "./css/global.css";
 
         //If browser window
         if (typeof window !== 'undefined') {
-            channel1Toy = new DrumMaschin(toyCanvas, 15, 10, 60);
-            channel2Toy = new SquareKeyboard(toyCanvas, 1, 24, 61);
-            channel3Toy = new SquareKeyboard(toyCanvas, 2, 24, 62);
+            channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
+            channel2Toy = new SquareKeyboard(toyCanvas, 1, 60, 12);
+            channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
 
 
             paper.view.onFrame = function(event) {

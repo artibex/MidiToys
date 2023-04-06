@@ -10,9 +10,8 @@ export class MIDIInputModule {
 
     // navigator.requestMIDIAccess();
     this.ConnectMIDIDevice();
-
-    //setTimeout(this.GetMIDIInputs(), 2000);
     this.GetMIDIInputs();
+
     console.log("CREATED new MIDIInputModule");
 }
 
@@ -26,13 +25,12 @@ private ConnectMIDIDevice(): void {
                         this.inputDevices.push(input.name as string);
                         input.onmidimessage = this.HandleMIDIMessage.bind(this);
                     }
-                    // break;
                 }
             });
-            console.log("Detected midi inputs =" + this.inputs.length);
+            console.log("Detected midi inputs = " + (this.inputs.length + 1));
         } else {
+            console.log('WebMIDI is not supported in this browser.');
     }
-        console.log('WebMIDI is not supported in this browser.');
 }
 private HandleMIDIMessage(message: WebMidi.MIDIMessageEvent): void {
     // console.log("HANDLE MIDI Message");

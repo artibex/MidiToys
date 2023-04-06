@@ -37,6 +37,7 @@ export class MIDIReceiver {
     }
     
     if (targetIndex !== -1) {
+        // console.log("FOUND key in holding keys. " + targetIndex[targetIndex])
         this.lastIndexValue = targetIndex;
         this.velocityValue = velocityValues[targetIndex];
         return true;
