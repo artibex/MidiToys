@@ -6,31 +6,25 @@ import paper, { Color } from "paper";
 export class DrumMaschin extends MIDIKeyboard {
     rectangles: paper.Path.Rectangle[] = [];
     startSize: number = 10;
-    prevHoldingKeys: string[] = [];
 
     constructor(canvas: HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number) {
         super(canvas, targetChannel, numberOfKeys, startNote, false);
         console.log("CREATED DrumMaschin");
+        this.inputManager.Subscribe(this.InputEvent.bind(this));
     }
 
     UpdateKeyboard() {
-        let holdingKeys = this.inputManager.getHoldingKeys(this.targetChannel);
-        let velocities = this.inputManager.getVelocity(this.targetChannel);
-        this.bpm = this.inputManager.getBPM();
-        
         this.UpdateSquares();
-        
-        if(holdingKeys.length > 0 && JSON.stringify(holdingKeys) !== JSON.stringify(this.prevHoldingKeys)) {
+    }
+
+    InputEvent() {
+        let holdingKeys = this.inputManager.getHoldingKeys(this.targetChannel);
+        this.bpm = this.inputManager.getBPM();
+
+        if(holdingKeys.length > 0) {
             this.SpawnSquare();
         }
 
-        this.prevHoldingKeys = [...holdingKeys];
-        // console.log(holdingKeys);
-        
-        // if(JSON.stringify(holdingKeys) !== JSON.stringify(this.prevHoldingKeys)) {
-        //     this.prevHoldingKeys = [...holdingKeys];
-        // }
-        // this.prevHoldingKeys = [...holdingKeys];
     }
 
     SpawnSquare() {

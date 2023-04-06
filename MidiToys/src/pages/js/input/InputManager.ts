@@ -2,9 +2,13 @@ import { MIDIDataTable } from "../MIDIDataTable";
 import { KeyboardInputModule } from "./KeyboardInputModule";
 import { MIDIInputModule } from "./MIDIInputModule";
 
+interface UpdateEvent {
+    // Define properties and/or methods for the event
+  }
 
 export class InputManager {
     private static instance: InputManager;
+    private subscribers: ((event: UpdateEvent) => void)[] = [];
 
     keyboardReader: KeyboardInputModule;
     midiReader: MIDIInputModule;
@@ -23,6 +27,16 @@ export class InputManager {
         console.log("CREATED InputManager");
     }
 
+
+    public Subscribe(callback: (event: UpdateEvent) => void) {
+        this.subscribers.push(callback);
+      }
+    
+      UpdateKeysEvent(event: UpdateEvent) {
+        this.subscribers.forEach((subscriber) => subscriber(event));
+    }
+
+      
     static GetInstance(): InputManager {
         if (!InputManager.instance) {
           InputManager.instance = new InputManager();
@@ -80,20 +94,22 @@ export class InputManager {
         let channelIndex = ch - 1;
 
         if (command.includes("NoteOn")) {
-            console.log("ADD holding key: " + note);
+            // console.log("ADD holding key: " + note);
             if (!this.holdingKeys[channelIndex].includes(note)) {
                 this.holdingKeys[channelIndex].push(note);
                 this.velocity[channelIndex].push(velocity);
               }
         } else if(command.includes("NoteOff")) {
-            console.log("REMOVE holding key: " + note);
+            // console.log("REMOVE holding key: " + note);
             if(this.holdingKeys[channelIndex].includes(note)) {
                 let noteIndex = this.holdingKeys[channelIndex].indexOf(note);
                 this.holdingKeys[channelIndex].splice(noteIndex, 1);
                 this.velocity[channelIndex].splice(noteIndex, 1);
             }
         }
+        this.UpdateKeysEvent(this);
     }
+
 
     //BPM stuff
     calcBPM(message) {
