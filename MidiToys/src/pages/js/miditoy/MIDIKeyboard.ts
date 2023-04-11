@@ -9,7 +9,6 @@ export interface Vector2D {
   }
   
 export class MIDIKeyboard {
-    
     //Basic information
     inputManager: InputManager;
     targetChannel: number;
@@ -59,4 +58,9 @@ export class MIDIKeyboard {
             note++;
         }
     }
+
+    GetRandomNumber(min: number, max: number): number {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
 }

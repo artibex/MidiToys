@@ -8,7 +8,6 @@ export class DrumMaschin extends MIDIKeyboard {
     shapeLimit: number = 20;
     polySides: number = 3;
 
-
     startSize: number = 500;
     sizeIncrease: number = 0.98;
     alphaDecrease: number = 0;
@@ -54,7 +53,11 @@ export class DrumMaschin extends MIDIKeyboard {
         }
     }
 
-    InputEvent() {
+    InputEvent(onEvent: boolean) {
+        if(!onEvent) {
+            return;
+        }
+
         let holdingKeys = this.inputManager.getHoldingKeys(this.targetChannel);
         let velocities = this.inputManager.getVelocity(this.targetChannel);
         this.bpm = this.inputManager.getBPM();
@@ -116,7 +119,4 @@ export class DrumMaschin extends MIDIKeyboard {
         square.remove();
     }
 
-    GetRandomNumber(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
 }

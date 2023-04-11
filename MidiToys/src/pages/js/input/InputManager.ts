@@ -66,25 +66,25 @@ export class InputManager {
       }
     
     //Call every function that subscribed to this
-    CallKeysEvent(channel: number, event: UpdateEvent) {
-        console.log("CALL key event");
+    CallKeysEvent(channel: number, onEvent: boolean) {
+        // console.log("CALL key event");
         switch(channel) {
-            case 1: this.channel1.forEach((subscriber) => subscriber(event)); break;
-            case 2: this.channel2.forEach((subscriber) => subscriber(event)); break;
-            case 3: this.channel3.forEach((subscriber) => subscriber(event)); break;
-            case 4: this.channel4.forEach((subscriber) => subscriber(event)); break;
-            case 5: this.channel5.forEach((subscriber) => subscriber(event)); break;
-            case 6: this.channel6.forEach((subscriber) => subscriber(event)); break;
-            case 7: this.channel7.forEach((subscriber) => subscriber(event)); break;
-            case 8: this.channel8.forEach((subscriber) => subscriber(event)); break;
-            case 9: this.channel9.forEach((subscriber) => subscriber(event)); break;
-            case 10: this.channel10.forEach((subscriber) => subscriber(event)); break;
-            case 11: this.channel11.forEach((subscriber) => subscriber(event)); break;
-            case 12: this.channel12.forEach((subscriber) => subscriber(event)); break;
-            case 13: this.channel13.forEach((subscriber) => subscriber(event)); break;
-            case 14: this.channel14.forEach((subscriber) => subscriber(event)); break;
-            case 15: this.channel15.forEach((subscriber) => subscriber(event)); break;
-            case 16: this.channel16.forEach((subscriber) => subscriber(event)); break;
+            case 1: this.channel1.forEach((subscriber) => subscriber(onEvent)); break;
+            case 2: this.channel2.forEach((subscriber) => subscriber(onEvent)); break;
+            case 3: this.channel3.forEach((subscriber) => subscriber(onEvent)); break;
+            case 4: this.channel4.forEach((subscriber) => subscriber(onEvent)); break;
+            case 5: this.channel5.forEach((subscriber) => subscriber(onEvent)); break;
+            case 6: this.channel6.forEach((subscriber) => subscriber(onEvent)); break;
+            case 7: this.channel7.forEach((subscriber) => subscriber(onEvent)); break;
+            case 8: this.channel8.forEach((subscriber) => subscriber(onEvent)); break;
+            case 9: this.channel9.forEach((subscriber) => subscriber(onEvent)); break;
+            case 10: this.channel10.forEach((subscriber) => subscriber(onEvent)); break;
+            case 11: this.channel11.forEach((subscriber) => subscriber(onEvent)); break;
+            case 12: this.channel12.forEach((subscriber) => subscriber(onEvent)); break;
+            case 13: this.channel13.forEach((subscriber) => subscriber(onEvent)); break;
+            case 14: this.channel14.forEach((subscriber) => subscriber(onEvent)); break;
+            case 15: this.channel15.forEach((subscriber) => subscriber(onEvent)); break;
+            case 16: this.channel16.forEach((subscriber) => subscriber(onEvent)); break;
         }
     }
 
@@ -151,6 +151,7 @@ export class InputManager {
                 this.holdingKeys[channelIndex].push(note);
                 this.velocity[channelIndex].push(velocity);
               }
+            this.CallKeysEvent(ch, true);
         } else if(command.includes("NoteOff")) {
             // console.log("REMOVE holding key: " + note);
             if(this.holdingKeys[channelIndex].includes(note)) {
@@ -158,8 +159,8 @@ export class InputManager {
                 this.holdingKeys[channelIndex].splice(noteIndex, 1);
                 this.velocity[channelIndex].splice(noteIndex, 1);
             }
+            this.CallKeysEvent(ch, false);
         }
-        this.CallKeysEvent(ch, this);
     }
 
 

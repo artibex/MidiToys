@@ -22,11 +22,10 @@ export class SquareKeyboard extends MIDIKeyboard {
         let avgCellSize = this.w / this.numberOfKeys;
 
         this.targetSquareSize = avgCellSize;
-        var s = this.targetSquareSize;
 
         for(let i = 0; i < this.numberOfKeys; i++) {
-            let xCalc = avgCellSize*i ;
-            let vec: Vector2D = ({x: xCalc, y: this.h / 2 - s / 4});
+            let xCalc = avgCellSize*i;
+            let vec: Vector2D = ({x: xCalc, y: this.h / 2 - avgCellSize / 4});
             this.drawPositions.push(vec);
         }
     }
