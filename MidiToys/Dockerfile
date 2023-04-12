@@ -1,5 +1,5 @@
 # Use Node.js v16 as the base image
-FROM node:16
+FROM node:lts
 
 # Set the working directory to /app
 WORKDIR /app
@@ -23,4 +23,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
