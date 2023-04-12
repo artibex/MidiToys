@@ -9,7 +9,7 @@
   },
   
   "scripts": {
-    "start": "astro",
+    "start": "astro dev",
     "build": "npx astro build"
   }
 }
