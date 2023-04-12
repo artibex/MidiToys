@@ -35,13 +35,13 @@ import "./css/global.css";
                 ch1SquareKeyboard.UpdateKeyboard();
                 ch2SquareKeyboard.UpdateKeyboard();
 
-                document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.getHoldingKeys(1) + " Velocity: " + inputManager.getVelocity(1);
-                document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.getHoldingKeys(2) + " Velocity: " + inputManager.getVelocity(2);
-                document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.getHoldingKeys(3) + " Velocity: " + inputManager.getVelocity(3);
-                document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.getHoldingKeys(4) + " Velocity: " + inputManager.getVelocity(4);
-                document.getElementById("CH15Keys").innerHTML = "Channel 15: " + inputManager.getHoldingKeys(15) + " Velocity: " + inputManager.getVelocity(15);
+                document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1) + " Velocity: " + inputManager.GetVelocity(1);
+                document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2) + " Velocity: " + inputManager.GetVelocity(2);
+                document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.GetHoldingKeys(3) + " Velocity: " + inputManager.GetVelocity(3);
+                document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.GetHoldingKeys(4) + " Velocity: " + inputManager.GetVelocity(4);
+                document.getElementById("CH15Keys").innerHTML = "Channel 15: " + inputManager.GetHoldingKeys(15) + " Velocity: " + inputManager.GetVelocity(15);
 
-                let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.getBPM();
+                let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.GetBPM();
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }
         }
