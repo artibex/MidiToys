@@ -101,10 +101,10 @@ export class DrumMaschin extends MIDIKeyboard {
             // poly.position.y -= this.sizeIncrease/2;
             
             poly.strokeColor.alpha -= this.alphaDecrease;
-            //square.strokeWidth -= 0.1;
             poly.strokeWidth -= 0.5;
-            //square.rotate(1 + square.bounds.height*0.1);
             poly.rotate(this.rotationSpeed + poly.bounds.width / 1000);
+            //square.strokeWidth -= 0.1;
+            //square.rotate(1 + square.bounds.height*0.1);
 
             if(poly.strokeColor?.alpha <= 0 || poly.strokeWidth <= 0) {
                 this.RemoveShape(indexValue);
