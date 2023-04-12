@@ -11,10 +11,12 @@ export class MusicBalls extends MIDIKeyboard {
     velocityLimit: number = 20;
     yGravity: number = -0.9;
     xGravity: number = 0;
-    friction: number = 0.95;
+
+    yFriction: number = 0.90;
+    xFriction: number = 0.95;
 
     yImpulsPower: number = 30;
-    xImpulsPower: number = 10;
+    xImpulsPower: number = 0;
 
     constructor(canvas: HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number) {
         super(canvas, targetChannel, numberOfKeys, startNote, true);
@@ -62,7 +64,7 @@ export class MusicBalls extends MIDIKeyboard {
                 var r = element as MIDIReceiver;
                 if(r.GetMIDIInput(holdingKeys, velocities)) {
                     // console.log("FOUND key, spawn square");
-                    this.Impuls(index, this.yImpulsPower, 0);
+                    this.Impuls(index, this.yImpulsPower, this.xImpulsPower);
                 }
                 index++;
             })
@@ -77,15 +79,16 @@ export class MusicBalls extends MIDIKeyboard {
             var vel = this.velocity[indexValue];
             
             if(s.position.y < this.h - this.circleRadius) vel.y += this.yGravity; //add negativ gravity value
-            if(vel.y > this.friction) vel.y -= this.friction; //reduce velocity when going up
+            if(vel.y > 0) vel.y *= this.yFriction; //reduce velocity when going up
 
             if(s.position.y > this.h - this.circleRadius) if(vel.y < -0.1) vel.y = -vel.y; //When on ground, bounce up
-            if(s.position.y < 0 + this.circleRadius) if(vel.y > -0.1) vel.y = -vel.y; //When on upper height, bounce down
-                        
-            vel.x *= 0.98;
-            //Limit to x bounds
-            if(s.position.x < this.w + this.circleRadius) vel.x = -vel.x;
-            if(s.position.x > 0 - this.circleRadius) vel.x = -vel.x;
+            if(s.position.y < 0 + this.circleRadius) if(vel.y > -0.1) vel.y = -vel.y; //When on top height, bounce down
+            
+            if(vel.x !== 0) vel.x *= this.xFriction;
+            if(s.position.x < this.w + this.circleRadius) vel.x = -vel.x; //When on right side, mirror velocity
+            if(s.position.x > 0 - this.circleRadius) vel.x = -vel.x; //When on left side, mirror velocity
+            if(vel.x > this.velocityLimit * 2) vel.x = this.velocityLimit * 2;
+            if(vel.x < -this.velocityLimit * 2) vel.x = -this.velocityLimit * 2;
 
             if(vel.y < -this.velocityLimit) vel.y = -this.velocityLimit; //When over limit, reduce to limit
 
@@ -101,12 +104,10 @@ export class MusicBalls extends MIDIKeyboard {
 
     Impuls(indexValue: number, yForce: number, xForce: number) {
         var vel = this.velocity[indexValue];
-        // var s = this.shapes[indexValue] as paper.Shape.Circle;
+        
         vel.y += yForce;
-
-        vel.x += this.GetRandomNumber(-1.2, 1.2) * xForce;
+        vel.x += this.GetRandomNumber(-1, 1) * xForce;
 
         this.velocity[indexValue] = vel;
-
     }
 }

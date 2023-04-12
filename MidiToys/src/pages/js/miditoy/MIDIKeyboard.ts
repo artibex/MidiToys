@@ -1,7 +1,6 @@
 import { MIDIDataTable } from "../MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
 import { InputManager } from "../input/InputManager";
-import paper, { Color } from "paper";
 
 export interface Vector2D {
     x: number;
@@ -88,5 +87,4 @@ export class MIDIKeyboard {
     GetRandomNumber(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
-
 }

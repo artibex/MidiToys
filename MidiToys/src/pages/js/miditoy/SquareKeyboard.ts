@@ -1,6 +1,5 @@
 import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIKeyboard } from "./MIDIKeyboard";
-import { Vector2D } from "./MIDIKeyboard";
 import paper, { Color } from "paper";
 
 //Takes a canvas HTMLElement and draws cool things on it
