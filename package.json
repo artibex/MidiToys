@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@types/paper": "^0.12.3",
+    "@types/webmidi": "^2.0.7",
+    "astro": "^2.2.3",
+    "paper": "^0.12.17",
+    "raphael": "^2.3.0"
+  },
+  "scripts": {
+    "start": "astro dev",
+    "build": "astro build"
+  }
+}
