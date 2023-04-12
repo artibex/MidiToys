@@ -1,26 +1,21 @@
-# Use Node.js v16 as the base image
-FROM node:lts
+FROM node:16
 
-# Set the working directory to /app
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
-# Install the dependencies
-RUN npm install
+RUN npm install --production
+RUN npm install --save-dev astro
 
-# Copy the rest of the application code to the container
 COPY . .
 
 # Upgrade npm to the latest version
 RUN npm install -g npm@latest
 
-# Build the application
 RUN npm run build
 
-# Expose port 3000 for the application
-EXPOSE 3000
+CMD [ "npm", "start" ]
 
-# Start the application
-# CMD ["npm", "start"]
+
+
+
