@@ -58,9 +58,9 @@ export class DrumMaschin extends MIDIKeyboard {
             return;
         }
 
-        let holdingKeys = this.inputManager.getHoldingKeys(this.targetChannel);
-        let velocities = this.inputManager.getVelocity(this.targetChannel);
-        this.bpm = this.inputManager.getBPM();
+        let holdingKeys = this.inputManager.GetHoldingKeys(this.targetChannel);
+        let velocities = this.inputManager.GetVelocity(this.targetChannel);
+        this.bpm = this.inputManager.GetBPM();
 
         this.receiver.forEach(element => {
             var r = element as MIDIReceiver;

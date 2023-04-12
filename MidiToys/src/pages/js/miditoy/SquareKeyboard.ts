@@ -37,9 +37,9 @@ export class SquareKeyboard extends MIDIKeyboard {
     }
 
     UpdateKeyboard = () => {
-        let holdingKeys = this.inputManager.getHoldingKeys(this.targetChannel);
-        let velocities = this.inputManager.getVelocity(this.targetChannel);
-        this.bpm = this.inputManager.getBPM();
+        let holdingKeys = this.inputManager.GetHoldingKeys(this.targetChannel);
+        let velocities = this.inputManager.GetVelocity(this.targetChannel);
+        this.bpm = this.inputManager.GetBPM();
 
         let indexValue = 0;
         this.receiver.forEach(element => {

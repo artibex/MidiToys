@@ -43,7 +43,6 @@ export class InputManager {
         console.log("CREATED InputManager");
     }
 
-
     public Subscribe(channel: number, callback: (event: UpdateEvent) => void) {
         switch(channel) {
             case 1: this.channel1.push(callback); break;
@@ -88,7 +87,6 @@ export class InputManager {
         }
     }
 
-      
     static GetInstance(): InputManager {
         if (!InputManager.instance) {
           InputManager.instance = new InputManager();
@@ -117,7 +115,7 @@ export class InputManager {
     debounceTime: number = 100; // the time to wait before executing the function
 
     //MIDI and Keyboard Input methods
-    getMIDIInput(message) {
+    GetMIDIInput(message) {
         let [command, note, velocity] = message.data;
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
         // console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
@@ -125,24 +123,24 @@ export class InputManager {
         if (stringCommand.includes("NoteOn") || stringCommand.includes("NoteOff")) {
             let ch = Number(stringCommand.replace(/\D+/g, ""));
             let stringNote = MIDIDataTable.MIDINoteToString(note);
-            this.updateHoldingKeys(stringCommand, ch, stringNote, velocity);
+            this.UpdateHoldingKeys(stringCommand, ch, stringNote, velocity);
         }
-        this.calcBPM(message);
+        this.CalcBPM(message);
     }
 
-    getInputKeyboard(command, note, velocity) {
+    GetInputKeyboard(command, note, velocity) {
         console.log("KEYBOARD detected");
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
         let stringNote = MIDIDataTable.MIDINoteToString(note);
 
         if (stringCommand.includes("NoteOn") || stringCommand.includes("NoteOff")) {
             let ch = 1;
-            this.updateHoldingKeys(stringCommand, ch, stringNote, velocity);
+            this.UpdateHoldingKeys(stringCommand, ch, stringNote, velocity);
         }
     }
 
     //Updating What keys are currently beeing hold
-    updateHoldingKeys(command, ch, note, velocity) {
+    UpdateHoldingKeys(command, ch, note, velocity) {
         let channelIndex = ch - 1;
 
         if (command.includes("NoteOn")) {
@@ -165,7 +163,7 @@ export class InputManager {
 
 
     //BPM stuff
-    calcBPM(message) {
+    CalcBPM(message) {
         if (message.data[0] == 248) { // MIDI Clock message
             this.clockCount++;
             if (this.clockCount == 96) {
@@ -184,16 +182,16 @@ export class InputManager {
             }
         }
     }
-    getBPM() {
+    GetBPM() {
         return this.bpm;
     }
 
     //Getter methods
-    getHoldingKeys(channel: number) {
+    GetHoldingKeys(channel: number) {
         // console.log(this.holdingKeys[channel][0]);
         return this.holdingKeys[channel - 1];
     }
-    getVelocity(channel) {
+    GetVelocity(channel) {
         return this.velocity[channel - 1];
     }
 }

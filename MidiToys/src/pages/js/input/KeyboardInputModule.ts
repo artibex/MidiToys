@@ -101,8 +101,6 @@ export class KeyboardInputModule {
         case 75:
           this.SendMIDIMessage("K", false);
           break;
-        // default:
-        //   console.log("Eine andere Taste wurde gedrückt.");
       }
     });
   }
@@ -113,7 +111,7 @@ export class KeyboardInputModule {
     let midiNote = this.GetMIDINote(key);
     let midiVelocity = 127;
 
-    this.inputManager.getInputKeyboard(midiCommand, midiNote, midiVelocity);
+    this.inputManager.GetInputKeyboard(midiCommand, midiNote, midiVelocity);
 
     // if(downPress) {
     //   // this.inputManager.GetKeyboard(100,100,100);
