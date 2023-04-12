@@ -1,7 +1,7 @@
 import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIKeyboard } from "./MIDIKeyboard";
 import { Vector2D } from "./MIDIKeyboard";
-import paper, { Color } from "paper";
+import paper from 'paper';
 
 export class DrumMaschin extends MIDIKeyboard {
     shapes: paper.Path[] = [];
@@ -79,7 +79,7 @@ export class DrumMaschin extends MIDIKeyboard {
         console.log("DRAW shape");
         var point = new paper.Point(this.GetRandomNumber(this.minWidth, this.maxWidth), this.GetRandomNumber(this.minHeight,this.maxHeight));
         var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
-        poly.strokeColor = new Color(255);
+        poly.strokeColor = new paper.Color(255);
         poly.strokeWidth = this.strokeWidth + velocity/10;
         // poly.fillColor = new Color(200);
 

@@ -1,7 +1,7 @@
 import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIKeyboard } from "./MIDIKeyboard";
 import { Vector2D } from "./MIDIKeyboard";
-import paper, { Color } from "paper";
+import paper from 'paper';
 
 export class MusicBalls extends MIDIKeyboard {
     shapes: paper.Path[] = [];
@@ -34,7 +34,7 @@ export class MusicBalls extends MIDIKeyboard {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
             var circle = new paper.Path.Circle(point, this.circleRadius);
-            circle.strokeColor = new Color(255);
+            circle.strokeColor = new paper.Color(255);
             circle.strokeWidth = 2;
             this.shapes.push(circle);
         })
