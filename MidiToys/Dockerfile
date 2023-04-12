@@ -1,23 +1,26 @@
+# Use node:lts as the base image for the build stage
 FROM node:lts AS build
 
+# Set the working directory to /app
 WORKDIR /app
 
-COPY package.json .
-COPY package-lock.json .
+# Copy the package.json and package-lock.json files to the container
+COPY package.json package-lock.json ./
+
+# Install the dependencies
 RUN npm install
 
+# Copy the entire project directory to the container
 COPY . .
+
+# Build the website
 RUN npm run build
 
-FROM node:lts AS runtime
+# Use httpd:2.4 as the base image for the runtime stage
+FROM httpd:2.4 AS runtime
 
-WORKDIR /app
+# Copy the built website from the build stage to the Apache web server's document root
+COPY --from=build /app/public /usr/local/apache2/htdocs/
 
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
-
-ENV HOST=0.0.0.0
-ENV PORT=3000
-EXPOSE 3000
-
-CMD ["node", "./dist/server/entry.mjs"]
+# Expose port 80 for HTTP traffic
+EXPOSE 80

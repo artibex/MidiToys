@@ -10,6 +10,6 @@
   
   "scripts": {
     "start": "astro dev",
-    "build": "npx astro build"
+    "build": "astro build"
   }
 }
