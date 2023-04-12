@@ -13,7 +13,6 @@ export class MusicBalls extends MIDIKeyboard {
     xGravity: number = 0;
     friction: number = 0.95;
 
-
     yImpulsPower: number = 30;
     xImpulsPower: number = 10;
 
@@ -25,7 +24,9 @@ export class MusicBalls extends MIDIKeyboard {
     }
 
     SetupKeyboard() {
-        this.InitDrawPositions();
+        // this.InitDrawPositions();
+        this.circleRadius = this.HorizontalDrawPositionDistrubution() / 4;
+        this.InitVelocity();
 
         this.drawPositions.forEach(element => {
             var pos = element as Vector2D;
@@ -37,17 +38,7 @@ export class MusicBalls extends MIDIKeyboard {
         })
     }
 
-    InitDrawPositions() {
-        this.drawPositions.length = 0;
-        let avgCellSize = this.w / this.numberOfKeys;
-        this.circleRadius = avgCellSize / 4;
-
-        for(let i = 0; i < this.numberOfKeys; i++) {
-            let xCalc = avgCellSize * i + this.circleRadius;
-            let vec: Vector2D = ({x: xCalc, y: this.h / 2 - this.circleRadius});
-            this.drawPositions.push(vec);
-        }
-
+    InitVelocity() {
         for(let i = 0; i < this.numberOfKeys; i++) {
             let vec: Vector2D = ({x: 0, y: 0});
             this.velocity.push(vec);
@@ -71,7 +62,7 @@ export class MusicBalls extends MIDIKeyboard {
                 var r = element as MIDIReceiver;
                 if(r.GetMIDIInput(holdingKeys, velocities)) {
                     // console.log("FOUND key, spawn square");
-                    this.Impuls(index, this.yImpulsPower);
+                    this.Impuls(index, this.yImpulsPower, 0);
                 }
                 index++;
             })
@@ -108,11 +99,12 @@ export class MusicBalls extends MIDIKeyboard {
         });
     }
 
-    Impuls(indexValue: number, force: number) {
+    Impuls(indexValue: number, yForce: number, xForce: number) {
         var vel = this.velocity[indexValue];
         // var s = this.shapes[indexValue] as paper.Shape.Circle;
-        vel.y += force;
-        vel.x += this.GetRandomNumber(-1.2, 1.2) * force;
+        vel.y += yForce;
+
+        vel.x += this.GetRandomNumber(-1.2, 1.2) * xForce;
 
         this.velocity[indexValue] = vel;
 

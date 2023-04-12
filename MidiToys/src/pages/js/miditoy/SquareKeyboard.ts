@@ -17,21 +17,9 @@ export class SquareKeyboard extends MIDIKeyboard {
         // window.addEventListener("resize", this.CalculateXValues);
     }
 
-    CalculateDrawPositions = () => {
-        this.drawPositions.length = 0;
-        let avgCellSize = this.w / this.numberOfKeys;
-
-        this.targetSquareSize = avgCellSize;
-
-        for(let i = 0; i < this.numberOfKeys; i++) {
-            let xCalc = avgCellSize*i;
-            let vec: Vector2D = ({x: xCalc, y: this.h / 2 - avgCellSize / 4});
-            this.drawPositions.push(vec);
-        }
-    }
-
     SetupKeyboard() {
-        this.CalculateDrawPositions();
+        // this.CalculateDrawPositions();
+        this.targetSquareSize = this.HorizontalDrawPositionDistrubution();
 
         for(let i = 0; i < this.numberOfKeys; i++) {
             var x = this.drawPositions[i].x;

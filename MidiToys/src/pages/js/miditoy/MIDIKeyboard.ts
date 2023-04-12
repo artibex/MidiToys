@@ -59,6 +59,32 @@ export class MIDIKeyboard {
         }
     }
 
+    //Evenly calculate draw positions and put them into the drawPositions array
+    HorizontalDrawPositionDistrubution() {
+        this.drawPositions.length = 0;
+        let avgCellSize = this.w / this.numberOfKeys;
+
+        for(let i = 0; i < this.numberOfKeys; i++) {
+            let xCalc = avgCellSize/4 + avgCellSize*i;
+
+            let vec: Vector2D = ({x: xCalc, y: this.h / 2 - avgCellSize / 4});
+            this.drawPositions.push(vec);
+        }
+        return avgCellSize;
+    }
+    //Evenly calculate draw positions and put them into the drawPositions array
+    VerticalDrawPositionDistrubution() {
+        this.drawPositions.length = 0;
+        let avgCellSize = this.h / this.numberOfKeys;
+
+        for(let i = 0; i < this.numberOfKeys; i++) {
+            let yCalc = avgCellSize/4 + avgCellSize*i;
+            let vec: Vector2D = ({x: this.w / 2 - avgCellSize / 4, y: yCalc});
+            this.drawPositions.push(vec);
+        }
+        return avgCellSize;
+    }
+
     GetRandomNumber(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
