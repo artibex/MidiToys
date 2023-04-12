@@ -5,8 +5,11 @@
     "astro": "^2.1.4",
     "paper": "^0.12.17",
     "raphael": "^2.3.0"
+  
   },
+  
   "scripts": {
-    "start": "astro"
+    "start": "astro",
+    "build": "astro build"
   }
 }
