@@ -1,11 +1,76 @@
-
 body {
 background-color: black;
 color: white;
 }
 
+button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 25px;
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+}
+
+#openSettingsBtn {
+  position: fixed;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
+  top: 50px;
+  left: 50px;
+  display: none;
+}
+
+#settingsPanel {
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  width: 50%;
+  height: 40%;
+  border-radius: 25px;
+  background-color: black;
+  border: 1px solid white;
+  padding: 20px;
+
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  grid-gap: 10px;
+  display: none;
+}
+
+/* #settingsPanel > div {
+
+} */
+
+.channelGroup {
+  border-radius: 25px;
+  background-color: darkblue;
+  border: 1px solid white;
+  width: 99%;
+  height: 80%;
+  padding: 10px;
+  grid-gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  margin-left: auto;
+  margin-right: auto;
+  /* box-sizing: border-box; */
+  display: grid;
+}
+
+.channelContainer {
+  padding: 25px;
+  border-radius: 25px;
+  border: 1px solid white;
+}
+
 #toyCanvas {
-    width: 100vw;
-    height: 100vh;
+
+    width: 100%;
+    height: 100%;
     /* add other styles as desired */
   }

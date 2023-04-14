@@ -2,7 +2,6 @@
 import "./css/global.css";
 ---
 
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -10,9 +9,6 @@ import "./css/global.css";
     <title>MIDI Toys</title>
 </head>
 <body>
-    <!-- <header>
-        <h1></h1>
-    </header> -->
     <script>
         //Import
         import { InputManager } from "./js/input/InputManager";
@@ -45,13 +41,70 @@ import "./css/global.css";
                 channel3Toy.UpdateKeyboard();
             }
         }
-
     </script>
+<script>
+    import { AnimationCollection } from "./js/AnimationCollection";
 
-    <canvas id="toyCanvas" class="toyCanvas"></canvas>
+    const settingsPanel = document.getElementById("settingsPanel");
+    const openSettingsBtn = document.getElementById("openSettingsBtn");
 
-    <footer>
-        <p>Copyright © 2023 Korbinian Maag </p>
-    </footer>
+    document.addEventListener("mousemove", (event) => {
+        if (event.clientY > window.innerHeight / 2) {
+            openSettingsBtn.style.display = "none";
+            settingsPanel.style.display = "none";
+        } else {
+            let calc = settingsPanel.style.left + settingsPanel.style.padding;
+            settingsPanel.style.width = `${window.innerWidth - 150}px`;
+            openSettingsBtn.style.display = "block";
+        }
+    });
+    openSettingsBtn.addEventListener("click", () => {
+        if(settingsPanel.style.display == "none") {
+            AnimationCollection.AnimateFromTop(settingsPanel, 50);
+            settingsPanel.style.display = "block";
+        }
+        else settingsPanel.style.display = "none";
+    });
+</script>
+
+<canvas id="toyCanvas" class="toyCanvas"></canvas>
+<button id="openSettingsBtn">Settings</button>
+
+<div id="settingsPanel">
+    <div id="buttonGroup">
+        <button id="prevButton">Previous</button>
+        <button id="nextButton">Next</button>
+    </div>
+    <div class="channelGroup">
+        <div class="channelContainer">Container 1</div>
+        <div class="channelContainer">Container 2</div>
+        <div class="channelContainer">Container 3</div>
+        <div class="channelContainer">Container 4</div>
+    </div>
+    <div class="channelGroup" style="display:none;">
+        <div class="channelContainer">Container 5</div>
+        <div class="channelContainer">Container 6</div>
+        <div class="channelContainer">Container 7</div>
+        <div class="channelContainer">Container 8</div>
+    </div>
+    <div class="channelGroup" style="display:none;">
+        <div class="channelContainer">Container 9</div>
+        <div class="channelContainer">Container 10</div>
+        <div class="channelContainer">Container 11</div>
+        <div class="channelContainer">Container 12</div>
+    </div>
+    <div class="channelGroup" style="display:none;">
+        <div class="channelContainer">Container 13</div>
+        <div class="channelContainer">Container 14</div>
+        <div class="channelContainer">Container 15</div>
+        <div class="channelContainer">Container 16</div>
+    </div>
+    <!-- Settings content goes here -->
+</div>
+
+<footer>
+    <p>Copyright © 2023 Korbinian Maag</p>
+</footer>
+
 </body>
 </html>
