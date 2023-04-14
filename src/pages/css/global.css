@@ -39,7 +39,7 @@ button {
   border-radius: 25px;
   border: 1px solid white;
 }
-.input {
+.numberInput {
   /* -moz-appearance: textfield; */
   appearance: textfield;
   /* width: 200px;
@@ -57,9 +57,30 @@ button {
   height: 30px;
   outline: none;
 }
-.input:focus {
+.numberInput:focus {
   border-color: #4da6ff;
 }
+.toggleInput{
+  appearance: none;
+  border-radius: 10px;
+  background-color: black;
+  border: 1px solid white;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+}
+.toggleInput:checked::before {
+  content: "X";
+  text-align: center;
+  font-size: 20px;
+  position: relative;
+  left: 25%;
+  /* position: absolute; */
+  /* left: 10%;
+  top: 10%; */
+  transform: translate(-50%, -50%);
+}
+
 .toyNameSetting {
   height: 30px;
   padding-bottom: 10px;
