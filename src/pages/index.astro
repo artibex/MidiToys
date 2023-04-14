@@ -9,39 +9,42 @@ import "./css/global.css";
     <title>MIDI Toys</title>
 </head>
 <body>
-    <script>
-        //Import
-        import { InputManager } from "./js/input/InputManager";
-        import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
-        import { MusicBalls } from "./js/miditoy/MusicBalls";
 
-        import { DrumMaschin } from "./js/miditoy/DrumMaschin";
-        import * as paper from "paper";
-        
-        //Base Toys setup
-        let inputManager = InputManager.GetInstance();
-        let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
-        paper.setup(toyCanvas); //Paper setup
-        
-        let channel1Toy;
-        let channel2Toy;
-        let channel3Toy;
-        let channel4Toy;
+<!-- MIDI Toys Setup -->
+<script>
+    //Import
+    import { InputManager } from "./js/input/InputManager";
+    import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
+    import { MusicBalls } from "./js/miditoy/MusicBalls";
 
-        //If browser window
-        if (typeof window !== 'undefined') {
-            channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
-            channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
-            
-            channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
+    import { DrumMaschin } from "./js/miditoy/DrumMaschin";
+    import * as paper from "paper";
+    
+    //Base Toys setup
+    let inputManager = InputManager.GetInstance();
+    let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
+    paper.setup(toyCanvas); //Paper setup
+    
+    let channel1Toy;
+    let channel2Toy;
+    let channel3Toy;
+    let channel4Toy;
 
-            paper.view.onFrame = function(event) {
-                channel1Toy.UpdateKeyboard();
-                channel2Toy.UpdateKeyboard();
-                channel3Toy.UpdateKeyboard();
-            }
+    //If browser window
+    if (typeof window !== 'undefined') {
+        channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
+        channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
+        channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
+
+        paper.view.onFrame = function(event) {
+            channel1Toy.UpdateKeyboard();
+            channel2Toy.UpdateKeyboard();
+            channel3Toy.UpdateKeyboard();
         }
-    </script>
+    }
+</script>
+
+<!-- Open SettingsPanel -->
 <script>
     import { AnimationCollection } from "./js/AnimationCollection";
 
@@ -67,37 +70,83 @@ import "./css/global.css";
     });
 </script>
 
+<!-- ContainerGroups Controls -->
+<script>
+    const containerGroups = document.querySelectorAll('.channelGroup');
+    const prevButton = document.querySelector('#prevButton');
+    const nextButton = document.querySelector('#nextButton');
+    let currentIndex = 0;
+
+    function showContainers(index) {
+    // Hide all container groups
+    containerGroups.forEach(group => {
+        var g = group as HTMLElement;
+        g.style.display = "none";
+    });
+        // Show the current set of containers
+        var g = containerGroups[index] as HTMLElement;
+        g.style.display = "grid";
+    }
+
+    prevButton.addEventListener('click', () => {
+        // Decrement the index and show the new set of containers
+        currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = containerGroups.length - 1;
+            }
+        showContainers(currentIndex);
+    });
+    nextButton.addEventListener('click', () => {
+        // Increment the index and show the new set of containers
+        currentIndex++;
+            if (currentIndex >= containerGroups.length) {
+                currentIndex = 0;
+            }
+        showContainers(currentIndex);
+    });
+</script>
+
 <canvas id="toyCanvas" class="toyCanvas"></canvas>
 <button id="openSettingsBtn">Settings</button>
 
 <div id="settingsPanel">
-    <div id="buttonGroup">
+    <div id="buttonSettingsGroup">
         <button id="prevButton">Previous</button>
-        <button id="nextButton">Next</button>
+        <button class="marginLeft10" id="nextButton">Next</button>
+        <h1 class="marginLeft20">Channel Settings</h1>
     </div>
+    <br>
     <div class="channelGroup">
-        <div class="channelContainer">Container 1</div>
-        <div class="channelContainer">Container 2</div>
-        <div class="channelContainer">Container 3</div>
-        <div class="channelContainer">Container 4</div>
+        <div class="channelContainer">
+            <div class="toyNameSetting">
+                <button id="prevButton">Previous</button>
+                <button class="marginLeft10"  id="nextButton">Next</button>
+                <h2 class="marginLeft20">ToyName</h2> 
+            </div>
+            Number of Keys <input class="input" type="number" min="1" max="100" step="1" /> <br>
+            Start Key <input class="input" type="number" min="1" max="100"/>
+        </div>
+        <div class="channelContainer">Channel 2</div>
+        <div class="channelContainer">Channel 3</div>
+        <div class="channelContainer">Channel 4</div>
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Container 5</div>
-        <div class="channelContainer">Container 6</div>
-        <div class="channelContainer">Container 7</div>
-        <div class="channelContainer">Container 8</div>
+        <div class="channelContainer">Channel 5</div>
+        <div class="channelContainer">Channel 6</div>
+        <div class="channelContainer">Channel 7</div>
+        <div class="channelContainer">Channel 8</div>
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Container 9</div>
-        <div class="channelContainer">Container 10</div>
-        <div class="channelContainer">Container 11</div>
-        <div class="channelContainer">Container 12</div>
+        <div class="channelContainer">Channel 9</div>
+        <div class="channelContainer">Channel 10</div>
+        <div class="channelContainer">Channel 11</div>
+        <div class="channelContainer">Channel 12</div>
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Container 13</div>
-        <div class="channelContainer">Container 14</div>
-        <div class="channelContainer">Container 15</div>
-        <div class="channelContainer">Container 16</div>
+        <div class="channelContainer">Channel 13</div>
+        <div class="channelContainer">Channel 14</div>
+        <div class="channelContainer">Channel 15</div>
+        <div class="channelContainer">Channel 16</div>
     </div>
     <!-- Settings content goes here -->
 </div>
