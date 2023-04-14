@@ -42,6 +42,15 @@ import "./css/global.css";
             channel3Toy.UpdateKeyboard();
         }
     }
+
+    UpdateToyNames();
+    function UpdateToyNames () {
+        document.getElementById("toyName1").innerHTML = channel1Toy.constructor.name;
+        document.getElementById("toyName2").innerHTML = channel2Toy.constructor.name;
+        document.getElementById("toyName3").innerHTML = channel3Toy.constructor.name;
+        document.getElementById("toyName4").innerHTML = channel4Toy.constructor.name;
+    }
+
 </script>
 
 <!-- Open SettingsPanel -->
@@ -106,6 +115,7 @@ import "./css/global.css";
     });
 </script>
 
+
 <canvas id="toyCanvas" class="toyCanvas"></canvas>
 <button id="openSettingsBtn">Settings</button>
 
@@ -119,9 +129,9 @@ import "./css/global.css";
     <div class="channelGroup">
         <div class="channelContainer">
             <div class="toyNameSetting">
-                <button id="prevButton">Prev</button>
-                <button class="marginLeft10"  id="nextButton">Next</button>
-                <h2 class="marginLeft20">ToyName</h2> 
+                <button id="prevToy1Btn">Prev</button>
+                <button id="nextTox1Btn" class="marginLeft10">Next</button>
+                <h2 id="toyName1" class="marginLeft20">ToyName</h2> 
             </div>
             Number of Keys <input class="numberInput" type="number" min="1" max="100" step="1" /> <br>
             Start Key <input class="numberInput" type="number" min="1" max="100"/> <br>
@@ -129,12 +139,26 @@ import "./css/global.css";
             
         </div>
         <div class="channelContainer">
-            Channel 2 <br>
-            Use regular expression <input class="toggleInput" type="checkbox">
-
+            <div class="toyNameSetting">
+                <button id="prevToy1Btn">Prev</button>
+                <button id="nextTox1Btn" class="marginLeft10">Next</button>
+                <h2 id="toyName2" class="marginLeft20">ToyName</h2> 
+            </div>
         </div>
-        <div class="channelContainer">Channel 3</div>
-        <div class="channelContainer">Channel 4</div>
+        <div class="channelContainer">
+            <div class="toyNameSetting">
+                <button id="prevToy1Btn">Prev</button>
+                <button id="nextTox1Btn" class="marginLeft10">Next</button>
+                <h2 id="toyName3" class="marginLeft20">ToyName</h2> 
+            </div>
+        </div>
+        <div class="channelContainer">
+            <div class="toyNameSetting">
+                <button id="prevToy1Btn">Prev</button>
+                <button id="nextTox1Btn" class="marginLeft10">Next</button>
+                <h2 id="toyName4" class="marginLeft20">ToyName</h2> 
+            </div>
+        </div>
     </div>
     <div class="channelGroup" style="display:none;">
         <div class="channelContainer">Channel 5</div>

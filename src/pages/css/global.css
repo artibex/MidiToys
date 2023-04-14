@@ -71,14 +71,15 @@ button {
 }
 .toggleInput:checked::before {
   content: "X";
-  text-align: center;
   font-size: 20px;
+  text-align: center;
   position: relative;
   left: 25%;
+  transform: translate(-50%, -50%);
+  
   /* position: absolute; */
   /* left: 10%;
   top: 10%; */
-  transform: translate(-50%, -50%);
 }
 
 .toyNameSetting {
