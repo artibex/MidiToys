@@ -1,19 +1,13 @@
 ---
 import "../css/global.css";
-import channelContainer from "../components/channelContainer.astro";
 ---
 <html>
 
 <head>
-    <channelContainer />
 
 </head>
 <body>
     
-    <channelContainer />
-    <channelContainer />
-    <channelContainer />
-    <channelContainer />
 
     <h1> MIDI Debugging Page </h1>
 
@@ -55,18 +49,15 @@ import channelContainer from "../components/channelContainer.astro";
         }
     </script>
 
+    <h2 id="DeviceAndBPM">No device found</h2>
 
-    <!-- <ChannelContainer></ChannelContainer> -->
-
-        <h2 id="DeviceAndBPM">No device found</h2>
-
-        <h2 id="CH1Keys">Ch 1</h2>
-        <h2 id="CH2Keys"></h2>
-        <h2 id="CH3Keys"></h2>
-        <h2 id="CH4Keys"></h2>
-        <h2 id="CH15Keys"></h2>
-        <br>
-        <canvas id="toyCanvas" class="toyCanvas"></canvas>
+    <h2 id="CH1Keys">Ch 1</h2>
+    <h2 id="CH2Keys"></h2>
+    <h2 id="CH3Keys"></h2>
+    <h2 id="CH4Keys"></h2>
+    <h2 id="CH15Keys"></h2>
+    <br>
+    <canvas id="toyCanvas" class="toyCanvas"></canvas>
 
     </body>
 
