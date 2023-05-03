@@ -8,6 +8,7 @@ interface UpdateEvent {
 
 export class InputManager {
     private static instance: InputManager;
+    
     //Channel events to subscribe
     private channel1: ((event: UpdateEvent) => void)[] = [];
     private channel2: ((event: UpdateEvent) => void)[] = [];

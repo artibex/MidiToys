@@ -1,6 +1,7 @@
 import { MIDIDataTable } from "../MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
 import { InputManager } from "../input/InputManager";
+import { Color } from "paper/dist/paper-core";
 
 export interface Vector2D {
     x: number;
@@ -27,6 +28,11 @@ export class MIDIKeyboard {
     
     //Vector Positions as array
     drawPositions: Vector2D[] = [];
+
+    //Color settings
+    mainColor: paper.Color = new Color(255);
+    secondaryColor: paper.Color = new Color(255/4);
+    accentColor: paper.Color = new Color(255/2);
 
     //Construct everything basic that is needed for a MIDIKeyboard
     constructor(canvas:HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number, useRegExp: boolean) {
