@@ -1,6 +1,6 @@
 ---
 import "../css/global.css";
-
+import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
 ---
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ import "../css/global.css";
     paper.setup(toyCanvas); //Paper setup
     
     let inputManager = InputManager.GetInstance(); //Setup input manager
-    let toyManager = ToyManager.GetInstance(); //Setup toy manager
+    let toyManager = new ToyManager(); //Setup toy manager
     toyManager.SetTargetCanvas(toyCanvas); //Set the target
     
     let channel1Toy;
@@ -49,13 +49,13 @@ import "../css/global.css";
         }
     }
 
-    UpdateToyNames();
-    function UpdateToyNames () {
-        document.getElementById("toyName1").innerHTML = toyManager.GetToyType(1);
-        // document.getElementById("toyName2").innerHTML = toyManager.GetToyType(2);
-        // document.getElementById("toyName3").innerHTML = toyManager.GetToyType(3);
-        // document.getElementById("toyName4").innerHTML = toyManager.GetToyType(4);
-    }
+    // UpdateToyNames();
+    // function UpdateToyNames () {
+    //     document.getElementById("toyName1").innerHTML = toyManager.GetToyType(1);
+    //     // document.getElementById("toyName2").innerHTML = toyManager.GetToyType(2);
+    //     // document.getElementById("toyName3").innerHTML = toyManager.GetToyType(3);
+    //     // document.getElementById("toyName4").innerHTML = toyManager.GetToyType(4);
+    // }
 
 </script>
 
@@ -134,51 +134,13 @@ import "../css/global.css";
     <br>
     
     <div class="channelGroup">
-        <div class="channelContainer">
-            <div class="toyNameSetting">
-                <button id="changeButton">Change</button>
-                <h2 id="toyName1" class="marginLeft20">ToyName</h2> 
-            </div>
-            Number of Keys <input class="numberInput" type="number" min="1" max="100" step="1" /> <br>
-            Start Key <input class="numberInput" type="number" min="1" max="100"/> <br>
-            Collaps Notes <input class="toggleInput" type="checkbox">          
-        </div>
-        <div class="channelContainer">
-            <div class="toyNameSetting">
-                <button id="changeButton">Change</button>
-                <h2 id="toyName2" class="marginLeft20">ToyName</h2> 
-            </div>
-        </div>
-        <div class="channelContainer">
-            <div class="toyNameSetting">
-                <button id="changeButton">Change</button>
-                <h2 id="toyName3" class="marginLeft20">ToyName</h2> 
-            </div>
-        </div>
-        <div class="channelContainer">
-            <div class="toyNameSetting">
-                <button id="changeButton">Change</button>
-                <h2 id="toyName4" class="marginLeft20">ToyName</h2> 
-            </div>
-        </div>
+        <ChannelSettingsContainer toyName="Test" channel={1} client:load />
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Channel 5</div>
-        <div class="channelContainer">Channel 6</div>
-        <div class="channelContainer">Channel 7</div>
-        <div class="channelContainer">Channel 8</div>
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Channel 9</div>
-        <div class="channelContainer">Channel 10</div>
-        <div class="channelContainer">Channel 11</div>
-        <div class="channelContainer">Channel 12</div>
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Channel 13</div>
-        <div class="channelContainer">Channel 14</div>
-        <div class="channelContainer">Channel 15</div>
-        <div class="channelContainer">Channel 16</div>
     </div>
     <!-- Settings content goes here -->
 </div>
