@@ -15,7 +15,7 @@ export class MIDIKeyboard {
     //Basic information
     inputManager: InputManager;
     toyManager: ToyManager;
-    paperLayer: paper.Layer;
+    paperLayer;
     toyName: string;
     targetChannel: number;
     bpm: number = 0;
