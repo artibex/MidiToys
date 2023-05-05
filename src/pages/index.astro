@@ -1,6 +1,7 @@
 ---
 import "../css/global.css";
 import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
+import IncrementButton from "../components/IncrementButton";
 ---
 
 <!DOCTYPE html>
@@ -30,23 +31,22 @@ import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
     let inputManager = new InputManager(); //Setup input manager
     let toyManager = new ToyManager(); //Setup toy manager
     toyManager.SetTargetCanvas(toyCanvas); //Set the target
-    
-    let channel1Toy;
-    let channel2Toy;
-    let channel3Toy;
-    let channel4Toy;
+    toyManager.SetPaper(paper);
+    toyManager.CreateEmptyToys();
+
+    // toyManager.SetupMusicBalls(1, 13.3, 12);
+    // console.log(toyManager.GetToyName(1));
+    paper.view.onFrame = function(event) {
+        toyManager.UpdateToys(); //Update all keyboards, 60 times a second
+    }
 
     //If browser window
     if (typeof window !== 'undefined') {
-        toyManager.SetupMusicBalls(1, 13.3, 12);
         // toyManager.channel1Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
         // channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
         // channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
         // channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
 
-        paper.view.onFrame = function(event) {
-            toyManager.UpdateToys(); //Update all keyboards, 60 times a second
-        }
     }
 
     // UpdateToyNames();
@@ -135,6 +135,9 @@ import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
     
     <div class="channelGroup">
         <ChannelSettingsContainer channel={1} client:load />
+        <ChannelSettingsContainer channel={2} client:load />
+        <ChannelSettingsContainer channel={3} client:load />
+        <ChannelSettingsContainer channel={4} client:load />
     </div>
     <div class="channelGroup" style="display:none;">
     </div>
@@ -144,6 +147,7 @@ import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
     </div>
     <!-- Settings content goes here -->
 </div>
+
 
 <footer>
     <p>Copyright © 2023 Korbinian Maag</p>

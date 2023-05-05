@@ -23,8 +23,8 @@ export class DrumMaschin extends MIDIKeyboard {
     minHeight: number = this.h * 0.5;
     maxHeight: number = this.h * 0.5;
 
-    constructor(canvas: HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number) {
-        super(canvas, targetChannel, numberOfKeys, startNote, false);
+    constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
+        super("DrumMaschin", targetChannel, numberOfKeys, startKey, false);
         console.log("CREATED DrumMaschin");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
@@ -81,6 +81,7 @@ export class DrumMaschin extends MIDIKeyboard {
         var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
         poly.strokeColor = new paper.Color(255);
         poly.strokeWidth = this.strokeWidth + velocity/10;
+        this.paperLayer.addChild(poly);
         // poly.fillColor = new Color(200);
 
         if(this.shapes.length >= this.shapeLimit) {

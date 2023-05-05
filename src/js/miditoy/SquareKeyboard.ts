@@ -8,8 +8,8 @@ export class SquareKeyboard extends MIDIKeyboard {
     targetSquareSize = 20;
     paperKeys: paper.Path.Rectangle[] = [];
 
-    constructor(canvas: HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number) {
-        super(canvas, targetChannel, numberOfKeys, startNote, true);
+    constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
+        super("SquareKeyboard", targetChannel, numberOfKeys, startKey, true);
         // this.canvasReverences = canvasReverences;
 
         this.SetupKeyboard();
@@ -32,6 +32,7 @@ export class SquareKeyboard extends MIDIKeyboard {
                 fillColor: "white"
                 });
             this.paperKeys.push(square);
+            this.paperLayer.addChild(square);    
         }
     }
 

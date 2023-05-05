@@ -18,8 +18,8 @@ export class MusicBalls extends MIDIKeyboard {
     yImpulsPower: number = 30;
     xImpulsPower: number = 0;
 
-    constructor(canvas: HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number) {
-        super(canvas, targetChannel, numberOfKeys, startNote, true);
+    constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
+        super("MusicBalls", targetChannel, numberOfKeys, startKey, true);
         console.log("CREATED MusicBalls");
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
         this.SetupKeyboard();
@@ -37,6 +37,7 @@ export class MusicBalls extends MIDIKeyboard {
             circle.strokeColor = new paper.Color(255);
             circle.strokeWidth = 2;
             this.shapes.push(circle);
+            this.paperLayer.addChild(circle); //Work on layer
         })
     }
 
