@@ -10,7 +10,6 @@ export class ToyManager
     static instance: ToyManager;
     toys: any = []; //Array of toys
 
-    paperScope: paper.PaperScope;
     targetCanvas: HTMLCanvasElement;
 
     constructor() {
@@ -38,9 +37,6 @@ export class ToyManager
 
     SetTargetCanvas(canvas: HTMLCanvasElement) {
         this.targetCanvas = canvas;
-    }
-    SetPaper(paper: paper.PaperScope) {
-        this.paperScope = paper;
     }
 
     GetToy(channel:number) {

@@ -45,7 +45,7 @@ export class MIDIKeyboard {
         this.inputManager = new InputManager(); //The Input Manager
         this.toyManager = new ToyManager();
         this.toyName = toyName;
-        this.paperLayer = new this.toyManager.paperScope.Layer();
+        this.paperLayer = new paper.Layer();
         this.targetChannel = targetChannel; //The target channel
         this.canvas = this.toyManager.targetCanvas; //Canvas element to draw on
         
