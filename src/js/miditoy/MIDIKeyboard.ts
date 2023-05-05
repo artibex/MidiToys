@@ -36,7 +36,7 @@ export class MIDIKeyboard {
 
     //Construct everything basic that is needed for a MIDIKeyboard
     constructor(canvas:HTMLCanvasElement, targetChannel: number, numberOfKeys: number, startNote: number, useRegExp: boolean) {
-        this.inputManager = InputManager.GetInstance(); //The Input Manager
+        this.inputManager = new InputManager(); //The Input Manager
         this.targetChannel = targetChannel; //The target channel
         this.canvas = canvas; //Canvas element to draw on
         

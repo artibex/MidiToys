@@ -1,13 +1,12 @@
 import { ToyManager } from "../js/miditoy/ToyManager";
 
 
-export default function SetupContainer( props: {toyName: string, channel: number}) {
+export default function SetupContainer( props: {channel: number}) {
     // console.log("MANAGER =" + toyManager);
     var manager = new ToyManager();
     var channel = props.channel;
     // var toyName = manager.GetToyType(channel);
     
-
     return (
     <div class="channelContainer">
         <div class="toyNameSetting">
@@ -16,7 +15,7 @@ export default function SetupContainer( props: {toyName: string, channel: number
         </div>
         Number of Keys <input class="numberInput" type="number" min="1" max="100" step="1" value={10} /> 
         <br />
-        Start Key <input class="numberInput" type="number" min="1" max="100"/> 
+        Start Key <input class="numberInput" type="number" min="1" max="100" value={10} /> 
         <br />
         Collaps Notes <input class="toggleInput" type="checkbox" />          
     </div>
@@ -25,6 +24,7 @@ export default function SetupContainer( props: {toyName: string, channel: number
 
 export function ChangeToy() {
     console.log("CHANGING toy");
+    
     return (
         <div>
             <button id="changeButton">Toy 1</button>            

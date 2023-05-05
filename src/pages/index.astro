@@ -27,7 +27,7 @@ import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
     let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement; //Get target Canvas
     paper.setup(toyCanvas); //Paper setup
     
-    let inputManager = InputManager.GetInstance(); //Setup input manager
+    let inputManager = new InputManager(); //Setup input manager
     let toyManager = new ToyManager(); //Setup toy manager
     toyManager.SetTargetCanvas(toyCanvas); //Set the target
     
@@ -134,7 +134,7 @@ import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
     <br>
     
     <div class="channelGroup">
-        <ChannelSettingsContainer toyName="Test" channel={1} client:load />
+        <ChannelSettingsContainer channel={1} client:load />
     </div>
     <div class="channelGroup" style="display:none;">
     </div>

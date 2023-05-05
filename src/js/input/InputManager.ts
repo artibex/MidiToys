@@ -39,6 +39,11 @@ export class InputManager {
     clockCount: number = 0;
     
     constructor() {
+        if (InputManager.instance) {
+            return InputManager.instance
+        }
+        InputManager.instance = this
+        
         this.InitVariables();
         this.InitReaderModules();
         console.log("CREATED InputManager");
@@ -88,12 +93,12 @@ export class InputManager {
         }
     }
 
-    static GetInstance(): InputManager {
-        if (!InputManager.instance) {
-          InputManager.instance = new InputManager();
-        }
-        return InputManager.instance;
-      }
+    // static GetInstance(): InputManager {
+    //     if (!InputManager.instance) {
+    //       InputManager.instance = new InputManager();
+    //     }
+    //     return InputManager.instance;
+    //   }
 
     InitReaderModules() {
         if(typeof window !== "undefined") {
