@@ -1,0 +1,132 @@
+body {
+background-color: black;
+color: white;
+}
+button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 25px;
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+}
+
+.marginLeft20{
+  margin-left: 20px; /* add margin to the right of the heading */
+}
+.marginLeft10{
+  margin-left: 10px; /* add margin to the right of the heading */
+}
+.channelGroup {
+  border-radius: 25px;
+  background-color: black;
+  border: 1px solid white;
+  width: 99%;
+  height: 80%;
+  padding: 1px;
+  grid-gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  margin-left: auto;
+  margin-right: auto;
+  /* box-sizing: border-box; */
+  display: grid;
+}
+.channelContainer {
+  padding: 25px;
+  border-radius: 25px;
+  border: 1px solid white;
+}
+.numberInput {
+  /* -moz-appearance: textfield; */
+  appearance: textfield;
+  /* width: 200px;
+  height: 30px;
+  padding: 5px; */
+
+  /* font-size: 16px; */
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 25px;
+  box-sizing: border-box;
+  /* width: 200px; */
+  height: 30px;
+  outline: none;
+}
+.numberInput:focus {
+  border-color: #4da6ff;
+}
+.toggleInput{
+  appearance: none;
+  border-radius: 10px;
+  background-color: black;
+  border: 1px solid white;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+}
+.toggleInput:checked::before {
+  content: "X";
+  font-size: 20px;
+  text-align: center;
+  position: relative;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  
+  /* position: absolute; */
+  /* left: 10%;
+  top: 10%; */
+}
+
+.toyNameSetting {
+  height: 30px;
+  padding-bottom: 10px;
+  align-items: center;
+  display: flex;
+}
+/* .input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+
+#openSettingsBtn {
+  position: fixed;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
+  top: 50px;
+  left: 50px;
+  display: none;
+}
+#buttonSettingsGroup {
+  align-items: center;
+  height: 10%;
+  display: flex;
+}
+#settingsPanel {
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  width: 50%;
+  height: 40%;
+  border-radius: 25px;
+  background-color: black;
+  border: 1px solid white;
+  padding: 20px;
+
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  grid-gap: 10px;
+  display: none;
+}
+#toyCanvas {
+    width: 100%;
+    height: 100%;
+    /* add other styles as desired */
+}

@@ -1,5 +1,5 @@
 ---
-import "./css/global.css";
+import "../css/global.css";
 ---
 <html>
 
@@ -7,12 +7,14 @@ import "./css/global.css";
 
 </head>
 <body>
+    
 
     <h1> MIDI Debugging Page </h1>
+
     <script>
         import * as paper from "paper";
-        import { InputManager } from "./js/input/InputManager";
-        import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
+        import { InputManager } from "../js/input/InputManager";
+        import { SquareKeyboard } from "../js/miditoy/SquareKeyboard";
 
         let inputManager = InputManager.GetInstance();
         let ch1SquareKeyboard;
@@ -45,17 +47,18 @@ import "./css/global.css";
                 document.getElementById("DeviceAndBPM").innerHTML = deviceData;
             }
         }
-        </script>
+    </script>
 
-        <h2 id="DeviceAndBPM">No device found</h2>
+    <h2 id="DeviceAndBPM">No device found</h2>
 
-        <h2 id="CH1Keys">Ch 1</h2>
-        <h2 id="CH2Keys"></h2>
-        <h2 id="CH3Keys"></h2>
-        <h2 id="CH4Keys"></h2>
-        <h2 id="CH15Keys"></h2>
-        <br>
-        <canvas id="toyCanvas" class="toyCanvas"></canvas>
-</body>
+    <h2 id="CH1Keys">Ch 1</h2>
+    <h2 id="CH2Keys"></h2>
+    <h2 id="CH3Keys"></h2>
+    <h2 id="CH4Keys"></h2>
+    <h2 id="CH15Keys"></h2>
+    <br>
+    <canvas id="toyCanvas" class="toyCanvas"></canvas>
+
+    </body>
 
 </html>

@@ -1,5 +1,7 @@
 ---
-import "./css/global.css";
+import "../css/global.css";
+import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
+import IncrementButton from "../components/IncrementButton";
 ---
 
 <!DOCTYPE html>
@@ -10,43 +12,56 @@ import "./css/global.css";
 </head>
 <body>
 
+
 <!-- MIDI Toys Setup -->
 <script>
     //Import
-    import { InputManager } from "./js/input/InputManager";
-    import { SquareKeyboard } from "./js/miditoy/SquareKeyboard";
-    import { MusicBalls } from "./js/miditoy/MusicBalls";
+    import { InputManager } from "../js/input/InputManager";
+    import { ToyManager } from "../js/miditoy/ToyManager";
+    import { SquareKeyboard } from "../js/miditoy/SquareKeyboard";
+    import { MusicBalls } from "../js/miditoy/MusicBalls";
+    import { DrumMaschin } from "../js/miditoy/DrumMaschin";
 
-    import { DrumMaschin } from "./js/miditoy/DrumMaschin";
     import * as paper from "paper";
     
     //Base Toys setup
-    let inputManager = InputManager.GetInstance();
-    let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
+    let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement; //Get target Canvas
     paper.setup(toyCanvas); //Paper setup
     
-    let channel1Toy;
-    let channel2Toy;
-    let channel3Toy;
-    let channel4Toy;
+    let inputManager = new InputManager(); //Setup input manager
+    let toyManager = new ToyManager(); //Setup toy manager
+    toyManager.SetTargetCanvas(toyCanvas); //Set the target
+    toyManager.SetPaper(paper);
+    toyManager.CreateEmptyToys();
+
+    // toyManager.SetupMusicBalls(1, 13.3, 12);
+    // console.log(toyManager.GetToyName(1));
+    paper.view.onFrame = function(event) {
+        toyManager.UpdateToys(); //Update all keyboards, 60 times a second
+    }
 
     //If browser window
     if (typeof window !== 'undefined') {
-        channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
-        channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
-        channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
+        // toyManager.channel1Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
+        // channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
+        // channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
+        // channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
 
-        paper.view.onFrame = function(event) {
-            channel1Toy.UpdateKeyboard();
-            channel2Toy.UpdateKeyboard();
-            channel3Toy.UpdateKeyboard();
-        }
     }
+
+    // UpdateToyNames();
+    // function UpdateToyNames () {
+    //     document.getElementById("toyName1").innerHTML = toyManager.GetToyType(1);
+    //     // document.getElementById("toyName2").innerHTML = toyManager.GetToyType(2);
+    //     // document.getElementById("toyName3").innerHTML = toyManager.GetToyType(3);
+    //     // document.getElementById("toyName4").innerHTML = toyManager.GetToyType(4);
+    // }
+
 </script>
 
 <!-- Open SettingsPanel -->
 <script>
-    import { AnimationCollection } from "./js/AnimationCollection";
+    import { AnimationCollection } from "../js/AnimationCollection";
 
     const settingsPanel = document.getElementById("settingsPanel");
     const openSettingsBtn = document.getElementById("openSettingsBtn");
@@ -115,47 +130,24 @@ import "./css/global.css";
         <button class="marginLeft10" id="nextButton">Next</button>
         <h1 class="marginLeft20">Channel Settings</h1>
     </div>
-    <br>
-    <div class="channelGroup">
-        <div class="channelContainer">
-            <div class="toyNameSetting">
-                <button id="prevButton">Prev</button>
-                <button class="marginLeft10"  id="nextButton">Next</button>
-                <h2 class="marginLeft20">ToyName</h2> 
-            </div>
-            Number of Keys <input class="numberInput" type="number" min="1" max="100" step="1" /> <br>
-            Start Key <input class="numberInput" type="number" min="1" max="100"/> <br>
-            Use regular expression <input class="toggleInput" type="checkbox">
-            
-        </div>
-        <div class="channelContainer">
-            Channel 2 <br>
-            Use regular expression <input class="toggleInput" type="checkbox">
 
-        </div>
-        <div class="channelContainer">Channel 3</div>
-        <div class="channelContainer">Channel 4</div>
+    <br>
+    
+    <div class="channelGroup">
+        <ChannelSettingsContainer channel={1} client:load />
+        <ChannelSettingsContainer channel={2} client:load />
+        <ChannelSettingsContainer channel={3} client:load />
+        <ChannelSettingsContainer channel={4} client:load />
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Channel 5</div>
-        <div class="channelContainer">Channel 6</div>
-        <div class="channelContainer">Channel 7</div>
-        <div class="channelContainer">Channel 8</div>
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Channel 9</div>
-        <div class="channelContainer">Channel 10</div>
-        <div class="channelContainer">Channel 11</div>
-        <div class="channelContainer">Channel 12</div>
     </div>
     <div class="channelGroup" style="display:none;">
-        <div class="channelContainer">Channel 13</div>
-        <div class="channelContainer">Channel 14</div>
-        <div class="channelContainer">Channel 15</div>
-        <div class="channelContainer">Channel 16</div>
     </div>
     <!-- Settings content goes here -->
 </div>
+
 
 <footer>
     <p>Copyright © 2023 Korbinian Maag</p>
