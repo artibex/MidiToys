@@ -1,9 +1,9 @@
 import { MIDIReceiver } from "./MIDIReceiver";
-import { MIDIKeyboard } from "./MIDIKeyboard";
-import { Vector2D } from "./MIDIKeyboard";
+import { MIDIToy } from "./MIDIToy";
+import { Vector2D } from "./MIDIToy";
 import paper from 'paper';
 
-export class MusicBalls extends MIDIKeyboard {
+export class MusicBalls extends MIDIToy {
     shapes: paper.Path[] = [];
     circleRadius: number = 15;
     velocity: Vector2D[] = [];
@@ -27,9 +27,10 @@ export class MusicBalls extends MIDIKeyboard {
 
     SetupKeyboard() {
         // this.InitDrawPositions();
-        this.circleRadius = this.HorizontalDrawPositionDistrubution() / 4;
         this.InitVelocity();
+        this.circleRadius = this.HorizontalDrawPositionDistrubution() / 4;
 
+        this.shapes.length = 0;
         this.drawPositions.forEach(element => {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
@@ -42,6 +43,7 @@ export class MusicBalls extends MIDIKeyboard {
     }
 
     InitVelocity() {
+        this.velocity.length = 0;
         for(let i = 0; i < this.numberOfKeys; i++) {
             let vec: Vector2D = ({x: 0, y: 0});
             this.velocity.push(vec);
@@ -78,7 +80,8 @@ export class MusicBalls extends MIDIKeyboard {
         this.shapes.forEach(element => {
             var s = element as paper.Path.Circle;
             var vel = this.velocity[indexValue];
-            
+            if(vel == undefined) return;
+
             if(s.position.y < this.h - this.circleRadius) vel.y += this.yGravity; //add negativ gravity value
             if(vel.y > 0) vel.y *= this.yFriction; //reduce velocity when going up
 

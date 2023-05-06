@@ -10,18 +10,19 @@ export interface Vector2D {
     x: number;
     y: number;
   }
-  
-export class MIDIKeyboard {
+
+//Abstract class that forms the base of every MIDIToy
+export abstract class MIDIToy {
     //Basic information
-    inputManager: InputManager;
-    toyManager: ToyManager;
-    paperLayer;
-    toyName: string;
-    targetChannel: number;
-    bpm: number = 0;
+    inputManager: InputManager; //InputManager reference
+    toyManager: ToyManager; //ToyManager reference
+    paperLayer; //The paper layer on whith to draw on
+    toyName: string; //Name of the toy
+    targetChannel: number; //The target MIDi channel of the toy
+    bpm: number = 0; //The bpm value to calculate stuff
     
     //Canvas settings
-    devicePixelRatio: number;
+    // devicePixelRatio: number;
     canvas: HTMLCanvasElement; //The canvas
     w: number;
     h: number;
@@ -29,7 +30,7 @@ export class MIDIKeyboard {
     //MIDI Receiver settings
     numberOfKeys: number = 12; //How many keys are on this keyboard?
     startKey: number = 12; //The note from where you count up
-    useRegExp: boolean;
+    useRegExp: boolean; //Use regular expression in in MIDIReceiver?
     receiver: MIDIReceiver[] = [];
     
     //Vector Positions as array
@@ -41,7 +42,7 @@ export class MIDIKeyboard {
     accentColor: paper.Color = new paper.Color(255/2);
 
     //Construct everything basic that is needed for a MIDIKeyboard
-    constructor(toyName: string, targetChannel: number, numberOfKeys: number, startNote: number, useRegExp: boolean) {
+    constructor(toyName: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
         this.inputManager = new InputManager(); //The Input Manager
         this.toyManager = new ToyManager();
         this.toyName = toyName;
@@ -54,20 +55,21 @@ export class MIDIKeyboard {
 
         //Setup Keys
         this.numberOfKeys = numberOfKeys;
-        this.startKey = startNote;
+        this.startKey = startKey;
         this.useRegExp = useRegExp;
 
         // this.ResizeCanvas();
-        this.SetupMidiReceiver();
-        console.log("CREATED new MIDIKeyboard on channel " + this.targetChannel);
+        this.SetupMIDIReceiver(this.useRegExp);
+        console.log("CREATED new MIDIToy on channel " + this.targetChannel);
     }
 
-    SetupMidiReceiver() {
+    SetupMIDIReceiver(value: boolean) {
         this.receiver.length = 0;
+        //this.receiver.length = 0;
         let note = this.startKey;
         for(let i = 0; i < this.numberOfKeys; i++) {
             var rec = new MIDIReceiver(this.targetChannel, MIDIDataTable.MIDINoteToString(note));
-            if(this.useRegExp) rec.useRegExp = true;
+            rec.useRegExp = value;
             this.receiver.push(rec);
             note++;
         }
@@ -101,9 +103,9 @@ export class MIDIKeyboard {
 
     GetRandomNumber(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-
-    UpdateKeyboard() {
-        //Empty Function, get's overwritten by higher class
     }
+
+    //Abstract functions that need to exist
+    abstract UpdateKeyboard();
+    abstract SetupKeyboard();
 }

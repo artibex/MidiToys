@@ -1,9 +1,9 @@
 import { MIDIReceiver } from "./MIDIReceiver";
-import { MIDIKeyboard } from "./MIDIKeyboard";
+import { MIDIToy } from "./MIDIToy";
 import paper from 'paper';
 
 //Takes a canvas HTMLElement and draws cool things on it
-export class SquareKeyboard extends MIDIKeyboard {
+export class SquareKeyboard extends MIDIToy {
     // squareSize: number[] = [];
     targetSquareSize = 20;
     paperKeys: paper.Path.Rectangle[] = [];
