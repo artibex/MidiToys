@@ -33,16 +33,14 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateToyValues() {
         console.log("UPDATE toy values");
         manager.RemoveChildrenFromLayer(channel);
-        manager.SetToyNumberOfKeys(channel, numberOfKeys());
-        manager.SetToyStartKey(channel, startKey());
-        var t = manager.GetToy(channel) as MIDIToy;
-        // t.SetupMIDIReceiver(collapsNote());
-        t.SetupKeyboard();
-
-        // t.SetRegExp(collapsNote());
-        // manager.SetToyRegExp(channel, collapsNote());
         // manager.SetToyNumberOfKeys(channel, numberOfKeys());
         // manager.SetToyStartKey(channel, startKey());
+        var t = manager.GetToy(channel) as MIDIToy;
+        t.numberOfKeys = numberOfKeys();
+        t.startKey = startKey();
+        t.useRegExp = collapsNote();
+        t.SetupMIDIReceiver(collapsNote());
+        t.SetupKeyboard();
     }
     function CreateToy() {
         switch(toyType()) {

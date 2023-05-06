@@ -81,20 +81,20 @@ export class ToyManager
         return this.toys[channel -1].useRegExp;
     }
 
-    SetToyRegExp(channel: number, value: boolean) {
-        this.toys[channel - 1].useRegExp = value;
-        this.toys[channel - 1].SetupMIDIReceiver(value);
-        console.log("SET RegExp to =" + value);
-    }
-    SetToyNumberOfKeys(channel: number, numberOfKeys: number) {
-        console.log("SET numberOfKeys to = " + numberOfKeys);
-        this.toys[channel - 1].numberOfKeys = numberOfKeys;
-        this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
-    }
-    SetToyStartKey(channel: number, startKey: number) {
-        this.toys[channel - 1].startKey = startKey;
-        this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
-    }
+    // SetToyRegExp(channel: number, value: boolean) {
+    //     this.toys[channel - 1].useRegExp = value;
+    //     this.toys[channel - 1].SetupMIDIReceiver(value);
+    //     console.log("SET RegExp to =" + value);
+    // }
+    // SetToyNumberOfKeys(channel: number, numberOfKeys: number) {
+    //     console.log("SET numberOfKeys to = " + numberOfKeys);
+    //     this.toys[channel - 1].numberOfKeys = numberOfKeys;
+    //     this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
+    // }
+    // SetToyStartKey(channel: number, startKey: number) {
+    //     this.toys[channel - 1].startKey = startKey;
+    //     this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
+    // }
 
     //Clears the complete canvas with all elements on it
     ClearCanvas() {

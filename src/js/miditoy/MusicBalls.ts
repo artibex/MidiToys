@@ -30,6 +30,7 @@ export class MusicBalls extends MIDIToy {
         this.InitVelocity();
         this.circleRadius = this.HorizontalDrawPositionDistrubution() / 4;
 
+        this.shapes.length = 0;
         this.drawPositions.forEach(element => {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
