@@ -40,22 +40,13 @@ import IncrementButton from "../components/IncrementButton";
     }
 
     //If browser window
-    if (typeof window !== 'undefined') {
-        // toyManager.channel1Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
-        // channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
-        // channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
-        // channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
+    // if (typeof window !== 'undefined') {
+    //     // toyManager.channel1Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
+    //     // channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
+    //     // channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
+    //     // channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
 
-    }
-
-    // UpdateToyNames();
-    // function UpdateToyNames () {
-    //     document.getElementById("toyName1").innerHTML = toyManager.GetToyType(1);
-    //     // document.getElementById("toyName2").innerHTML = toyManager.GetToyType(2);
-    //     // document.getElementById("toyName3").innerHTML = toyManager.GetToyType(3);
-    //     // document.getElementById("toyName4").innerHTML = toyManager.GetToyType(4);
     // }
-
 </script>
 
 <!-- Open SettingsPanel -->
@@ -64,24 +55,37 @@ import IncrementButton from "../components/IncrementButton";
 
     const settingsPanel = document.getElementById("settingsPanel");
     const openSettingsBtn = document.getElementById("openSettingsBtn");
+    const closeBtn = document.querySelector('#closeButton');
+
+    const CloseSettings = () => settingsPanel.style.display = "none";
+    function OpenSettings() {
+        settingsPanel.style.display = "block";
+        HideOpenSettingsBtn();
+    }
+
+    const ShowOpenSettingsBtn = () => openSettingsBtn.style.display = "block";
+    const HideOpenSettingsBtn = () => openSettingsBtn.style.display = "none";
 
     document.addEventListener("mousemove", (event) => {
         if (event.clientY > window.innerHeight / 2) {
-            openSettingsBtn.style.display = "none";
-            settingsPanel.style.display = "none";
-        } else {
+            HideOpenSettingsBtn();
+            // CloseSettings();
+        } else { 
             let calc = settingsPanel.style.left + settingsPanel.style.padding;
             settingsPanel.style.width = `${window.innerWidth - 150}px`;
-            openSettingsBtn.style.display = "block";
+            if(settingsPanel.style.display != "block") ShowOpenSettingsBtn();
+            //OpenSettings();
         }
     });
     openSettingsBtn.addEventListener("click", () => {
         if(settingsPanel.style.display == "none") {
             AnimationCollection.AnimateFromTop(settingsPanel, 50);
-            settingsPanel.style.display = "block";
+            OpenSettings();
         }
-        else settingsPanel.style.display = "none";
+        else CloseSettings();
     });
+    closeBtn.addEventListener("click", CloseSettings);
+
 </script>
 
 <!-- ContainerGroups Controls -->
@@ -125,8 +129,9 @@ import IncrementButton from "../components/IncrementButton";
 
 <div id="settingsPanel">
     <div id="buttonSettingsGroup">
-        <button id="prevButton">Prev</button>
-        <button class="marginLeft10" id="nextButton">Next</button>
+        <button id="closeButton">X</button>
+        <button id="prevButton" class="marginLeft10">Prev</button>
+        <button id="nextButton">Next</button>
         <h1 class="marginLeft20">Channel Settings</h1>
     </div>
 
@@ -139,12 +144,23 @@ import IncrementButton from "../components/IncrementButton";
         <ChannelSettingsContainer channel={4} client:load />
     </div>
     <div class="channelGroup" style="display:none;">
+        <ChannelSettingsContainer channel={5} client:load />
+        <ChannelSettingsContainer channel={6} client:load />
+        <ChannelSettingsContainer channel={7} client:load />
+        <ChannelSettingsContainer channel={8} client:load />
     </div>
     <div class="channelGroup" style="display:none;">
+        <ChannelSettingsContainer channel={9} client:load />
+        <ChannelSettingsContainer channel={10} client:load />
+        <ChannelSettingsContainer channel={11} client:load />
+        <ChannelSettingsContainer channel={12} client:load />
     </div>
     <div class="channelGroup" style="display:none;">
+        <ChannelSettingsContainer channel={13} client:load />
+        <ChannelSettingsContainer channel={14} client:load />
+        <ChannelSettingsContainer channel={15} client:load />
+        <ChannelSettingsContainer channel={16} client:load />
     </div>
-    <!-- Settings content goes here -->
 </div>
 
 

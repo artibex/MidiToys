@@ -4,7 +4,6 @@ import { ToyManager } from "../js/miditoy/ToyManager";
 
 var manager = new ToyManager();
 
-
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     
@@ -69,40 +68,65 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
     }
 
+    function RenderDefaultUIElements() {
+        if(toyType() == 0) return (<></>)
+        else {
+            return(
+                <>
+                    Number of Keys 
+                    <input 
+                    class="numberInput"
+                    type="number" min="1"
+                    max="100" step="1"
+                    onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                    value={numberOfKeys()}
+                    /> <br />
+    
+                    Start Key 
+                    <input 
+                    class="numberInput" 
+                    type="number" 
+                    min="1" 
+                    max="100" 
+                    onChange={(event) => setStartKey(parseInt(event.target.value))}
+                    value={startKey()} 
+                    /> <br />
+    
+                    Collaps Notes 
+                    <input 
+                    class="toggleInput" 
+                    type="checkbox" 
+                    checked={collapsNote()}
+                    onChange={(event) => setCollapsNote(event.target.checked)}
+                    />    
+                </>
+            )
+        }
+    }
+    function RenderSpecialUIElements() {
+        if(toyType() == 0) return(<></>)
+        else {
+            switch(toyType()) {
+                case 1: break;
+                case 2: break;
+            }
+            return(
+                <></>
+            )
+        }
+    }
+
     return (
     <div class="channelContainer">
+        <h2>MIDI Channel {channel}</h2>
         <div class="toyNameSetting">
         <button id="changeButton" onClick={PrevToyType}>Prev</button>
         <button id="changeButton" onClick={NextToyType}>Next</button>                       
         <h2 class="marginLeft20">{toyName()}</h2> 
         </div>
 
-        Number of Keys 
-            <input 
-            class="numberInput"
-            type="number" min="1"
-            max="100" step="1"
-            onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-            value={numberOfKeys()}
-            /> <br />
-
-        Start Key 
-        <input 
-        class="numberInput" 
-        type="number" 
-        min="1" 
-        max="100" 
-        onChange={(event) => setStartKey(parseInt(event.target.value))}
-        value={startKey()} 
-        /> <br />
-
-        Collaps Notes 
-        <input 
-        class="toggleInput" 
-        type="checkbox" 
-        checked={collapsNote()}
-        onChange={(event) => setCollapsNote(event.target.checked)}
-        />    
+        {RenderDefaultUIElements()}
+        {RenderSpecialUIElements()}
     </div>
     )
 }
