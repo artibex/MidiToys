@@ -16,7 +16,8 @@ export default function SetupContainer( props: {channel: number}) {
     
     createEffect(() => {
         console.log("TRIGGER effect");
-        CreateToy();
+        //CreateToy();
+        UpdateToyValues();
         UpdateUIValues();
     })
 
@@ -29,12 +30,20 @@ export default function SetupContainer( props: {channel: number}) {
             setCollapsNote(manager.GetToyRegExp(channel));
         } else setToyName("ManagerNotFound");
     }
-    // function UpdateToyValues() {
-    //     console.log("UPDATE toy values");
-    //     manager.SetToyRegExp(channel, collapsNote());
-    //     manager.SetToyNumberOfKeys(channel, numberOfKeys());
-    //     manager.SetToyStartKey(channel, startKey());
-    // }
+    function UpdateToyValues() {
+        console.log("UPDATE toy values");
+        manager.RemoveChildrenFromLayer(channel);
+        manager.SetToyNumberOfKeys(channel, numberOfKeys());
+        manager.SetToyStartKey(channel, startKey());
+        var t = manager.GetToy(channel) as MIDIToy;
+        // t.SetupMIDIReceiver(collapsNote());
+        t.SetupKeyboard();
+
+        // t.SetRegExp(collapsNote());
+        // manager.SetToyRegExp(channel, collapsNote());
+        // manager.SetToyNumberOfKeys(channel, numberOfKeys());
+        // manager.SetToyStartKey(channel, startKey());
+    }
     function CreateToy() {
         switch(toyType()) {
             case 0: manager.CreateEmptyToy(channel, numberOfKeys(), startKey()); break;

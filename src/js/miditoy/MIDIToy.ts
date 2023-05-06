@@ -10,18 +10,19 @@ export interface Vector2D {
     x: number;
     y: number;
   }
-  
+
+//Abstract class that forms the base of every MIDIToy
 export abstract class MIDIToy {
     //Basic information
-    inputManager: InputManager;
-    toyManager: ToyManager;
-    paperLayer;
-    toyName: string;
-    targetChannel: number;
-    bpm: number = 0;
+    inputManager: InputManager; //InputManager reference
+    toyManager: ToyManager; //ToyManager reference
+    paperLayer; //The paper layer on whith to draw on
+    toyName: string; //Name of the toy
+    targetChannel: number; //The target MIDi channel of the toy
+    bpm: number = 0; //The bpm value to calculate stuff
     
     //Canvas settings
-    devicePixelRatio: number;
+    // devicePixelRatio: number;
     canvas: HTMLCanvasElement; //The canvas
     w: number;
     h: number;
@@ -29,7 +30,7 @@ export abstract class MIDIToy {
     //MIDI Receiver settings
     numberOfKeys: number = 12; //How many keys are on this keyboard?
     startKey: number = 12; //The note from where you count up
-    useRegExp: boolean;
+    useRegExp: boolean; //Use regular expression in in MIDIReceiver?
     receiver: MIDIReceiver[] = [];
     
     //Vector Positions as array
@@ -58,28 +59,20 @@ export abstract class MIDIToy {
         this.useRegExp = useRegExp;
 
         // this.ResizeCanvas();
-        this.SetupMidiReceiver();
+        this.SetupMIDIReceiver(this.useRegExp);
         console.log("CREATED new MIDIToy on channel " + this.targetChannel);
     }
 
-    SetupMidiReceiver() {
+    SetupMIDIReceiver(value: boolean) {
         this.receiver.length = 0;
+        //this.receiver.length = 0;
         let note = this.startKey;
         for(let i = 0; i < this.numberOfKeys; i++) {
             var rec = new MIDIReceiver(this.targetChannel, MIDIDataTable.MIDINoteToString(note));
-            if(this.useRegExp) rec.useRegExp = true;
+            rec.useRegExp = value;
             this.receiver.push(rec);
             note++;
         }
-    }
-
-    //Function to update useRegExp
-    SetRegExp(value: boolean) {
-        this.useRegExp = value;
-        this.receiver.forEach(element => {
-            var e = element as MIDIReceiver;
-            e.useRegExp = value;
-        })
     }
 
     //Evenly calculate draw positions and put them into the drawPositions array
@@ -110,8 +103,9 @@ export abstract class MIDIToy {
 
     GetRandomNumber(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
+    }
 
-    abstract UpdateKeyboard()
-    abstract SetupKeyboard()
+    //Abstract functions that need to exist
+    abstract UpdateKeyboard();
+    abstract SetupKeyboard();
 }

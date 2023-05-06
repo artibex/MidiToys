@@ -27,8 +27,8 @@ export class MusicBalls extends MIDIToy {
 
     SetupKeyboard() {
         // this.InitDrawPositions();
-        this.circleRadius = this.HorizontalDrawPositionDistrubution() / 4;
         this.InitVelocity();
+        this.circleRadius = this.HorizontalDrawPositionDistrubution() / 4;
 
         this.drawPositions.forEach(element => {
             var pos = element as Vector2D;
@@ -42,6 +42,7 @@ export class MusicBalls extends MIDIToy {
     }
 
     InitVelocity() {
+        this.velocity.length = 0;
         for(let i = 0; i < this.numberOfKeys; i++) {
             let vec: Vector2D = ({x: 0, y: 0});
             this.velocity.push(vec);
@@ -78,7 +79,8 @@ export class MusicBalls extends MIDIToy {
         this.shapes.forEach(element => {
             var s = element as paper.Path.Circle;
             var vel = this.velocity[indexValue];
-            
+            if(vel == undefined) return;
+
             if(s.position.y < this.h - this.circleRadius) vel.y += this.yGravity; //add negativ gravity value
             if(vel.y > 0) vel.y *= this.yFriction; //reduce velocity when going up
 

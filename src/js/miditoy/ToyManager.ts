@@ -43,7 +43,6 @@ export class ToyManager
             this.toys[i] = new EmptyToy(i + 1);
         }
     }
-
     //Creates a "empty" toy aka the base class
     CreateEmptyToy(channel: number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
@@ -69,8 +68,6 @@ export class ToyManager
     GetToy(channel:number) {
         return this.toys[channel - 1];
     }
-
-
     GetToyName(channel: number) {
         return this.toys[channel -1].toyName;
     }
@@ -86,20 +83,29 @@ export class ToyManager
 
     SetToyRegExp(channel: number, value: boolean) {
         this.toys[channel - 1].useRegExp = value;
+        this.toys[channel - 1].SetupMIDIReceiver(value);
         console.log("SET RegExp to =" + value);
     }
     SetToyNumberOfKeys(channel: number, numberOfKeys: number) {
         console.log("SET numberOfKeys to = " + numberOfKeys);
         this.toys[channel - 1].numberOfKeys = numberOfKeys;
+        this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
     }
     SetToyStartKey(channel: number, startKey: number) {
-        this.toys[channel -1].startKey = startKey;
+        this.toys[channel - 1].startKey = startKey;
+        this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
     }
 
     //Clears the complete canvas with all elements on it
     ClearCanvas() {
         console.log("CLEAR paper canvas");
         paper.project.clear();
+    }
+    RemoveChildrenFromLayer(channel: number) {
+        var toy = this.GetToy(channel);
+        if(toy != undefined) {
+            toy.paperLayer.removeChildren();
+        }
     }
     RemovePaperLayer(channel: number) {
         var toy = this.GetToy(channel);
