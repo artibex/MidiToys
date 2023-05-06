@@ -1,9 +1,9 @@
 import { MIDIReceiver } from "./MIDIReceiver";
-import { MIDIKeyboard } from "./MIDIKeyboard";
-import { Vector2D } from "./MIDIKeyboard";
+import { MIDIToy } from "./MIDIToy";
+import { Vector2D } from "./MIDIToy";
 import paper from 'paper';
 
-export class MusicBalls extends MIDIKeyboard {
+export class MusicBalls extends MIDIToy {
     shapes: paper.Path[] = [];
     circleRadius: number = 15;
     velocity: Vector2D[] = [];

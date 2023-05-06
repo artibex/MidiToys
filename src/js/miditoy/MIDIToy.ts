@@ -11,7 +11,7 @@ export interface Vector2D {
     y: number;
   }
   
-export class MIDIKeyboard {
+export abstract class MIDIToy {
     //Basic information
     inputManager: InputManager;
     toyManager: ToyManager;
@@ -41,7 +41,7 @@ export class MIDIKeyboard {
     accentColor: paper.Color = new paper.Color(255/2);
 
     //Construct everything basic that is needed for a MIDIKeyboard
-    constructor(toyName: string, targetChannel: number, numberOfKeys: number, startNote: number, useRegExp: boolean) {
+    constructor(toyName: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
         this.inputManager = new InputManager(); //The Input Manager
         this.toyManager = new ToyManager();
         this.toyName = toyName;
@@ -54,12 +54,12 @@ export class MIDIKeyboard {
 
         //Setup Keys
         this.numberOfKeys = numberOfKeys;
-        this.startKey = startNote;
+        this.startKey = startKey;
         this.useRegExp = useRegExp;
 
         // this.ResizeCanvas();
         this.SetupMidiReceiver();
-        console.log("CREATED new MIDIKeyboard on channel " + this.targetChannel);
+        console.log("CREATED new MIDIToy on channel " + this.targetChannel);
     }
 
     SetupMidiReceiver() {
@@ -71,6 +71,15 @@ export class MIDIKeyboard {
             this.receiver.push(rec);
             note++;
         }
+    }
+
+    //Function to update useRegExp
+    SetRegExp(value: boolean) {
+        this.useRegExp = value;
+        this.receiver.forEach(element => {
+            var e = element as MIDIReceiver;
+            e.useRegExp = value;
+        })
     }
 
     //Evenly calculate draw positions and put them into the drawPositions array
@@ -103,7 +112,6 @@ export class MIDIKeyboard {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-    UpdateKeyboard() {
-        //Empty Function, get's overwritten by higher class
-    }
+    abstract UpdateKeyboard()
+    abstract SetupKeyboard()
 }

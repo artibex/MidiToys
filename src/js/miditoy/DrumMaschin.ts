@@ -1,9 +1,9 @@
 import { MIDIReceiver } from "./MIDIReceiver";
-import { MIDIKeyboard } from "./MIDIKeyboard";
-import { Vector2D } from "./MIDIKeyboard";
+import { MIDIToy } from "./MIDIToy";
+import { Vector2D } from "./MIDIToy";
 import paper from 'paper';
 
-export class DrumMaschin extends MIDIKeyboard {
+export class DrumMaschin extends MIDIToy {
     shapes: paper.Path[] = [];
     shapeLimit: number = 20;
     polySides: number = 3;
@@ -28,6 +28,10 @@ export class DrumMaschin extends MIDIKeyboard {
         console.log("CREATED DrumMaschin");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
+    }
+
+    SetupKeyboard() {
+        
     }
 
     frameCount: number = 0;
