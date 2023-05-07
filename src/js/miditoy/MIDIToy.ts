@@ -2,7 +2,7 @@ import { MIDIDataTable } from "../MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
 import { InputManager } from "../input/InputManager";
 import { ToyManager } from "./ToyManager";
-import { Vector2D } from "../Interfaces";
+import { RGBA, Vector2D } from "../Interfaces";
 import paper from 'paper';
 
 // import { Color } from "paper/dist/paper-core";
@@ -34,9 +34,9 @@ export abstract class MIDIToy {
     drawPositions: Vector2D[] = [];
 
     //Color settings
-    mainColor: paper.Color = new paper.Color(255);
-    secondaryColor: paper.Color = new paper.Color(255/4);
-    accentColor: paper.Color = new paper.Color(255/2);
+    mainColor: paper.Color = new paper.Color(0,1,0);
+    secondaryColor: paper.Color = new paper.Color(1/4);
+    accentColor: paper.Color = new paper.Color(1/2);
 
     //Construct everything basic that is needed for a MIDIKeyboard
     constructor(toyName: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
@@ -72,14 +72,21 @@ export abstract class MIDIToy {
         }
     }
 
-    SetMainColor(r: number, g: number, b: number) {
-        this.mainColor = new paper.Color(r,g,b);
+    //Takes 0-255 values and converts it to 0-1
+    SetColor(color: paper.Color, red: number, green: number, blue: number, alpha: number) {
+        color.red = this.MapRGBAToPaperRGBA(red);
+        color.green = this.MapRGBAToPaperRGBA(green);
+        color.blue = this.MapRGBAToPaperRGBA(blue);
+        color.alpha = this.MapRGBAToPaperRGBA(alpha);
     }
-    SetSecondaryColor(r: number, g: number, b: number) {
-        this.secondaryColor = new paper.Color(r,g,b);
-    }
-    SetAccentColor(r: number, g: number, b: number) {
-        this.accentColor = new paper.Color(r,g,b);
+    //Returns a RGBA object with 0-255 values
+    GetColor(color: paper.Color) {
+        var rgba: RGBA = {r:0,g:0,b:0, a:0};
+        rgba.r = this.MapPaperRGBAToRGBA(color.red);
+        rgba.g = this.MapPaperRGBAToRGBA(color.green);
+        rgba.b = this.MapPaperRGBAToRGBA(color.blue);
+        rgba.a = this.MapPaperRGBAToRGBA(color.alpha);
+        return rgba;
     }
 
     //Evenly calculate draw positions and put them into the drawPositions array
@@ -112,8 +119,14 @@ export abstract class MIDIToy {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    MapRGBAToPaperRGBA(x: number) {
+        return (x - 0) / (255 - 0);
+    }
+    MapPaperRGBAToRGBA(x: number) {
+        return Math.round(x * 255);
+    }
+
     //Abstract functions that need to exist
     abstract UpdateKeyboard();
     abstract SetupKeyboard();
-    abstract UpdateColors();
 }

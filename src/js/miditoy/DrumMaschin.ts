@@ -34,10 +34,6 @@ export class DrumMaschin extends MIDIToy {
         
     }
 
-    UpdateColors() {
-        
-    }
-
     frameCount: number = 0;
     UpdateKeyboard() {
         this.UpdateShapes();
