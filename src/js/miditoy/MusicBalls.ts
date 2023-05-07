@@ -75,13 +75,6 @@ export class MusicBalls extends MIDIToy {
         this.prevHoldingKeys = [...holdingKeys];
     }
 
-    UpdateColors() {
-        this.shapes.forEach(element => {
-            var shape = element as paper.Path;
-            shape.strokeColor = this.mainColor;
-        })
-    }
-
     UpdateKeyboard() {
         let indexValue = 0;
         this.shapes.forEach(element => {

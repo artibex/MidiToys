@@ -3,8 +3,9 @@ export interface Vector2D {
     x: number;
     y: number;
   }
-export interface RGB {
+export interface RGBA {
     r: number;
     g: number;
     b: number;
+    a: number;
   }
