@@ -81,14 +81,21 @@ export default function SetupContainer( props: {channel: number}) {
         if(toyType() == 0) return (<></>)
         else {
             return(
-                <div class="flexContainer">
-                    <div class="left">
+                <div>
+                    <div class="flexContainer">
                         <div>Keys {numberOfKeys()}</div> 
-                        <div >Start Key {startKey()}</div> <br />
-                        <div>Collaps Notes</div> <br />
-                    </div>
-                    <div class="right">
-                    <input
+                        
+                        <input
+                        class="numberInput"
+                        type="value"
+                        min="1"
+                        max="100"
+                        step="1"
+                        value={numberOfKeys()}
+                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                        />
+
+                        <input
                         class="sliderInput"
                         type="range"
                         min="1"
@@ -96,21 +103,27 @@ export default function SetupContainer( props: {channel: number}) {
                         step="1"
                         value={numberOfKeys()}
                         onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                        /> <br />
-                    <input 
-                        class="sliderInput" 
-                        type="range" 
-                        min="1" 
-                        max="100" 
-                        onChange={(event) => setStartKey(parseInt(event.target.value))}
-                        value={startKey()} 
-                    /> <br />
-                    <input 
-                        class="toggleInput" 
-                        type="checkbox" 
-                        checked={collapsNote()}
-                        onChange={(event) => setCollapsNote(event.target.checked)}
-                    />
+                        />
+                    </div>
+                    <div class="flexContainer">
+                        <div >Start Key {startKey()}</div>
+                        <input 
+                            class="sliderInput" 
+                            type="range" 
+                            min="1" 
+                            max="100" 
+                            onChange={(event) => setStartKey(parseInt(event.target.value))}
+                            value={startKey()} 
+                        />
+                    </div>
+                    <div class="flexContainer">
+                        <div>Collapse Notes</div>
+                        <input 
+                            class="toggleInput" 
+                            type="checkbox" 
+                            checked={collapsNote()}
+                            onChange={(event) => setCollapsNote(event.target.checked)}
+                        />
                     </div>
                 </div>
             )

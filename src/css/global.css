@@ -43,14 +43,15 @@ h2{
   border-radius: 25px;
   border: 1px solid white;
 }
+.flexContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .numberInput {
   /* -moz-appearance: textfield; */
   appearance: textfield;
-  /* width: 200px;
-  height: 30px;
-  padding: 5px; */
-
-  /* font-size: 16px; */
   padding: 10px;
   background-color: black;
   color: white;
@@ -59,25 +60,14 @@ h2{
   box-sizing: border-box;
   /* width: 200px; */
   height: 30px;
+  max-width: 50px;
   outline: none;
 }
-.flexContainer{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.left{
-  flex: 1;
-  text-align: justify;
-  padding-right: 10px;
-}
-.right{
-  flex: 1;
-}
-
 .numberInput:focus {
+  max-width: 50px;
   border-color: #4da6ff;
 }
+
 .toggleInput{
   appearance: none;
   border-radius: 10px;
@@ -102,11 +92,6 @@ h2{
   align-items: center;
   display: flex;
 }
-/* .input::-webkit-outer-spin-button,
-.input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-} */
 
 #openSettingsBtn {
   position: fixed;
