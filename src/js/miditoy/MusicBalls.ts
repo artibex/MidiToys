@@ -1,6 +1,6 @@
 import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIToy } from "./MIDIToy";
-import { Vector2D } from "./MIDIToy";
+import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
 export class MusicBalls extends MIDIToy {
@@ -35,7 +35,7 @@ export class MusicBalls extends MIDIToy {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
             var circle = new paper.Path.Circle(point, this.circleRadius);
-            circle.strokeColor = new paper.Color(255);
+            circle.strokeColor = this.mainColor;
             circle.strokeWidth = 2;
             this.shapes.push(circle);
             this.paperLayer.addChild(circle); //Work on layer
@@ -73,6 +73,13 @@ export class MusicBalls extends MIDIToy {
             })
         }
         this.prevHoldingKeys = [...holdingKeys];
+    }
+
+    UpdateColors() {
+        this.shapes.forEach(element => {
+            var shape = element as paper.Path;
+            shape.strokeColor = this.mainColor;
+        })
     }
 
     UpdateKeyboard() {

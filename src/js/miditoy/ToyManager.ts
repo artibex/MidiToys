@@ -68,18 +68,19 @@ export class ToyManager
     GetToy(channel:number) {
         return this.toys[channel - 1];
     }
-    GetToyName(channel: number) {
-        return this.toys[channel -1].toyName;
-    }
-    GetNumberOfKeys(channel: number) {
-        return this.toys[channel -1].numberOfKeys;
-    }
-    GetStartKey(channel: number) {
-        return this.toys[channel -1].startKey;
-    }
-    GetToyRegExp(channel: number) {
-        return this.toys[channel -1].useRegExp;
-    }
+    // GetToyName(channel: number) {
+    //     return this.toys[channel -1].toyName;
+    // }
+    // GetNumberOfKeys(channel: number) {
+    //     return this.toys[channel -1].numberOfKeys;
+    // }
+    // GetStartKey(channel: number) {
+    //     return this.toys[channel -1].startKey;
+    // }
+    // GetToyRegExp(channel: number) {
+    //     return this.toys[channel -1].useRegExp;
+    // }
+
 
     // SetToyRegExp(channel: number, value: boolean) {
     //     this.toys[channel - 1].useRegExp = value;
