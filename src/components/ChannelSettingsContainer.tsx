@@ -95,7 +95,7 @@ export default function SetupContainer( props: {channel: number}) {
                                 onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
                             />
                             <input
-                                class="sliderInput"
+                                class="sliderInput marginLeft10"
                                 type="range"
                                 min="1"
                                 max="100"
@@ -108,23 +108,22 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                         <div >Start Key</div>
                         <div class="flexContainer">
-                        <input 
-                            class="numberInput" 
-                            type="value" 
-                            min="1" 
-                            max="100" 
-                            onChange={(event) => setStartKey(parseInt(event.target.value))}
-                            value={startKey()} 
-                        />
-
-                        <input 
-                            class="sliderInput" 
-                            type="range" 
-                            min="1" 
-                            max="100" 
-                            onChange={(event) => setStartKey(parseInt(event.target.value))}
-                            value={startKey()} 
-                        />
+                            <input 
+                                class="numberInput" 
+                                type="value" 
+                                min="1" 
+                                max="100" 
+                                onChange={(event) => setStartKey(parseInt(event.target.value))}
+                                value={startKey()} 
+                            />
+                            <input 
+                                class="sliderInput marginLeft10" 
+                                type="range" 
+                                min="1" 
+                                max="100" 
+                                onChange={(event) => setStartKey(parseInt(event.target.value))}
+                                value={startKey()} 
+                            />
                         </div>
                     </div>
                     <div class="flexContainer">
