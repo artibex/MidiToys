@@ -2,14 +2,11 @@ import { MIDIDataTable } from "../MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
 import { InputManager } from "../input/InputManager";
 import { ToyManager } from "./ToyManager";
+import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
 // import { Color } from "paper/dist/paper-core";
 
-export interface Vector2D {
-    x: number;
-    y: number;
-  }
 
 //Abstract class that forms the base of every MIDIToy
 export abstract class MIDIToy {
@@ -75,6 +72,16 @@ export abstract class MIDIToy {
         }
     }
 
+    SetMainColor(r: number, g: number, b: number) {
+        this.mainColor = new paper.Color(r,g,b);
+    }
+    SetSecondaryColor(r: number, g: number, b: number) {
+        this.secondaryColor = new paper.Color(r,g,b);
+    }
+    SetAccentColor(r: number, g: number, b: number) {
+        this.accentColor = new paper.Color(r,g,b);
+    }
+
     //Evenly calculate draw positions and put them into the drawPositions array
     HorizontalDrawPositionDistrubution() {
         this.drawPositions.length = 0;
@@ -108,4 +115,5 @@ export abstract class MIDIToy {
     //Abstract functions that need to exist
     abstract UpdateKeyboard();
     abstract SetupKeyboard();
+    abstract UpdateColors();
 }

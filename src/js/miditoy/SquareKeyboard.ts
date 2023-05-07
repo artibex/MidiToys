@@ -36,6 +36,10 @@ export class SquareKeyboard extends MIDIToy {
         }
     }
 
+    UpdateColors() {
+        
+    }
+
     UpdateKeyboard = () => {
         let holdingKeys = this.inputManager.GetHoldingKeys(this.targetChannel);
         let velocities = this.inputManager.GetVelocity(this.targetChannel);

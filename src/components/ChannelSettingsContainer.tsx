@@ -1,18 +1,25 @@
 import { createSignal, createEffect } from "solid-js";
 import { MIDIToy } from "../js/miditoy/MIDIToy";
 import { ToyManager } from "../js/miditoy/ToyManager";
+import { RGB } from "../js/Interfaces";
 
 var manager = new ToyManager();
+
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     
+    //General Toy Settings
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("Placeholder");
     const [numberOfKeys, setNumberOfKeys] = createSignal(13*2);
     const [startKey, setStartKey] = createSignal(12);
     const [collapsNote, setCollapsNote] = createSignal(true);
-    
+    //Colors
+    const [mainColor, setMainColor] = createSignal<RGB>({ r: 0, g: 0, b: 0 });
+    const [secondaryColor, setSecondaryColor] = createSignal<RGB>({ r: 0, g: 0, b: 0 });
+    const [accentColor, setAccentColor] = createSignal<RGB>({ r: 0, g: 0, b: 0 });
+
     createEffect(() => {
         console.log("TRIGGER effect");
         //CreateToy();
@@ -23,10 +30,12 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateUIValues() {
         console.log("UPDATE UI values");
         if (typeof window !== 'undefined') {
-            setToyName(manager.GetToyName(channel));
-            setNumberOfKeys(manager.GetNumberOfKeys(channel));
-            setStartKey(manager.GetStartKey(channel));
-            setCollapsNote(manager.GetToyRegExp(channel));
+            var t = manager.GetToy(channel);
+            setToyName(t.toyName);
+            setNumberOfKeys(t.numberOfKeys);
+            setStartKey(t.startKey);
+            setCollapsNote(t.useRegExp);
+            
         } else setToyName("ManagerNotFound");
     }
     function UpdateToyValues() {
@@ -72,34 +81,38 @@ export default function SetupContainer( props: {channel: number}) {
         if(toyType() == 0) return (<></>)
         else {
             return(
-                <>
-                    Number of Keys 
+                <div class="flexContainer">
+                    <div class="left">
+                        <div>Keys {numberOfKeys()}</div> 
+                        <div >Start Key {startKey()}</div> <br />
+                        <div>Collaps Notes</div> <br />
+                    </div>
+                    <div class="right">
+                    <input
+                        class="sliderInput"
+                        type="range"
+                        min="1"
+                        max="100"
+                        step="1"
+                        value={numberOfKeys()}
+                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                        /> <br />
                     <input 
-                    class="numberInput"
-                    type="number" min="1"
-                    max="100" step="1"
-                    onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                    value={numberOfKeys()}
+                        class="sliderInput" 
+                        type="range" 
+                        min="1" 
+                        max="100" 
+                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                        value={startKey()} 
                     /> <br />
-    
-                    Start Key 
                     <input 
-                    class="numberInput" 
-                    type="number" 
-                    min="1" 
-                    max="100" 
-                    onChange={(event) => setStartKey(parseInt(event.target.value))}
-                    value={startKey()} 
-                    /> <br />
-    
-                    Collaps Notes 
-                    <input 
-                    class="toggleInput" 
-                    type="checkbox" 
-                    checked={collapsNote()}
-                    onChange={(event) => setCollapsNote(event.target.checked)}
-                    />    
-                </>
+                        class="toggleInput" 
+                        type="checkbox" 
+                        checked={collapsNote()}
+                        onChange={(event) => setCollapsNote(event.target.checked)}
+                    />
+                    </div>
+                </div>
             )
         }
     }

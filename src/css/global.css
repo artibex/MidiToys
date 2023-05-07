@@ -61,6 +61,20 @@ h2{
   height: 30px;
   outline: none;
 }
+.flexContainer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.left{
+  flex: 1;
+  text-align: justify;
+  padding-right: 10px;
+}
+.right{
+  flex: 1;
+}
+
 .numberInput:focus {
   border-color: #4da6ff;
 }
@@ -74,16 +88,12 @@ h2{
   height: 25px;
 }
 .toggleInput:checked::before {
-  content: "X";
-  font-size: 20px;
-  text-align: center;
-  position: relative;
-  left: 25%;
-  transform: translate(-50%, -50%);
-  
-  /* position: absolute; */
-  /* left: 10%;
-  top: 10%; */
+  content: "";
+  background-color: white;
+  border-radius: 10px;
+  width: 25px;
+  height: 25px;
+  position: absolute;
 }
 
 .toyNameSetting {

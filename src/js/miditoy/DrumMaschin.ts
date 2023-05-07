@@ -1,6 +1,6 @@
 import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIToy } from "./MIDIToy";
-import { Vector2D } from "./MIDIToy";
+import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
 export class DrumMaschin extends MIDIToy {
@@ -31,6 +31,10 @@ export class DrumMaschin extends MIDIToy {
     }
 
     SetupKeyboard() {
+        
+    }
+
+    UpdateColors() {
         
     }
 
@@ -83,7 +87,7 @@ export class DrumMaschin extends MIDIToy {
         console.log("DRAW shape");
         var point = new paper.Point(this.GetRandomNumber(this.minWidth, this.maxWidth), this.GetRandomNumber(this.minHeight,this.maxHeight));
         var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
-        poly.strokeColor = new paper.Color(255);
+        poly.strokeColor = this.mainColor;
         poly.strokeWidth = this.strokeWidth + velocity/10;
         this.paperLayer.addChild(poly);
         // poly.fillColor = new Color(200);
