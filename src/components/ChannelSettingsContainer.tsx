@@ -83,30 +83,40 @@ export default function SetupContainer( props: {channel: number}) {
             return(
                 <div>
                     <div class="flexContainer">
-                        <div>Keys {numberOfKeys()}</div> 
-                        
-                        <input
-                        class="numberInput"
-                        type="value"
-                        min="1"
-                        max="100"
-                        step="1"
-                        value={numberOfKeys()}
-                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                        />
-
-                        <input
-                        class="sliderInput"
-                        type="range"
-                        min="1"
-                        max="100"
-                        step="1"
-                        value={numberOfKeys()}
-                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                        />
+                        <div>Keys</div> 
+                        <div class="flexContainer">
+                            <input
+                                class="numberInput"
+                                type="value"
+                                min="1"
+                                max="100"
+                                step="1"
+                                value={numberOfKeys()}
+                                onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                            />
+                            <input
+                                class="sliderInput"
+                                type="range"
+                                min="1"
+                                max="100"
+                                step="1"
+                                value={numberOfKeys()}
+                                onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                            />
+                        </div>
                     </div>
                     <div class="flexContainer">
-                        <div >Start Key {startKey()}</div>
+                        <div >Start Key</div>
+                        <div class="flexContainer">
+                        <input 
+                            class="numberInput" 
+                            type="value" 
+                            min="1" 
+                            max="100" 
+                            onChange={(event) => setStartKey(parseInt(event.target.value))}
+                            value={startKey()} 
+                        />
+
                         <input 
                             class="sliderInput" 
                             type="range" 
@@ -115,6 +125,7 @@ export default function SetupContainer( props: {channel: number}) {
                             onChange={(event) => setStartKey(parseInt(event.target.value))}
                             value={startKey()} 
                         />
+                        </div>
                     </div>
                     <div class="flexContainer">
                         <div>Collapse Notes</div>
