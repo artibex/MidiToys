@@ -23,7 +23,7 @@ export class MIDIDataTable {
         }
       }
       
-    static MIDINoteToString(note) {
+    static MIDINoteToString(note: number) {
         const octave = Math.floor(note / 12) - 1;
         const noteName = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12];
         return `${noteName}${octave}`;

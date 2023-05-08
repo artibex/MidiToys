@@ -11,9 +11,14 @@ button {
 
   border-radius: 25px;
   background-color: black;
-  border: 1px solid white;
+  border: 2px dotted white;
   color: white;
+  transition: border 0.2s ease-in-out;
 }
+button:hover {
+  border: 2px solid white;
+}
+
 .thinButton{
   padding-top: 5px;
   padding-bottom: 5px;
@@ -22,6 +27,7 @@ button {
 }
 
 summary {
+  margin: 2px;
   list-style: none; /* remove the default list-style */
   /* padding: 10px;
   padding-left: 20px;
@@ -30,8 +36,12 @@ summary {
   margin: 10px;
   border-radius: 25px;
   background-color: black;
-  border: 1px solid white;
+  border: 2px dotted white;
   color: white;
+  transition: border-color 0.2s ease-in-out;
+}
+summary:hover {
+  border: 2px solid white;
 }
 summary::marker {
   content: ""; /* hide the marker */
@@ -39,6 +49,10 @@ summary::marker {
 details[open] summary {
   color: red; /* set the text color of the summary when opened */
 }
+.noSelect{
+  user-select: none;
+}
+
 
 /* h2{
   margin-top: auto;
@@ -93,6 +107,8 @@ details[open] summary {
 }
 .flexContainer{
   display: flex;
+  padding-top: 1px;
+  padding-bottom: 1px;
   justify-content: space-between;
   align-items: center;
 }
@@ -102,7 +118,10 @@ details[open] summary {
   text-align: center;
   /* align-items: end; */
   padding: 10px;
-  outline: 1px solid;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  outline: 2px dotted;
   border: none;
   background-color: black;
   color: white;
@@ -110,9 +129,15 @@ details[open] summary {
   box-sizing: border-box;
   height: 30px;
   width: 45px;
+  transition: color 0.2s ease-in-out;
 }
 .numberInput:focus {
-  border-color: #4da6ff;
+  outline: 2px solid;
+  color: red;
+  /* border-color: #4da6ff; */
+}
+.numberInput:hover{
+  outline: 2px solid;
 }
 
 .sliderInput{

@@ -8,6 +8,8 @@ export class MusicBalls extends MIDIToy {
     circleRadius: number = 15;
     velocity: Vector2D[] = [];
 
+    strokeWidth = 2;
+
     velocityLimit: number = 20;
     yGravity: number = -0.9;
     xGravity: number = 0;
@@ -35,8 +37,9 @@ export class MusicBalls extends MIDIToy {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
             var circle = new paper.Path.Circle(point, this.circleRadius);
-            circle.strokeColor = this.mainColor;
-            circle.strokeWidth = 2;
+            circle.fillColor = this.mainColor;
+            circle.strokeColor = this.secondaryColor;
+            circle.strokeWidth = this.strokeWidth;
             this.shapes.push(circle);
             this.paperLayer.addChild(circle); //Work on layer
         })

@@ -2,6 +2,7 @@ import { createSignal, createEffect } from "solid-js";
 import { MIDIToy } from "../js/miditoy/MIDIToy";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { RGBA } from "../js/Interfaces";
+import { MIDIDataTable } from "../js/MIDIDataTable";
 
 var manager = new ToyManager();
 
@@ -108,7 +109,7 @@ export default function SetupContainer( props: {channel: number}) {
         if(toyType() == 0) return (<></>)
         else {
             return(
-                <div>
+                <div class="noSelect">
                     <details>
                         <summary class="textAlignCenter marginAuto">
                             <h3 class="marginAuto thinButton">Key Settings</h3>
@@ -138,7 +139,7 @@ export default function SetupContainer( props: {channel: number}) {
                             </div>
                         </div>
                         <div class="flexContainer">
-                            <div >Start Key</div>
+                            <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
                             <div class="flexContainer">
                                 <input 
                                     class="numberInput" 
@@ -172,7 +173,7 @@ export default function SetupContainer( props: {channel: number}) {
 
                     <details>
                         <summary class="textAlignCenter marginAuto">
-                            <h3 class="marginAuto thinButton">Color Settings</h3>
+                            <h3 class="marginAuto thinButton noSelect">Color Settings</h3>
                         </summary>
                         <br></br>
                         <div class="flexContainer">
@@ -471,7 +472,7 @@ export default function SetupContainer( props: {channel: number}) {
 
     return (
     <div class="channelContainer">
-        <div class="flexContainer">
+        <div class="flexContainer noSelect">
             <div>
                 <h3 class="marginAuto">{toyName()}</h3>
                 <div>MIDI Channel: {channel}</div>
