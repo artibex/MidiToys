@@ -24,7 +24,7 @@ export class DrumMaschin extends MIDIToy {
     maxHeight: number = this.h * 0.5;
 
     constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super("DrumMaschin", targetChannel, numberOfKeys, startKey, false);
+        super("DrumMaschin", targetChannel, numberOfKeys, startKey, true);
         console.log("CREATED DrumMaschin");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));

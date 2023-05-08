@@ -2,19 +2,57 @@ body {
 background-color: black;
 color: white;
 }
+
 button {
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
   padding-right: 20px;
+
   border-radius: 25px;
   background-color: black;
   border: 1px solid white;
   color: white;
 }
+.thinButton{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 
-h2{
+summary {
+  list-style: none; /* remove the default list-style */
+  /* padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px; */
+  width: 60%;
+  margin: 10px;
+  border-radius: 25px;
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+}
+summary::marker {
+  content: ""; /* hide the marker */
+}
+details[open] summary {
+  color: red; /* set the text color of the summary when opened */
+}
+
+/* h2{
   margin-top: auto;
+} */
+.textAlignCenter{
+  text-align: center;
+}
+
+.marginAuto{
+  margin:auto;
+}
+.paddingTopBottom0{
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .marginLeft20{
@@ -32,8 +70,6 @@ h2{
 .marginRight40Percent{
   margin-right: 40%;
 }
-
-
 
 .channelGroup {
   border-radius: 25px;
@@ -111,13 +147,6 @@ h2{
   width: 15vh;
   height: 25px;
   position: absolute;
-}
-
-.toyNameSetting {
-  height: 30px;
-  padding-bottom: 10px;
-  align-items: center;
-  display: flex;
 }
 
 #openSettingsBtn {

@@ -34,7 +34,7 @@ export abstract class MIDIToy {
     drawPositions: Vector2D[] = [];
 
     //Color settings
-    mainColor: paper.Color = new paper.Color(0,1,0);
+    mainColor: paper.Color = new paper.Color(1);
     secondaryColor: paper.Color = new paper.Color(1/4);
     accentColor: paper.Color = new paper.Color(1/2);
 
