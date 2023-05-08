@@ -24,7 +24,7 @@ export class DrumMaschin extends MIDIToy {
     maxHeight: number = this.h * 0.5;
 
     constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super("DrumMaschin", targetChannel, numberOfKeys, startKey, false);
+        super("DrumMaschin", targetChannel, numberOfKeys, startKey, true);
         console.log("CREATED DrumMaschin");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
@@ -83,10 +83,10 @@ export class DrumMaschin extends MIDIToy {
         console.log("DRAW shape");
         var point = new paper.Point(this.GetRandomNumber(this.minWidth, this.maxWidth), this.GetRandomNumber(this.minHeight,this.maxHeight));
         var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
-        poly.strokeColor = this.mainColor;
+        poly.fillColor = this.mainColor;
+        poly.strokeColor = this.secondaryColor;
         poly.strokeWidth = this.strokeWidth + velocity/10;
         this.paperLayer.addChild(poly);
-        // poly.fillColor = new Color(200);
 
         if(this.shapes.length >= this.shapeLimit) {
          this.RemoveShape(0);   
@@ -105,6 +105,7 @@ export class DrumMaschin extends MIDIToy {
             // poly.position.x -= this.sizeIncrease/2;
             // poly.position.y -= this.sizeIncrease/2;
             
+            poly.fillColor.alpha -= this.alphaDecrease;
             poly.strokeColor.alpha -= this.alphaDecrease;
             poly.strokeWidth -= 0.5;
             poly.rotate(this.rotationSpeed + poly.bounds.width / 1000);

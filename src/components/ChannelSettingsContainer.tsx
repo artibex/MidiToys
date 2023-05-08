@@ -2,6 +2,7 @@ import { createSignal, createEffect } from "solid-js";
 import { MIDIToy } from "../js/miditoy/MIDIToy";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { RGBA } from "../js/Interfaces";
+import { MIDIDataTable } from "../js/MIDIDataTable";
 
 var manager = new ToyManager();
 
@@ -16,6 +17,7 @@ export default function SetupContainer( props: {channel: number}) {
     const [startKey, setStartKey] = createSignal(12);
     const [collapsNote, setCollapsNote] = createSignal(true);
     //Colors
+    const [colorSelection, setColorSelection] = createSignal(0);
     const [mainColor, setMainColor] = createSignal<RGBA>({ r:0, g:0, b:0, a:0});
     const [secondaryColor, setSecondaryColor] = createSignal<RGBA>({ r:0, g:0, b:0, a:0});
     const [accentColor, setAccentColor] = createSignal<RGBA>({ r:0, g:0, b:0, a:0});
@@ -28,6 +30,7 @@ export default function SetupContainer( props: {channel: number}) {
         //UpdateUIValues();
     })
 
+    //Toy data Functions
     function UpdateUIValues() {
         console.log("UPDATE UI values");
         if (typeof window !== 'undefined') {
@@ -39,8 +42,11 @@ export default function SetupContainer( props: {channel: number}) {
                 setCollapsNote(t.useRegExp);
     
                 var mColor: RGBA = t.GetColor(t.mainColor);
-                // console.log("R:" + mColor.r + " G:" + mColor.g + " B:" + mColor.b);
+                var sColor: RGBA = t.GetColor(t.secondaryColor);
+                var aColor: RGBA = t.GetColor(t.accentColor);
                 setMainColor({r:mColor.r, g:mColor.g , b:mColor.b, a:mColor.a});
+                setSecondaryColor({r:sColor.r, g:sColor.g , b:sColor.b, a:sColor.a});
+                setAccentColor({r:aColor.r, g:aColor.g , b:aColor.b, a:aColor.a});
             }
         } else setToyName("ManagerNotFound");
     }
@@ -53,15 +59,23 @@ export default function SetupContainer( props: {channel: number}) {
             t.startKey = startKey();
             t.useRegExp = collapsNote();
 
-            // console.log("SET MainColor: " + " R:" + mainColor().r + " G:" + mainColor().g + " B:" + mainColor().b);
-            t.SetColor(t.mainColor, mainColor().r, mainColor().g, mainColor().b, mainColor().a);
-    
+            UpdateToyColorValues();
             if(toyType() != 0) {
                 t.SetupMIDIReceiver(collapsNote());
                 t.SetupKeyboard();
             }
         }
     }
+    function UpdateToyColorValues() {
+        if (typeof window !== 'undefined') {
+            console.log("UPDATE toy color values");
+            var t = manager.GetToy(channel) as MIDIToy;
+            t.SetColor(t.mainColor, mainColor().r, mainColor().g, mainColor().b, mainColor().a);
+            t.SetColor(t.secondaryColor, secondaryColor().r, secondaryColor().g, secondaryColor().b, secondaryColor().a);
+            t.SetColor(t.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
+        }
+    }
+
     function CreateToy() {
         switch(toyType()) {
             case 0: manager.CreateEmptyToy(channel, numberOfKeys(), startKey()); break;
@@ -90,155 +104,86 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
     }
 
+    //Ui Rendering Functions
     function RenderDefaultUIElements() {
         if(toyType() == 0) return (<></>)
         else {
             return(
-                <div>
-                    <div class="flexContainer">
-                        <div>Keys</div> 
-                        <div class="flexContainer">
-                            <input
-                                class="numberInput"
-                                type="value"
-                                min="1"
-                                max="100"
-                                step="1"
-                                value={numberOfKeys()}
-                                onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                            />
-                            <input
-                                class="sliderInput marginLeft10"
-                                type="range"
-                                min="1"
-                                max="100"
-                                step="1"
-                                value={numberOfKeys()}
-                                onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                            />
-                        </div>
-                    </div>
-                    <div class="flexContainer">
-                        <div >Start Key</div>
-                        <div class="flexContainer">
-                            <input 
-                                class="numberInput" 
-                                type="value" 
-                                min="1" 
-                                max="100" 
-                                onChange={(event) => setStartKey(parseInt(event.target.value))}
-                                value={startKey()} 
-                            />
-                            <input 
-                                class="sliderInput marginLeft10" 
-                                type="range" 
-                                min="1" 
-                                max="100" 
-                                onChange={(event) => setStartKey(parseInt(event.target.value))}
-                                value={startKey()} 
-                            />
-                        </div>
-                    </div>
-                    <div class="flexContainer">
-                        <div>Collapse Notes</div>
-                        <input 
-                            class="toggleInput" 
-                            type="checkbox" 
-                            checked={collapsNote()}
-                            onChange={(event) => setCollapsNote(event.target.checked)}
-                        />
-                    </div>
-                    <div>
+                <div class="noSelect">
+                    <details>
+                        <summary class="textAlignCenter marginAuto">
+                            <h3 class="marginAuto thinButton">Key Settings</h3>
+                        </summary>
                         <br></br>
-                        <div>MainColor</div>
                         <div class="flexContainer">
-                            <div>Red:</div>
+                            <div>Keys</div> 
                             <div class="flexContainer">
-                            <input 
-                                class="numberInput" 
-                                type="value"
-                                step="0.05"
-                                min="0" 
-                                max="1" 
-                                onChange={(event) => setMainColor({...mainColor(), r:parseInt(event.target.value)})}
-                                value={mainColor().r} 
-                            />
-                            <input 
-                                class="sliderInput marginLeft10" 
-                                type="range"
-                                min="0" 
-                                max="255" 
-                                onChange={(event) => setMainColor({...mainColor(), r:parseInt(event.target.value)})}
-                                value={mainColor().r} 
-                            />
+                                <input
+                                    class="numberInput"
+                                    type="value"
+                                    min="1"
+                                    max="100"
+                                    step="1"
+                                    value={numberOfKeys()}
+                                    onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                                />
+                                <input
+                                    class="sliderInput marginLeft10"
+                                    type="range"
+                                    min="1"
+                                    max="100"
+                                    step="1"
+                                    value={numberOfKeys()}
+                                    onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                                />
                             </div>
                         </div>
                         <div class="flexContainer">
-                            <div>Green:</div>
+                            <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
                             <div class="flexContainer">
-                            <input 
-                                class="numberInput" 
-                                type="value"
-                                min="0" 
-                                max="1" 
-                                onChange={(event) => setMainColor({...mainColor(), g:parseInt(event.target.value)})}
-                                value={mainColor().g} 
-                            />
-                            <input 
-                                class="sliderInput marginLeft10" 
-                                type="range"
-                                step="0.05"
-                                min="0" 
-                                max="255" 
-                                onChange={(event) => setMainColor({...mainColor(), g:parseInt(event.target.value)})}
-                                value={mainColor().g} 
-                            />
+                                <input 
+                                    class="numberInput" 
+                                    type="value" 
+                                    min="1" 
+                                    max="100" 
+                                    onChange={(event) => setStartKey(parseInt(event.target.value))}
+                                    value={startKey()} 
+                                />
+                                <input 
+                                    class="sliderInput marginLeft10" 
+                                    type="range" 
+                                    min="1" 
+                                    max="100" 
+                                    onChange={(event) => setStartKey(parseInt(event.target.value))}
+                                    value={startKey()} 
+                                />
                             </div>
                         </div>
                         <div class="flexContainer">
-                            <div>Blue:</div>
-                            <div class="flexContainer">
+                            <div>Collapse Notes</div>
                             <input 
-                                class="numberInput" 
-                                type="value"
-                                min="0" 
-                                max="1" 
-                                onChange={(event) => setMainColor({...mainColor(), b:parseInt(event.target.value)})}
-                                value={mainColor().b} 
+                                class="toggleInput" 
+                                type="checkbox" 
+                                checked={collapsNote()}
+                                onChange={(event) => setCollapsNote(event.target.checked)}
                             />
-                            <input 
-                                class="sliderInput marginLeft10" 
-                                type="range"
-                                min="0" 
-                                max="255"
-                                onChange={(event) => setMainColor({...mainColor(), b:parseInt(event.target.value)})}
-                                value={mainColor().b} 
-                            />
-                            </div>
                         </div>
-                        <div class="flexContainer">
-                            <div>Alpha:</div>
-                            <div class="flexContainer">
-                            <input 
-                                class="numberInput" 
-                                type="value"
-                                min="0" 
-                                max="1" 
-                                onChange={(event) => setMainColor({...mainColor(), a:parseInt(event.target.value)})}
-                                value={mainColor().a} 
-                            />
-                            <input 
-                                class="sliderInput marginLeft10" 
-                                type="range"
-                                min="0" 
-                                max="255"
-                                onChange={(event) => setMainColor({...mainColor(), a:parseInt(event.target.value)})}
-                                value={mainColor().a} 
-                            />
-                            </div>
-                        </div>
+                    </details>
+                    <br></br>
 
-                    </div>
+                    <details>
+                        <summary class="textAlignCenter marginAuto">
+                            <h3 class="marginAuto thinButton noSelect">Color Settings</h3>
+                        </summary>
+                        <br></br>
+                        <div class="flexContainer">
+                            <button class="thinButton" onClick={() => setColorSelection(0)}>Main</button>
+                            <button class="thinButton" onClick={() => setColorSelection(1)}>Secondary</button>
+                            <button class="thinButton" onClick={() => setColorSelection(2)}>Accent</button>
+                        </div>
+                        <br></br>
+                        {RenderColorSettings(colorSelection())}
+                    </details>
                 </div>
             )
         }
@@ -255,16 +200,289 @@ export default function SetupContainer( props: {channel: number}) {
             )
         }
     }
+    function RenderColorSettings(colorSetting: number) {
+        setColorSelection(colorSetting);
+        switch(colorSelection()) {
+            case 0: return (
+            <div>
+                <div class="flexContainer">
+                    <div>Red:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setMainColor({...mainColor(), r:parseInt(event.target.value)})}
+                        value={mainColor().r} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setMainColor({...mainColor(), r:parseInt(event.target.value)})}
+                        value={mainColor().r} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Green:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setMainColor({...mainColor(), g:parseInt(event.target.value)})}
+                        value={mainColor().g} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setMainColor({...mainColor(), g:parseInt(event.target.value)})}
+                        value={mainColor().g} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Blue:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setMainColor({...mainColor(), b:parseInt(event.target.value)})}
+                        value={mainColor().b} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255"
+                        onChange={(event) => setMainColor({...mainColor(), b:parseInt(event.target.value)})}
+                        value={mainColor().b} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Alpha:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setMainColor({...mainColor(), a:parseInt(event.target.value)})}
+                        value={mainColor().a} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255"
+                        onChange={(event) => setMainColor({...mainColor(), a:parseInt(event.target.value)})}
+                        value={mainColor().a} 
+                    />
+                    </div>
+                </div>
+            </div>
+            )
+            case 1: return (
+            <div>
+                <div class="flexContainer">
+                    <div>Red:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), r:parseInt(event.target.value)})}
+                        value={secondaryColor().r} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), r:parseInt(event.target.value)})}
+                        value={secondaryColor().r} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Green:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), g:parseInt(event.target.value)})}
+                        value={secondaryColor().g} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), g:parseInt(event.target.value)})}
+                        value={secondaryColor().g} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Blue:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), b:parseInt(event.target.value)})}
+                        value={secondaryColor().b} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255"
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), b:parseInt(event.target.value)})}
+                        value={secondaryColor().b} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Alpha:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0"
+                        max="255" 
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), a:parseInt(event.target.value)})}
+                        value={secondaryColor().a} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0"
+                        max="255"
+                        onChange={(event) => setSecondaryColor({...secondaryColor(), a:parseInt(event.target.value)})}
+                        value={secondaryColor().a} 
+                    />
+                    </div>
+                </div>
+            </div>
+            )
+            case 2: return (
+            <div>
+                <div class="flexContainer">
+                    <div>Red:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setAccentColor({...accentColor(), r:parseInt(event.target.value)})}
+                        value={accentColor().r} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setAccentColor({...accentColor(), r:parseInt(event.target.value)})}
+                        value={accentColor().r} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Green:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setAccentColor({...accentColor(), g:parseInt(event.target.value)})}
+                        value={accentColor().g} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0"
+                        max="255"
+                        onChange={(event) => setAccentColor({...accentColor(), g:parseInt(event.target.value)})}
+                        value={accentColor().g} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Blue:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0" 
+                        max="255" 
+                        onChange={(event) => setAccentColor({...accentColor(), b:parseInt(event.target.value)})}
+                        value={accentColor().b} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0" 
+                        max="255"
+                        onChange={(event) => setAccentColor({...accentColor(), b:parseInt(event.target.value)})}
+                        value={accentColor().b} 
+                    />
+                    </div>
+                </div>
+                <div class="flexContainer">
+                    <div>Alpha:</div>
+                    <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="value"
+                        min="0"
+                        max="255" 
+                        onChange={(event) => setAccentColor({...accentColor(), a:parseInt(event.target.value)})}
+                        value={accentColor().a} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range"
+                        min="0"
+                        max="255"
+                        onChange={(event) => setAccentColor({...accentColor(), a:parseInt(event.target.value)})}
+                        value={accentColor().a} 
+                    />
+                    </div>
+                </div>
+            </div>
+            )
+        }
+    }
 
     return (
     <div class="channelContainer">
-        <h2>MIDI Channel {channel}</h2>
-        <div class="toyNameSetting">
-        <button id="changeButton" onClick={PrevToyType}>Prev</button>
-        <button id="changeButton" onClick={NextToyType}>Next</button>                       
-        <h2 class="marginLeft20">{toyName()}</h2> 
+        <div class="flexContainer noSelect">
+            <div>
+                <h3 class="marginAuto">{toyName()}</h3>
+                <div>MIDI Channel: {channel}</div>
+            </div>
+            <div>
+                <button id="thinButton" onClick={PrevToyType}>Prev</button>
+                <button id="thinButton" onClick={NextToyType}>Next</button>                       
+            </div>
         </div>
-
+        <br></br>
         {RenderDefaultUIElements()}
         {RenderSpecialUIElements()}
     </div>
