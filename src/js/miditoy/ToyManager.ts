@@ -1,15 +1,15 @@
 import { SquareKeyboard } from "./SquareKeyboard";
-import { MusicBalls } from "./MusicBalls";
-import { DrumMaschin } from "./DrumMaschin";
-import { MIDIToy } from "./MIDIToy";
+import { MusicSpheres } from "./MusicSpheres";
+import { PolyDrum } from "./PolyDrum";
 import * as paper from "paper";
 import { EmptyToy } from "./EmptyToy";
+import { MIDIToy } from "./MIDIToy";
 
 
 export class ToyManager 
 {
     static instance: ToyManager;
-    toys: any = []; //Array of toys
+    toys = []; //Array of toys
 
     targetCanvas: HTMLCanvasElement;
 
@@ -52,12 +52,12 @@ export class ToyManager
     CreateMusicBall(channel:number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
         console.log("CREATE MusicBalls on channel " + channel);
-        this.toys[channel - 1] = new MusicBalls(channel, numberOfKeys, startKey);
+        this.toys[channel - 1] = new MusicSpheres(channel, numberOfKeys, startKey);
     }
-    CreateDrumMaschin(channel: number, numberOfKeys: number, startKey: number) {
+    CreatePolyDrum(channel: number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
         console.log("CREATE DrumMaschin on channel " + channel);
-        this.toys[channel - 1] = new DrumMaschin(channel, numberOfKeys, startKey);
+        this.toys[channel - 1] = new PolyDrum(channel, numberOfKeys, startKey);
     }
     CreateSquareKeyboard(channel: number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
@@ -65,49 +65,24 @@ export class ToyManager
         this.toys[channel - 1] = new SquareKeyboard(channel, numberOfKeys, startKey);
     }
 
-    GetToy(channel:number) {
+    GetToy(channel: number) {
+        if (channel < 1 || channel > this.toys.length) {
+            return undefined;
+        }
         return this.toys[channel - 1];
     }
-    // GetToyName(channel: number) {
-    //     return this.toys[channel -1].toyName;
-    // }
-    // GetNumberOfKeys(channel: number) {
-    //     return this.toys[channel -1].numberOfKeys;
-    // }
-    // GetStartKey(channel: number) {
-    //     return this.toys[channel -1].startKey;
-    // }
-    // GetToyRegExp(channel: number) {
-    //     return this.toys[channel -1].useRegExp;
-    // }
-
-
-    // SetToyRegExp(channel: number, value: boolean) {
-    //     this.toys[channel - 1].useRegExp = value;
-    //     this.toys[channel - 1].SetupMIDIReceiver(value);
-    //     console.log("SET RegExp to =" + value);
-    // }
-    // SetToyNumberOfKeys(channel: number, numberOfKeys: number) {
-    //     console.log("SET numberOfKeys to = " + numberOfKeys);
-    //     this.toys[channel - 1].numberOfKeys = numberOfKeys;
-    //     this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
-    // }
-    // SetToyStartKey(channel: number, startKey: number) {
-    //     this.toys[channel - 1].startKey = startKey;
-    //     this.toys[channel - 1].SetupMIDIReceiver(this.toys[channel -1].useRegExp);
-    // }
 
     //Clears the complete canvas with all elements on it
     ClearCanvas() {
         console.log("CLEAR paper canvas");
         paper.project.clear();
     }
-    RemoveChildrenFromLayer(channel: number) {
-        var toy = this.GetToy(channel);
-        if(toy != undefined) {
-            toy.paperLayer.removeChildren();
-        }
-    }
+    // RemoveChildrenFromLayer(channel: number) {
+    //     var toy = this.GetToy(channel);
+    //     if(toy != undefined) {
+    //         toy.paperLayer.removeChildren();
+    //     }
+    // }
     RemovePaperLayer(channel: number) {
         var toy = this.GetToy(channel);
         if(toy != undefined) {

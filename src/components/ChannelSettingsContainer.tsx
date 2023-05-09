@@ -3,13 +3,16 @@ import { MIDIToy } from "../js/miditoy/MIDIToy";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { RGBA } from "../js/Interfaces";
 import { MIDIDataTable } from "../js/MIDIDataTable";
+import MusicSpheresUI from "./classSpecific/MusicSpheresUI";
 
 var manager = new ToyManager();
 
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
-    
+    var toy;
+    var prevToyType: number = -1;
+
     //General Toy Settings
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("EmptyToy");
@@ -25,25 +28,31 @@ export default function SetupContainer( props: {channel: number}) {
 
     createEffect(() => {
         console.log("TRIGGER effect");
+        if(toyType() > 0) {
+            UpdateToyValues();
+        }
         //CreateToy();
-        UpdateToyValues();
         //UpdateUIValues();
     })
+
+    function InitToy(){
+        toy = manager.GetToy(channel);
+    }
 
     //Toy data Functions
     function UpdateUIValues() {
         console.log("UPDATE UI values");
         if (typeof window !== 'undefined') {
-            var t = manager.GetToy(channel);
-            if(t != undefined) {
-                setToyName(t.toyName);
-                setNumberOfKeys(t.numberOfKeys);
-                setStartKey(t.startKey);
-                setCollapsNote(t.useRegExp);
+            InitToy();
+            if(toy != undefined) {
+                setToyName(toy.toyName);
+                setNumberOfKeys(toy.numberOfKeys);
+                setStartKey(toy.startKey);
+                setCollapsNote(toy.useRegExp);
     
-                var mColor: RGBA = t.GetColor(t.mainColor);
-                var sColor: RGBA = t.GetColor(t.secondaryColor);
-                var aColor: RGBA = t.GetColor(t.accentColor);
+                var mColor: RGBA = toy.GetColor(toy.mainColor);
+                var sColor: RGBA = toy.GetColor(toy.secondaryColor);
+                var aColor: RGBA = toy.GetColor(toy.accentColor);
                 setMainColor({r:mColor.r, g:mColor.g , b:mColor.b, a:mColor.a});
                 setSecondaryColor({r:sColor.r, g:sColor.g , b:sColor.b, a:sColor.a});
                 setAccentColor({r:aColor.r, g:aColor.g , b:aColor.b, a:aColor.a});
@@ -53,16 +62,16 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateToyValues() {
         console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
-            manager.RemoveChildrenFromLayer(channel);
-            var t = manager.GetToy(channel) as MIDIToy;
-            t.numberOfKeys = numberOfKeys();
-            t.startKey = startKey();
-            t.useRegExp = collapsNote();
+            InitToy();
+            toy.RemoveChildrenFromLayer();
+            toy.numberOfKeys = numberOfKeys();
+            toy.startKey = startKey();
+            toy.useRegExp = collapsNote();
 
             UpdateToyColorValues();
             if(toyType() != 0) {
-                t.SetupMIDIReceiver(collapsNote());
-                t.SetupKeyboard();
+                toy.SetupMIDIReceiver(collapsNote());
+                toy.SetupKeyboard();
             }
         }
     }
@@ -75,38 +84,34 @@ export default function SetupContainer( props: {channel: number}) {
             t.SetColor(t.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
         }
     }
-
     function CreateToy() {
-        switch(toyType()) {
-            case 0: manager.CreateEmptyToy(channel, numberOfKeys(), startKey()); break;
-            case 1: manager.CreateMusicBall(channel, numberOfKeys(), startKey()); break;
-            case 2: manager.CreateDrumMaschin(channel, numberOfKeys(), startKey()); break;
-            case 3: manager.CreateSquareKeyboard(channel, numberOfKeys(), startKey()); break;
-            default: break;
+        //If toyType changed, create toy, otherwise, just udpate
+        if(prevToyType != toyType()) {
+            switch(toyType()) {
+                case 0: manager.CreateEmptyToy(channel, numberOfKeys(), startKey()); break;
+                case 1: manager.CreateMusicBall(channel, numberOfKeys(), startKey()); break;
+                case 2: manager.CreatePolyDrum(channel, numberOfKeys(), startKey()); break;
+                case 3: manager.CreateSquareKeyboard(channel, numberOfKeys(), startKey()); break;
+                default: break;
+            }
+            UpdateUIValues();
         }
-        UpdateUIValues();
+        InitToy();
+        prevToyType = toyType();
     }
 
-    function PrevToyType() {
-        var value = toyType();
-        value--;
-        if(value < 0) value = 3;
-        setToyType(value);
+    function UpdateToyType(value: number) {
+        var calc = toyType();
+        calc += value;
+        if(calc < 0) calc = 3;
+        if(calc > 3) calc = 0;
+        setToyType(calc);
         CreateToy();
-        UpdateUIValues();
-    }
-    function NextToyType() {
-        var value = toyType();
-        value++;
-        if(value > 3) value = 0;
-        setToyType(value);
-        CreateToy();
-        UpdateUIValues();
     }
 
     //Ui Rendering Functions
     function RenderDefaultUIElements() {
-        if(toyType() == 0) return (<></>)
+        if(toyType() < 1) return (<></>)
         else {
             return(
                 <div class="noSelect">
@@ -184,6 +189,9 @@ export default function SetupContainer( props: {channel: number}) {
                         <br></br>
                         {RenderColorSettings(colorSelection())}
                     </details>
+
+                    <br></br>
+                    {RenderSpecialUIElements()}
                 </div>
             )
         }
@@ -191,8 +199,9 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderSpecialUIElements() {
         if(toyType() == 0) return(<></>)
         else {
+            CreateToy();
             switch(toyType()) {
-                case 1: break;
+                case 1: return <MusicSpheresUI channel={channel}></MusicSpheresUI>
                 case 2: break;
             }
             return(
@@ -200,6 +209,7 @@ export default function SetupContainer( props: {channel: number}) {
             )
         }
     }
+
     function RenderColorSettings(colorSetting: number) {
         setColorSelection(colorSetting);
         switch(colorSelection()) {
@@ -471,31 +481,20 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     return (
-    <div class="channelContainer">
+    <div class="channelContainer noSelect">
         <div class="flexContainer noSelect">
             <div>
                 <h3 class="marginAuto">{toyName()}</h3>
                 <div>MIDI Channel: {channel}</div>
             </div>
             <div>
-                <button id="thinButton" onClick={PrevToyType}>Prev</button>
-                <button id="thinButton" onClick={NextToyType}>Next</button>                       
+                <button id="thinButton" onClick={() => UpdateToyType(-1)}>Prev</button>
+                <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                       
             </div>
         </div>
         <br></br>
+        
         {RenderDefaultUIElements()}
-        {RenderSpecialUIElements()}
     </div>
-    )
-}
-
-
-export function ChangeToy() {
-    console.log("CHANGING toy");
-    
-    return (
-        <div>
-            <button id="changeButton">Toy 1</button>            
-        </div>
     )
 }

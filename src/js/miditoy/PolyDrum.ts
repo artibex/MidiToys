@@ -3,7 +3,7 @@ import { MIDIToy } from "./MIDIToy";
 import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
-export class DrumMaschin extends MIDIToy {
+export class PolyDrum extends MIDIToy {
     shapes: paper.Path[] = [];
     shapeLimit: number = 20;
     polySides: number = 3;
@@ -24,10 +24,17 @@ export class DrumMaschin extends MIDIToy {
     maxHeight: number = this.h * 0.5;
 
     constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super("DrumMaschin", targetChannel, numberOfKeys, startKey, true);
+        super("PolyDrum", targetChannel, numberOfKeys, startKey, true);
         console.log("CREATED DrumMaschin");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
+        this.LoadDefaultColorSettings();
+    }
+
+    LoadDefaultColorSettings() {
+        this.mainColor = new paper.Color(0,0,0,0);
+        this.secondaryColor = new paper.Color(1);
+        this.accentColor = new paper.Color(0,0,0,0);
     }
 
     SetupKeyboard() {
