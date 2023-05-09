@@ -16,6 +16,12 @@ export class SquareKeyboard extends MIDIToy {
         // window.addEventListener("resize", this.CalculateXValues);
     }
 
+    LoadDefaultColorSettings() {
+        this.mainColor = new paper.Color(0,0,0,0);
+        this.secondaryColor = new paper.Color(1);
+        this.accentColor = new paper.Color(0,0,0,0);
+    }
+
     SetupKeyboard() {
         // this.CalculateDrawPositions();
         this.targetSquareSize = this.HorizontalDrawPositionDistrubution();

@@ -3,7 +3,7 @@ import { MIDIToy } from "./MIDIToy";
 import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
-export class MusicBalls extends MIDIToy {
+export class MusicSpheres extends MIDIToy {
     shapes: paper.Path[] = [];
     circleRadius: number = 15;
     velocity: Vector2D[] = [];
@@ -21,10 +21,17 @@ export class MusicBalls extends MIDIToy {
     xImpulsPower: number = 0;
 
     constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super("MusicBalls", targetChannel, numberOfKeys, startKey, true);
+        super("MusicSpheres", targetChannel, numberOfKeys, startKey, true);
         console.log("CREATED MusicBalls");
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
+        this.LoadDefaultColorSettings();
         this.SetupKeyboard();
+    }
+
+    LoadDefaultColorSettings() {
+        this.mainColor = new paper.Color(0,0,0,0);
+        this.secondaryColor = new paper.Color(1);
+        this.accentColor = new paper.Color(0,0,0,0);
     }
 
     SetupKeyboard() {

@@ -1,7 +1,6 @@
 ---
 import "../css/global.css";
 import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
-import IncrementButton from "../components/IncrementButton";
 ---
 
 <!DOCTYPE html>
@@ -18,9 +17,6 @@ import IncrementButton from "../components/IncrementButton";
     //Import
     import { InputManager } from "../js/input/InputManager";
     import { ToyManager } from "../js/miditoy/ToyManager";
-    import { SquareKeyboard } from "../js/miditoy/SquareKeyboard";
-    import { MusicBalls } from "../js/miditoy/MusicBalls";
-    import { DrumMaschin } from "../js/miditoy/DrumMaschin";
 
     import * as paper from "paper";
     
@@ -38,15 +34,6 @@ import IncrementButton from "../components/IncrementButton";
     paper.view.onFrame = function(event) {
         toyManager.UpdateToys(); //Update all keyboards, 60 times a second
     }
-
-    //If browser window
-    // if (typeof window !== 'undefined') {
-    //     // toyManager.channel1Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
-    //     // channel1Toy = new DrumMaschin(toyCanvas, 15, 6, 60);
-    //     // channel2Toy = new MusicBalls(toyCanvas, 1, 13*3, 12);
-    //     // channel3Toy = new SquareKeyboard(toyCanvas, 2, 60, 12);
-
-    // }
 </script>
 
 <!-- Open SettingsPanel -->
@@ -132,9 +119,8 @@ import IncrementButton from "../components/IncrementButton";
         <button id="closeButton">X</button>
         <button id="prevButton" class="marginLeft10">Prev</button>
         <button id="nextButton">Next</button>
-        <h1 class="marginLeft20">Channel Settings</h1>
+        <h2 class="marginLeft20">MIDI Toy Settings</h2>
     </div>
-
     <br>
     
     <div class="channelGroup">

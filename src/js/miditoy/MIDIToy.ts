@@ -5,9 +5,6 @@ import { ToyManager } from "./ToyManager";
 import { RGBA, Vector2D } from "../Interfaces";
 import paper from 'paper';
 
-// import { Color } from "paper/dist/paper-core";
-
-
 //Abstract class that forms the base of every MIDIToy
 export abstract class MIDIToy {
     //Basic information
@@ -30,7 +27,7 @@ export abstract class MIDIToy {
     useRegExp: boolean; //Use regular expression in in MIDIReceiver?
     receiver: MIDIReceiver[] = [];
     
-    //Vector Positions as array
+    //Vector Positions as array if needed
     drawPositions: Vector2D[] = [];
 
     //Color settings
@@ -57,9 +54,10 @@ export abstract class MIDIToy {
 
         // this.ResizeCanvas();
         this.SetupMIDIReceiver(this.useRegExp);
-        console.log("CREATED new MIDIToy on channel " + this.targetChannel);
+        // console.log("CREATED new MIDIToy on channel " + this.targetChannel);
     }
 
+    //Generates needed MIDI Receiver
     SetupMIDIReceiver(value: boolean) {
         this.receiver.length = 0;
         //this.receiver.length = 0;
@@ -126,7 +124,12 @@ export abstract class MIDIToy {
         return Math.round(x * 255);
     }
 
+    RemoveChildrenFromLayer() {
+        this.paperLayer.removeChildren();
+    }
+
     //Abstract functions that need to exist
     abstract UpdateKeyboard();
     abstract SetupKeyboard();
+    abstract LoadDefaultColorSettings();
 }
