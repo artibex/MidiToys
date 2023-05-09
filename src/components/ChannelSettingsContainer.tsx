@@ -125,7 +125,7 @@ export default function SetupContainer( props: {channel: number}) {
                             <div class="flexContainer">
                                 <input
                                     class="numberInput"
-                                    type="value"
+                                    type="number"
                                     min="1"
                                     max="100"
                                     step="1"
@@ -148,7 +148,7 @@ export default function SetupContainer( props: {channel: number}) {
                             <div class="flexContainer">
                                 <input 
                                     class="numberInput" 
-                                    type="value" 
+                                    type="number" 
                                     min="1" 
                                     max="100" 
                                     onChange={(event) => setStartKey(parseInt(event.target.value))}
@@ -220,7 +220,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setMainColor({...mainColor(), r:parseInt(event.target.value)})}
@@ -241,7 +241,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setMainColor({...mainColor(), g:parseInt(event.target.value)})}
@@ -262,7 +262,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setMainColor({...mainColor(), b:parseInt(event.target.value)})}
@@ -283,7 +283,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setMainColor({...mainColor(), a:parseInt(event.target.value)})}
@@ -308,7 +308,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setSecondaryColor({...secondaryColor(), r:parseInt(event.target.value)})}
@@ -329,7 +329,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setSecondaryColor({...secondaryColor(), g:parseInt(event.target.value)})}
@@ -350,7 +350,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setSecondaryColor({...secondaryColor(), b:parseInt(event.target.value)})}
@@ -371,7 +371,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0"
                         max="255" 
                         onChange={(event) => setSecondaryColor({...secondaryColor(), a:parseInt(event.target.value)})}
@@ -396,7 +396,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setAccentColor({...accentColor(), r:parseInt(event.target.value)})}
@@ -417,7 +417,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setAccentColor({...accentColor(), g:parseInt(event.target.value)})}
@@ -438,7 +438,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0" 
                         max="255" 
                         onChange={(event) => setAccentColor({...accentColor(), b:parseInt(event.target.value)})}
@@ -459,7 +459,7 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="flexContainer">
                     <input 
                         class="numberInput" 
-                        type="value"
+                        type="number"
                         min="0"
                         max="255" 
                         onChange={(event) => setAccentColor({...accentColor(), a:parseInt(event.target.value)})}

@@ -38,7 +38,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     SetupKeyboard() {
-        
+        this.SpawnShape(120);
     }
 
     frameCount: number = 0;

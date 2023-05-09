@@ -12,10 +12,10 @@ export class MusicSpheres extends MIDIToy {
 
     velocityLimit: number = 20;
     yGravity: number = -0.9;
-    xGravity: number = 0;
+    // xGravity: number = 0;
 
     yFriction: number = 0.90;
-    xFriction: number = 0.95;
+    xFriction: number = 0.90;
 
     yImpulsPower: number = 30;
     xImpulsPower: number = 0;

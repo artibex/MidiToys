@@ -14,7 +14,7 @@ export default function SetupContainer( props: {channel: number}) {
     
     const [velocityLimit, setVelocityLimit] = createSignal(20);
     const [yGravity, setYGravity] = createSignal(-0.9);
-    const [xGravity, setXGravity] = createSignal(0);
+    // const [xGravity, setXGravity] = createSignal(0);
     
     const [yFriction, setYFriction] = createSignal(0.9);
     const [xFriction, setXFriction] = createSignal(0.95);
@@ -37,7 +37,7 @@ export default function SetupContainer( props: {channel: number}) {
                 console.log("UI strokewith = " + strokeWidth());
                 setVelocityLimit(t.velocityLimit);
                 setYGravity(t.yGravity);
-                setXGravity(t.xGravity);
+                // setXGravity(t.xGravity);
                 setYFriction(t.yFriction);
                 setXFriction(t.xFriction);
                 setYImpulsPower(t.yImpulsPower);
@@ -56,7 +56,7 @@ export default function SetupContainer( props: {channel: number}) {
                 t.strokeWidth = strokeWidth();
                 t.velocityLimit = velocityLimit();
                 t.yGravity = yGravity();
-                t.xGravity = xGravity();
+                // t.xGravity = xGravity();
                 t.yFriction = yFriction();
                 t.xFriction = xFriction();
                 t.yImpulsPower = yImpulsPower();
@@ -67,7 +67,7 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
 
-    UpdateUIValues();
+    UpdateUIValues(); //Get UI Values once at start
 
     return(
         <details>
@@ -80,9 +80,9 @@ export default function SetupContainer( props: {channel: number}) {
             <div class="flexContainer">
                 <input
                     class="numberInput"
-                    type="value"
+                    type="number"
                     min="1"
-                    max="100"
+                    max="40"
                     step="1"
                     value={strokeWidth()}
                     onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
@@ -91,43 +91,150 @@ export default function SetupContainer( props: {channel: number}) {
                     class="sliderInput marginLeft10"
                     type="range"
                     min="1"
-                    max="10"
+                    max="40"
                     step="1"
                     value={strokeWidth()}
                     onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
                 />
             </div>
         </div>
+        <br></br>
         <div class="flexContainer">
-            <div >Start Key</div>
+            <div>Velocity Limit</div> 
             <div class="flexContainer">
-                {/* <input 
-                    class="numberInput" 
-                    type="value" 
-                    min="1" 
-                    max="100" 
-                    onChange={(event) => setStartKey(parseInt(event.target.value))}
-                    value={startKey()} 
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="1"
+                    max="50"
+                    step="1"
+                    value={velocityLimit()}
+                    onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
                 />
-                <input 
-                    class="sliderInput marginLeft10" 
-                    type="range" 
-                    min="1" 
-                    max="100" 
-                    onChange={(event) => setStartKey(parseInt(event.target.value))}
-                    value={startKey()} 
-                /> */}
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="1"
+                    max="50"
+                    value={velocityLimit()}
+                    onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
+                />
             </div>
         </div>
         <div class="flexContainer">
-            <div>Collapse Notes</div>
-            {/* <input 
-                class="toggleInput" 
-                type="checkbox" 
-                checked={collapsNote()}
-                onChange={(event) => setCollapsNote(event.target.checked)}
-            /> */}
+            <div>Y Gravity</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="-20"
+                    max="20"
+                    step="1"
+                    value={yGravity()*10}
+                    onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="-20"
+                    max="20"
+                    value={yGravity()*10}
+                    onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
+                />
+            </div>
+        </div>
+        <br></br>
+        <div class="flexContainer">
+            <div>Y Friction</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="10"
+                    max="100"
+                    step="1"
+                    value={yFriction()*100}
+                    onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="10"
+                    max="100"
+                    value={yFriction()*100}
+                    onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
+                />
+            </div>
+        </div>
+        <div class="flexContainer">
+            <div>X Friction</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="10"
+                    max="100"
+                    step="1"
+                    value={xFriction()*100}
+                    onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="10"
+                    max="100"
+                    value={xFriction()*100}
+                    onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
+                />
+            </div>
+        </div>
+        <br></br>
+        <div class="flexContainer">
+            <div>Y Impuls Power</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="-90"
+                    max="90"
+                    step="1"
+                    value={yImpulsPower()}
+                    onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="-90"
+                    max="90"
+                    step="1"
+                    value={yImpulsPower()}
+                    onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
+                />
+            </div>
+        </div>
+        <div class="flexContainer">
+            <div>X Impuls Power</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="-90"
+                    max="90"
+                    step="1"
+                    value={xImpulsPower()}
+                    onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="-60"
+                    max="60"
+                    step="1"
+                    value={xImpulsPower()}
+                    onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
+                />
+            </div>
         </div>
     </details>
-)
+    )
 }

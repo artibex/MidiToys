@@ -18,7 +18,6 @@ button {
 button:hover {
   border: 2px solid white;
 }
-
 .thinButton{
   padding-top: 5px;
   padding-bottom: 5px;
@@ -114,7 +113,7 @@ details[open] summary {
 }
 
 .numberInput {
-  /* appearance: textfield; */
+  appearance: textfield;
   text-align: center;
   /* align-items: end; */
   padding: 10px;
@@ -196,7 +195,7 @@ details[open] summary {
   width: 50%;
   height: 85%;
   border-radius: 25px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid white;
   padding: 20px;
 
