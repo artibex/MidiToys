@@ -1,10 +1,8 @@
-import { SquareKeyboard } from "./SquareKeyboard";
+import { EmptyToy } from "./EmptyToy";
 import { MusicSpheres } from "./MusicSpheres";
 import { PolyDrum } from "./PolyDrum";
+import { SquareKeyboard } from "./SquareKeyboard";
 import * as paper from "paper";
-import { EmptyToy } from "./EmptyToy";
-import { MIDIToy } from "./MIDIToy";
-
 
 export class ToyManager 
 {
@@ -77,12 +75,6 @@ export class ToyManager
         console.log("CLEAR paper canvas");
         paper.project.clear();
     }
-    // RemoveChildrenFromLayer(channel: number) {
-    //     var toy = this.GetToy(channel);
-    //     if(toy != undefined) {
-    //         toy.paperLayer.removeChildren();
-    //     }
-    // }
     RemovePaperLayer(channel: number) {
         var toy = this.GetToy(channel);
         if(toy != undefined) {
