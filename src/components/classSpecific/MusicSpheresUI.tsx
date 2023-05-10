@@ -1,13 +1,12 @@
 import { createSignal, createEffect } from "solid-js";
-import { MusicSpheres } from "../../js/miditoy/MusicSpheres";
 import { ToyManager } from "../../js/miditoy/ToyManager";
+import { MusicSpheres } from "../../js/miditoy/MusicSpheres";
 
 var manager = new ToyManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
-
-    console.log("MIDIToy channel = " + channel);
+    var toy;
 
     //Special settings
     const [strokeWidth, setStrokeWidth] = createSignal(2);
@@ -30,39 +29,42 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            var t = manager.GetToy(channel) as MusicSpheres;
-            if(t != undefined) {
-                console.log(t);
-                setStrokeWidth(t.strokeWidth);
-                console.log("UI strokewith = " + strokeWidth());
-                setVelocityLimit(t.velocityLimit);
-                setYGravity(t.yGravity);
-                // setXGravity(t.xGravity);
-                setYFriction(t.yFriction);
-                setXFriction(t.xFriction);
-                setYImpulsPower(t.yImpulsPower);
-                setXImpulsPower(t.xImpulsPower);
+            toy = manager.GetToy(channel) as MusicSpheres;
 
-                t.SetupKeyboard();
+            if(toy != undefined) {
+                console.log(toy);
+                setStrokeWidth(toy.strokeWidth);
+                console.log("UI strokewith = " + strokeWidth());
+                setVelocityLimit(toy.velocityLimit);
+                setYGravity(toy.yGravity);
+                // setXGravity(t.xGravity);
+                setYFriction(toy.yFriction);
+                setXFriction(toy.xFriction);
+                setYImpulsPower(toy.yImpulsPower);
+                setXImpulsPower(toy.xImpulsPower);
+
+                // toy.SetupKeyboard();
             }
         }
     }
     function UpdateToyValues() {
         console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
-            var t = manager.GetToy(channel) as MusicSpheres;
-            if(t != undefined) {
-                t.RemoveChildrenFromLayer();
-                t.strokeWidth = strokeWidth();
-                t.velocityLimit = velocityLimit();
-                t.yGravity = yGravity();
+            if(toy != undefined) {
+                //Remove old objects
+                toy.RemoveChildrenFromLayer();
+
+                toy.strokeWidth = strokeWidth();
+                toy.velocityLimit = velocityLimit();
+                toy.yGravity = yGravity();
                 // t.xGravity = xGravity();
-                t.yFriction = yFriction();
-                t.xFriction = xFriction();
-                t.yImpulsPower = yImpulsPower();
-                t.xImpulsPower = xImpulsPower();
+                toy.yFriction = yFriction();
+                toy.xFriction = xFriction();
+                toy.yImpulsPower = yImpulsPower();
+                toy.xImpulsPower = xImpulsPower();
                 
-                t.SetupKeyboard();
+                //Reload Keyboard
+                toy.SetupKeyboard();
             }
         }
     }

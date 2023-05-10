@@ -29,23 +29,26 @@ export class MusicSpheres extends MIDIToy {
     }
 
     LoadDefaultColorSettings() {
-        this.mainColor = new paper.Color(0,0,0,0);
-        this.secondaryColor = new paper.Color(1);
+        this.fillColor = new paper.Color(0,0,0,0);
+        this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
     }
 
+    // [O][O][O][O][O][O][O][O]
     SetupKeyboard() {
         // this.InitDrawPositions();
         this.InitVelocity();
-        this.circleRadius = this.HorizontalDrawPositionDistrubution() / 4;
+        var cellSize = (this.w / this.numberOfKeys) ;
+        this.circleRadius = cellSize / 4;
+        this.HorizontalDrawPositionDistrubution(cellSize);
 
         this.shapes.length = 0;
         this.drawPositions.forEach(element => {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
             var circle = new paper.Path.Circle(point, this.circleRadius);
-            circle.fillColor = this.mainColor;
-            circle.strokeColor = this.secondaryColor;
+            circle.fillColor = this.fillColor;
+            circle.strokeColor = this.strokeColor;
             circle.strokeWidth = this.strokeWidth;
             this.shapes.push(circle);
             this.paperLayer.addChild(circle); //Work on layer
@@ -92,15 +95,15 @@ export class MusicSpheres extends MIDIToy {
             var vel = this.velocity[indexValue];
             if(vel == undefined) return;
 
-            if(s.position.y < this.h - this.circleRadius) vel.y += this.yGravity; //add negativ gravity value
+            if(s.position.y < this.h - (this.circleRadius + this.strokeWidth)) vel.y += this.yGravity; //add negativ gravity value
             if(vel.y > 0) vel.y *= this.yFriction; //reduce velocity when going up
 
-            if(s.position.y > this.h - this.circleRadius) if(vel.y < -0.1) vel.y = -vel.y; //When on ground, bounce up
-            if(s.position.y < 0 + this.circleRadius) if(vel.y > -0.1) vel.y = -vel.y; //When on top height, bounce down
+            if(s.position.y > this.h - (this.circleRadius + this.strokeWidth)) if(vel.y < -0.1) vel.y = -vel.y; //When on ground, bounce up
+            if(s.position.y < 0 + (this.circleRadius + this.strokeWidth)) if(vel.y > -0.1) vel.y = -vel.y; //When on top height, bounce down
             
             if(vel.x !== 0) vel.x *= this.xFriction;
-            if(s.position.x < this.w + this.circleRadius) vel.x = -vel.x; //When on right side, mirror velocity
-            if(s.position.x > 0 - this.circleRadius) vel.x = -vel.x; //When on left side, mirror velocity
+            if(s.position.x < this.w + (this.circleRadius + this.strokeWidth)) vel.x = -vel.x; //When on right side, mirror velocity
+            if(s.position.x > 0 - (this.circleRadius + this.strokeWidth)) vel.x = -vel.x; //When on left side, mirror velocity
             if(vel.x > this.velocityLimit * 2) vel.x = this.velocityLimit * 2;
             if(vel.x < -this.velocityLimit * 2) vel.x = -this.velocityLimit * 2;
 
