@@ -31,8 +31,8 @@ export abstract class MIDIToy {
     drawPositions: Vector2D[] = [];
 
     //Color settings
-    mainColor: paper.Color = new paper.Color(1);
-    secondaryColor: paper.Color = new paper.Color(1/4);
+    fillColor: paper.Color = new paper.Color(1);
+    strokeColor: paper.Color = new paper.Color(1/4);
     accentColor: paper.Color = new paper.Color(1/2);
 
     //Construct everything basic that is needed for a MIDIKeyboard
@@ -88,12 +88,13 @@ export abstract class MIDIToy {
     }
 
     //Evenly calculate draw positions and put them into the drawPositions array
-    HorizontalDrawPositionDistrubution() {
+    HorizontalDrawPositionDistrubution(cellSize: number) {
         this.drawPositions.length = 0;
-        let avgCellSize = this.w / this.numberOfKeys;
+        // let avgCellSize = this.w / this.numberOfKeys;
+        let avgCellSize = cellSize;
 
         for(let i = 0; i < this.numberOfKeys; i++) {
-            let xCalc = avgCellSize/4 + avgCellSize*i;
+            let xCalc = avgCellSize/2 + avgCellSize*i;
 
             let vec: Vector2D = ({x: xCalc, y: this.h / 2 - avgCellSize / 4});
             this.drawPositions.push(vec);
@@ -101,12 +102,13 @@ export abstract class MIDIToy {
         return avgCellSize;
     }
     //Evenly calculate draw positions and put them into the drawPositions array
-    VerticalDrawPositionDistrubution() {
+    VerticalDrawPositionDistrubution(cellSize: number) {
         this.drawPositions.length = 0;
-        let avgCellSize = this.h / this.numberOfKeys;
+        // let avgCellSize = this.h / this.numberOfKeys;
+        let avgCellSize = cellSize;
 
         for(let i = 0; i < this.numberOfKeys; i++) {
-            let yCalc = avgCellSize/4 + avgCellSize*i;
+            let yCalc = avgCellSize/2 + avgCellSize*i;
             let vec: Vector2D = ({x: this.w / 2 - avgCellSize / 4, y: yCalc});
             this.drawPositions.push(vec);
         }

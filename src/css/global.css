@@ -53,9 +53,9 @@ details[open] summary {
 }
 
 
-/* h2{
-  margin-top: auto;
-} */
+.textAlignLeft{
+  text-align: left;
+}
 .textAlignCenter{
   text-align: center;
 }
@@ -164,13 +164,19 @@ details[open] summary {
   width: 15vh;
   height: 25px;
 }
-.toggleInput:checked::before {
+.toggleInput:hover{
+  background-color: rgba(100, 100, 100, 0.4);
+}
+.toggleInput:checked:hover {
+  background-color: rgba(100, 100, 100, 0.8);
+}
+.toggleInput:checked {
   content: "";
   background-color: white;
   border-radius: 10px;
   width: 15vh;
   height: 25px;
-  position: absolute;
+  /* position: absolute; */
 }
 
 #openSettingsBtn {

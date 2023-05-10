@@ -17,8 +17,8 @@ export class SquareKeyboard extends MIDIToy {
     }
 
     LoadDefaultColorSettings() {
-        this.mainColor = new paper.Color(0,0,0,0);
-        this.secondaryColor = new paper.Color(1);
+        this.fillColor = new paper.Color(0,0,0,0);
+        this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
     }
 

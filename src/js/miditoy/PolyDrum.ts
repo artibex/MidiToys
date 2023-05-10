@@ -32,8 +32,8 @@ export class PolyDrum extends MIDIToy {
     }
 
     LoadDefaultColorSettings() {
-        this.mainColor = new paper.Color(0,0,0,0);
-        this.secondaryColor = new paper.Color(1);
+        this.fillColor = new paper.Color(0,0,0,0);
+        this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
     }
 
@@ -90,8 +90,8 @@ export class PolyDrum extends MIDIToy {
         console.log("DRAW shape");
         var point = new paper.Point(this.GetRandomNumber(this.minWidth, this.maxWidth), this.GetRandomNumber(this.minHeight,this.maxHeight));
         var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
-        poly.fillColor = this.mainColor;
-        poly.strokeColor = this.secondaryColor;
+        poly.fillColor = this.fillColor;
+        poly.strokeColor = this.strokeColor;
         poly.strokeWidth = this.strokeWidth + velocity/10;
         this.paperLayer.addChild(poly);
 
