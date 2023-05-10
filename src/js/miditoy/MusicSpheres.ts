@@ -34,7 +34,7 @@ export class MusicSpheres extends MIDIToy {
         this.accentColor = new paper.Color(0,0,0,0);
     }
 
-    // [][][][][][][][][][]
+    // [O][O][O][O][O][O][O][O]
     SetupKeyboard() {
         // this.InitDrawPositions();
         this.InitVelocity();

@@ -10,8 +10,8 @@ export class PolyDrum extends MIDIToy {
 
     startSize: number = 500;
     sizeIncrease: number = 0.98;
-    alphaDecrease: number = 0;
-    rotationSpeed: number = 0.01;
+    alphaDecrease: number = 0.01;
+    rotationSpeed: number = 0;
 
     //Stroke settings
     strokeWidth: number = 10;
@@ -25,10 +25,11 @@ export class PolyDrum extends MIDIToy {
 
     constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
         super("PolyDrum", targetChannel, numberOfKeys, startKey, true);
-        console.log("CREATED DrumMaschin");
+        console.log("CREATED PolyDrum");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
         this.LoadDefaultColorSettings();
+        this.SetupKeyboard();
     }
 
     LoadDefaultColorSettings() {
@@ -44,11 +45,11 @@ export class PolyDrum extends MIDIToy {
     frameCount: number = 0;
     UpdateKeyboard() {
         this.UpdateShapes();
-        this.frameCount++;
-        if(this.frameCount > 600) {
-            this.frameCount = 0;
-            this.ChangePolySideCount();
-        }
+        // this.frameCount++;
+        // if(this.frameCount > 600) {
+        //     this.frameCount = 0;
+        //     this.ChangePolySideCount();
+        // }
     }
 
     ChangePolySideCount() {
@@ -104,20 +105,14 @@ export class PolyDrum extends MIDIToy {
     UpdateShapes() {
         let indexValue: number = 0;
         this.shapes.forEach(element => {
-            var poly = element as paper.Path.Rectangle;
+            var poly = element as paper.Path.RegularPolygon;
             //Move and scale
             poly.scale(this.sizeIncrease)
-            // poly.bounds.height += this.sizeIncrease;
-            // poly.bounds.width += this.sizeIncrease;
-            // poly.position.x -= this.sizeIncrease/2;
-            // poly.position.y -= this.sizeIncrease/2;
             
-            poly.fillColor.alpha -= this.alphaDecrease;
+            //poly.fillColor.alpha -= this.alphaDecrease;
             poly.strokeColor.alpha -= this.alphaDecrease;
-            poly.strokeWidth -= 0.5;
-            poly.rotate(this.rotationSpeed + poly.bounds.width / 1000);
-            //square.strokeWidth -= 0.1;
-            //square.rotate(1 + square.bounds.height*0.1);
+            poly.strokeWidth *= this.strokeWidthDecrease;
+            poly.rotate(this.rotationSpeed * poly.bounds.width / 1000);
 
             if(poly.strokeColor?.alpha <= 0 || poly.strokeWidth <= 0) {
                 this.RemoveShape(indexValue);

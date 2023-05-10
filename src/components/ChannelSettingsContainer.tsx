@@ -4,9 +4,9 @@ import { ToyManager } from "../js/miditoy/ToyManager";
 import { RGBA } from "../js/Interfaces";
 import { MIDIDataTable } from "../js/MIDIDataTable";
 import MusicSpheresUI from "./classSpecific/MusicSpheresUI";
+import PolyDrumUI from "./classSpecific/PolyDrumUI";
 
 var manager = new ToyManager();
-
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
@@ -16,7 +16,7 @@ export default function SetupContainer( props: {channel: number}) {
     //General Toy Settings
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("EmptyToy");
-    const [numberOfKeys, setNumberOfKeys] = createSignal(13*2);
+    const [numberOfKeys, setNumberOfKeys] = createSignal(12);
     const [startKey, setStartKey] = createSignal(12);
     const [collapsNote, setCollapsNote] = createSignal(true);
     //Colors
@@ -63,7 +63,6 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateToyValues() {
         console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
-            InitToy();
             toy.RemoveChildrenFromLayer();
             toy.numberOfKeys = numberOfKeys();
             toy.startKey = startKey();
@@ -95,9 +94,9 @@ export default function SetupContainer( props: {channel: number}) {
                 case 3: manager.CreateSquareKeyboard(channel, numberOfKeys(), startKey()); break;
                 default: break;
             }
+            InitToy();
             UpdateUIValues();
         }
-        InitToy();
         prevToyType = toyType();
     }
 
@@ -122,7 +121,6 @@ export default function SetupContainer( props: {channel: number}) {
         }
         setColorSelection(calc);
     }
-
     //Ui Rendering Functions
     function RenderDefaultUIElements() {
         if(toyType() < 1) return (<></>)
@@ -189,44 +187,35 @@ export default function SetupContainer( props: {channel: number}) {
                         </div>
                     </details>
                     <br></br>
-
-                    <details>
-                        <summary class="textAlignCenter marginAuto">
-                            <h3 class="marginAuto thinButton noSelect">Color Settings</h3>
-                        </summary>
-                        <br></br>
-                        <div class="flexContainer">
-                            <h3 class="marginAuto">{colorSelectionName()}</h3>
-                            <div class="flexContainer">
-                            <button class="thinButton" onClick={() => UpdateColorSelection(-1)}>Prev</button>
-                            <button class="thinButton" onClick={() => UpdateColorSelection(1)}>Next</button>
-                            </div>
-                        </div>
-                        <br></br>
-                        {RenderColorSettings(colorSelection())}
-                    </details>
-
+                    {RenderColorSettings()}
                     <br></br>
                     {RenderSpecialUIElements()}
                 </div>
             )
         }
     }
-    function RenderSpecialUIElements() {
-        if(toyType() == 0) return(<></>)
-        else {
-            CreateToy();
-            switch(toyType()) {
-                case 1: return <MusicSpheresUI channel={channel}></MusicSpheresUI>
-                case 2: break;
-            }
-            return(
-                <></>
-            )
-        }
+    function RenderColorSettings() {
+        return (
+            <div>
+                <details>
+                    <summary class="textAlignCenter marginAuto">
+                        <h3 class="marginAuto thinButton noSelect">Color Settings</h3>
+                    </summary>
+                    <br></br>
+                    <div class="flexContainer">
+                        <h3 class="marginAuto">{colorSelectionName()}</h3>
+                        <div class="flexContainer">
+                        <button class="thinButton" onClick={() => UpdateColorSelection(-1)}>Prev</button>
+                        <button class="thinButton" onClick={() => UpdateColorSelection(1)}>Next</button>
+                        </div>
+                    </div>
+                    <br></br>
+                    {RenderColorSettingsSelection()}
+                    </details>
+            </div>
+        )
     }
-    function RenderColorSettings(colorSetting: number) {
-        setColorSelection(colorSetting);
+    function RenderColorSettingsSelection() {
         switch(colorSelection()) {
             case 0: return (
             <div>
@@ -492,6 +481,17 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
             </div>
             )
+        }
+    }
+    function RenderSpecialUIElements() {
+        if(toyType() == 0) return(<></>)
+        else {
+            CreateToy();
+            switch(toyType()) {
+                case 1: return (<MusicSpheresUI channel={channel}></MusicSpheresUI>);
+                case 2: return (<PolyDrumUI channel={channel}></PolyDrumUI>);
+                default: return(<></>);
+            }
         }
     }
 

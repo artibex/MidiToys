@@ -54,7 +54,7 @@ export class ToyManager
     }
     CreatePolyDrum(channel: number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
-        console.log("CREATE DrumMaschin on channel " + channel);
+        console.log("CREATE PolyDrum on channel " + channel);
         this.toys[channel - 1] = new PolyDrum(channel, numberOfKeys, startKey);
     }
     CreateSquareKeyboard(channel: number, numberOfKeys: number, startKey: number) {
