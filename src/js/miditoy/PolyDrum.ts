@@ -4,7 +4,7 @@ import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
 export class PolyDrum extends MIDIToy {
-    shapes: paper.Path[] = [];
+    // shapes: paper.Path[] = [];
     shapeLimit: number = 10;
     polySides: number = 3;
 
@@ -40,6 +40,7 @@ export class PolyDrum extends MIDIToy {
 
     SetupKeyboard() {
         this.RemoveChildrenFromLayer();
+        // this.paperLayer.addChild(this.paperGroup);
         this.SpawnShape(120);
     }
 
@@ -95,38 +96,52 @@ export class PolyDrum extends MIDIToy {
         poly.fillColor = new paper.Color(this.fillColor);
         poly.strokeColor = new paper.Color(this.strokeColor);
         poly.strokeWidth = this.strokeWidth + velocity/10;
-        this.paperLayer.addChild(poly);
 
-        if(this.shapes.length >= this.shapeLimit) {
+        this.paperLayer.addChild(poly);
+        // this.paperGroup.addChild(poly);
+
+        if(this.paperLayer.length >= this.shapeLimit) {
          this.RemoveShape(0);   
         } 
-        this.shapes.push(poly);
+        // this.shapes.push(poly);
     }
 
     UpdateShapes() {
+        var alphaDecrease = this.alphaDecrease;
+        var strokeWidthDecrease = this.strokeWidthDecrease;
+        var rotationSpeed = this.rotationSpeed;
+
         let indexValue: number = 0;
-        this.shapes.forEach(element => {
+        
+        this.paperLayer.children.forEach(element => {
             var poly = element as paper.Path.RegularPolygon;
-            //Move and scale
-            poly.scale(this.sizeIncrease)
+
+            var newStrokeColor = poly.strokeColor.clone();
+            var newFillColor = poly.fillColor.clone();
+            newStrokeColor.alpha -= alphaDecrease;
+            newFillColor.alpha -= alphaDecrease;
+
+            poly.set({
+                scaling: poly.scaling.multiply(this.sizeIncrease),
+                strokeWidth: poly.strokeWidth * strokeWidthDecrease,
+                strokeColor: newStrokeColor,
+                fillColor: newFillColor
+            });
             
-            //poly.fillColor.alpha -= this.alphaDecrease;
-            // poly.strokeColor.alpha -= this.alphaDecrease;
-            poly.strokeColor.alpha -= 0.01;
-            poly.strokeWidth *= this.strokeWidthDecrease;
-            poly.rotate(this.rotationSpeed);
+            var center = poly.bounds.center;
+            poly.rotate(rotationSpeed, center);
 
             if(poly.strokeColor?.alpha <= 0 || poly.strokeWidth <= 0) {
-                this.RemoveShape(indexValue);
+                this.RemoveShape(poly);
             }
             indexValue++;
         })
     }
 
-    RemoveShape(indexValue: number) {
-        var square = this.shapes[indexValue];
-        this.shapes.splice(indexValue, 1);
-        square.remove();
+    RemoveShape(shape) {
+        // var poly = this.shapes[indexValue];
+        // this.shapes.splice(indexValue, 1);
+        shape.remove();
     }
 
 }

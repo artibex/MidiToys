@@ -33,6 +33,7 @@ export class ToyManager
                 this.toys[i].UpdateKeyboard();
             }
         }
+        paper.view.update();
     }
 
     //Creates 16 placeholder toys

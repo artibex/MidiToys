@@ -58,7 +58,6 @@ export default function SetupContainer( props: {channel: number}) {
             //Remove old objects
             if(toy != undefined) {
                 toy.RemoveChildrenFromLayer();
-    
                 toy.shapeLimit = shapeLimit();
                 toy.polySides = polySides();
                 toy.startSize = startSize();
@@ -161,7 +160,7 @@ export default function SetupContainer( props: {channel: number}) {
                 <input
                     class="numberInput"
                     type="number"
-                    min="50"
+                    min="60"
                     max="120"
                     step="1"
                     value={sizeIncrease()*100}
@@ -170,7 +169,7 @@ export default function SetupContainer( props: {channel: number}) {
                 <input
                     class="sliderInput marginLeft10"
                     type="range"
-                    min="50"
+                    min="60"
                     max="120"
                     step="1"
                     value={sizeIncrease()*100}

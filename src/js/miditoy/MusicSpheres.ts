@@ -4,7 +4,7 @@ import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
 export class MusicSpheres extends MIDIToy {
-    shapes: paper.Path[] = [];
+    // shapes: paper.Path[] = [];
     circleRadius: number = 15;
     velocity: Vector2D[] = [];
 
@@ -38,11 +38,12 @@ export class MusicSpheres extends MIDIToy {
     SetupKeyboard() {
         // this.InitDrawPositions();
         this.InitVelocity();
+        this.RemoveChildrenFromLayer();
         var cellSize = (this.w / this.numberOfKeys) ;
         this.circleRadius = cellSize / 4;
         this.HorizontalDrawPositionDistrubution(cellSize);
 
-        this.shapes.length = 0;
+        // this.shapes.length = 0;
         this.drawPositions.forEach(element => {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
@@ -50,7 +51,7 @@ export class MusicSpheres extends MIDIToy {
             circle.fillColor = this.fillColor;
             circle.strokeColor = this.strokeColor;
             circle.strokeWidth = this.strokeWidth;
-            this.shapes.push(circle);
+            // this.shapes.push(circle);
             this.paperLayer.addChild(circle); //Work on layer
         })
     }
@@ -90,7 +91,7 @@ export class MusicSpheres extends MIDIToy {
 
     UpdateKeyboard() {
         let indexValue = 0;
-        this.shapes.forEach(element => {
+        this.paperLayer.children.forEach(element => {
             var s = element as paper.Path.Circle;
             var vel = this.velocity[indexValue];
             if(vel == undefined) return;

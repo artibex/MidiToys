@@ -43,7 +43,6 @@ export abstract class MIDIToy {
         this.paperLayer = new paper.Layer();
         this.targetChannel = targetChannel; //The target channel
         this.canvas = this.toyManager.targetCanvas; //Canvas element to draw on
-        
         this.w = this.canvas.getBoundingClientRect().width;
         this.h = this.canvas.getBoundingClientRect().height;
 
@@ -129,6 +128,7 @@ export abstract class MIDIToy {
     RemoveChildrenFromLayer() {
         this.paperLayer.removeChildren();
     }
+
 
     //Abstract functions that need to exist
     abstract UpdateKeyboard();
