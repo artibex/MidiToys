@@ -5,7 +5,7 @@ import paper from 'paper';
 
 export class PolyDrum extends MIDIToy {
     shapes: paper.Path[] = [];
-    shapeLimit: number = 20;
+    shapeLimit: number = 10;
     polySides: number = 3;
 
     startSize: number = 500;
@@ -33,12 +33,13 @@ export class PolyDrum extends MIDIToy {
     }
 
     LoadDefaultColorSettings() {
-        this.fillColor = new paper.Color(0,0,0,0);
+        this.fillColor = new paper.Color(0,0,0,0.1);
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
     }
 
     SetupKeyboard() {
+        this.RemoveChildrenFromLayer();
         this.SpawnShape(120);
     }
 
@@ -91,8 +92,8 @@ export class PolyDrum extends MIDIToy {
         console.log("DRAW shape");
         var point = new paper.Point(this.GetRandomNumber(this.minWidth, this.maxWidth), this.GetRandomNumber(this.minHeight,this.maxHeight));
         var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
-        poly.fillColor = this.fillColor;
-        poly.strokeColor = this.strokeColor;
+        poly.fillColor = new paper.Color(this.fillColor);
+        poly.strokeColor = new paper.Color(this.strokeColor);
         poly.strokeWidth = this.strokeWidth + velocity/10;
         this.paperLayer.addChild(poly);
 
@@ -110,9 +111,10 @@ export class PolyDrum extends MIDIToy {
             poly.scale(this.sizeIncrease)
             
             //poly.fillColor.alpha -= this.alphaDecrease;
-            poly.strokeColor.alpha -= this.alphaDecrease;
+            // poly.strokeColor.alpha -= this.alphaDecrease;
+            poly.strokeColor.alpha -= 0.01;
             poly.strokeWidth *= this.strokeWidthDecrease;
-            poly.rotate(this.rotationSpeed * poly.bounds.width / 1000);
+            poly.rotate(this.rotationSpeed);
 
             if(poly.strokeColor?.alpha <= 0 || poly.strokeWidth <= 0) {
                 this.RemoveShape(indexValue);
@@ -122,7 +124,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     RemoveShape(indexValue: number) {
-        var square = this.shapes[indexValue] as paper.Path.Rectangle;
+        var square = this.shapes[indexValue];
         this.shapes.splice(indexValue, 1);
         square.remove();
     }
