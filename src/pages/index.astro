@@ -29,10 +29,15 @@ import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
     toyManager.SetTargetCanvas(toyCanvas); //Set the target
     toyManager.CreateEmptyToys();
 
-    // toyManager.SetupMusicBalls(1, 13.3, 12);
-    // console.log(toyManager.GetToyName(1));
+    let frameCounter = 0;
+    let updateFrequency = 1;
     paper.view.onFrame = function(event) {
-        toyManager.UpdateToys(); //Update all keyboards, 60 times a second
+        frameCounter++;
+
+        if (frameCounter >= updateFrequency) {
+            frameCounter = 0;
+            toyManager.UpdateToys(); //Update all keyboards, 60 times a second
+        }
     }
 </script>
 
