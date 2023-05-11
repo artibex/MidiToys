@@ -45,6 +45,8 @@ export default function SetupContainer( props: {channel: number}) {
                 setMaxWidth(toy.maxWidth);
                 setMinHeight(toy.minHeight);
                 setMaxHeight(toy.maxHeight);
+
+                toy.SetupKeyboard();
             }
         }
     }
