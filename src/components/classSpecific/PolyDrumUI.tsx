@@ -17,10 +17,8 @@ export default function SetupContainer( props: {channel: number}) {
     const [rotationSpeed, setRotationSpeed] = createSignal(0.01);
     const [strokeWidth, setStrokeWidth] = createSignal(10);
     const [strokeWidthDecrease, setStrokeWidthDecrease] = createSignal(1);
-    const [minWidth, setMinWidth] = createSignal(0.5);
-    const [maxWidth, setMaxWidth] = createSignal(0.5);
-    const [minHeight, setMinHeight] = createSignal(0.5);
-    const [maxHeight, setMaxHeight] = createSignal(0.5);
+    const [xSpawnOffset, setXSpawnOffset] = createSignal(1);
+    const [ySpawnOffset, setYSpawnOffset] = createSignal(1);
 
     createEffect(() => {
         console.log("TRIGGER SPECIAL effect");
@@ -41,10 +39,8 @@ export default function SetupContainer( props: {channel: number}) {
                 setRotationSpeed(toy.rotationSpeed);
                 setStrokeWidth(toy.strokeWidth);
                 setStrokeWidthDecrease(toy.strokeWidthDecrease);
-                setMinWidth(toy.minWidth);
-                setMaxWidth(toy.maxWidth);
-                setMinHeight(toy.minHeight);
-                setMaxHeight(toy.maxHeight);
+                setXSpawnOffset(toy.xSpawnOffset);
+                setYSpawnOffset(toy.ySpawnOffset);
 
                 toy.SetupKeyboard();
             }
@@ -66,11 +62,9 @@ export default function SetupContainer( props: {channel: number}) {
                 toy.rotationSpeed = rotationSpeed();
                 toy.strokeWidth = strokeWidth();
                 toy.strokeWidthDecrease = strokeWidthDecrease();
-                toy.minWidth = minWidth();
-                toy.maxWidth = maxWidth();
-                toy.minHeight = minHeight();
-                toy.maxHeight = maxHeight();
-    
+                toy.xSpawnOffset = xSpawnOffset();
+                toy.ySpawnOffset = ySpawnOffset();
+
                 //Reload Keyboard
                 toy.SetupKeyboard();
             }
@@ -132,6 +126,30 @@ export default function SetupContainer( props: {channel: number}) {
             </div>
         </div>
         <div class="flexContainer">
+            <div>Rotation Speed</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="-1000"
+                    max="1000"
+                    step="1"
+                    value={rotationSpeed()*100}
+                    onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="-1000"
+                    max="1000"
+                    step="1"
+                    value={rotationSpeed()*100}
+                    onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
+                />
+            </div>
+        </div>
+        <br></br>
+        <div class="flexContainer">
             <div>Start Size</div> 
             <div class="flexContainer">
                 <input
@@ -155,7 +173,31 @@ export default function SetupContainer( props: {channel: number}) {
             </div>
         </div>
         <div class="flexContainer">
-            <div>Size Decrease</div> 
+            <div>Stroke Size</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="1"
+                    max="100"
+                    step="1"
+                    value={strokeWidth()}
+                    onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="1"
+                    max="100"
+                    step="1"
+                    value={strokeWidth()}
+                    onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+                />
+            </div>
+        </div>
+        <br></br>
+        <div class="flexContainer">
+            <div>Size Change</div> 
             <div class="flexContainer">
                 <input
                     class="numberInput"
@@ -178,76 +220,7 @@ export default function SetupContainer( props: {channel: number}) {
             </div>
         </div>
         <div class="flexContainer">
-            <div>Alpha Decrease</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={alphaDecrease()*100}
-                    onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={alphaDecrease()*100}
-                    onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Rotation Speed</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="-1000"
-                    max="1000"
-                    step="1"
-                    value={rotationSpeed()*100}
-                    onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="-1000"
-                    max="1000"
-                    step="1"
-                    value={rotationSpeed()*100}
-                    onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Stroke Width</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={strokeWidth()}
-                    onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={strokeWidth()}
-                    onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Stroke Width Decrease</div> 
+            <div>Stroke Change</div> 
             <div class="flexContainer">
                 <input
                     class="numberInput"
@@ -266,6 +239,76 @@ export default function SetupContainer( props: {channel: number}) {
                     step="1"
                     value={strokeWidthDecrease()*100}
                     onChange={(event) => setStrokeWidthDecrease(parseInt(event.target.value)/100)}
+                />
+            </div>
+        </div>
+        <div class="flexContainer">
+            <div>Alpha Change</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="1"
+                    max="10"
+                    step="1"
+                    value={alphaDecrease()*100}
+                    onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="1"
+                    max="10"
+                    step="1"
+                    value={alphaDecrease()*100}
+                    onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
+                />
+            </div>
+        </div>
+        <br></br>
+        <div class="flexContainer">
+            <div>X SpawnOffset</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="0"
+                    max="200"
+                    step="1"
+                    value={xSpawnOffset()*100}
+                    onChange={(event) => setXSpawnOffset(parseInt(event.target.value)/100)}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="0"
+                    max="200"
+                    step="1"
+                    value={xSpawnOffset()*100}
+                    onChange={(event) => setXSpawnOffset(parseInt(event.target.value)/100)}
+                />
+            </div>
+        </div>
+        <div class="flexContainer">
+            <div>Y SpawnOffset</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="0"
+                    max="200"
+                    step="1"
+                    value={ySpawnOffset()*100}
+                    onChange={(event) => setYSpawnOffset(parseInt(event.target.value)/100)}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="0"
+                    max="200"
+                    step="1"
+                    value={ySpawnOffset()*100}
+                    onChange={(event) => setYSpawnOffset(parseInt(event.target.value)/100)}
                 />
             </div>
         </div>

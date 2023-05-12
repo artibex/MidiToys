@@ -8,11 +8,11 @@ export class MusicSpheres extends MIDIToy {
     circleRadius: number = 15;
     velocity: Vector2D[] = [];
 
-    strokeWidth = 2;
+    strokeWidth: number = 2;
+    polySides: number = 20;
 
-    velocityLimit: number = 20;
+    velocityLimit: number = 50;
     yGravity: number = -0.9;
-    // xGravity: number = 0;
 
     yFriction: number = 0.90;
     xFriction: number = 0.90;
@@ -47,12 +47,13 @@ export class MusicSpheres extends MIDIToy {
         this.drawPositions.forEach(element => {
             var pos = element as Vector2D;
             var point = new paper.Point(pos.x, pos.y);
-            var circle = new paper.Path.Circle(point, this.circleRadius);
-            circle.fillColor = this.fillColor;
-            circle.strokeColor = this.strokeColor;
-            circle.strokeWidth = this.strokeWidth;
-            // this.shapes.push(circle);
-            this.paperLayer.addChild(circle); //Work on layer
+            // var circle = new paper.Path.Circle(point, this.circleRadius);
+            var poly = new paper.Path.RegularPolygon(point, this.polySides, this.circleRadius);
+
+            poly.fillColor = this.fillColor;
+            poly.strokeColor = this.strokeColor;
+            poly.strokeWidth = this.strokeWidth;
+            this.paperLayer.addChild(poly); //Work on layer
         })
     }
 
@@ -92,24 +93,55 @@ export class MusicSpheres extends MIDIToy {
     UpdateKeyboard() {
         let indexValue = 0;
         this.paperLayer.children.forEach(element => {
-            var s = element as paper.Path.Circle;
+            var s = element as paper.Path.RegularPolygon;
             var vel = this.velocity[indexValue];
             if(vel == undefined) return;
 
-            if(s.position.y < this.h - (this.circleRadius + this.strokeWidth/2)) vel.y += this.yGravity; //add negativ gravity value
-            if(vel.y > 0) vel.y *= this.yFriction; //reduce velocity when going up
+            if(this.yGravity < 0) { //Gravity down
+                if(vel.y > 0) vel.y *= this.yFriction;
+            }
+            if(this.yGravity > 0) { //Gravity up
+                if(vel.y < 0) vel.y *= this.yFriction;
+            }
 
-            if(s.position.y > this.h - (this.circleRadius + this.strokeWidth/2)) if(vel.y < -0.1) vel.y = -vel.y; //When on ground, bounce up
-            if(s.position.y < 0 + (this.circleRadius + this.strokeWidth/2)) if(vel.y > -0.1) vel.y = -vel.y; //When on top height, bounce down
-            
+            // Bounce conditions
+            if (s.position.y > this.h - (this.circleRadius + this.strokeWidth / 2)) { // Ground bounce
+                if (vel.y < 0) {
+                    vel.y = -vel.y;
+                    // vel.y *= this.yFriction;
+                }
+            }
+            if (s.position.y < 0 + (this.circleRadius + this.strokeWidth / 2)) { // Top height bounce
+                if (vel.y > 0) {
+                    vel.y = -vel.y;
+                }
+            }
+            if(s.position.y > 0 + (this.circleRadius + this.strokeWidth / 2) && s.position.y < this.h - (this.circleRadius + this.strokeWidth / 2)) {
+                vel.y += this.yGravity;
+            }
+
             if(vel.x !== 0) vel.x *= this.xFriction;
-            if(s.position.x < this.w + (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on right side, mirror velocity
-            if(s.position.x > 0 - (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on left side, mirror velocity
-            if(vel.x > this.velocityLimit * 2) vel.x = this.velocityLimit * 2;
-            if(vel.x < -this.velocityLimit * 2) vel.x = -this.velocityLimit * 2;
+            if(s.position.x > this.w - (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on right side, mirror velocity
+            if(s.position.x < 0 + (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on left side, mirror velocity
 
-            if(vel.y < -this.velocityLimit) vel.y = -this.velocityLimit; //When over limit, reduce to limit
+            //When over limit, reduce to limit
+            if(vel.y < -this.velocityLimit || vel.y > this.velocityLimit) {
+                if(vel.y < 0) vel.y = -this.velocityLimit;
+                if(vel.y > 0) vel.y = this.velocityLimit;
+            }
 
+            //Collider check to others
+            // for (let i = 0; i < this.paperLayer.children.length; i++) {
+            //     var other = this.paperLayer.children[i] as paper.Path.RegularPolygon;
+            //     if (s.intersects(other)) {
+            //         // Perform bounce off behavior
+            //         vel.x = -vel.x;
+            //         vel.y = -vel.y;
+            //         break; // Exit the loop if a collision is detected (to avoid multiple bounces in one frame)
+            //     }
+            // }
+
+            //Update position
             s.position.y -= vel.y;
             s.position.x -= vel.x;
             
@@ -122,9 +154,13 @@ export class MusicSpheres extends MIDIToy {
 
     Impuls(indexValue: number, yForce: number, xForce: number) {
         var vel = this.velocity[indexValue];
-        
-        vel.y += yForce;
-        vel.x += this.GetRandomNumber(-1, 1) * xForce;
+        var rand = Math.random();
+
+        if(this.yGravity < 0) vel.y += yForce;
+        else vel.y -= yForce;
+
+        if(rand <= 0.5) vel.x += xForce * 1;
+        else vel.x += xForce * -1;
 
         this.velocity[indexValue] = vel;
     }

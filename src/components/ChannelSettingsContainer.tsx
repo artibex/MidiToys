@@ -172,27 +172,7 @@ export default function SetupContainer( props: {channel: number}) {
                                     />
                                 </div>
                             </div>
-                            <div class="flexContainer">
-                                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
-                                <div class="flexContainer">
-                                    <input 
-                                        class="numberInput" 
-                                        type="number" 
-                                        min="1" 
-                                        max="100" 
-                                        onChange={(event) => setStartKey(parseInt(event.target.value))}
-                                        value={startKey()} 
-                                    />
-                                    <input 
-                                        class="sliderInput marginLeft10" 
-                                        type="range" 
-                                        min="1" 
-                                        max="100" 
-                                        onChange={(event) => setStartKey(parseInt(event.target.value))}
-                                        value={startKey()} 
-                                    />
-                                </div>
-                            </div>
+                            {RenderStartKeySetting()}
                             <div class="flexContainer">
                                 <div>Collapse Notes</div>
                                 <input 
@@ -510,6 +490,39 @@ export default function SetupContainer( props: {channel: number}) {
                 case 2: return (<PolyDrumUI channel={channel}></PolyDrumUI>);
                 default: return(<></>);
             }
+        }
+    }
+    function RenderStartKeySetting() {
+        //If collaps note is true, there is no need to set a start key, hide it
+        if(collapsNote() == true) {
+            return (
+                <div></div>
+            )
+        } else {
+            return (
+                <div class="flexContainer">
+                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
+                <div class="flexContainer">
+                    <input 
+                        class="numberInput" 
+                        type="number" 
+                        min="1" 
+                        max="100" 
+                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                        value={startKey()} 
+                    />
+                    <input 
+                        class="sliderInput marginLeft10" 
+                        type="range" 
+                        min="1" 
+                        max="100" 
+                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                        value={startKey()} 
+                    />
+                </div>
+            </div>
+
+            )
         }
     }
     function RenderToySelection() {

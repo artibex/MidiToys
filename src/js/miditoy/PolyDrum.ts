@@ -17,6 +17,11 @@ export class PolyDrum extends MIDIToy {
     strokeWidth: number = 10;
     strokeWidthDecrease: number = 1
 
+    xSpawnPos: number = this.w * 0.5;
+    ySpawnPos: number = this.h * 0.5;
+    xSpawnOffset: number = 1;
+    ySpawnOffset: number = 1;
+
     minWidth: number = this.w * 0.5;
     maxWidth: number = this.w * 0.5;
 
@@ -91,7 +96,10 @@ export class PolyDrum extends MIDIToy {
 
     SpawnShape(velocity: number) {
         console.log("DRAW shape");
-        var point = new paper.Point(this.GetRandomNumber(this.minWidth, this.maxWidth), this.GetRandomNumber(this.minHeight,this.maxHeight));
+        var xSpawn = this.xSpawnPos * this.xSpawnOffset;
+        var ySpawn = this.ySpawnPos * this.ySpawnOffset;
+
+        var point = new paper.Point(xSpawn, ySpawn);
         var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
         poly.fillColor = new paper.Color(this.fillColor);
         poly.strokeColor = new paper.Color(this.strokeColor);
@@ -131,7 +139,7 @@ export class PolyDrum extends MIDIToy {
             var center = poly.bounds.center;
             poly.rotate(rotationSpeed, center);
 
-            if(poly.strokeColor?.alpha <= 0 || poly.strokeWidth <= 0) {
+            if(poly.strokeColor.alpha <= 0 && poly.fillColor.alpha <= 0) {
                 this.RemoveShape(poly);
             }
             indexValue++;
