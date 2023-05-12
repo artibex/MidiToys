@@ -10,7 +10,8 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Special settings
     const [strokeWidth, setStrokeWidth] = createSignal(2);
-    
+    const [polySides, setPolySides] = createSignal(4);
+
     const [velocityLimit, setVelocityLimit] = createSignal(20);
     const [yGravity, setYGravity] = createSignal(-0.9);
     // const [xGravity, setXGravity] = createSignal(0);
@@ -34,7 +35,7 @@ export default function SetupContainer( props: {channel: number}) {
             if(toy != undefined) {
                 console.log(toy);
                 setStrokeWidth(toy.strokeWidth);
-                console.log("UI strokewith = " + strokeWidth());
+                setPolySides(toy.polySides);
                 setVelocityLimit(toy.velocityLimit);
                 setYGravity(toy.yGravity);
                 // setXGravity(t.xGravity);
@@ -55,6 +56,7 @@ export default function SetupContainer( props: {channel: number}) {
                 toy.RemoveChildrenFromLayer();
 
                 toy.strokeWidth = strokeWidth();
+                toy.polySides = polySides();
                 toy.velocityLimit = velocityLimit();
                 toy.yGravity = yGravity();
                 // t.xGravity = xGravity();
@@ -100,6 +102,30 @@ export default function SetupContainer( props: {channel: number}) {
                 />
             </div>
         </div>
+        <div class="flexContainer">
+            <div>Poly Sides</div> 
+            <div class="flexContainer">
+                <input
+                    class="numberInput"
+                    type="number"
+                    min="2"
+                    max="20"
+                    step="1"
+                    value={polySides()}
+                    onChange={(event) => setPolySides(parseInt(event.target.value))}
+                />
+                <input
+                    class="sliderInput marginLeft10"
+                    type="range"
+                    min="2"
+                    max="40"
+                    step="1"
+                    value={polySides()}
+                    onChange={(event) => setPolySides(parseInt(event.target.value))}
+                />
+            </div>
+        </div>
+
         <br></br>
         <div class="flexContainer">
             <div>Velocity Limit</div> 
@@ -108,7 +134,7 @@ export default function SetupContainer( props: {channel: number}) {
                     class="numberInput"
                     type="number"
                     min="1"
-                    max="50"
+                    max="200"
                     step="1"
                     value={velocityLimit()}
                     onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
@@ -117,7 +143,7 @@ export default function SetupContainer( props: {channel: number}) {
                     class="sliderInput marginLeft10"
                     type="range"
                     min="1"
-                    max="50"
+                    max="200"
                     value={velocityLimit()}
                     onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
                 />
@@ -197,8 +223,8 @@ export default function SetupContainer( props: {channel: number}) {
                 <input
                     class="numberInput"
                     type="number"
-                    min="-90"
-                    max="90"
+                    min="1"
+                    max="200"
                     step="1"
                     value={yImpulsPower()}
                     onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
@@ -206,8 +232,8 @@ export default function SetupContainer( props: {channel: number}) {
                 <input
                     class="sliderInput marginLeft10"
                     type="range"
-                    min="-90"
-                    max="90"
+                    min="1"
+                    max="200"
                     step="1"
                     value={yImpulsPower()}
                     onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
@@ -220,8 +246,8 @@ export default function SetupContainer( props: {channel: number}) {
                 <input
                     class="numberInput"
                     type="number"
-                    min="-90"
-                    max="90"
+                    min="1"
+                    max="200"
                     step="1"
                     value={xImpulsPower()}
                     onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
@@ -229,8 +255,8 @@ export default function SetupContainer( props: {channel: number}) {
                 <input
                     class="sliderInput marginLeft10"
                     type="range"
-                    min="-60"
-                    max="60"
+                    min="1"
+                    max="200"
                     step="1"
                     value={xImpulsPower()}
                     onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
