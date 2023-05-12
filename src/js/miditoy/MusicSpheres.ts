@@ -96,15 +96,15 @@ export class MusicSpheres extends MIDIToy {
             var vel = this.velocity[indexValue];
             if(vel == undefined) return;
 
-            if(s.position.y < this.h - (this.circleRadius + this.strokeWidth)) vel.y += this.yGravity; //add negativ gravity value
+            if(s.position.y < this.h - (this.circleRadius + this.strokeWidth/2)) vel.y += this.yGravity; //add negativ gravity value
             if(vel.y > 0) vel.y *= this.yFriction; //reduce velocity when going up
 
-            if(s.position.y > this.h - (this.circleRadius + this.strokeWidth)) if(vel.y < -0.1) vel.y = -vel.y; //When on ground, bounce up
-            if(s.position.y < 0 + (this.circleRadius + this.strokeWidth)) if(vel.y > -0.1) vel.y = -vel.y; //When on top height, bounce down
+            if(s.position.y > this.h - (this.circleRadius + this.strokeWidth/2)) if(vel.y < -0.1) vel.y = -vel.y; //When on ground, bounce up
+            if(s.position.y < 0 + (this.circleRadius + this.strokeWidth/2)) if(vel.y > -0.1) vel.y = -vel.y; //When on top height, bounce down
             
             if(vel.x !== 0) vel.x *= this.xFriction;
-            if(s.position.x < this.w + (this.circleRadius + this.strokeWidth)) vel.x = -vel.x; //When on right side, mirror velocity
-            if(s.position.x > 0 - (this.circleRadius + this.strokeWidth)) vel.x = -vel.x; //When on left side, mirror velocity
+            if(s.position.x < this.w + (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on right side, mirror velocity
+            if(s.position.x > 0 - (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on left side, mirror velocity
             if(vel.x > this.velocityLimit * 2) vel.x = this.velocityLimit * 2;
             if(vel.x < -this.velocityLimit * 2) vel.x = -this.velocityLimit * 2;
 
