@@ -1,15 +1,31 @@
+@font-face {
+  font-family: 'BigJohn';
+  src: url('../fonts/BIG\ JOHN.otf') format('opentype');
+}
+@font-face {
+  font-family: 'SlimJoe';
+  src: url('../fonts/Slim\ Joe.otf') format('opentype');
+}
+
+h1, h2, h3 {
+  font-family: "BigJohn", sans-serif;
+}
+
 body {
-background-color: black;
-color: white;
+  font-family: "SlimJoe", sans-serif;
+  background-color: black;
+  color: white;
 }
 
 button {
+  font-family: "BigJohn", sans-serif;
+  font-size: 12pt;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
   padding-right: 20px;
 
-  border-radius: 25px;
+  border-radius: 10px;
   background-color: black;
   border: 2px dotted white;
   color: white;
@@ -24,6 +40,11 @@ button:hover {
   padding-left: 20px;
   padding-right: 20px;
 }
+.flexList button {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}
 
 summary {
   margin: 2px;
@@ -31,9 +52,9 @@ summary {
   /* padding: 10px;
   padding-left: 20px;
   padding-right: 20px; */
-  width: 60%;
+  width: 100%;
   margin: 10px;
-  border-radius: 25px;
+  border-radius: 10px;
   background-color: black;
   border: 2px dotted white;
   color: white;
@@ -85,7 +106,7 @@ details[open] summary {
 }
 
 .channelGroup {
-  border-radius: 25px;
+  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.2);
   /* border: 1px solid white; */
   /* padding: 1px; */
@@ -100,15 +121,24 @@ details[open] summary {
   display: grid;
 }
 .channelContainer {
+  overflow: auto;
   padding: 20px;
-  border-radius: 25px;
+  border-radius: 10px;
+  height: 100%;
   border: 1px solid white;
 }
+
+
 .flexContainer{
   display: flex;
   padding-top: 1px;
   padding-bottom: 1px;
   justify-content: space-between;
+  align-items: center;
+}
+.flexList{
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -125,7 +155,7 @@ details[open] summary {
   border: none;
   background-color: black;
   color: white;
-  border-radius: 25px;
+  border-radius: 10px;
   box-sizing: border-box;
   height: 30px;
   width: 45px;
@@ -155,7 +185,7 @@ details[open] summary {
   outline: none;
   opacity: 0.6;
   transition: opacity 0.1s;
-  border-radius: 25px;
+  border-radius: 10px;
 }
 .sliderInput:hover {
   opacity: 1;
@@ -187,6 +217,8 @@ details[open] summary {
 }
 
 #openSettingsBtn {
+  font-family: "BigJohn", sans-serif;
+  font-size: 16pt;
   position: fixed;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -197,6 +229,7 @@ details[open] summary {
   display: none;
 }
 #buttonSettingsGroup {
+  user-select: none;
   align-items: center;
   height: 5%;
   display: flex;
@@ -207,7 +240,7 @@ details[open] summary {
   left: 50px;
   width: 50%;
   height: 85%;
-  border-radius: 25px;
+  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid white;
   padding: 20px;

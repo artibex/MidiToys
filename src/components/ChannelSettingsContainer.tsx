@@ -14,6 +14,7 @@ export default function SetupContainer( props: {channel: number}) {
     var prevToyType: number = -1;
 
     //General Toy Settings
+    const [selectToy, setSelectToy] = createSignal(false);
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("EmptyToy");
     const [numberOfKeys, setNumberOfKeys] = createSignal(12);
@@ -29,11 +30,10 @@ export default function SetupContainer( props: {channel: number}) {
 
     createEffect(() => {
         console.log("TRIGGER effect");
-        if(toyType() > 0) {
+        InitToy();
+        if(toyType() > 0 && toy != undefined) {
             UpdateToyValues();
         }
-        //CreateToy();
-        //UpdateUIValues();
     })
 
     function InitToy(){
@@ -84,6 +84,7 @@ export default function SetupContainer( props: {channel: number}) {
             toy.SetColor(toy.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
         }
     }
+
     function CreateToy() {
         //If toyType changed, create toy, otherwise, just udpate
         if(prevToyType != toyType()) {
@@ -92,20 +93,29 @@ export default function SetupContainer( props: {channel: number}) {
                 case 1: manager.CreateMusicBall(channel, numberOfKeys(), startKey()); break;
                 case 2: manager.CreatePolyDrum(channel, numberOfKeys(), startKey()); break;
                 case 3: manager.CreateSquareKeyboard(channel, numberOfKeys(), startKey()); break;
-                default: break;
+                default: manager.CreateEmptyToy(channel, numberOfKeys(), startKey()); break;
             }
             InitToy();
             UpdateUIValues();
         }
         prevToyType = toyType();
     }
-
     function UpdateToyType(value: number) {
         var calc = toyType();
         calc += value;
         if(calc < 0) calc = 3;
         if(calc > 3) calc = 0;
         setToyType(calc);
+        CreateToy();
+    }
+    function ToggleSelectToy() {
+        var b = selectToy();
+        if(b) setSelectToy(false);
+        else setSelectToy(true);
+    }
+    function SetToyType(value: number) {
+        setToyType(value);
+        setSelectToy(false);
         CreateToy();
     }
     function UpdateColorSelection(value: number) {
@@ -123,75 +133,83 @@ export default function SetupContainer( props: {channel: number}) {
     }
     //Ui Rendering Functions
     function RenderDefaultUIElements() {
-        if(toyType() < 1) return (<></>)
-        else {
+        if(selectToy() == true) {
             return(
-                <div class="noSelect">
-                    <details>
-                        <summary class="textAlignCenter marginAuto">
-                            <h3 class="marginAuto thinButton">Key Settings</h3>
-                        </summary>
-                        <br></br>
-                        <div class="flexContainer">
-                            <div>Keys</div> 
-                            <div class="flexContainer">
-                                <input
-                                    class="numberInput"
-                                    type="number"
-                                    min="1"
-                                    max="100"
-                                    step="1"
-                                    value={numberOfKeys()}
-                                    onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                                />
-                                <input
-                                    class="sliderInput marginLeft10"
-                                    type="range"
-                                    min="1"
-                                    max="100"
-                                    step="1"
-                                    value={numberOfKeys()}
-                                    onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                                />
-                            </div>
-                        </div>
-                        <div class="flexContainer">
-                            <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
-                            <div class="flexContainer">
-                                <input 
-                                    class="numberInput" 
-                                    type="number" 
-                                    min="1" 
-                                    max="100" 
-                                    onChange={(event) => setStartKey(parseInt(event.target.value))}
-                                    value={startKey()} 
-                                />
-                                <input 
-                                    class="sliderInput marginLeft10" 
-                                    type="range" 
-                                    min="1" 
-                                    max="100" 
-                                    onChange={(event) => setStartKey(parseInt(event.target.value))}
-                                    value={startKey()} 
-                                />
-                            </div>
-                        </div>
-                        <div class="flexContainer">
-                            <div>Collapse Notes</div>
-                            <input 
-                                class="toggleInput" 
-                                type="checkbox" 
-                                checked={collapsNote()}
-                                onChange={(event) => setCollapsNote(event.target.checked)}
-                            />
-                        </div>
-                    </details>
-                    <br></br>
-                    {RenderColorSettings()}
-                    <br></br>
-                    {RenderSpecialUIElements()}
+                <div>
+                    {RenderToySelection()}
                 </div>
             )
+        } else {
+            if(toyType() < 1) return (<></>)
+            else {
+                return(
+                    <div class="noSelect">
+                        <details>
+                            <summary class="textAlignCenter marginAuto">
+                                <h3 class="marginAuto thinButton">Key Settings</h3>
+                            </summary>
+                            <br></br>
+                            <div class="flexContainer">
+                                <div>Keys</div> 
+                                <div class="flexContainer">
+                                    <input
+                                        class="numberInput"
+                                        type="number"
+                                        min="1"
+                                        max="100"
+                                        step="1"
+                                        value={numberOfKeys()}
+                                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                                    />
+                                    <input
+                                        class="sliderInput marginLeft10"
+                                        type="range"
+                                        min="1"
+                                        max="100"
+                                        step="1"
+                                        value={numberOfKeys()}
+                                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                                    />
+                                </div>
+                            </div>
+                            <div class="flexContainer">
+                                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
+                                <div class="flexContainer">
+                                    <input 
+                                        class="numberInput" 
+                                        type="number" 
+                                        min="1" 
+                                        max="100" 
+                                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                                        value={startKey()} 
+                                    />
+                                    <input 
+                                        class="sliderInput marginLeft10" 
+                                        type="range" 
+                                        min="1" 
+                                        max="100" 
+                                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                                        value={startKey()} 
+                                    />
+                                </div>
+                            </div>
+                            <div class="flexContainer">
+                                <div>Collapse Notes</div>
+                                <input 
+                                    class="toggleInput" 
+                                    type="checkbox" 
+                                    checked={collapsNote()}
+                                    onChange={(event) => setCollapsNote(event.target.checked)}
+                                />
+                            </div>
+                        </details>
+                        <br></br>
+                        {RenderColorSettings()}
+                        <br></br>
+                        {RenderSpecialUIElements()}
+                    </div>
+                )
+            }
         }
     }
     function RenderColorSettings() {
@@ -494,22 +512,31 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+    function RenderToySelection() {
+        return(
+            <div class="flexList">
+                <button id="thinButton" onClick={() => SetToyType(0)}>None</button>
+                <button id="thinButton" onClick={() => SetToyType(1)}>Music Spheres</button>
+                <button id="thinButton" onClick={() => SetToyType(2)}>Poly Drum</button>
+                <button id="thinButton" onClick={() => SetToyType(3)}>Square Keyboard</button>
+            </div>
+        )
+    }
 
     return (
-    <div class="channelContainer noSelect">
-        <div class="flexContainer noSelect">
-            <div>
-                <h3 class="marginAuto">{toyName()}</h3>
-                <div>MIDI Channel: {channel}</div>
+        <div class="channelContainer noSelect">
+            <div class="flexContainer noSelect">
+                <div>
+                    <h3 class="marginAuto">{toyName()}</h3>
+                    <div>MIDI Channel: {channel}</div>
+                </div>
+                <div>
+                    <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button>
+                    {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
+                </div>
             </div>
-            <div>
-                <button id="thinButton" onClick={() => UpdateToyType(-1)}>Prev</button>
-                <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                       
-            </div>
+            <br></br>
+            {RenderDefaultUIElements()}
         </div>
-        <br></br>
-        
-        {RenderDefaultUIElements()}
-    </div>
-    )
+    );
 }
