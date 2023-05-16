@@ -1,23 +1,42 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
+import PresetUI from "../PresetUI"
 
-var manager = new ToyManager();
+
+var tManager = new ToyManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
+    const [useEffect, setUseEffect] = createSignal(true);
 
     //Special settings
 
     createEffect(() => {
-        console.log("TRIGGER SPECIAL effect");
-        UpdateToyValues();
+        if(useEffect()) {
+            console.log("TRIGGER SPECIAL effect");
+            UpdateToyValues();
+        }
     })
+
+    function InitToy(){
+        toy = tManager.GetToy(channel);
+        // toy.UnsubscribeFromToyChangedEvent(ToyChanged);
+        toy.SubscribeToToyChangedEvent(ToyChanged);
+    }
+    const ToyChanged = () => {
+        // Handle the event...
+        console.log("DEFAULT UI event");
+        setUseEffect(false);
+        UpdateUIValues();
+        setUseEffect(true);
+      };
+
 
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            toy = manager.GetToy(channel);
+            InitToy();     
             
             //Put values here
             if(toy != undefined) {
@@ -29,11 +48,10 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateToyValues() {
         console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
-            //Remove old objects
-            toy.RemoveChildrenFromLayer();
-            
             //Put values here
             if(toy != undefined) {
+                //Remove old objects
+                toy.RemoveChildrenFromLayer();
                 
                 //Reload Keyboard
                 toy.SetupKeyboard();
@@ -42,15 +60,17 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     UpdateUIValues(); //Get UI Values once at start
-
     return(
-        <details>
-        <summary class="textAlignCenter marginAuto">
-            <h3 class="marginAuto thinButton">Special Settings</h3>
-        </summary>
-        <br></br>
-        {/* Put Special Stuff here */}
-
-    </details>
+        <div>
+            <details>
+            <summary class="textAlignCenter marginAuto">
+                <h3 class="marginAuto thinButton">Special Settings</h3>
+            </summary>
+            <br></br>
+            {/* Put Special Stuff here */}
+            </details>
+            <br></br>
+            <PresetUI channel={channel}></PresetUI>
+        </div>  
     )
 }

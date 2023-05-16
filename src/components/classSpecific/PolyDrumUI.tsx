@@ -1,12 +1,14 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { PolyDrum } from "../../js/miditoy/PolyDrum";
+import PresetUI from "../PresetUI"
 
-var manager = new ToyManager();
+var tManager = new ToyManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
+    const [useEffect, setUseEffect] = createSignal(true);
 
     //Special settings
     const [shapeLimit, setShapeLimit] = createSignal(20);
@@ -21,14 +23,30 @@ export default function SetupContainer( props: {channel: number}) {
     const [ySpawnOffset, setYSpawnOffset] = createSignal(1);
 
     createEffect(() => {
-        console.log("TRIGGER SPECIAL effect");
-        UpdateToyValues();
+        if(useEffect()) {
+            console.log("TRIGGER SPECIAL effect");
+            UpdateToyValues();
+        }
     })
+
+    const ToyChanged = () => {
+        // Handle the event...
+        console.log("DEFAULT UI event");
+        setUseEffect(false);
+        UpdateUIValues();
+        setUseEffect(true);
+    };
+
+    function InitToy(){
+        toy = tManager.GetToy(channel);
+        // toy.UnsubscribeFromToyChangedEvent(ToyChanged);
+        toy.SubscribeToToyChangedEvent(ToyChanged);
+    }
 
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            toy = manager.GetToy(channel) as PolyDrum;
+            InitToy();
 
             if(toy != undefined) {
                 setShapeLimit(toy.shapeLimit);
@@ -41,19 +59,17 @@ export default function SetupContainer( props: {channel: number}) {
                 setStrokeWidthDecrease(toy.strokeWidthDecrease);
                 setXSpawnOffset(toy.xSpawnOffset);
                 setYSpawnOffset(toy.ySpawnOffset);
-
-                toy.SetupKeyboard();
             }
         }
     }
     function UpdateToyValues() {
-        console.log("UPDATE toy values");
+        console.log("UPDATE PolyDrum toy values");
         if (typeof window !== 'undefined') {
-            toy = manager.GetToy(channel) as PolyDrum;
 
-            //Remove old objects
             if(toy != undefined) {
-                toy.RemoveChildrenFromLayer();
+                //Remove old objects
+                // toy.RemoveChildrenFromLayer();
+
                 toy.shapeLimit = shapeLimit();
                 toy.polySides = polySides();
                 toy.startSize = startSize();
@@ -72,247 +88,249 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     UpdateUIValues(); //Get UI Values once at start
-
     return(
-        <details>
-        <summary class="textAlignCenter marginAuto">
-            <h3 class="marginAuto thinButton">Special Settings</h3>
-        </summary>
+        <div>
+            <details>
+            <summary class="textAlignCenter marginAuto">
+                <h3 class="marginAuto thinButton">Special Settings</h3>
+            </summary>
+            <br></br>
+            <div class="flexContainer">
+                <div>Shape Limit</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="1"
+                        max="100"
+                        step="1"
+                        value={shapeLimit()}
+                        onChange={(event) => setShapeLimit(parseInt(event.target.value))}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="1"
+                        max="100"
+                        step="1"
+                        value={shapeLimit()}
+                        onChange={(event) => setShapeLimit(parseInt(event.target.value))}
+                    />
+                </div>
+            </div>
+            <div class="flexContainer">
+                <div>Poly Sides</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="2"
+                        max="20"
+                        step="1"
+                        value={polySides()}
+                        onChange={(event) => setPolySides(parseInt(event.target.value))}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="2"
+                        max="20"
+                        step="1"
+                        value={polySides()}
+                        onChange={(event) => setPolySides(parseInt(event.target.value))}
+                    />
+                </div>
+            </div>
+            <div class="flexContainer">
+                <div>Rotation Speed</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="-1000"
+                        max="1000"
+                        step="1"
+                        value={rotationSpeed()*100}
+                        onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="-1000"
+                        max="1000"
+                        step="1"
+                        value={rotationSpeed()*100}
+                        onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
+                    />
+                </div>
+            </div>
+            <br></br>
+            <div class="flexContainer">
+                <div>Start Size</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="10"
+                        max="1000"
+                        step="1"
+                        value={startSize()}
+                        onChange={(event) => setStartSize(parseInt(event.target.value))}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="10"
+                        max="1000"
+                        step="1"
+                        value={startSize()}
+                        onChange={(event) => setStartSize(parseInt(event.target.value))}
+                    />
+                </div>
+            </div>
+            <div class="flexContainer">
+                <div>Stroke Size</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="1"
+                        max="100"
+                        step="1"
+                        value={strokeWidth()}
+                        onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="1"
+                        max="100"
+                        step="1"
+                        value={strokeWidth()}
+                        onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+                    />
+                </div>
+            </div>
+            <br></br>
+            <div class="flexContainer">
+                <div>Size Change</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="60"
+                        max="120"
+                        step="1"
+                        value={sizeIncrease()*100}
+                        onChange={(event) => setSizeIncrease(parseInt(event.target.value)/100)}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="60"
+                        max="120"
+                        step="1"
+                        value={sizeIncrease()*100}
+                        onChange={(event) => setSizeIncrease(parseInt(event.target.value)/100)}
+                    />
+                </div>
+            </div>
+            <div class="flexContainer">
+                <div>Stroke Change</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="50"
+                        max="110"
+                        step="1"
+                        value={strokeWidthDecrease()*100}
+                        onChange={(event) => setStrokeWidthDecrease(parseInt(event.target.value)/100)}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="50"
+                        max="110"
+                        step="1"
+                        value={strokeWidthDecrease()*100}
+                        onChange={(event) => setStrokeWidthDecrease(parseInt(event.target.value)/100)}
+                    />
+                </div>
+            </div>
+            <div class="flexContainer">
+                <div>Alpha Change</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="1"
+                        max="10"
+                        step="1"
+                        value={alphaDecrease()*100}
+                        onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="1"
+                        max="10"
+                        step="1"
+                        value={alphaDecrease()*100}
+                        onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
+                    />
+                </div>
+            </div>
+            <br></br>
+            <div class="flexContainer">
+                <div>X SpawnOffset</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="0"
+                        max="200"
+                        step="1"
+                        value={xSpawnOffset()*100}
+                        onChange={(event) => setXSpawnOffset(parseInt(event.target.value)/100)}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="0"
+                        max="200"
+                        step="1"
+                        value={xSpawnOffset()*100}
+                        onChange={(event) => setXSpawnOffset(parseInt(event.target.value)/100)}
+                    />
+                </div>
+            </div>
+            <div class="flexContainer">
+                <div>Y SpawnOffset</div> 
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="0"
+                        max="200"
+                        step="1"
+                        value={ySpawnOffset()*100}
+                        onChange={(event) => setYSpawnOffset(parseInt(event.target.value)/100)}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="0"
+                        max="200"
+                        step="1"
+                        value={ySpawnOffset()*100}
+                        onChange={(event) => setYSpawnOffset(parseInt(event.target.value)/100)}
+                    />
+                </div>
+            </div>
+        </details>
         <br></br>
-        <div class="flexContainer">
-            <div>Shape Limit</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={shapeLimit()}
-                    onChange={(event) => setShapeLimit(parseInt(event.target.value))}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={shapeLimit()}
-                    onChange={(event) => setShapeLimit(parseInt(event.target.value))}
-                />
-            </div>
+        <PresetUI channel={channel}></PresetUI>
         </div>
-        <div class="flexContainer">
-            <div>Poly Sides</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="2"
-                    max="20"
-                    step="1"
-                    value={polySides()}
-                    onChange={(event) => setPolySides(parseInt(event.target.value))}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="2"
-                    max="20"
-                    step="1"
-                    value={polySides()}
-                    onChange={(event) => setPolySides(parseInt(event.target.value))}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Rotation Speed</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="-1000"
-                    max="1000"
-                    step="1"
-                    value={rotationSpeed()*100}
-                    onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="-1000"
-                    max="1000"
-                    step="1"
-                    value={rotationSpeed()*100}
-                    onChange={(event) => setRotationSpeed(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-        <br></br>
-        <div class="flexContainer">
-            <div>Start Size</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="10"
-                    max="1000"
-                    step="1"
-                    value={startSize()}
-                    onChange={(event) => setStartSize(parseInt(event.target.value))}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="10"
-                    max="1000"
-                    step="1"
-                    value={startSize()}
-                    onChange={(event) => setStartSize(parseInt(event.target.value))}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Stroke Size</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={strokeWidth()}
-                    onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="1"
-                    max="100"
-                    step="1"
-                    value={strokeWidth()}
-                    onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                />
-            </div>
-        </div>
-        <br></br>
-        <div class="flexContainer">
-            <div>Size Change</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="60"
-                    max="120"
-                    step="1"
-                    value={sizeIncrease()*100}
-                    onChange={(event) => setSizeIncrease(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="60"
-                    max="120"
-                    step="1"
-                    value={sizeIncrease()*100}
-                    onChange={(event) => setSizeIncrease(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Stroke Change</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="50"
-                    max="110"
-                    step="1"
-                    value={strokeWidthDecrease()*100}
-                    onChange={(event) => setStrokeWidthDecrease(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="50"
-                    max="110"
-                    step="1"
-                    value={strokeWidthDecrease()*100}
-                    onChange={(event) => setStrokeWidthDecrease(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Alpha Change</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="1"
-                    max="10"
-                    step="1"
-                    value={alphaDecrease()*100}
-                    onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="1"
-                    max="10"
-                    step="1"
-                    value={alphaDecrease()*100}
-                    onChange={(event) => setAlphaDecrease(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-        <br></br>
-        <div class="flexContainer">
-            <div>X SpawnOffset</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="0"
-                    max="200"
-                    step="1"
-                    value={xSpawnOffset()*100}
-                    onChange={(event) => setXSpawnOffset(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="0"
-                    max="200"
-                    step="1"
-                    value={xSpawnOffset()*100}
-                    onChange={(event) => setXSpawnOffset(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-        <div class="flexContainer">
-            <div>Y SpawnOffset</div> 
-            <div class="flexContainer">
-                <input
-                    class="numberInput"
-                    type="number"
-                    min="0"
-                    max="200"
-                    step="1"
-                    value={ySpawnOffset()*100}
-                    onChange={(event) => setYSpawnOffset(parseInt(event.target.value)/100)}
-                />
-                <input
-                    class="sliderInput marginLeft10"
-                    type="range"
-                    min="0"
-                    max="200"
-                    step="1"
-                    value={ySpawnOffset()*100}
-                    onChange={(event) => setYSpawnOffset(parseInt(event.target.value)/100)}
-                />
-            </div>
-        </div>
-
-    </details>
     )
 }

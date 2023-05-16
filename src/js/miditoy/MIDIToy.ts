@@ -8,10 +8,12 @@ import paper from 'paper';
 //Abstract class that forms the base of every MIDIToy
 export abstract class MIDIToy {
     //Basic information
+    private toyChangedEventListeners: (() => void)[] = [];
+
     inputManager: InputManager; //InputManager reference
     toyManager: ToyManager; //ToyManager reference
     paperLayer; //The paper layer on whith to draw on
-    toyName: string; //Name of the toy
+    // toyName: string; //Name of the toy
     targetChannel: number; //The target MIDi channel of the toy
     bpm: number = 0; //The bpm value to calculate stuff
     
@@ -36,10 +38,9 @@ export abstract class MIDIToy {
     accentColor: paper.Color = new paper.Color(1/2);
 
     //Construct everything basic that is needed for a MIDIKeyboard
-    constructor(toyName: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
+    constructor(targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
         this.inputManager = new InputManager(); //The Input Manager
         this.toyManager = new ToyManager();
-        this.toyName = toyName;
         this.paperLayer = new paper.Layer();
         this.targetChannel = targetChannel; //The target channel
         this.canvas = this.toyManager.targetCanvas; //Canvas element to draw on
@@ -54,6 +55,29 @@ export abstract class MIDIToy {
         // this.ResizeCanvas();
         this.SetupMIDIReceiver(this.useRegExp);
         // console.log("CREATED new MIDIToy on channel " + this.targetChannel);
+    }
+
+    // Event subscription method
+    SubscribeToToyChangedEvent(listener: () => void): void {
+        const index = this.toyChangedEventListeners.indexOf(listener);
+        if(index == -1) {
+            this.toyChangedEventListeners.push(listener);
+        }
+    }
+
+    // Event unsubscription method
+    UnsubscribeFromToyChangedEvent(listener: () => void): void {
+        const index = this.toyChangedEventListeners.indexOf(listener);
+        if (index !== -1) {
+        this.toyChangedEventListeners.splice(index, 1);
+        }
+    }
+
+    // Method to trigger the event and notify the listeners
+    TriggerToyChangedEvent(): void {
+        for (const listener of this.toyChangedEventListeners) {
+            listener();
+        }
     }
 
     //Generates needed MIDI Receiver
@@ -134,4 +158,7 @@ export abstract class MIDIToy {
     abstract UpdateKeyboard();
     abstract SetupKeyboard();
     abstract LoadDefaultColorSettings();
+
+    abstract ToJSON();
+    abstract LoadJSON(data);
 }
