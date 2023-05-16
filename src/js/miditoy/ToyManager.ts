@@ -1,5 +1,5 @@
 import { EmptyToy } from "./EmptyToy";
-import { MusicSpheres } from "./MusicSpheres";
+import { GraviBoard } from "./GraviBoard";
 import { PolyDrum } from "./PolyDrum";
 import { SquareKeyboard } from "./SquareKeyboard";
 import * as paper from "paper";
@@ -48,10 +48,10 @@ export class ToyManager
         console.log("CREATE EmptyToy on channel " + channel);
         this.toys[channel -1] = new EmptyToy(channel);
     }
-    CreateMusicBall(channel:number, numberOfKeys: number, startKey: number) {
+    CreateGraviBoard(channel:number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
-        console.log("CREATE MusicBalls on channel " + channel);
-        this.toys[channel - 1] = new MusicSpheres(channel, numberOfKeys, startKey);
+        console.log("CREATE GraviBoard on channel " + channel);
+        this.toys[channel - 1] = new GraviBoard(channel, numberOfKeys, startKey);
     }
     CreatePolyDrum(channel: number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);

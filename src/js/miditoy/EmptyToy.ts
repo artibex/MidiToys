@@ -4,13 +4,22 @@ import { MIDIToy } from "./MIDIToy";
 export class EmptyToy extends MIDIToy {
 
     constructor(targetChannel: number) {
-        super("EmptyToy", targetChannel, 13, 12, true);
+        super(targetChannel, 13, 12, true);
     }
 
+    LoadDefaultColorSettings() {
+        
+    }
     SetupKeyboard() {
         
     }
     UpdateKeyboard() {
+        
+    }
+    ToJSON() {
+        
+    }
+    LoadJSON(data: any) {
         
     }
 }

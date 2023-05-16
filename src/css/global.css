@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'BigJohn';
-  src: url('../fonts/BIG\ JOHN.otf') format('opentype');
+  src: url('../fonts/BIGJOHN.otf') format('opentype');
 }
 @font-face {
   font-family: 'SlimJoe';
-  src: url('../fonts/Slim\ Joe.otf') format('opentype');
+  src: url('../fonts/SlimJoe.otf') format('opentype');
 }
 
 h1, h2, h3 {
@@ -13,6 +13,7 @@ h1, h2, h3 {
 
 body {
   font-family: "SlimJoe", sans-serif;
+  font-size: 10pt;
   background-color: black;
   color: white;
 }
@@ -67,7 +68,7 @@ summary::marker {
   content: ""; /* hide the marker */
 }
 details[open] summary {
-  color: red; /* set the text color of the summary when opened */
+  color: yellow;
 }
 .noSelect{
   user-select: none;
@@ -104,6 +105,9 @@ details[open] summary {
 .marginRight40Percent{
   margin-right: 40%;
 }
+.fullWidth{
+  width: 100%;
+}
 
 .channelGroup {
   border-radius: 10px;
@@ -134,8 +138,14 @@ details[open] summary {
   padding-top: 1px;
   padding-bottom: 1px;
   justify-content: space-between;
+}
+.alignItemsCenter{
   align-items: center;
 }
+.alignItemsStart{
+  align-items: start;
+}
+
 .flexList{
   display: flex;
   flex-direction: column;
@@ -163,7 +173,7 @@ details[open] summary {
 }
 .numberInput:focus {
   outline: 2px solid;
-  color: red;
+  color: yellow;
   /* border-color: #4da6ff; */
 }
 .numberInput:hover{
@@ -174,6 +184,30 @@ details[open] summary {
   -webkit-appearance: none;
   margin: 0;
   display: none;
+}
+
+.textInput {
+  text-align: center;
+  padding: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  outline: 2px dotted;
+  border: none;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  box-sizing: border-box;
+  height: 30px;
+  transition: color 0.2s ease-in-out;
+}
+.textInput:focus {
+  outline: 2px solid;
+  color: yellow;
+  /* border-color: #4da6ff; */
+}
+.textInput:hover{
+  outline: 2px solid;
 }
 
 .sliderInput{

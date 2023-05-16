@@ -29,7 +29,7 @@ export class PolyDrum extends MIDIToy {
     maxHeight: number = this.h * 0.5;
 
     constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super("PolyDrum", targetChannel, numberOfKeys, startKey, true);
+        super(targetChannel, numberOfKeys, startKey, true);
         console.log("CREATED PolyDrum");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
@@ -41,6 +41,99 @@ export class PolyDrum extends MIDIToy {
         this.fillColor = new paper.Color(0,0,0,0.1);
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
+    }
+
+    ToJSON() {
+    return {
+        //MIDIToy data
+        numberOfKeys: this.numberOfKeys,
+        startKey: this.startKey,
+        useRegExp: this.useRegExp,
+        fillColor: {
+            red: this.fillColor.red,
+            green: this.fillColor.green,
+            blue: this.fillColor.blue,
+            alpha: this.fillColor.alpha
+        },
+        strokeColor: {
+            red: this.strokeColor.red,
+            green: this.strokeColor.green,
+            blue: this.strokeColor.blue,
+            alpha: this.strokeColor.alpha
+        },
+        accentColor: {
+            red: this.accentColor.red,
+            green: this.accentColor.green,
+            blue: this.accentColor.blue,
+            alpha: this.accentColor.alpha
+        },
+
+        //Class specific data
+        shapeLimit: this.shapeLimit,
+        polySides: this.polySides,
+        startSize: this.startSize,
+        sizeIncrease: this.sizeIncrease,
+        alphaDecrease: this.alphaDecrease,
+        rotationSpeed: this.rotationSpeed,
+        strokeWidth: this.strokeWidth,
+        strokeWidthDecrease: this.strokeWidthDecrease,
+        // xSpawnPos: this.xSpawnPos,
+        // ySpawnPos: this.ySpawnPos,
+        xSpawnOffset: this.xSpawnOffset,
+        ySpawnOffset: this.ySpawnOffset,
+        // minWidth: this.minWidth,
+        // maxWidth: this.maxWidth,
+        // minHeight: this.minHeight,
+        // maxHeight: this.maxHeight
+        };
+    }
+    LoadJSON(data: any) {
+        //MIDIToy Loading
+        this.numberOfKeys = data.numberOfKeys;
+        this.startKey = data.startKey;
+        this.useRegExp = data.useRegExp;
+
+        this.fillColor = new paper.Color(
+          data.fillColor.red,
+          data.fillColor.green,
+          data.fillColor.blue,
+          data.fillColor.alpha
+        );
+      
+        this.strokeColor = new paper.Color(
+          data.strokeColor.red,
+          data.strokeColor.green,
+          data.strokeColor.blue,
+          data.strokeColor.alpha
+        );
+
+        this.accentColor = new paper.Color(
+          data.accentColor.red,
+          data.accentColor.green,
+          data.accentColor.blue,
+          data.accentColor.alpha
+        );
+      
+        //Class specific loading
+        this.shapeLimit = data.shapeLimit;
+        this.polySides = data.polySides;
+        this.startSize = data.startSize;
+        this.sizeIncrease = data.sizeIncrease;
+        this.alphaDecrease = data.alphaDecrease;
+        this.rotationSpeed = data.rotationSpeed;
+        this.strokeWidth = data.strokeWidth;
+        this.strokeWidthDecrease = data.strokeWidthDecrease;
+        // this.xSpawnPos = data.xSpawnPos;
+        // this.ySpawnPos = data.ySpawnPos;
+        this.xSpawnOffset = data.xSpawnOffset;
+        this.ySpawnOffset = data.ySpawnOffset;
+        // this.minWidth = data.minWidth;
+        // this.maxWidth = data.maxWidth;
+        // this.minHeight = data.minHeight;
+        // this.maxHeight = data.maxHeight;
+        this.TriggerToyChangedEvent();
+        setTimeout(() => {
+        }, 50);
     }
 
     SetupKeyboard() {

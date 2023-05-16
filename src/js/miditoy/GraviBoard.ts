@@ -3,7 +3,7 @@ import { MIDIToy } from "./MIDIToy";
 import { Vector2D } from "../Interfaces";
 import paper from 'paper';
 
-export class MusicSpheres extends MIDIToy {
+export class GraviBoard extends MIDIToy {
     // shapes: paper.Path[] = [];
     circleRadius: number = 15;
     velocity: Vector2D[] = [];
@@ -21,7 +21,7 @@ export class MusicSpheres extends MIDIToy {
     xImpulsPower: number = 0;
 
     constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super("MusicSpheres", targetChannel, numberOfKeys, startKey, true);
+        super(targetChannel, numberOfKeys, startKey, true);
         console.log("CREATED MusicBalls");
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
         this.LoadDefaultColorSettings();
@@ -33,7 +33,83 @@ export class MusicSpheres extends MIDIToy {
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
     }
+    ToJSON() {
+        return {
+        //MIDIToy data
+        numberOfKeys: this.numberOfKeys,
+        startKey: this.startKey,
+        useRegExp: this.useRegExp,
 
+        fillColor: {
+            red: this.fillColor.red,
+            green: this.fillColor.green,
+            blue: this.fillColor.blue,
+            alpha: this.fillColor.alpha
+        },
+        strokeColor: {
+            red: this.strokeColor.red,
+            green: this.strokeColor.green,
+            blue: this.strokeColor.blue,
+            alpha: this.strokeColor.alpha
+        },
+        accentColor: {
+            red: this.accentColor.red,
+            green: this.accentColor.green,
+            blue: this.accentColor.blue,
+            alpha: this.accentColor.alpha
+        },
+
+        //Class specific data
+        circleRadius: this.circleRadius,
+        velocity: this.velocity.map(v => ({ x: v.x, y: v.y })),
+        strokeWidth: this.strokeWidth,
+        polySides: this.polySides,
+        velocityLimit: this.velocityLimit,
+        yGravity: this.yGravity,
+        yFriction: this.yFriction,
+        xFriction: this.xFriction,
+        yImpulsPower: this.yImpulsPower,
+        xImpulsPower: this.xImpulsPower,
+        };
+    }
+    LoadJSON(data) {
+        this.numberOfKeys = data.numberOfKeys;
+        this.startKey = data.startKey;
+        this.useRegExp = data.useRegExp;
+    
+        this.fillColor = new paper.Color(
+            data.fillColor.red,
+            data.fillColor.green,
+            data.fillColor.blue,
+            data.fillColor.alpha
+        );
+        this.strokeColor = new paper.Color(
+            data.strokeColor.red,
+            data.strokeColor.green,
+            data.strokeColor.blue,
+            data.strokeColor.alpha
+        );
+        this.accentColor = new paper.Color(
+            data.accentColor.red,
+            data.accentColor.green,
+            data.accentColor.blue,
+            data.accentColor.alpha
+        );
+    
+        // Class specific data
+        this.circleRadius = data.circleRadius;
+        this.velocity = data.velocity.map(v => ({ x: v.x, y: v.y }));
+        this.strokeWidth = data.strokeWidth;
+        this.polySides = data.polySides;
+        this.velocityLimit = data.velocityLimit;
+        this.yGravity = data.yGravity;
+        this.yFriction = data.yFriction;
+        this.xFriction = data.xFriction;
+        this.yImpulsPower = data.yImpulsPower;
+        this.xImpulsPower = data.xImpulsPower;
+        this.TriggerToyChangedEvent();
+    }
+    
     // [O][O][O][O][O][O][O][O]
     SetupKeyboard() {
         // this.InitDrawPositions();
