@@ -1,20 +1,20 @@
 import { createSignal, createEffect } from "solid-js";
-import { MIDIToy } from "../js/miditoy/MIDIToy";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { RGBA } from "../js/Interfaces";
 import { MIDIDataTable } from "../js/MIDIDataTable";
 import GraviBoardUI from "./classSpecific/GraviBoardUI";
 import PolyDrumUI from "./classSpecific/PolyDrumUI";
-import PresetUI from "./PresetUI"
-
-var tManager = new ToyManager();
+import PresetUI from "./PresetUI";
+import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
+import { CreateToy } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter } from "../js/solidjs/ComponentUtils.jsx";
 
 export default function SetupContainer( props: {channel: number}) {
     var toy;
-    const [useEffect, setUseEffect] = createSignal(true);
-        var channel = props.channel;
+    var channel = props.channel;
     var prevToyType: number = -1;
-
+    const [useEffect, setUseEffect] = createSignal(true);
+    
     //General Toy Settings
     const [selectToy, setSelectToy] = createSignal(false);
     const [toyType, setToyType] = createSignal(0);
@@ -46,19 +46,11 @@ export default function SetupContainer( props: {channel: number}) {
         setUseEffect(true);
     };
 
-    function InitToy(){
-        toy = tManager.GetToy(channel);
-        toy.SubscribeToToyChangedEvent(ToyChanged);
-    }
-    function UnsubscribeEvent() {
-        toy.UnsubscribeFromToyChangedEvent(ToyChanged);
-    }
-
-    //Toy data Functions
+    //Update UI data
     function UpdateUIValues() {
         console.log("UPDATE DEFAULT UI values");
         if (typeof window !== 'undefined') {
-            InitToy();
+            toy = InitToy(channel, toy, ToyChanged);
 
             if(toy != undefined) {
                 setToyName(toy.constructor.name);
@@ -73,8 +65,9 @@ export default function SetupContainer( props: {channel: number}) {
                 setStrokeColor({r:sColor.r, g:sColor.g , b:sColor.b, a:sColor.a});
                 setAccentColor({r:aColor.r, g:aColor.g , b:aColor.b, a:aColor.a});
             }
-        } else setToyName("ManagerNotFound");
+        } else setToyName("Click 'Select'");
     }
+    //Update Toy data
     function UpdateToyValues() {
         console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
@@ -95,46 +88,31 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
-    function UpdateToyColorValues() {
-        if (typeof window !== 'undefined') {
-            console.log("UPDATE toy color values");
-            // var t = manager.GetToy(channel) as MIDIToy;
-        }
-    }
 
-    function CreateToy() {
+    //Create a new Toy, get help from imported function to reduce code
+    function NewToy() {
         //If toyType changed, create toy, otherwise, just udpate
         if(prevToyType != toyType()) {
-            //UnsubscribeEvent();
-            switch(toyType()) {
-                case 0: tManager.CreateEmptyToy(channel, numberOfKeys(), startKey()); break;
-                case 1: tManager.CreateGraviBoard(channel, numberOfKeys(), startKey()); break;
-                case 2: tManager.CreatePolyDrum(channel, numberOfKeys(), startKey()); break;
-                case 3: tManager.CreateSquareKeyboard(channel, numberOfKeys(), startKey()); break;
-                default: tManager.CreateEmptyToy(channel, numberOfKeys(), startKey()); break;
-            }
+            toy = CreateToy(channel, toyType());
             UpdateUIValues();
         }
         prevToyType = toyType();
     }
-    // function UpdateToyType(value: number) {
-    //     var calc = toyType();
-    //     calc += value;
-    //     if(calc < 0) calc = 3;
-    //     if(calc > 3) calc = 0;
-    //     setToyType(calc);
-    //     CreateToy();
-    // }
+
+    //true or false, show Toy Selection or Toy Editing Panel
     function ToggleSelectToy() {
         var b = selectToy();
         if(b) setSelectToy(false);
         else setSelectToy(true);
     }
+
+    //Set's a new Toy Type and creates new Toy
     function SetToyType(value: number) {
         setToyType(value);
         setSelectToy(false);
-        CreateToy();
+        NewToy();
     }
+    //What kind of color do you want to edit?
     function UpdateColorSelection(value: number) {
         var calc = colorSelection();
         calc += value;
@@ -149,8 +127,8 @@ export default function SetupContainer( props: {channel: number}) {
         setColorSelection(calc);
     }
 
-    //Ui Rendering Functions
-    function RenderDefaultUIElements() {
+    //Takes all UI functions and returns it in one big package
+    function RenderUI() {
         if(selectToy() == true) {
             return(
                 <div>
@@ -162,76 +140,111 @@ export default function SetupContainer( props: {channel: number}) {
             else {
                 return(
                     <div class="noSelect">
-                        <details>
-                            <summary class="textAlignCenter marginAuto">
-                                <h3 class="marginAuto thinButton">Key Settings</h3>
-                            </summary>
-                            <br></br>
-                            <div class="flexContainer">
-                                <div>Keys</div>
-                                <div class="flexContainer">
-                                    <input
-                                        class="numberInput"
-                                        type="number"
-                                        min="1"
-                                        max="100"
-                                        step="1"
-                                        value={numberOfKeys()}
-                                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                                    />
-                                    <input
-                                        class="sliderInput marginLeft10"
-                                        type="range"
-                                        min="1"
-                                        max="100"
-                                        step="1"
-                                        value={numberOfKeys()}
-                                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                                    />
-                                </div>
-                            </div>
-                            {RenderStartKeySetting()}
-                            <div class="flexContainer">
-                                <div>Collapse Notes</div>
-                                <input
-                                    class="toggleInput"
-                                    type="checkbox"
-                                    checked={collapsNote()}
-                                    onChange={(event) => setCollapsNote(event.target.checked)}
-                                />
-                            </div>
-                        </details>
+                        {DetailsFillerCenter("Key Settings", RenderKeySettings())}
                         <br></br>
-                        {RenderColorSettings()}
+                        {DetailsFillerCenter("Color Settings", RenderColorSettings())}
+                        {/* {RenderColorSettings()} */}
                         <br></br>
-                        {RenderSpecialUIElements()}
+                        {RenderSpecificUISettings()}
                         <br></br>
+                        {RenderPresetUI()}
                     </div>
                 )
             }
         }
     }
-    function RenderColorSettings() {
-        return (
-            <div>
-                <details>
-                    <summary class="textAlignCenter marginAuto">
-                        <h3 class="marginAuto thinButton noSelect">Color Settings</h3>
-                    </summary>
-                    <br></br>
+    //Key note settings
+    function RenderKeySettings() {
+        return(
+            <>
+                <div class="flexContainer">
+                    <div>Keys</div>
                     <div class="flexContainer">
-                        <h3 class="marginAuto">{colorSelectionName()}</h3>
-                        <div class="flexContainer">
-                        <button class="thinButton" onClick={() => UpdateColorSelection(-1)}>Prev</button>
-                        <button class="thinButton" onClick={() => UpdateColorSelection(1)}>Next</button>
-                        </div>
+                        <input
+                            class="numberInput"
+                            type="number"
+                            min="1"
+                            max="100"
+                            step="1"
+                            value={numberOfKeys()}
+                            onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                        />
+                        <input
+                            class="sliderInput marginLeft10"
+                            type="range"
+                            min="1"
+                            max="100"
+                            step="1"
+                            value={numberOfKeys()}
+                            onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                        />
                     </div>
-                    <br></br>
-                    {RenderColorSettingsSelection()}
-                </details>
-            </div>
+                </div>
+                {RenderStartKeySetting()}
+                <div class="flexContainer">
+                    <div>Collapse Notes</div>
+                    <input
+                        class="toggleInput"
+                        type="checkbox"
+                        checked={collapsNote()}
+                        onChange={(event) => setCollapsNote(event.target.checked)}
+                    />
+                </div>
+            </>
         )
     }
+    //Retusn more or less UI, depends on a settings
+    function RenderStartKeySetting() {
+        //If collaps note is true, there is no need to set a start key, hide it
+        if(collapsNote() == true) {
+            return (
+                <div></div>
+            )
+        } else {
+            return (
+                <div class="flexContainer">
+                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="1"
+                        max="100"
+                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                        value={startKey()}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="1"
+                        max="100"
+                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                        value={startKey()}
+                    />
+                </div>
+            </div>
+
+            )
+        }
+    }
+
+    //Renders basic Color UI (Buttons and Name)
+    function RenderColorSettings() {
+        return (
+            <>
+                <div class="flexContainer">
+                    <h3 class="marginAuto">{colorSelectionName()}</h3>
+                    <div class="flexContainer">
+                    <button class="thinButton" onClick={() => UpdateColorSelection(-1)}>Prev</button>
+                    <button class="thinButton" onClick={() => UpdateColorSelection(1)}>Next</button>
+                    </div>
+                </div>
+                <br></br>
+                {RenderColorSettingsSelection()}
+            </>
+        )
+    }
+    //Returns fillColor, strokeColor or accentColor UI
     function RenderColorSettingsSelection() {
         switch(colorSelection()) {
             case 0: return (
@@ -500,10 +513,11 @@ export default function SetupContainer( props: {channel: number}) {
             )
         }
     }
-    function RenderSpecialUIElements() {
+    //Specific UI's from a toy
+    function RenderSpecificUISettings() {
         if(toyType() == 0) return(<></>)
         else {
-            CreateToy();
+            NewToy();
             switch(toyType()) {
                 case 1: return (<GraviBoardUI channel={channel}></GraviBoardUI>);
                 case 2: return (<PolyDrumUI channel={channel}></PolyDrumUI>);
@@ -511,39 +525,7 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
-    function RenderStartKeySetting() {
-        //If collaps note is true, there is no need to set a start key, hide it
-        if(collapsNote() == true) {
-            return (
-                <div></div>
-            )
-        } else {
-            return (
-                <div class="flexContainer">
-                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="100"
-                        onChange={(event) => setStartKey(parseInt(event.target.value))}
-                        value={startKey()}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="100"
-                        onChange={(event) => setStartKey(parseInt(event.target.value))}
-                        value={startKey()}
-                    />
-                </div>
-            </div>
 
-            )
-        }
-    }
     function RenderToySelection() {
         return(
             <div class="flexList">
@@ -552,6 +534,12 @@ export default function SetupContainer( props: {channel: number}) {
                 <button id="thinButton" onClick={() => SetToyType(2)}>Poly Drum</button>
                 <button id="thinButton" onClick={() => SetToyType(3)}>Square Keyboard</button>
             </div>
+        )
+    }
+    //Renders the Preset Managemtn UI system
+    function RenderPresetUI() {
+        return(
+            <PresetUI channel={channel}></PresetUI>
         )
     }
 
@@ -569,7 +557,7 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
             </div>
             <br></br>
-            {RenderDefaultUIElements()}
+            {RenderUI()}
         </div>
     );
 }

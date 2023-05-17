@@ -11,6 +11,16 @@ h1, h2, h3 {
   font-family: "BigJohn", sans-serif;
 }
 
+h1{
+  font-size: 20pt;
+}
+h2 {
+  font-size: 16pt;
+}
+h3{
+  font-size: 13pt;
+}
+
 body {
   font-family: "SlimJoe", sans-serif;
   font-size: 10pt;
@@ -40,6 +50,12 @@ button:hover {
   padding-bottom: 5px;
   padding-left: 20px;
   padding-right: 20px;
+  font-family: "SlimJoe", sans-serif;
+}
+.squareButton{
+  padding: 5px;
+  font-family: "SlimJoe", sans-serif;
+  text-align: center;
 }
 .flexList button {
   width: 100%;
@@ -50,15 +66,19 @@ button:hover {
 summary {
   margin: 2px;
   list-style: none; /* remove the default list-style */
-  /* padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px; */
-  width: 100%;
-  margin: 10px;
+
+  font-family: "SlimJoe", sans-serif;
+  font-size: 13pt;
+
   border-radius: 10px;
   background-color: black;
   border: 2px dotted white;
   color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+
   transition: border-color 0.2s ease-in-out;
 }
 summary:hover {
@@ -69,11 +89,22 @@ summary::marker {
 }
 details[open] summary {
   color: yellow;
+  font-family: "BigJohn", sans-serif;
+  font-size: 14pt;
 }
 .noSelect{
   user-select: none;
 }
 
+.alignLeft{
+  justify-content: start;
+  align-items: center;
+}
+
+.alignRight {
+  justify-content: flex-end;
+  align-items: center;
+}
 
 .textAlignLeft{
   text-align: left;
@@ -89,6 +120,10 @@ details[open] summary {
   padding-top: 0px;
   padding-bottom: 0px;
 }
+.marginBottom5 {
+  margin-bottom: 5px;
+}
+
 
 .marginLeft20{
   margin-left: 20px; /* add margin to the right of the heading */
@@ -107,6 +142,25 @@ details[open] summary {
 }
 .fullWidth{
   width: 100%;
+}
+.width60{
+  width: 60%;
+}
+.width50{
+  width: 50%;
+}
+.width40{
+  width: 40%;
+}
+.width20{
+  width: 20%;
+}
+.width10{
+  width: 10%;
+}
+
+.heigt50{
+  height: 50%;
 }
 
 .channelGroup {
@@ -138,12 +192,13 @@ details[open] summary {
   padding-top: 1px;
   padding-bottom: 1px;
   justify-content: space-between;
-}
-.alignItemsCenter{
   align-items: center;
 }
-.alignItemsStart{
-  align-items: start;
+.alignFlexStart{
+  align-items: flex-start;
+}
+.alignFlexEnd{
+  align-items: flex-end;
 }
 
 .flexList{
@@ -275,7 +330,7 @@ details[open] summary {
   width: 50%;
   height: 85%;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0);
   border: 1px solid white;
   padding: 20px;
 

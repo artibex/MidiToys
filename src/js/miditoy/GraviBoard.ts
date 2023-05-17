@@ -20,8 +20,8 @@ export class GraviBoard extends MIDIToy {
     yImpulsPower: number = 30;
     xImpulsPower: number = 0;
 
-    constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super(targetChannel, numberOfKeys, startKey, true);
+    constructor(targetChannel: number) {
+        super(targetChannel, 24, 12, true);
         console.log("CREATED MusicBalls");
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
         this.LoadDefaultColorSettings();

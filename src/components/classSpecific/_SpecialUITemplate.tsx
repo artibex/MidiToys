@@ -1,10 +1,11 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
-import PresetUI from "../PresetUI"
+import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
 
 
 var tManager = new ToyManager();
 
+//This is a template to create a UI for a ToyClass
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
@@ -19,11 +20,6 @@ export default function SetupContainer( props: {channel: number}) {
         }
     })
 
-    function InitToy(){
-        toy = tManager.GetToy(channel);
-        // toy.UnsubscribeFromToyChangedEvent(ToyChanged);
-        toy.SubscribeToToyChangedEvent(ToyChanged);
-    }
     const ToyChanged = () => {
         // Handle the event...
         console.log("DEFAULT UI event");
@@ -32,11 +28,9 @@ export default function SetupContainer( props: {channel: number}) {
         setUseEffect(true);
       };
 
-
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            InitToy();     
             
             //Put values here
             if(toy != undefined) {
@@ -59,18 +53,18 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
 
+    //Init Component
+    toy = InitToy(channel, toy, ToyChanged);
     UpdateUIValues(); //Get UI Values once at start
     return(
         <div>
             <details>
-            <summary class="textAlignCenter marginAuto">
-                <h3 class="marginAuto thinButton">Special Settings</h3>
-            </summary>
+                <summary class="textAlignCenter marginAuto">
+                Specific Settings
+                </summary>
             <br></br>
             {/* Put Special Stuff here */}
             </details>
-            <br></br>
-            <PresetUI channel={channel}></PresetUI>
         </div>  
     )
 }

@@ -1,7 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { PresetManager } from "../js/PresetManager";
-import { Item } from "paper/dist/paper-core";
+import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter } from "../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 var pManager = new PresetManager();
@@ -19,21 +20,16 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Special settings
 
-    // createEffect(() => {
-    //     console.log("TRIGGER SPECIAL effect");
-    //     //UpdateToyValues();
-    // })
-
     const ToyChanged = () => {
         console.log("PRESET UI event");
         // UpdateUIValues();
         // Handle the event...
     };
 
-    function InitToy(){
-        toy = tManager.GetToy(channel);
-        toy.SubscribeToToyChangedEvent(ToyChanged);
-    }
+    // function InitToy(){
+    //     toy = tManager.GetToy(channel);
+    //     // toy.SubscribeToToyChangedEvent(ToyChanged);
+    // }
 
     function UpdateUIValues() {
         console.log("UPDATE PRESET UI values");
@@ -80,59 +76,57 @@ export default function SetupContainer( props: {channel: number}) {
         return split[0];
     }
 
+    function RenderUI() {
+        return (
+            <>
+                <br></br>
+                    <div class="flexContainer">
+                        <div class="flexList">
+                            <div class="marginBottom5">Save new preset</div>
+                            <input
+                                class="textInput"
+                                value={presetName()}
+                                onChange={(event) => setPresetName(event.target.value)}
+                            />
+                            </div>
+                        <button class="thinButton marginAuto" onClick={() => SaveNewPreset()} >
+                            Save
+                        </button>
+                    </div>
+                <br></br>
+                {RenderAvailablePresets()}
+            </>
+        )
+    }
+
     function RenderAvailablePresets() {            
         return (
           <div class="flexList">
             {matchingItems().map((item) => (
                 <div class="flexContainer">
-                <button
-                    class="thinButton"
-                    onClick={() => LoadPreset(item)}
-                >
-                    {GetPresetName(item)}
-                </button>
-                <button
-                    class="marginLeft20"
-                    onClick={() => DownloadPreset(item)}
-                >
-                    DL
-                </button>
-                <button
-                    class=""
-                    onClick={() => DeletePreset(item)}
-                >
-                    Delete
-                </button>
+                    <div class="alignFlexStart">
+                        <button class="thinButton" onClick={() => LoadPreset(item)}>
+                            {GetPresetName(item)}
+                        </button>
+                    </div>
+                    <div class="alignFlexEnd">
+                        <div class="flexContainer">
+                            <button class="squareButton" onClick={() => DownloadPreset(item)}>
+                                DL
+                            </button>
+                            <button class="squareButton" onClick={() => DeletePreset(item)}>
+                                X
+                            </button>
+                        </div>
+                    </div>
                 </div>
             ))}
-          </div>
+        </div>
         ) as HTMLDivElement; // Cast to HTMLDivElement
     }
 
-    InitToy();
+    toy = InitToy(channel, toy, ToyChanged);
     UpdateUIValues(); //Get UI Values once at start
-    return(
-        <details>
-        <summary class="textAlignCenter marginAuto">
-            <h3 class="marginAuto thinButton noSelect">Load/Save Preset</h3>
-        </summary>
-        <br></br>
-        <div class="flexContainer">
-            <h3 class="marginAuto">Save new preset</h3>
-            </div>
-            <div class="flexContainer">
-            <input
-                class="textInput"
-                value={presetName()}
-                onChange={(event) => setPresetName(event.target.value)}
-            />
-            <button class="thinButton" onClick={() => SaveNewPreset()} >
-                Save
-            </button>
-            <br></br>
-        </div>
-        <br></br>
-        {RenderAvailablePresets()}
-    </details>
-    )
+    var sumName = "Load/Save Preset";
+    return DetailsFillerCenter("Load/Save Settings", RenderUI());
 }

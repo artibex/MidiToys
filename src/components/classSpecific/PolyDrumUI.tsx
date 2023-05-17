@@ -1,7 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { PolyDrum } from "../../js/miditoy/PolyDrum";
-import PresetUI from "../PresetUI"
+import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter } from "../../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 
@@ -37,16 +38,10 @@ export default function SetupContainer( props: {channel: number}) {
         setUseEffect(true);
     };
 
-    function InitToy(){
-        toy = tManager.GetToy(channel);
-        // toy.UnsubscribeFromToyChangedEvent(ToyChanged);
-        toy.SubscribeToToyChangedEvent(ToyChanged);
-    }
-
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            InitToy();
+            toy = InitToy(channel, toy, ToyChanged);
 
             if(toy != undefined) {
                 setShapeLimit(toy.shapeLimit);
@@ -87,15 +82,10 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
 
-    UpdateUIValues(); //Get UI Values once at start
-    return(
-        <div>
-            <details>
-            <summary class="textAlignCenter marginAuto">
-                <h3 class="marginAuto thinButton">Special Settings</h3>
-            </summary>
-            <br></br>
-            <div class="flexContainer">
+    function RenderUI() {
+        return(
+            <>
+                <div class="flexContainer">
                 <div>Shape Limit</div> 
                 <div class="flexContainer">
                     <input
@@ -328,9 +318,23 @@ export default function SetupContainer( props: {channel: number}) {
                     />
                 </div>
             </div>
-        </details>
-        <br></br>
-        <PresetUI channel={channel}></PresetUI>
-        </div>
-    )
+
+            </>
+        )
+    }
+
+    //Init Component
+    toy = InitToy(channel, toy, ToyChanged);
+    UpdateUIValues(); //Get UI Values once at start
+    return DetailsFillerCenter("Specific Settings", RenderUI());
+    // return(
+    //     <div>
+    //         <details>
+    //         <summary class="textAlignCenter marginAuto">
+    //             Specific Settings
+    //         </summary>
+    //         <br></br>
+    //     </details>
+    //     </div>
+    // )
 }
