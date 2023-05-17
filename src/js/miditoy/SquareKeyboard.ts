@@ -8,8 +8,8 @@ export class SquareKeyboard extends MIDIToy {
     targetSquareSize = 20;
     paperKeys: paper.Path.Rectangle[] = [];
 
-    constructor(targetChannel: number, numberOfKeys: number, startKey: number) {
-        super("SquareKeyboard", targetChannel, numberOfKeys, startKey, true);
+    constructor(targetChannel: number) {
+        super(targetChannel, 26, 12, true);
         // this.canvasReverences = canvasReverences;
 
         this.SetupKeyboard();
@@ -22,9 +22,17 @@ export class SquareKeyboard extends MIDIToy {
         this.accentColor = new paper.Color(0,0,0,0);
     }
 
+    LoadJSON(data: any) {
+        
+    }
+    ToJSON() {
+        
+    }
+
     SetupKeyboard() {
         // this.CalculateDrawPositions();
-        this.targetSquareSize = this.HorizontalDrawPositionDistrubution();
+        var cellSize = (this.w / this.numberOfKeys);
+        this.targetSquareSize = this.HorizontalDrawPositionDistrubution(cellSize);
 
         for(let i = 0; i < this.numberOfKeys; i++) {
             var x = this.drawPositions[i].x;

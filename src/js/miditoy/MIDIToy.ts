@@ -24,7 +24,7 @@ export abstract class MIDIToy {
     h: number;
     
     //MIDI Receiver settings
-    numberOfKeys: number = 12; //How many keys are on this keyboard?
+    numberOfKeys: number = 24; //How many keys are on this keyboard?
     startKey: number = 12; //The note from where you count up
     useRegExp: boolean; //Use regular expression in in MIDIReceiver?
     receiver: MIDIReceiver[] = [];

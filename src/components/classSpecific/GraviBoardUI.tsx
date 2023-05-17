@@ -1,7 +1,7 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { GraviBoard } from "../../js/miditoy/GraviBoard";
-import PresetUI from "../PresetUI"
+import { InitToy } from "../../js/solidjs/ComponentUtils.js";
 
 var tManager = new ToyManager();
 
@@ -39,16 +39,9 @@ export default function SetupContainer( props: {channel: number}) {
         setUseEffect(true);
     };
 
-    function InitToy(){
-        toy = tManager.GetToy(channel);
-        // toy.UnsubscribeFromToyChangedEvent(ToyChanged);
-        toy.SubscribeToToyChangedEvent(ToyChanged);
-    }
-
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            InitToy();
             
             if(toy != undefined) {
                 setStrokeWidth(toy.strokeWidth);
@@ -86,13 +79,14 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
 
+    //Init Component
+    toy = InitToy(channel, toy, ToyChanged);
     UpdateUIValues(); //Get UI Values once at start
-
     return(
         <div>
             <details>
             <summary class="textAlignCenter marginAuto">
-                <h3 class="marginAuto thinButton">Special Settings</h3>
+                Special Settings
             </summary>
             <br></br>
             <div class="flexContainer">
@@ -141,7 +135,6 @@ export default function SetupContainer( props: {channel: number}) {
                     />
                 </div>
             </div>
-
             <br></br>
             <div class="flexContainer">
                 <div>Velocity Limit</div> 
@@ -280,8 +273,6 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
             </div>
         </details>
-        <br></br>
-        <PresetUI channel={channel}></PresetUI>
         </div>
     )
 }
