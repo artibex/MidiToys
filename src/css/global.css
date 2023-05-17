@@ -90,7 +90,7 @@ summary::marker {
 details[open] summary {
   color: yellow;
   font-family: "BigJohn", sans-serif;
-
+  font-size: 14pt;
 }
 .noSelect{
   user-select: none;
@@ -152,8 +152,15 @@ details[open] summary {
 .width40{
   width: 40%;
 }
+.width20{
+  width: 20%;
+}
 .width10{
   width: 10%;
+}
+
+.heigt50{
+  height: 50%;
 }
 
 .channelGroup {
@@ -187,14 +194,12 @@ details[open] summary {
   justify-content: space-between;
   align-items: center;
 }
-.alignItemsStart{
-  align-items: start;
+.alignFlexStart{
+  align-items: flex-start;
 }
-.alignItemEnd{
-  align-items: end;
+.alignFlexEnd{
+  align-items: flex-end;
 }
-
-
 
 .flexList{
   display: flex;
@@ -325,7 +330,7 @@ details[open] summary {
   width: 50%;
   height: 85%;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0);
   border: 1px solid white;
   padding: 20px;
 

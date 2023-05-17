@@ -1,6 +1,6 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
-import { InitToy } from "../../js/solidjs/ComponentUtils.js";
+import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
 
 
 var tManager = new ToyManager();
@@ -59,9 +59,9 @@ export default function SetupContainer( props: {channel: number}) {
     return(
         <div>
             <details>
-            <summary class="textAlignCenter marginAuto">
-                <h3 class="marginAuto thinButton">Special Settings</h3>
-            </summary>
+                <summary class="textAlignCenter marginAuto">
+                Specific Settings
+                </summary>
             <br></br>
             {/* Put Special Stuff here */}
             </details>

@@ -5,8 +5,9 @@ import { MIDIDataTable } from "../js/MIDIDataTable";
 import GraviBoardUI from "./classSpecific/GraviBoardUI";
 import PolyDrumUI from "./classSpecific/PolyDrumUI";
 import PresetUI from "./PresetUI";
-import { InitToy } from "../js/solidjs/ComponentUtils.js";
-import { CreateToy } from "../js/solidjs/ComponentUtils.js";
+import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
+import { CreateToy } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter } from "../js/solidjs/ComponentUtils.jsx";
 
 export default function SetupContainer( props: {channel: number}) {
     var toy;
@@ -127,7 +128,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Takes all UI functions and returns it in one big package
-    function RenderUIElements() {
+    function RenderUI() {
         if(selectToy() == true) {
             return(
                 <div>
@@ -139,50 +140,12 @@ export default function SetupContainer( props: {channel: number}) {
             else {
                 return(
                     <div class="noSelect">
-                        <details>
-                            <summary class="textAlignCenter ">
-                                Key Settings
-                                {/* <h3 class="marginAuto thinButton">Key Settings</h3> */}
-                            </summary>
-                            <br></br>
-                            <div class="flexContainer">
-                                <div>Keys</div>
-                                <div class="flexContainer">
-                                    <input
-                                        class="numberInput"
-                                        type="number"
-                                        min="1"
-                                        max="100"
-                                        step="1"
-                                        value={numberOfKeys()}
-                                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                                    />
-                                    <input
-                                        class="sliderInput marginLeft10"
-                                        type="range"
-                                        min="1"
-                                        max="100"
-                                        step="1"
-                                        value={numberOfKeys()}
-                                        onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
-                                    />
-                                </div>
-                            </div>
-                            {RenderStartKeySetting()}
-                            <div class="flexContainer">
-                                <div>Collapse Notes</div>
-                                <input
-                                    class="toggleInput"
-                                    type="checkbox"
-                                    checked={collapsNote()}
-                                    onChange={(event) => setCollapsNote(event.target.checked)}
-                                />
-                            </div>
-                        </details>
+                        {DetailsFillerCenter("Key Settings", RenderKeySettings())}
                         <br></br>
-                        {RenderColorSettings()}
+                        {DetailsFillerCenter("Color Settings", RenderColorSettings())}
+                        {/* {RenderColorSettings()} */}
                         <br></br>
-                        {RenderSpecialUIElements()}
+                        {RenderSpecificUISettings()}
                         <br></br>
                         {RenderPresetUI()}
                     </div>
@@ -190,26 +153,95 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+    //Key note settings
+    function RenderKeySettings() {
+        return(
+            <>
+                <div class="flexContainer">
+                    <div>Keys</div>
+                    <div class="flexContainer">
+                        <input
+                            class="numberInput"
+                            type="number"
+                            min="1"
+                            max="100"
+                            step="1"
+                            value={numberOfKeys()}
+                            onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                        />
+                        <input
+                            class="sliderInput marginLeft10"
+                            type="range"
+                            min="1"
+                            max="100"
+                            step="1"
+                            value={numberOfKeys()}
+                            onChange={(event) => setNumberOfKeys(parseInt(event.target.value))}
+                        />
+                    </div>
+                </div>
+                {RenderStartKeySetting()}
+                <div class="flexContainer">
+                    <div>Collapse Notes</div>
+                    <input
+                        class="toggleInput"
+                        type="checkbox"
+                        checked={collapsNote()}
+                        onChange={(event) => setCollapsNote(event.target.checked)}
+                    />
+                </div>
+            </>
+        )
+    }
+    //Retusn more or less UI, depends on a settings
+    function RenderStartKeySetting() {
+        //If collaps note is true, there is no need to set a start key, hide it
+        if(collapsNote() == true) {
+            return (
+                <div></div>
+            )
+        } else {
+            return (
+                <div class="flexContainer">
+                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
+                <div class="flexContainer">
+                    <input
+                        class="numberInput"
+                        type="number"
+                        min="1"
+                        max="100"
+                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                        value={startKey()}
+                    />
+                    <input
+                        class="sliderInput marginLeft10"
+                        type="range"
+                        min="1"
+                        max="100"
+                        onChange={(event) => setStartKey(parseInt(event.target.value))}
+                        value={startKey()}
+                    />
+                </div>
+            </div>
+
+            )
+        }
+    }
+
     //Renders basic Color UI (Buttons and Name)
     function RenderColorSettings() {
         return (
-            <div>
-                <details>
-                    <summary class="textAlignCenter marginAuto">
-                        Color Settings
-                    </summary>
-                    <br></br>
+            <>
+                <div class="flexContainer">
+                    <h3 class="marginAuto">{colorSelectionName()}</h3>
                     <div class="flexContainer">
-                        <h3 class="marginAuto">{colorSelectionName()}</h3>
-                        <div class="flexContainer">
-                        <button class="thinButton" onClick={() => UpdateColorSelection(-1)}>Prev</button>
-                        <button class="thinButton" onClick={() => UpdateColorSelection(1)}>Next</button>
-                        </div>
+                    <button class="thinButton" onClick={() => UpdateColorSelection(-1)}>Prev</button>
+                    <button class="thinButton" onClick={() => UpdateColorSelection(1)}>Next</button>
                     </div>
-                    <br></br>
-                    {RenderColorSettingsSelection()}
-                </details>
-            </div>
+                </div>
+                <br></br>
+                {RenderColorSettingsSelection()}
+            </>
         )
     }
     //Returns fillColor, strokeColor or accentColor UI
@@ -482,7 +514,7 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
     //Specific UI's from a toy
-    function RenderSpecialUIElements() {
+    function RenderSpecificUISettings() {
         if(toyType() == 0) return(<></>)
         else {
             NewToy();
@@ -493,39 +525,7 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
-    function RenderStartKeySetting() {
-        //If collaps note is true, there is no need to set a start key, hide it
-        if(collapsNote() == true) {
-            return (
-                <div></div>
-            )
-        } else {
-            return (
-                <div class="flexContainer">
-                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="100"
-                        onChange={(event) => setStartKey(parseInt(event.target.value))}
-                        value={startKey()}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="100"
-                        onChange={(event) => setStartKey(parseInt(event.target.value))}
-                        value={startKey()}
-                    />
-                </div>
-            </div>
 
-            )
-        }
-    }
     function RenderToySelection() {
         return(
             <div class="flexList">
@@ -557,7 +557,7 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
             </div>
             <br></br>
-            {RenderUIElements()}
+            {RenderUI()}
         </div>
     );
 }

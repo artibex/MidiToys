@@ -1,7 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { PolyDrum } from "../../js/miditoy/PolyDrum";
-import { InitToy } from "../../js/solidjs/ComponentUtils.js";
+import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter } from "../../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 
@@ -81,17 +82,10 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
 
-    //Init Component
-    toy = InitToy(channel, toy, ToyChanged);
-    UpdateUIValues(); //Get UI Values once at start
-    return(
-        <div>
-            <details>
-            <summary class="textAlignCenter marginAuto">
-                Special Settings
-            </summary>
-            <br></br>
-            <div class="flexContainer">
+    function RenderUI() {
+        return(
+            <>
+                <div class="flexContainer">
                 <div>Shape Limit</div> 
                 <div class="flexContainer">
                     <input
@@ -324,7 +318,23 @@ export default function SetupContainer( props: {channel: number}) {
                     />
                 </div>
             </div>
-        </details>
-        </div>
-    )
+
+            </>
+        )
+    }
+
+    //Init Component
+    toy = InitToy(channel, toy, ToyChanged);
+    UpdateUIValues(); //Get UI Values once at start
+    return DetailsFillerCenter("Specific Settings", RenderUI());
+    // return(
+    //     <div>
+    //         <details>
+    //         <summary class="textAlignCenter marginAuto">
+    //             Specific Settings
+    //         </summary>
+    //         <br></br>
+    //     </details>
+    //     </div>
+    // )
 }

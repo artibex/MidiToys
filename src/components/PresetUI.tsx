@@ -1,7 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { PresetManager } from "../js/PresetManager";
-import { InitToy } from "../js/solidjs/ComponentUtils.js";
+import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter } from "../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 var pManager = new PresetManager();
@@ -75,21 +76,48 @@ export default function SetupContainer( props: {channel: number}) {
         return split[0];
     }
 
+    function RenderUI() {
+        return (
+            <>
+                <br></br>
+                    <div class="flexContainer">
+                        <div class="flexList">
+                            <div class="marginBottom5">Save new preset</div>
+                            <input
+                                class="textInput"
+                                value={presetName()}
+                                onChange={(event) => setPresetName(event.target.value)}
+                            />
+                            </div>
+                        <button class="thinButton marginAuto" onClick={() => SaveNewPreset()} >
+                            Save
+                        </button>
+                    </div>
+                <br></br>
+                {RenderAvailablePresets()}
+            </>
+        )
+    }
+
     function RenderAvailablePresets() {            
         return (
           <div class="flexList">
             {matchingItems().map((item) => (
                 <div class="flexContainer">
-                    <button class="thinButton textAlignLeft" onClick={() => LoadPreset(item)}>
-                        {GetPresetName(item)}
-                    </button>
-                    <div class="flexContainer width50">
-                    <button class="squareButton" onClick={() => DownloadPreset(item)}>
-                        DL
-                    </button>
-                    <button class="squareButton" onClick={() => DeletePreset(item)}>
-                        X
-                    </button>
+                    <div class="alignFlexStart">
+                        <button class="thinButton" onClick={() => LoadPreset(item)}>
+                            {GetPresetName(item)}
+                        </button>
+                    </div>
+                    <div class="alignFlexEnd">
+                        <div class="flexContainer">
+                            <button class="squareButton" onClick={() => DownloadPreset(item)}>
+                                DL
+                            </button>
+                            <button class="squareButton" onClick={() => DeletePreset(item)}>
+                                X
+                            </button>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -99,28 +127,6 @@ export default function SetupContainer( props: {channel: number}) {
 
     toy = InitToy(channel, toy, ToyChanged);
     UpdateUIValues(); //Get UI Values once at start
-    return(
-        <details>
-        <summary class="textAlignCenter marginAuto">
-            Load/Save Preset
-        </summary>
-        <br></br>
-        <div class="flexContainer">
-            <div class="flexList">
-                <div class="marginBottom5">Save new preset</div>
-                <input
-                    class="textInput"
-                    value={presetName()}
-                    onChange={(event) => setPresetName(event.target.value)}
-                />
-            </div>
-            <button class="thinButton heigt50" onClick={() => SaveNewPreset()} >
-                Save
-            </button>
-        </div>
-        
-        <br></br>
-        {RenderAvailablePresets()}
-    </details>
-    )
+    var sumName = "Load/Save Preset";
+    return DetailsFillerCenter("Load/Save Settings", RenderUI());
 }

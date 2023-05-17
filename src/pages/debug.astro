@@ -16,7 +16,7 @@ import "../css/global.css";
         import { InputManager } from "../js/input/InputManager";
         import { SquareKeyboard } from "../js/miditoy/SquareKeyboard";
 
-        let inputManager = InputManager.GetInstance();
+        let inputManager = new InputManager();
         let ch1SquareKeyboard;
         let ch2SquareKeyboard;
 
@@ -27,8 +27,8 @@ import "../css/global.css";
             paper.setup(toyCanvas);
             paper.view.autoUpdate = true;
 
-            ch1SquareKeyboard = new SquareKeyboard(toyCanvas, 1, 30, 24) as SquareKeyboard;
-            ch2SquareKeyboard = new SquareKeyboard(toyCanvas, 2, 60, 24) as SquareKeyboard;
+            ch1SquareKeyboard = new SquareKeyboard(1) as SquareKeyboard;
+            ch2SquareKeyboard = new SquareKeyboard(2) as SquareKeyboard;
             
             paper.view.onFrame = function(event) {
                 // Hier kommt deine onFrame-Logik hin

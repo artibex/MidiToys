@@ -26,3 +26,23 @@ export function CreateToy(channel, type) {
     }
     return tManager.GetToy(channel);
 }
+
+export function DetailsFillerCenter(summeryName, content) {
+    return (
+      <details class="marginAuto">
+        <summary class="textAlignCenter marginAuto">
+          {summeryName}
+        </summary>
+        <br />
+        {content}
+      </details>
+    );
+}
+
+export function SliderInput() {
+  return(
+    <>
+    
+    </>
+  );
+}
