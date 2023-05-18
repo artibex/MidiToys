@@ -2,7 +2,7 @@ import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { GraviBoard } from "../../js/miditoy/GraviBoard";
 import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter } from "../../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter, NumberSliderUIElement, CheckboxUIElement } from "../../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 
@@ -12,12 +12,13 @@ export default function SetupContainer( props: {channel: number}) {
     const [useEffect, setUseEffect] = createSignal(true);
 
     //Special settings
+    const [horizontalAlign, setHorizontalAlign] = createSignal(true);
     const [strokeWidth, setStrokeWidth] = createSignal(2);
     const [polySides, setPolySides] = createSignal(4);
 
     const [velocityLimit, setVelocityLimit] = createSignal(20);
     const [yGravity, setYGravity] = createSignal(-0.9);
-    // const [xGravity, setXGravity] = createSignal(0);
+    const [xGravity, setXGravity] = createSignal(0);
     
     const [yFriction, setYFriction] = createSignal(0.9);
     const [xFriction, setXFriction] = createSignal(0.95);
@@ -50,11 +51,12 @@ export default function SetupContainer( props: {channel: number}) {
             toy = InitToy(channel, toy, ToyChanged);
 
             if(toy != undefined) {
+                setHorizontalAlign(toy.horizontalAlign);
                 setStrokeWidth(toy.strokeWidth);
                 setPolySides(toy.polySides);
                 setVelocityLimit(toy.velocityLimit);
                 setYGravity(toy.yGravity);
-                // setXGravity(t.xGravity);
+                setXGravity(toy.xGravity);
                 setYFriction(toy.yFriction);
                 setXFriction(toy.xFriction);
                 setYImpulsPower(toy.yImpulsPower);
@@ -69,11 +71,12 @@ export default function SetupContainer( props: {channel: number}) {
                 //Remove old objects
                 // toy.RemoveChildrenFromLayer();
 
+                toy.horizontalAlign = horizontalAlign();
                 toy.strokeWidth = strokeWidth();
                 toy.polySides = polySides();
                 toy.velocityLimit = velocityLimit();
                 toy.yGravity = yGravity();
-                // t.xGravity = xGravity();
+                toy.xGravity = xGravity();
                 toy.yFriction = yFriction();
                 toy.xFriction = xFriction();
                 toy.yImpulsPower = yImpulsPower();
@@ -88,7 +91,25 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderUI() {
         return(
             <>
-                <div class="flexContainer">
+            <CheckboxUIElement 
+                name="Horizontal Align"
+                checked={horizontalAlign()}
+                onChange={setHorizontalAlign}
+            />
+                 <NumberSliderUIElement 
+                    name={"Stroke Width"}
+                    minMaxStep={[0,80,1]}
+                    value={strokeWidth()}
+                    onChange={setStrokeWidth}
+                />
+                <NumberSliderUIElement 
+                    name={"Poly Sides"}
+                    minMaxStep={[2,20,1]}
+                    value={polySides()}
+                    onChange={setPolySides}
+                />
+
+            {/* <div class="flexContainer">
                 <div>Stroke Width</div> 
                 <div class="flexContainer">
                     <input
@@ -110,8 +131,8 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
                     />
                 </div>
-            </div>
-            <div class="flexContainer">
+            </div> */}
+            {/* <div class="flexContainer">
                 <div>Poly Sides</div> 
                 <div class="flexContainer">
                     <input
@@ -133,9 +154,30 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setPolySides(parseInt(event.target.value))}
                     />
                 </div>
-            </div>
+            </div> */}
             <br></br>
-            <div class="flexContainer">
+            <NumberSliderUIElement 
+                    name={"Velocity Limit"}
+                    minMaxStep={[1,200,1]}
+                    value={velocityLimit()}
+                    onChange={setVelocityLimit}
+            />
+            <NumberSliderUIElement 
+                    factor={100}
+                    name={"Y Gravity"}
+                    minMaxStep={[-150,150,1]}
+                    value={yGravity()}
+                    onChange={setYGravity}
+                />
+            <NumberSliderUIElement 
+                    factor={100}
+                    name={"X Gravity"}
+                    minMaxStep={[-150,150,1]}
+                    value={xGravity()}
+                    onChange={setXGravity}
+                />
+
+            {/* <div class="flexContainer">
                 <div>Velocity Limit</div> 
                 <div class="flexContainer">
                     <input
@@ -156,8 +198,8 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
                     />
                 </div>
-            </div>
-            <div class="flexContainer">
+            </div> */}
+            {/* <div class="flexContainer">
                 <div>Y Gravity</div> 
                 <div class="flexContainer">
                     <input
@@ -178,9 +220,25 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
                     />
                 </div>
-            </div>
+            </div> */}
             <br></br>
-            <div class="flexContainer">
+            <NumberSliderUIElement 
+                factor={100}
+                name={"Y Friction"}
+                minMaxStep={[20,100,1]}
+                value={yFriction()}
+                onChange={setYFriction}
+            />
+            <NumberSliderUIElement 
+                    factor={100}
+                    name={"X Friction"}
+                    minMaxStep={[20,100,1]}
+                    value={xFriction()}
+                    onChange={setXFriction}
+                />
+
+
+            {/* <div class="flexContainer">
                 <div>Y Friction</div> 
                 <div class="flexContainer">
                     <input
@@ -201,8 +259,8 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
                     />
                 </div>
-            </div>
-            <div class="flexContainer">
+            </div> */}
+            {/* <div class="flexContainer">
                 <div>X Friction</div> 
                 <div class="flexContainer">
                     <input
@@ -223,9 +281,23 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
                     />
                 </div>
-            </div>
+            </div> */}
             <br></br>
-            <div class="flexContainer">
+            <NumberSliderUIElement 
+                    name={"Y Impulse Power"}
+                    minMaxStep={[1,200,1]}
+                    value={yImpulsPower()}
+                    onChange={setYImpulsPower}
+                />
+            <NumberSliderUIElement 
+                    name={"X Impulse Power"}
+                    minMaxStep={[1,200,1]}
+                    value={xImpulsPower()}
+                    onChange={setXImpulsPower}
+                />
+
+
+            {/* <div class="flexContainer">
                 <div>Y Impuls Power</div> 
                 <div class="flexContainer">
                     <input
@@ -247,8 +319,8 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
                     />
                 </div>
-            </div>
-            <div class="flexContainer">
+            </div> */}
+            {/* <div class="flexContainer">
                 <div>X Impuls Power</div> 
                 <div class="flexContainer">
                     <input
@@ -270,7 +342,7 @@ export default function SetupContainer( props: {channel: number}) {
                         onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
                     />
                 </div>
-            </div>
+            </div> */}
 
             </>
         )

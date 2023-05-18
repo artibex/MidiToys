@@ -7,12 +7,14 @@ export class GraviBoard extends MIDIToy {
     // shapes: paper.Path[] = [];
     circleRadius: number = 15;
     velocity: Vector2D[] = [];
+    horizontalAlign: boolean = true;
 
     strokeWidth: number = 2;
     polySides: number = 20;
 
     velocityLimit: number = 50;
     yGravity: number = -0.9;
+    xGravity: number = 0;
 
     yFriction: number = 0.90;
     xFriction: number = 0.90;
@@ -60,12 +62,14 @@ export class GraviBoard extends MIDIToy {
         },
 
         //Class specific data
+        horizontalAlign: this.horizontalAlign,
         circleRadius: this.circleRadius,
         velocity: this.velocity.map(v => ({ x: v.x, y: v.y })),
         strokeWidth: this.strokeWidth,
         polySides: this.polySides,
         velocityLimit: this.velocityLimit,
         yGravity: this.yGravity,
+        xGravity: this.xGravity,
         yFriction: this.yFriction,
         xFriction: this.xFriction,
         yImpulsPower: this.yImpulsPower,
@@ -97,12 +101,14 @@ export class GraviBoard extends MIDIToy {
         );
     
         // Class specific data
+        this.horizontalAlign = data.horizontalAlign;
         this.circleRadius = data.circleRadius;
         this.velocity = data.velocity.map(v => ({ x: v.x, y: v.y }));
         this.strokeWidth = data.strokeWidth;
         this.polySides = data.polySides;
         this.velocityLimit = data.velocityLimit;
         this.yGravity = data.yGravity;
+        this.xGravity = data.xGravity;
         this.yFriction = data.yFriction;
         this.xFriction = data.xFriction;
         this.yImpulsPower = data.yImpulsPower;
@@ -117,7 +123,9 @@ export class GraviBoard extends MIDIToy {
         this.RemoveChildrenFromLayer();
         var cellSize = (this.w / this.numberOfKeys) ;
         this.circleRadius = cellSize / 4;
-        this.HorizontalDrawPositionDistrubution(cellSize);
+        
+        if(this.horizontalAlign) this.HorizontalDrawPositionDistrubution(cellSize);
+        else this.VerticalDrawPositionDistrubution(cellSize);
 
         // this.shapes.length = 0;
         this.drawPositions.forEach(element => {
@@ -168,23 +176,33 @@ export class GraviBoard extends MIDIToy {
 
     UpdateKeyboard() {
         let indexValue = 0;
+        var yGravity = this.yGravity;
+        var xGravity = this.xGravity;
+        var yFriction = this.yFriction;
+        var xFriction = this.xFriction;
+
         this.paperLayer.children.forEach(element => {
             var s = element as paper.Path.RegularPolygon;
             var vel = this.velocity[indexValue];
             if(vel == undefined) return;
 
-            if(this.yGravity < 0) { //Gravity down
-                if(vel.y > 0) vel.y *= this.yFriction;
-            }
-            if(this.yGravity > 0) { //Gravity up
-                if(vel.y < 0) vel.y *= this.yFriction;
-            }
+            //No Gravity Y
+            if(yGravity == 0) vel.y *= yFriction;
+            //No Gravity X
+            if(xGravity == 0) vel.x *= xFriction;
+            //Gravity down
+            if(yGravity < 0)if(vel.y > 0) vel.y *= yFriction;      
+            //Gravity up
+            if(yGravity > 0) if(vel.y < 0) vel.y *= yFriction;
+            //Gravity left
+            if(xGravity < 0) if(vel.x > 0) vel.x *= xFriction;
+            //Gravity right
+            if(xGravity > 0) if(vel.x < 0) vel.x *= xFriction;
 
             // Bounce conditions
             if (s.position.y > this.h - (this.circleRadius + this.strokeWidth / 2)) { // Ground bounce
                 if (vel.y < 0) {
                     vel.y = -vel.y;
-                    // vel.y *= this.yFriction;
                 }
             }
             if (s.position.y < 0 + (this.circleRadius + this.strokeWidth / 2)) { // Top height bounce
@@ -192,13 +210,18 @@ export class GraviBoard extends MIDIToy {
                     vel.y = -vel.y;
                 }
             }
+
+
             if(s.position.y > 0 + (this.circleRadius + this.strokeWidth / 2) && s.position.y < this.h - (this.circleRadius + this.strokeWidth / 2)) {
-                vel.y += this.yGravity;
+                vel.y += yGravity;
+                vel.x += xGravity;
             }
 
-            if(vel.x !== 0) vel.x *= this.xFriction;
-            if(s.position.x > this.w - (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on right side, mirror velocity
-            if(s.position.x < 0 + (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x; //When on left side, mirror velocity
+            // if(vel.x !== 0) vel.x *= this.xFriction;
+            //right bounce
+            if(s.position.x > this.w - (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x;
+            //left bounce
+            if(s.position.x < 0 + (this.circleRadius + this.strokeWidth/2)) vel.x = -vel.x;
 
             //When over limit, reduce to limit
             if(vel.y < -this.velocityLimit || vel.y > this.velocityLimit) {
@@ -230,14 +253,19 @@ export class GraviBoard extends MIDIToy {
 
     Impuls(indexValue: number, yForce: number, xForce: number) {
         var vel = this.velocity[indexValue];
-        var rand = Math.random();
+        
+        // var rand = Math.random();
+        // if(rand <= 0.5) vel.x += xForce * 1;
+        // else vel.x += xForce * -1;
 
         if(this.yGravity < 0) vel.y += yForce;
         else vel.y -= yForce;
 
-        if(rand <= 0.5) vel.x += xForce * 1;
-        else vel.x += xForce * -1;
+        if(this.xGravity < 0) vel.x += xForce;
+        else vel.x -= xForce;
+
 
         this.velocity[indexValue] = vel;
     }
+
 }

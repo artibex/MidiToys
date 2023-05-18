@@ -140,6 +140,18 @@ export function NumberSliderCombo(props) {
   )
 }
 
+export function CheckboxUIElement(props) {
+  return(
+    <div class="flexContainer">
+      <div>{props.name}</div>
+      <CheckboxInput 
+        checked={props.checked}
+        onChange={props.onChange}
+      />
+    </div>
+  )
+}
+
 export function NumberSliderUIElement(props) {
   if(props.name == undefined) props.name = "define props.name pls";
   return(
