@@ -9,7 +9,7 @@ export class SquareKeyboard extends MIDIToy {
     paperKeys: paper.Path.Rectangle[] = [];
 
     constructor(targetChannel: number) {
-        super(targetChannel, 26, 12, true);
+        super("Square Keyboard", targetChannel, 26, 12, true);
         // this.canvasReverences = canvasReverences;
 
         this.SetupKeyboard();

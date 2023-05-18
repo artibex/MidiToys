@@ -4,7 +4,7 @@ import { MIDIToy } from "./MIDIToy";
 export class EmptyToy extends MIDIToy {
 
     constructor(targetChannel: number) {
-        super(targetChannel, 13, 12, true);
+        super( "Click 'Select'", targetChannel, 13, 12, true);
     }
 
     LoadDefaultColorSettings() {
