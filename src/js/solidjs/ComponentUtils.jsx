@@ -42,8 +42,9 @@ export function DetailsFillerCenter(summeryName, content) {
 
 export function SliderInput(props) {
   const [value, setValue] = createSignal(props.value);
-  if(props.factor == undefined) props.factor = 1;
   if(props.class == undefined) props.class = "sliderInput marginLeft10";
+  var factor = props.factor;
+  if(factor == undefined) factor = 1;
 
   // Synchronize the value prop with changes from the outside
   createEffect(() => {
@@ -53,7 +54,7 @@ export function SliderInput(props) {
   const handleChange = (event) => {
     const newValue = parseInt(event.target.value);
     setValue(newValue);
-    props.onChange(newValue / props.factor);
+    props.onChange(newValue / factor);
   };
   
   return(
@@ -63,7 +64,7 @@ export function SliderInput(props) {
         min={props.minMaxStep[0]}
         max={props.minMaxStep[1]}
         step={props.minMaxStep[2]}
-        value={value() * props.factor}
+        value={value() * factor}
         onChange={handleChange}
     />
   );
@@ -71,8 +72,9 @@ export function SliderInput(props) {
 
 export function NumberInput(props) {
   const [value, setValue] = createSignal(props.value);
-  if(props.factor == undefined) props.factor = 1;
   if(props.class == undefined) props.class = "numberInput";
+  var factor = props.factor;
+  if(factor == undefined) factor = 1;
 
   createEffect(() => {
     setValue(props.value);
@@ -81,7 +83,7 @@ export function NumberInput(props) {
   const handleChange = (event) => {
     const newValue = parseInt(event.target.value);
     setValue(newValue);
-    props.onChange(newValue / props.factor); 
+    props.onChange(newValue / factor); 
   };
 
   return (
@@ -91,28 +93,10 @@ export function NumberInput(props) {
       min={props.minMaxStep[0]}
       max={props.minMaxStep[1]}
       step={props.minMaxStep[2]}
-      value={value()*props.factor}
+      value={value() * factor}
       onChange={handleChange}
     />
   );
-}
-
-export function NumberSliderCombo(props) {
-  return(
-    <div class="flexContainer">
-      <NumberInput
-          class="numberInput"
-          minMaxStep={[0, 255, 1]}
-          value={props.value}
-          onChange={props.onChange}
-      />
-      <SliderInput 
-          minMaxStep={props.minMaxStep}
-          value={props.value}
-          onChange={props.onChange}
-      />
-    </div>
-  )
 }
 
 export function CheckboxInput(props) {
@@ -135,4 +119,38 @@ export function CheckboxInput(props) {
       onChange={handleChange}
     />
   );
+}
+
+export function NumberSliderCombo(props) {
+  return(
+    <div class="flexContainer">
+      <NumberInput
+          factor={props.factor}
+          minMaxStep={props.minMaxStep}
+          value={props.value}
+          onChange={props.onChange}
+      />
+      <SliderInput
+          factor={props.factor}
+          minMaxStep={props.minMaxStep}
+          value={props.value}
+          onChange={props.onChange}
+      />
+    </div>
+  )
+}
+
+export function NumberSliderUIElement(props) {
+  if(props.name == undefined) props.name = "define props.name pls";
+  return(
+    <div class="flexContainer">
+      <div>{props.name}</div>
+      <NumberSliderCombo 
+        factor={props.factor}
+        minMaxStep={props.minMaxStep}
+        value={props.value}
+        onChange={props.onChange}
+      />
+    </div>
+  )
 }

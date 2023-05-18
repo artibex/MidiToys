@@ -183,6 +183,7 @@ export default function SetupContainer( props: {channel: number}) {
         //If collaps note is true, there is no need to set a start key, hide it
         if(collapsNote() == true) {
             return (
+                // Sorry, nothing
                 <div></div>
             )
         } else {
@@ -190,15 +191,10 @@ export default function SetupContainer( props: {channel: number}) {
                 <div class="flexContainer">
                 <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
                 <div class="flexContainer">
-                    <NumberInput
+                    <NumberSliderCombo 
                         minMaxStep={[1,100,1]}
                         value={startKey()}
                         onChange={setStartKey}
-                    />
-                    <SliderInput 
-                        minMaxStep={[1,100,1]}
-                        value={startKey()}
-                        onChange={setStartKey}        
                     />
                 </div>
             </div>

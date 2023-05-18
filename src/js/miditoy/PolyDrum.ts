@@ -201,10 +201,11 @@ export class PolyDrum extends MIDIToy {
         this.paperLayer.addChild(poly);
         // this.paperGroup.addChild(poly);
 
-        if(this.paperLayer.length >= this.shapeLimit) {
-         this.RemoveShape(0);   
-        } 
-        // this.shapes.push(poly);
+        if (this.paperLayer.children.length > this.shapeLimit) {
+            // console.log("REMOVE shape from layer, too many!");
+            // console.log("LAYER children count = " + this.paperLayer.children.length);
+            this.paperLayer.firstChild.remove();
+        }
     }
 
     UpdateShapes() {
@@ -232,16 +233,15 @@ export class PolyDrum extends MIDIToy {
             var center = poly.bounds.center;
             poly.rotate(rotationSpeed, center);
 
-            if(poly.strokeColor.alpha <= 0 && poly.fillColor.alpha <= 0) {
-                this.RemoveShape(poly);
-            }
+            // if(poly.strokeColor.alpha <= 0 && poly.fillColor.alpha <= 0) {
+            //     this.RemoveShape(poly);
+            // }
             indexValue++;
         })
     }
 
     RemoveShape(shape) {
-        // var poly = this.shapes[indexValue];
-        // this.shapes.splice(indexValue, 1);
-        shape.remove();
+        console.log("REMOVING shape from layer");
+        this.paperLayer.remove(shape);
     }
 }
