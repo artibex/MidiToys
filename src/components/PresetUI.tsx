@@ -22,14 +22,13 @@ export default function SetupContainer( props: {channel: number}) {
 
     const ToyChanged = () => {
         console.log("PRESET UI event");
-        // UpdateUIValues();
-        // Handle the event...
+        toy = InitToy(channel, toy, ToyChanged);
+        UpdateUIValues();
     };
 
-    // function InitToy(){
-    //     toy = tManager.GetToy(channel);
-    //     // toy.SubscribeToToyChangedEvent(ToyChanged);
-    // }
+    function LoadToy() {
+        toy = InitToy(channel, toy, ToyChanged);
+    }
 
     function UpdateUIValues() {
         console.log("UPDATE PRESET UI values");
@@ -79,20 +78,19 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderUI() {
         return (
             <>
-                <br></br>
-                    <div class="flexContainer">
-                        <div class="flexList">
-                            <div class="marginBottom5">Save new preset</div>
-                            <input
-                                class="textInput"
-                                value={presetName()}
-                                onChange={(event) => setPresetName(event.target.value)}
-                            />
-                            </div>
-                        <button class="thinButton marginAuto" onClick={() => SaveNewPreset()} >
-                            Save
-                        </button>
-                    </div>
+                <div class="flexContainer">
+                    <div class="flexList">
+                        <div class="marginBottom5">Save new preset</div>
+                        <input
+                            class="textInput"
+                            value={presetName()}
+                            onChange={(event) => setPresetName(event.target.value)}
+                        />
+                        </div>
+                    <button class="thinButton marginAuto" onClick={() => SaveNewPreset()} >
+                        Save
+                    </button>
+                </div>
                 <br></br>
                 {RenderAvailablePresets()}
             </>
@@ -125,7 +123,7 @@ export default function SetupContainer( props: {channel: number}) {
         ) as HTMLDivElement; // Cast to HTMLDivElement
     }
 
-    toy = InitToy(channel, toy, ToyChanged);
+    LoadToy();
     UpdateUIValues(); //Get UI Values once at start
     var sumName = "Load/Save Preset";
     return DetailsFillerCenter("Load/Save Settings", RenderUI());

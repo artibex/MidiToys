@@ -40,10 +40,15 @@ export default function SetupContainer( props: {channel: number}) {
         setUseEffect(true);
     };
 
+    function LoadToy() {
+        toy = InitToy(channel, toy, ToyChanged);
+    }
+
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            
+            toy = InitToy(channel, toy, ToyChanged);
+
             if(toy != undefined) {
                 setStrokeWidth(toy.strokeWidth);
                 setPolySides(toy.polySides);
@@ -272,9 +277,9 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Init Component
-    toy = InitToy(channel, toy, ToyChanged);
+    LoadToy();
     UpdateUIValues(); //Get UI Values once at start
-    return DetailsFillerCenter("Specific Settings", RenderUI());
+    return DetailsFillerCenter(toy.constructor.name + " Settings", RenderUI());
 
     return(
         <div>
