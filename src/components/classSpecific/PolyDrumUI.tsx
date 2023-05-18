@@ -38,6 +38,11 @@ export default function SetupContainer( props: {channel: number}) {
         setUseEffect(true);
     };
 
+    function LoadToy() {
+        toy = InitToy(channel, toy, ToyChanged);
+    }
+
+
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
@@ -324,7 +329,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Init Component
-    toy = InitToy(channel, toy, ToyChanged);
+    LoadToy();
     UpdateUIValues(); //Get UI Values once at start
     return DetailsFillerCenter("Specific Settings", RenderUI());
     // return(
