@@ -66,7 +66,7 @@ export default function SetupContainer( props: {channel: number}) {
     //Init Component
     LoadToy();
     UpdateUIValues(); //Get UI Values once at start
-    return DetailsFillerCenter(toy.constructor.name + " Settings", RenderUI());
+    return DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
     // return(
     //     <div>
     //         <details>

@@ -51,7 +51,7 @@ export default function SetupContainer( props: {channel: number}) {
         if (typeof window !== 'undefined') {
 
             if(toy != undefined) {
-                setToyName(toy.constructor.name);
+                setToyName(toy.toyName);
                 setNumberOfKeys(toy.numberOfKeys);
                 setStartKey(toy.startKey);
                 setCollapsNote(toy.useRegExp);

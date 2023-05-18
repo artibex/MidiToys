@@ -29,7 +29,7 @@ export class PolyDrum extends MIDIToy {
     maxHeight: number = this.h * 0.5;
 
     constructor(targetChannel: number) {
-        super(targetChannel, 24, 12, true);
+        super("PolyDrum", targetChannel, 24, 12, true);
         console.log("CREATED PolyDrum");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));

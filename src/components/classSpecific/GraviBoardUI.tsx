@@ -279,199 +279,199 @@ export default function SetupContainer( props: {channel: number}) {
     //Init Component
     LoadToy();
     UpdateUIValues(); //Get UI Values once at start
-    return DetailsFillerCenter(toy.constructor.name + " Settings", RenderUI());
+    return DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
 
-    return(
-        <div>
-            <details>
-            <summary class="textAlignCenter marginAuto">
-                Specific Settings
-            </summary>
-            <br></br>
-            <div class="flexContainer">
-                <div>Stroke Width</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="40"
-                        step="1"
-                        value={strokeWidth()}
-                        onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="40"
-                        step="1"
-                        value={strokeWidth()}
-                        onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                    />
-                </div>
-            </div>
-            <div class="flexContainer">
-                <div>Poly Sides</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="2"
-                        max="20"
-                        step="1"
-                        value={polySides()}
-                        onChange={(event) => setPolySides(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="2"
-                        max="40"
-                        step="1"
-                        value={polySides()}
-                        onChange={(event) => setPolySides(parseInt(event.target.value))}
-                    />
-                </div>
-            </div>
-            <br></br>
-            <div class="flexContainer">
-                <div>Velocity Limit</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={velocityLimit()}
-                        onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="200"
-                        value={velocityLimit()}
-                        onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
-                    />
-                </div>
-            </div>
-            <div class="flexContainer">
-                <div>Y Gravity</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="-20"
-                        max="20"
-                        step="1"
-                        value={yGravity()*10}
-                        onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="-20"
-                        max="20"
-                        value={yGravity()*10}
-                        onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
-                    />
-                </div>
-            </div>
-            <br></br>
-            <div class="flexContainer">
-                <div>Y Friction</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="10"
-                        max="100"
-                        step="1"
-                        value={yFriction()*100}
-                        onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="10"
-                        max="100"
-                        value={yFriction()*100}
-                        onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
-                    />
-                </div>
-            </div>
-            <div class="flexContainer">
-                <div>X Friction</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="10"
-                        max="100"
-                        step="1"
-                        value={xFriction()*100}
-                        onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="10"
-                        max="100"
-                        value={xFriction()*100}
-                        onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
-                    />
-                </div>
-            </div>
-            <br></br>
-            <div class="flexContainer">
-                <div>Y Impuls Power</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={yImpulsPower()}
-                        onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={yImpulsPower()}
-                        onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
-                    />
-                </div>
-            </div>
-            <div class="flexContainer">
-                <div>X Impuls Power</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={xImpulsPower()}
-                        onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={xImpulsPower()}
-                        onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
-                    />
-                </div>
-            </div>
-        </details>
-        </div>
-    )
+    // return(
+    //     <div>
+    //         <details>
+    //         <summary class="textAlignCenter marginAuto">
+    //             Specific Settings
+    //         </summary>
+    //         <br></br>
+    //         <div class="flexContainer">
+    //             <div>Stroke Width</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="1"
+    //                     max="40"
+    //                     step="1"
+    //                     value={strokeWidth()}
+    //                     onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="1"
+    //                     max="40"
+    //                     step="1"
+    //                     value={strokeWidth()}
+    //                     onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
+    //                 />
+    //             </div>
+    //         </div>
+    //         <div class="flexContainer">
+    //             <div>Poly Sides</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="2"
+    //                     max="20"
+    //                     step="1"
+    //                     value={polySides()}
+    //                     onChange={(event) => setPolySides(parseInt(event.target.value))}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="2"
+    //                     max="40"
+    //                     step="1"
+    //                     value={polySides()}
+    //                     onChange={(event) => setPolySides(parseInt(event.target.value))}
+    //                 />
+    //             </div>
+    //         </div>
+    //         <br></br>
+    //         <div class="flexContainer">
+    //             <div>Velocity Limit</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="1"
+    //                     max="200"
+    //                     step="1"
+    //                     value={velocityLimit()}
+    //                     onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="1"
+    //                     max="200"
+    //                     value={velocityLimit()}
+    //                     onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
+    //                 />
+    //             </div>
+    //         </div>
+    //         <div class="flexContainer">
+    //             <div>Y Gravity</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="-20"
+    //                     max="20"
+    //                     step="1"
+    //                     value={yGravity()*10}
+    //                     onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="-20"
+    //                     max="20"
+    //                     value={yGravity()*10}
+    //                     onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
+    //                 />
+    //             </div>
+    //         </div>
+    //         <br></br>
+    //         <div class="flexContainer">
+    //             <div>Y Friction</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="10"
+    //                     max="100"
+    //                     step="1"
+    //                     value={yFriction()*100}
+    //                     onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="10"
+    //                     max="100"
+    //                     value={yFriction()*100}
+    //                     onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
+    //                 />
+    //             </div>
+    //         </div>
+    //         <div class="flexContainer">
+    //             <div>X Friction</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="10"
+    //                     max="100"
+    //                     step="1"
+    //                     value={xFriction()*100}
+    //                     onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="10"
+    //                     max="100"
+    //                     value={xFriction()*100}
+    //                     onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
+    //                 />
+    //             </div>
+    //         </div>
+    //         <br></br>
+    //         <div class="flexContainer">
+    //             <div>Y Impuls Power</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="1"
+    //                     max="200"
+    //                     step="1"
+    //                     value={yImpulsPower()}
+    //                     onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="1"
+    //                     max="200"
+    //                     step="1"
+    //                     value={yImpulsPower()}
+    //                     onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
+    //                 />
+    //             </div>
+    //         </div>
+    //         <div class="flexContainer">
+    //             <div>X Impuls Power</div> 
+    //             <div class="flexContainer">
+    //                 <input
+    //                     class="numberInput"
+    //                     type="number"
+    //                     min="1"
+    //                     max="200"
+    //                     step="1"
+    //                     value={xImpulsPower()}
+    //                     onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
+    //                 />
+    //                 <input
+    //                     class="sliderInput marginLeft10"
+    //                     type="range"
+    //                     min="1"
+    //                     max="200"
+    //                     step="1"
+    //                     value={xImpulsPower()}
+    //                     onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
+    //                 />
+    //             </div>
+    //         </div>
+    //     </details>
+    //     </div>
+    // )
 }

@@ -10,6 +10,7 @@ export abstract class MIDIToy {
     //Basic information
     private toyChangedEventListeners: (() => void)[] = [];
 
+    toyName: string; //Name of the toy in the UI
     inputManager: InputManager; //InputManager reference
     toyManager: ToyManager; //ToyManager reference
     paperLayer; //The paper layer on whith to draw on
@@ -38,7 +39,8 @@ export abstract class MIDIToy {
     accentColor: paper.Color = new paper.Color(1/2);
 
     //Construct everything basic that is needed for a MIDIKeyboard
-    constructor(targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
+    constructor(toyName: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
+        this.toyName = toyName;
         this.inputManager = new InputManager(); //The Input Manager
         this.toyManager = new ToyManager();
         this.paperLayer = new paper.Layer();
