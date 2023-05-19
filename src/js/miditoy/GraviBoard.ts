@@ -38,28 +38,7 @@ export class GraviBoard extends MIDIToy {
     ToJSON() {
         return {
         //MIDIToy data
-        numberOfKeys: this.numberOfKeys,
-        startKey: this.startKey,
-        useRegExp: this.useRegExp,
-
-        fillColor: {
-            red: this.fillColor.red,
-            green: this.fillColor.green,
-            blue: this.fillColor.blue,
-            alpha: this.fillColor.alpha
-        },
-        strokeColor: {
-            red: this.strokeColor.red,
-            green: this.strokeColor.green,
-            blue: this.strokeColor.blue,
-            alpha: this.strokeColor.alpha
-        },
-        accentColor: {
-            red: this.accentColor.red,
-            green: this.accentColor.green,
-            blue: this.accentColor.blue,
-            alpha: this.accentColor.alpha
-        },
+        ...this.GetBaseJSON(),
 
         //Class specific data
         horizontalAlign: this.horizontalAlign,
@@ -77,29 +56,9 @@ export class GraviBoard extends MIDIToy {
         };
     }
     LoadJSON(data) {
-        this.numberOfKeys = data.numberOfKeys;
-        this.startKey = data.startKey;
-        this.useRegExp = data.useRegExp;
-    
-        this.fillColor = new paper.Color(
-            data.fillColor.red,
-            data.fillColor.green,
-            data.fillColor.blue,
-            data.fillColor.alpha
-        );
-        this.strokeColor = new paper.Color(
-            data.strokeColor.red,
-            data.strokeColor.green,
-            data.strokeColor.blue,
-            data.strokeColor.alpha
-        );
-        this.accentColor = new paper.Color(
-            data.accentColor.red,
-            data.accentColor.green,
-            data.accentColor.blue,
-            data.accentColor.alpha
-        );
-    
+        //MIDIToy data
+        this.LoadBaseJSON(data);
+
         // Class specific data
         this.horizontalAlign = data.horizontalAlign;
         this.circleRadius = data.circleRadius;
@@ -192,12 +151,12 @@ export class GraviBoard extends MIDIToy {
             if(xGravity == 0) vel.x *= xFriction;
             //Gravity down
             if(yGravity < 0)if(vel.y > 0) vel.y *= yFriction;      
-            //Gravity up
             if(yGravity > 0) if(vel.y < 0) vel.y *= yFriction;
+            //Gravity up
             //Gravity left
             if(xGravity < 0) if(vel.x > 0) vel.x *= xFriction;
+            else if(xGravity > 0) if(vel.x < 0) vel.x *= xFriction;
             //Gravity right
-            if(xGravity > 0) if(vel.x < 0) vel.x *= xFriction;
 
             // Bounce conditions
             if (s.position.y > this.h - (this.circleRadius + this.strokeWidth / 2)) { // Ground bounce

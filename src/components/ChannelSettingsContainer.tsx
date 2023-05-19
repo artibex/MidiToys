@@ -56,9 +56,9 @@ export default function SetupContainer( props: {channel: number}) {
                 setStartKey(toy.startKey);
                 setCollapsNote(toy.useRegExp);
 
-                var mColor: RGBA = toy.GetColor(toy.fillColor);
-                var sColor: RGBA = toy.GetColor(toy.strokeColor);
-                var aColor: RGBA = toy.GetColor(toy.accentColor);
+                var mColor: RGBA = toy.GetPaperColor(toy.fillColor);
+                var sColor: RGBA = toy.GetPaperColor(toy.strokeColor);
+                var aColor: RGBA = toy.GetPaperColor(toy.accentColor);
                 setFillColor({r:mColor.r, g:mColor.g , b:mColor.b, a:mColor.a});
                 setStrokeColor({r:sColor.r, g:sColor.g , b:sColor.b, a:sColor.a});
                 setAccentColor({r:aColor.r, g:aColor.g , b:aColor.b, a:aColor.a});
@@ -76,9 +76,9 @@ export default function SetupContainer( props: {channel: number}) {
             toy.startKey = startKey();
             toy.useRegExp = collapsNote();
 
-            toy.SetColor(toy.fillColor, fillColor().r, fillColor().g, fillColor().b, fillColor().a);
-            toy.SetColor(toy.strokeColor, strokeColor().r, strokeColor().g, strokeColor().b, strokeColor().a);
-            toy.SetColor(toy.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
+            toy.SetPaperColor(toy.fillColor, fillColor().r, fillColor().g, fillColor().b, fillColor().a);
+            toy.SetPaperColor(toy.strokeColor, strokeColor().r, strokeColor().g, strokeColor().b, strokeColor().a);
+            toy.SetPaperColor(toy.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
 
             if(toyType() != 0) {
                 toy.SetupMIDIReceiver(collapsNote());

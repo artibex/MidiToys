@@ -96,14 +96,14 @@ export abstract class MIDIToy {
     }
 
     //Takes 0-255 values and converts it to 0-1
-    SetColor(color: paper.Color, red: number, green: number, blue: number, alpha: number) {
+    SetPaperColor(color: paper.Color, red: number, green: number, blue: number, alpha: number) {
         color.red = this.MapRGBAToPaperRGBA(red);
         color.green = this.MapRGBAToPaperRGBA(green);
         color.blue = this.MapRGBAToPaperRGBA(blue);
         color.alpha = this.MapRGBAToPaperRGBA(alpha);
     }
     //Returns a RGBA object with 0-255 values
-    GetColor(color: paper.Color) {
+    GetPaperColor(color: paper.Color) {
         var rgba: RGBA = {r:0,g:0,b:0, a:0};
         rgba.r = this.MapPaperRGBAToRGBA(color.red);
         rgba.g = this.MapPaperRGBAToRGBA(color.green);
@@ -163,4 +163,83 @@ export abstract class MIDIToy {
 
     abstract ToJSON();
     abstract LoadJSON(data);
+
+    //Base JSON data that this class uses
+    GetBaseJSON() {
+        return {
+            toyName: this.toyName,
+            numberOfKeys: this.numberOfKeys,
+            startKey: this.startKey,
+            useRegExp: this.useRegExp,
+            
+            //Color data
+            fillColor: {
+                red: this.fillColor.red,
+                green: this.fillColor.green,
+                blue: this.fillColor.blue,
+                alpha: this.fillColor.alpha
+            },
+            strokeColor: {
+                red: this.strokeColor.red,
+                green: this.strokeColor.green,
+                blue: this.strokeColor.blue,
+                alpha: this.strokeColor.alpha
+            },
+            accentColor: {
+                red: this.accentColor.red,
+                green: this.accentColor.green,
+                blue: this.accentColor.blue,
+                alpha: this.accentColor.alpha
+            }  
+        }
+    }
+    //Load base data from every toy class
+    LoadBaseJSON(data: any) {
+        if(data.toyName != "" || data.toyName != undefined) this.toyName = data.toyName;
+        this.numberOfKeys = data.numberOfKeys;
+        this.startKey = data.startKey;
+        this.useRegExp = data.useRegExp;
+
+        // this.SetColor(this.fillColor, 
+        //     data.fillColor.red, 
+        //     data.fillColor.green,
+        //     data.fillColor.blue,
+        //     data.fillColor.alpha
+        // );
+
+        this.fillColor = new paper.Color(
+          data.fillColor.red,
+          data.fillColor.green,
+          data.fillColor.blue,
+          data.fillColor.alpha
+        );
+      
+        // this.SetColor(this.strokeColor, 
+        //     data.strokeColor.red, 
+        //     data.strokeColor.green,
+        //     data.strokeColor.blue,
+        //     data.strokeColor.alpha
+        // );
+
+        this.strokeColor = new paper.Color(
+          data.strokeColor.red,
+          data.strokeColor.green,
+          data.strokeColor.blue,
+          data.strokeColor.alpha
+        );
+
+        // this.SetColor(this.accentColor, 
+        //     data.accentColor.red, 
+        //     data.accentColor.green,
+        //     data.accentColor.blue,
+        //     data.accentColor.alpha
+        // );
+
+        this.accentColor = new paper.Color(
+          data.accentColor.red,
+          data.accentColor.green,
+          data.accentColor.blue,
+          data.accentColor.alpha
+        );
+    }
 }
