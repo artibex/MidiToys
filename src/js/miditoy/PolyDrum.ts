@@ -46,27 +46,7 @@ export class PolyDrum extends MIDIToy {
     ToJSON() {
     return {
         //MIDIToy data
-        numberOfKeys: this.numberOfKeys,
-        startKey: this.startKey,
-        useRegExp: this.useRegExp,
-        fillColor: {
-            red: this.fillColor.red,
-            green: this.fillColor.green,
-            blue: this.fillColor.blue,
-            alpha: this.fillColor.alpha
-        },
-        strokeColor: {
-            red: this.strokeColor.red,
-            green: this.strokeColor.green,
-            blue: this.strokeColor.blue,
-            alpha: this.strokeColor.alpha
-        },
-        accentColor: {
-            red: this.accentColor.red,
-            green: this.accentColor.green,
-            blue: this.accentColor.blue,
-            alpha: this.accentColor.alpha
-        },
+        ...this.GetBaseJSON(),
 
         //Class specific data
         shapeLimit: this.shapeLimit,
@@ -77,43 +57,14 @@ export class PolyDrum extends MIDIToy {
         rotationSpeed: this.rotationSpeed,
         strokeWidth: this.strokeWidth,
         strokeWidthDecrease: this.strokeWidthDecrease,
-        // xSpawnPos: this.xSpawnPos,
-        // ySpawnPos: this.ySpawnPos,
-        xSpawnOffset: this.xSpawnOffset,
         ySpawnOffset: this.ySpawnOffset,
-        // minWidth: this.minWidth,
-        // maxWidth: this.maxWidth,
-        // minHeight: this.minHeight,
-        // maxHeight: this.maxHeight
+        xSpawnOffset: this.xSpawnOffset,
         };
     }
     LoadJSON(data: any) {
         //MIDIToy Loading
-        this.numberOfKeys = data.numberOfKeys;
-        this.startKey = data.startKey;
-        this.useRegExp = data.useRegExp;
+        this.LoadBaseJSON(data);
 
-        this.fillColor = new paper.Color(
-          data.fillColor.red,
-          data.fillColor.green,
-          data.fillColor.blue,
-          data.fillColor.alpha
-        );
-      
-        this.strokeColor = new paper.Color(
-          data.strokeColor.red,
-          data.strokeColor.green,
-          data.strokeColor.blue,
-          data.strokeColor.alpha
-        );
-
-        this.accentColor = new paper.Color(
-          data.accentColor.red,
-          data.accentColor.green,
-          data.accentColor.blue,
-          data.accentColor.alpha
-        );
-      
         //Class specific loading
         this.shapeLimit = data.shapeLimit;
         this.polySides = data.polySides;
@@ -123,17 +74,9 @@ export class PolyDrum extends MIDIToy {
         this.rotationSpeed = data.rotationSpeed;
         this.strokeWidth = data.strokeWidth;
         this.strokeWidthDecrease = data.strokeWidthDecrease;
-        // this.xSpawnPos = data.xSpawnPos;
-        // this.ySpawnPos = data.ySpawnPos;
         this.xSpawnOffset = data.xSpawnOffset;
         this.ySpawnOffset = data.ySpawnOffset;
-        // this.minWidth = data.minWidth;
-        // this.maxWidth = data.maxWidth;
-        // this.minHeight = data.minHeight;
-        // this.maxHeight = data.maxHeight;
         this.TriggerToyChangedEvent();
-        setTimeout(() => {
-        }, 50);
     }
 
     SetupKeyboard() {

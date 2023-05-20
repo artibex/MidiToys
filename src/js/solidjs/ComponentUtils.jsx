@@ -166,3 +166,42 @@ export function NumberSliderUIElement(props) {
     </div>
   )
 }
+
+export function JsonFileUploader(props) {
+  const handleFileSelect = (event) => {
+    const files = event.target.files;
+    // const file = event.target.files[0];
+    
+    if (files.length > 0) {
+      console.log("UPLOADED file count = " + files.length);
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+
+        //When loaded, call back with data
+        reader.onload = () => {
+          const json = JSON.parse(reader.result);
+          props.onFileUpload(file.name, json);
+        }
+        //Read plain text in
+        reader.readAsText(file);
+      });
+    }
+    
+
+    // if (file) {
+    //   const reader = new FileReader();
+
+    //   reader.onload = (event) => {
+    //     const jsonData = JSON.parse(event.target.result);
+    //     // Pass the uploaded JSON data to the callback function
+    //     props.onFileUpload(file.name, jsonData);
+    //   };
+
+    //   reader.readAsText(file);
+    // }
+  };
+
+  return (
+    <input type="file" accept=".json" multiple onChange={handleFileSelect} />
+  );
+}

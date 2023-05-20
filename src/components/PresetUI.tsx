@@ -2,7 +2,7 @@ import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { PresetManager } from "../js/PresetManager";
 import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter, JsonFileUploader } from "../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 var pManager = new PresetManager();
@@ -15,7 +15,7 @@ export default function SetupContainer( props: {channel: number}) {
     const [matchingItems, setMetchingItems] = createSignal([]);
 
     function GetMatchingItems() {
-        setMetchingItems(pManager.FilterPresetsByType(toy.constructor.name));      
+        setMetchingItems(pManager.FilterPresetsByType(toy.toyName));      
     }
 
     //Special settings
@@ -49,7 +49,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
     
     function SaveNewPreset() {
-        pManager.SaveNewPreset(presetName(), toy);
+        if(presetName() != "") pManager.SaveNewPresetToy(presetName(), toy);
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
     }
@@ -60,13 +60,27 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Upload a Preset from local system
-    function UploadPreset(item) {
-
+    function UploadPreset(presetName, jsonObj) {
+        // console.log("UPLOAD FILE");
+        // console.log("name=" + presetName, " json=" + jsonObj);
+        pManager.SaveNewPresetUpload(presetName, jsonObj);
+        UpdateUIValues();
     }
 
     //Open system file explorer and give a JSON file to save
     function DownloadPreset(item) {
+        const blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
 
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = item.key + ".json";
+      
+        // Trigger the click event to initiate the download
+        link.click();
+      
+        // Clean up the URL object
+        URL.revokeObjectURL(url);
     }
 
     //Get the name of the preset for button display
@@ -93,6 +107,10 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
                 <br></br>
                 {RenderAvailablePresets()}
+                <br></br>
+                <JsonFileUploader 
+                onFileUpload={UploadPreset}
+                />
             </>
         )
     }
