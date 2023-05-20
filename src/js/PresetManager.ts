@@ -31,13 +31,20 @@ export class PresetManager{
     console.log("DELETED " + key);
   }
 
-  SaveNewPreset(presetName: string, toy: any) {
+  SaveNewPresetToy(presetName: string, toy: any) {
     if(toy != undefined) {
       const toyType = toy.toyName;
       const jsonObj = toy.ToJSON();
       const saveName = presetName + "." + toyType;
       localStorage.setItem(saveName, JSON.stringify(jsonObj));
       console.log("SAVED to local storage new Preset:");
-    } 
+    }
+  }
+
+  SaveNewPresetUpload(saveName: string, jsonObj: string) {
+    if(saveName && jsonObj != undefined) {
+      const saveNameNoExtension = saveName.replace(/\.json$/, "");
+      localStorage.setItem(saveNameNoExtension, jsonObj);
+    }
   }
 }

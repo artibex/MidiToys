@@ -2,7 +2,7 @@ import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { PresetManager } from "../js/PresetManager";
 import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter, JsonFileUploader } from "../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 var pManager = new PresetManager();
@@ -49,7 +49,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
     
     function SaveNewPreset() {
-        pManager.SaveNewPreset(presetName(), toy);
+        if(presetName() != "") pManager.SaveNewPresetToy(presetName(), toy);
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
     }
@@ -60,8 +60,11 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Upload a Preset from local system
-    function UploadPreset(item) {
-
+    function UploadPreset(presetName, jsonObj) {
+        // console.log("UPLOAD FILE");
+        // console.log("name=" + presetName, " json=" + jsonObj);
+        pManager.SaveNewPresetUpload(presetName, jsonObj);
+        UpdateUIValues();
     }
 
     //Open system file explorer and give a JSON file to save
@@ -104,6 +107,10 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
                 <br></br>
                 {RenderAvailablePresets()}
+                <br></br>
+                <JsonFileUploader 
+                onFileUpload={UploadPreset}
+                />
             </>
         )
     }
