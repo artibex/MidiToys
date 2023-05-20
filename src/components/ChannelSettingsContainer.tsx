@@ -6,7 +6,7 @@ import GraviBoardUI from "./classSpecific/GraviBoardUI";
 import PolyDrumUI from "./classSpecific/PolyDrumUI";
 import PresetUI from "./PresetUI";
 import { InitToy, CreateToy } from "../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter, NumberInput, SliderInput, CheckboxInput, NumberSliderCombo } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter, CheckboxUIElement, NumberSliderUIElement } from "../js/solidjs/ComponentUtils.jsx";
 
 export default function SetupContainer( props: {channel: number}) {
     var toy;
@@ -160,7 +160,13 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderKeySettings() {
         return(
             <>
-                <div class="flexContainer">
+                <NumberSliderUIElement 
+                    name={"Keys"}
+                    minMaxStep={[1,100,1]}
+                    value={numberOfKeys()}
+                    onChange={setNumberOfKeys}
+                />
+                {/* <div class="flexContainer">
                     <div>Keys</div>
                     <div class="flexContainer">
                         <NumberSliderCombo
@@ -169,12 +175,13 @@ export default function SetupContainer( props: {channel: number}) {
                             onChange={setNumberOfKeys}
                         />
                     </div>
-                </div>
+                </div> */}
                 {RenderStartKeySetting()}
-                <div class="flexContainer">
-                    <div>Collapse Notes</div>
-                    <CheckboxInput checked={collapsNote()} onChange={setCollapsNote} />
-                </div>
+                <CheckboxUIElement 
+                name="Collapse Notes"
+                checked={collapsNote()}
+                onChange={setCollapsNote}
+                />
             </>
         )
     }
@@ -188,17 +195,12 @@ export default function SetupContainer( props: {channel: number}) {
             )
         } else {
             return (
-                <div class="flexContainer">
-                <div >Start Key ({MIDIDataTable.MIDINoteToString(startKey())}) </div>
-                <div class="flexContainer">
-                    <NumberSliderCombo 
-                        minMaxStep={[1,100,1]}
-                        value={startKey()}
-                        onChange={setStartKey}
-                    />
-                </div>
-            </div>
-
+                <NumberSliderUIElement 
+                    name={"Start Key" + MIDIDataTable.MIDINoteToString(startKey())}
+                    minMaxStep={[1,100,1]}
+                    value={startKey()}
+                    onChange={setStartKey}
+                />
             )
         }
     }
@@ -224,112 +226,88 @@ export default function SetupContainer( props: {channel: number}) {
             //fillColor
             case 0: return (
             <div>
-                <div class="flexContainer">
-                    <div>Red:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={fillColor().r}
-                        onChange={(value) => setFillColor({ ...fillColor(), r: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Green:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={fillColor().g}
-                        onChange={(value) => setFillColor({ ...fillColor(), g: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Blue:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={fillColor().b}
-                        onChange={(value) => setFillColor({ ...fillColor(), b: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Alpha:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={fillColor().a}
-                        onChange={(value) => setFillColor({ ...fillColor(), a: value })}
-                    />
-                </div>
+                <NumberSliderUIElement 
+                    name={"Red"}
+                    minMaxStep={[0,255,1]}
+                    value={fillColor().r}
+                    onChange={(value) => setFillColor({ ...fillColor(), r: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Green"}
+                    minMaxStep={[0,255,1]}
+                    value={fillColor().g}
+                    onChange={(value) => setFillColor({ ...fillColor(), g: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Blue"}
+                    minMaxStep={[0,255,1]}
+                    value={fillColor().b}
+                    onChange={(value) => setFillColor({ ...fillColor(), b: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Alpha"}
+                    minMaxStep={[0,255,1]}
+                    value={fillColor().a}
+                    onChange={(value) => setFillColor({ ...fillColor(), a: value })}
+                />
             </div>
             )
             //strokeColor
             case 1: return (
             <div>
-                <div class="flexContainer">
-                    <div>Red:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={strokeColor().r}
-                        onChange={(value) => setStrokeColor({ ...strokeColor(), r: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Green:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={strokeColor().g}
-                        onChange={(value) => setStrokeColor({ ...strokeColor(), g: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Blue:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={strokeColor().b}
-                        onChange={(value) => setStrokeColor({ ...strokeColor(), b: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Alpha:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={strokeColor().a}
-                        onChange={(value) => setStrokeColor({ ...strokeColor(), a: value })}
-                    />
-                </div>
+                <NumberSliderUIElement 
+                    name={"Red"}
+                    minMaxStep={[0,255,1]}
+                    value={strokeColor().r}
+                    onChange={(value) => setStrokeColor({ ...strokeColor(), r: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Green"}
+                    minMaxStep={[0,255,1]}
+                    value={strokeColor().g}
+                    onChange={(value) => setStrokeColor({ ...strokeColor(), g: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Blue"}
+                    minMaxStep={[0,255,1]}
+                    value={strokeColor().b}
+                    onChange={(value) => setStrokeColor({ ...strokeColor(), b: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Alpha"}
+                    minMaxStep={[0,255,1]}
+                    value={strokeColor().a}
+                    onChange={(value) => setStrokeColor({ ...strokeColor(), a: value })}
+                />
             </div>
             )
             //accentColor
             case 2: return (
             <div>
-                <div class="flexContainer">
-                    <div>Red:</div>
-                    <NumberSliderCombo 
-                        minMaxStep={[0, 255, 1]}
-                        value={accentColor().r}
-                        onChange={(value) => setAccentColor({ ...accentColor(), r: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Green:</div>
-                    <NumberSliderCombo
-                        minMaxStep={[0, 255, 1]}
-                        value={accentColor().g}
-                        onChange={(value) => setAccentColor({ ...accentColor(), g: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Blue:</div>
-                    <NumberSliderCombo
-                        minMaxStep={[0, 255, 1]}
-                        value={accentColor().b}
-                        onChange={(value) => setAccentColor({ ...accentColor(), b: value })}
-                    />
-                </div>
-                <div class="flexContainer">
-                    <div>Alpha:</div>
-                    <NumberSliderCombo
-                        minMaxStep={[0, 255, 1]}
-                        value={accentColor().a}
-                        onChange={(value) => setAccentColor({ ...accentColor(), a: value })}
-                    />
-                </div>
+                <NumberSliderUIElement 
+                    name={"Red"}
+                    minMaxStep={[0,255,1]}
+                    value={accentColor().r}
+                    onChange={(value) => setAccentColor({ ...accentColor(), r: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Green"}
+                    minMaxStep={[0,255,1]}
+                    value={accentColor().g}
+                    onChange={(value) => setAccentColor({ ...accentColor(), g: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Blue"}
+                    minMaxStep={[0,255,1]}
+                    value={accentColor().b}
+                    onChange={(value) => setAccentColor({ ...accentColor(), b: value })}
+                />
+                <NumberSliderUIElement 
+                    name={"Alpha"}
+                    minMaxStep={[0,255,1]}
+                    value={accentColor().a}
+                    onChange={(value) => setAccentColor({ ...accentColor(), a: value })}
+                />
             </div>
             )
         }

@@ -15,7 +15,7 @@ export default function SetupContainer( props: {channel: number}) {
     const [matchingItems, setMetchingItems] = createSignal([]);
 
     function GetMatchingItems() {
-        setMetchingItems(pManager.FilterPresetsByType(toy.constructor.name));      
+        setMetchingItems(pManager.FilterPresetsByType(toy.toyName));      
     }
 
     //Special settings
@@ -66,7 +66,18 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Open system file explorer and give a JSON file to save
     function DownloadPreset(item) {
+        const blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
 
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = item.key + ".json";
+      
+        // Trigger the click event to initiate the download
+        link.click();
+      
+        // Clean up the URL object
+        URL.revokeObjectURL(url);
     }
 
     //Get the name of the preset for button display

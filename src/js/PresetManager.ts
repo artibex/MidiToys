@@ -33,7 +33,7 @@ export class PresetManager{
 
   SaveNewPreset(presetName: string, toy: any) {
     if(toy != undefined) {
-      const toyType = toy.constructor.name;
+      const toyType = toy.toyName;
       const jsonObj = toy.ToJSON();
       const saveName = presetName + "." + toyType;
       localStorage.setItem(saveName, JSON.stringify(jsonObj));

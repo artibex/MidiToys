@@ -170,7 +170,6 @@ export class GraviBoard extends MIDIToy {
                 }
             }
 
-
             if(s.position.y > 0 + (this.circleRadius + this.strokeWidth / 2) && s.position.y < this.h - (this.circleRadius + this.strokeWidth / 2)) {
                 vel.y += yGravity;
                 vel.x += xGravity;

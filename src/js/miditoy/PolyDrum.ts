@@ -57,6 +57,7 @@ export class PolyDrum extends MIDIToy {
         rotationSpeed: this.rotationSpeed,
         strokeWidth: this.strokeWidth,
         strokeWidthDecrease: this.strokeWidthDecrease,
+        ySpawnOffset: this.ySpawnOffset,
         xSpawnOffset: this.xSpawnOffset,
         };
     }
