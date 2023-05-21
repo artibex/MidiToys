@@ -2,7 +2,7 @@ import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { PresetManager } from "../js/PresetManager";
 import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter, JsonFileUploader } from "../js/solidjs/ComponentUtils.jsx";
+import { DetailsFillerCenter, JsonFileUploader, Button } from "../js/solidjs/ComponentUtils.jsx";
 
 var tManager = new ToyManager();
 var pManager = new PresetManager();
@@ -101,9 +101,14 @@ export default function SetupContainer( props: {channel: number}) {
                             onChange={(event) => setPresetName(event.target.value)}
                         />
                         </div>
-                    <button class="thinButton marginAuto" onClick={() => SaveNewPreset()} >
+                        <Button 
+                            class="thinButton marginAuto"
+                            onClick={() => SaveNewPreset()}
+                            label="Save"
+                        />
+                    {/* <button class="thinButton marginAuto" onClick={() => SaveNewPreset()} >
                         Save
-                    </button>
+                    </button> */}
                 </div>
                 <br></br>
                 {RenderAvailablePresets()}
@@ -117,28 +122,30 @@ export default function SetupContainer( props: {channel: number}) {
 
     function RenderAvailablePresets() {            
         return (
-          <div class="flexList">
+          <div class="">
             {matchingItems().map((item) => (
                 <div class="flexContainer">
-                    <div class="alignFlexStart">
-                        <button class="thinButton" onClick={() => LoadPreset(item)}>
-                            {GetPresetName(item)}
-                        </button>
-                    </div>
-                    <div class="alignFlexEnd">
-                        <div class="flexContainer">
-                            <button class="squareButton" onClick={() => DownloadPreset(item)}>
-                                DL
-                            </button>
-                            <button class="squareButton" onClick={() => DeletePreset(item)}>
-                                X
-                            </button>
-                        </div>
+                        <Button
+                            class="width70 thinButton"
+                            onClick={() => LoadPreset(item)}
+                            label={GetPresetName(item)}
+                        />
+                    <div class="width30">
+                        <Button 
+                            class="squareButton"
+                            label="DL"
+                            onClick={() => DownloadPreset(item)}
+                        />
+                        <Button 
+                            class="squareButton"
+                            label="X"
+                            onClick={() => DeletePreset(item)}
+                        />
                     </div>
                 </div>
             ))}
         </div>
-        ) as HTMLDivElement; // Cast to HTMLDivElement
+        )
     }
 
     LoadToy();
