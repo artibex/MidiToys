@@ -22,7 +22,7 @@ Create stunning visuals in your browser powered by your MIDI devices.
 
 
 
-##🚀Features
+##Features 🚀
 - Support for 16 MIDI channels
 - Apply toys to channels
 - Lots of settings for available toys
