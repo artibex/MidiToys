@@ -121,6 +121,25 @@ export function CheckboxInput(props) {
   );
 }
 
+export function Button(props) {
+  if(props.class == undefined) props.class = "thinButton";
+  if(props.label == undefined) props.label = "Please Set Label";
+
+  const handleClick = () => {
+    props.onClick();
+  };
+
+  return (
+    <button
+      class={props.class}
+      onClick={handleClick}
+    >
+      {props.label}
+    </button>
+  );
+}
+
+
 export function NumberSliderCombo(props) {
   return(
     <div class="flexContainer">

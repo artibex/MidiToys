@@ -124,7 +124,6 @@ details[open] summary {
   margin-bottom: 5px;
 }
 
-
 .marginLeft20{
   margin-left: 20px; /* add margin to the right of the heading */
 }
@@ -140,8 +139,17 @@ details[open] summary {
 .marginRight40Percent{
   margin-right: 40%;
 }
-.fullWidth{
+.widthAuto {
+  width: auto;
+}
+.width100{
   width: 100%;
+}
+.width80 {
+  width: 80%;
+}
+.width70 {
+  width: 70%;
 }
 .width60{
   width: 60%;
@@ -151,6 +159,9 @@ details[open] summary {
 }
 .width40{
   width: 40%;
+}
+.width30{
+  width: 30%;
 }
 .width20{
   width: 20%;
@@ -195,9 +206,11 @@ details[open] summary {
   align-items: center;
 }
 .alignFlexStart{
+  display: flex;
   align-items: flex-start;
 }
 .alignFlexEnd{
+  display: flex;
   align-items: flex-end;
 }
 
