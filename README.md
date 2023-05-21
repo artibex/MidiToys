@@ -9,31 +9,32 @@
 
 A website built with Astro Webframework, SolidJS, JavaScript, TypeScript, and Paper.js to create a visualizer that can be controlled via MIDI hardware.
 
-## Overview 📖
-####Create stunning visuals in your browser powered by your MIDI devices.
+##📖Overview
+Create stunning visuals in your browser powered by your MIDI devices.
 
-- [Features](##features)
+- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [MIDI Hardware Setup](#midi-hardware-setup)
+- [Setup](#setup)
 - [Contributing](#contributing)
 - [Social](#social)
 - [License](#license)
 
 
-## Features 🚀
+
+##🚀Features
 - Support for 16 MIDI channels
 - Apply toys to channels
 - Lots of settings for available toys
 - Save and load toy presets
 - Download or upload toy presets in .json format
 
-## Installation ⚙️
+##⚙️Installation
 No installation required. All up-to-date browsers should be able to run the web app. If not, let me know!
 
 #### [Open App](https://artibex.github.io/MidiToys/)
 
-## Usage 🎹
+##🎹Usage
 At first, there will be no toys selected. Click in the top left on "Settings" and add a new toy.
 A basic keyboard mapping for channel 1 is also available. It is recommanded to use this tool with MIDI.
 
@@ -41,18 +42,18 @@ Use the following keyboard keys to send a signal:
 W, E, T, Z, U
 A, S, D, F, G, H, J, K
 
-## MIDI Hardware Setup 🎛️
+##🎛️Setup
 - Plug in your MIDI hardware, make sure your device can see it.
 - Give your browser access to your MIDI hardware.
 - If no hardware is detected, try reloading the page.
 
-## Contributing 🤝
+##🤝Contributing
 Please consider helping out with feedback, finding bugs, or creating content.
 
-## Social 🌐
+##🌐Social
 [![Reddit Logo](https://www.redditstatic.com/about/assets/reddit-logo.png){width=50px height=50px}](https://www.reddit.com/r/miditoys/)
 
-## License 📄
+##📄License
 This project is licensed under the [GPL-3.0 License](LICENSE). The GPL-3.0 license ensures that anyone using or modifying your project must also distribute it under the same license. It protects your work from being used as a commercial product without appropriate licensing.
 
 ---
