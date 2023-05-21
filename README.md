@@ -9,15 +9,6 @@
 
 A website built with Astro Webframework, SolidJS, JavaScript, TypeScript, and Paper.js to create a visualizer that can be controlled via MIDI hardware.
 
-## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Installation](#installation)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Social](#social)
-- [License](#license)
 
 ## Overview 📖
 Create stunning visuals in your browser powered by your MIDI devices.
