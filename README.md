@@ -12,7 +12,7 @@ A website built with Astro Webframework, SolidJS, JavaScript, TypeScript, and Pa
 ## Overview 📖
 ####Create stunning visuals in your browser powered by your MIDI devices.
 
-- [Features](#features)
+- [Features](##features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [MIDI Hardware Setup](#midi-hardware-setup)
