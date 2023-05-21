@@ -30,16 +30,19 @@ export default function SetupContainer( props: {channel: number}) {
 
     createEffect(() => {
         if(useEffect()) {
-            console.log("TRIGGER effect");
+            // console.log("TRIGGER effect");
             if(toyType() > 0 && toy != undefined) {
                 UpdateToyValues();
             }
-        } else console.log("DO NOT useEffect");
+        } else {
+            // console.log("DO NOT useEffect");
+
+        } 
     })
 
     const ToyChanged = () => {
         // Handle the event...
-        console.log("DEFAULT UI event");
+        // console.log("DEFAULT UI event");
         setUseEffect(false);
         UpdateUIValues();
         setUseEffect(true);
@@ -47,7 +50,7 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Update UI data
     function UpdateUIValues() {
-        console.log("UPDATE DEFAULT UI values");
+        // console.log("UPDATE DEFAULT UI values");
         if (typeof window !== 'undefined') {
 
             if(toy != undefined) {
@@ -67,7 +70,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
     //Update Toy data
     function UpdateToyValues() {
-        console.log("UPDATE toy values");
+        // console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
             //Remove old children
             toy.RemoveChildrenFromLayer();
