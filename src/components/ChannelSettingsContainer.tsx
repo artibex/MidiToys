@@ -5,8 +5,8 @@ import { MIDIDataTable } from "../js/MIDIDataTable";
 import GraviBoardUI from "./classSpecific/GraviBoardUI";
 import PolyDrumUI from "./classSpecific/PolyDrumUI";
 import PresetUI from "./PresetUI";
-import { InitToy, CreateToy } from "../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter, CheckboxUIElement, NumberSliderUIElement } from "../js/solidjs/ComponentUtils.jsx";
+import * as utils from "../js/solidjs/ComponentUtils.js";
+import * as ui from "./UIElements.jsx"
 
 export default function SetupContainer( props: {channel: number}) {
     var toy;
@@ -94,7 +94,7 @@ export default function SetupContainer( props: {channel: number}) {
     function NewToy() {
         //If toyType changed, create toy, otherwise, just udpate
         if(prevToyType != toyType()) {
-            toy = CreateToy(channel, toyType());
+            toy = utils.CreateToy(channel, toyType());
             toy.TriggerToyChangedEvent();
         }
         LoadToy();
@@ -103,7 +103,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function LoadToy() {
-        toy = InitToy(channel, toy, ToyChanged);
+        toy = utils.InitToy(channel, toy, ToyChanged);
     }
 
     //true or false, show Toy Selection or Toy Editing Panel
@@ -151,9 +151,9 @@ export default function SetupContainer( props: {channel: number}) {
                         <br></br>
                         {RenderSpecificUISettings()}
                         <br></br>
-                        {DetailsFillerCenter("Color Settings", RenderColorSettings())}
+                        {ui.DetailsFillerCenter("Color Settings", RenderColorSettings())}
                         <br></br>
-                        {DetailsFillerCenter("Key Settings", RenderKeySettings())}
+                        {ui.DetailsFillerCenter("Key Settings", RenderKeySettings())}
                     </div>
                 )
             }
@@ -163,7 +163,7 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderKeySettings() {
         return(
             <>
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Keys"}
                     minMaxStep={[1,100,1]}
                     value={numberOfKeys()}
@@ -180,7 +180,7 @@ export default function SetupContainer( props: {channel: number}) {
                     </div>
                 </div> */}
                 {RenderStartKeySetting()}
-                <CheckboxUIElement 
+                <ui.CheckboxUIElement 
                 name="Collapse Notes"
                 checked={collapsNote()}
                 onChange={setCollapsNote}
@@ -198,7 +198,7 @@ export default function SetupContainer( props: {channel: number}) {
             )
         } else {
             return (
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Start Key" + MIDIDataTable.MIDINoteToString(startKey())}
                     minMaxStep={[1,100,1]}
                     value={startKey()}
@@ -229,25 +229,25 @@ export default function SetupContainer( props: {channel: number}) {
             //fillColor
             case 0: return (
             <div>
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Red"}
                     minMaxStep={[0,255,1]}
                     value={fillColor().r}
                     onChange={(value) => setFillColor({ ...fillColor(), r: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Green"}
                     minMaxStep={[0,255,1]}
                     value={fillColor().g}
                     onChange={(value) => setFillColor({ ...fillColor(), g: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Blue"}
                     minMaxStep={[0,255,1]}
                     value={fillColor().b}
                     onChange={(value) => setFillColor({ ...fillColor(), b: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Alpha"}
                     minMaxStep={[0,255,1]}
                     value={fillColor().a}
@@ -258,25 +258,25 @@ export default function SetupContainer( props: {channel: number}) {
             //strokeColor
             case 1: return (
             <div>
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Red"}
                     minMaxStep={[0,255,1]}
                     value={strokeColor().r}
                     onChange={(value) => setStrokeColor({ ...strokeColor(), r: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Green"}
                     minMaxStep={[0,255,1]}
                     value={strokeColor().g}
                     onChange={(value) => setStrokeColor({ ...strokeColor(), g: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Blue"}
                     minMaxStep={[0,255,1]}
                     value={strokeColor().b}
                     onChange={(value) => setStrokeColor({ ...strokeColor(), b: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Alpha"}
                     minMaxStep={[0,255,1]}
                     value={strokeColor().a}
@@ -287,25 +287,25 @@ export default function SetupContainer( props: {channel: number}) {
             //accentColor
             case 2: return (
             <div>
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Red"}
                     minMaxStep={[0,255,1]}
                     value={accentColor().r}
                     onChange={(value) => setAccentColor({ ...accentColor(), r: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Green"}
                     minMaxStep={[0,255,1]}
                     value={accentColor().g}
                     onChange={(value) => setAccentColor({ ...accentColor(), g: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Blue"}
                     minMaxStep={[0,255,1]}
                     value={accentColor().b}
                     onChange={(value) => setAccentColor({ ...accentColor(), b: value })}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Alpha"}
                     minMaxStep={[0,255,1]}
                     value={accentColor().a}

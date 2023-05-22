@@ -1,8 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { PolyDrum } from "../../js/miditoy/PolyDrum";
-import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter, NumberSliderUIElement } from "../../js/solidjs/ComponentUtils.jsx";
+import * as utils from "../../js/solidjs/ComponentUtils.js";
+import * as ui from "../UIElements.jsx"
 
 var tManager = new ToyManager();
 
@@ -39,13 +39,13 @@ export default function SetupContainer( props: {channel: number}) {
     };
 
     function LoadToy() {
-        toy = InitToy(channel, toy, ToyChanged);
+        toy = utils.InitToy(channel, toy, ToyChanged);
     }
 
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            toy = InitToy(channel, toy, ToyChanged);
+            toy = utils.InitToy(channel, toy, ToyChanged);
 
             if(toy != undefined) {
                 setShapeLimit(toy.shapeLimit);
@@ -89,19 +89,19 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderUI() {
         return(
             <>
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Shape Limit"}
                     minMaxStep={[1,100,1]}
                     value={shapeLimit()}
                     onChange={setShapeLimit}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Poly Sides"}
                     minMaxStep={[2,20,1]}
                     value={polySides()}
                     onChange={setPolySides}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Rotation Speed"}
                     factor={100}
                     minMaxStep={[-1000,1000,1]}
@@ -109,34 +109,34 @@ export default function SetupContainer( props: {channel: number}) {
                     onChange={setRotationSpeed}
                 />
             <br></br>
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     name={"Start Size"}
                     minMaxStep={[1,1000,1]}
                     value={startSize()}
                     onChange={setStartSize}
                 />   
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     name={"Stroke Size"}
                     minMaxStep={[1,200,1]}
                     value={strokeWidth()}
                     onChange={setStrokeWidth}
                 />                             
             <br></br>
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"Size Change"}
                     minMaxStep={[50,120,1]}
                     value={sizeIncrease()}
                     onChange={setSizeIncrease}
                 />
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"Stroke Change"}
                     minMaxStep={[50,120,1]}
                     value={strokeWidthDecrease()}
                     onChange={setStrokeWidthDecrease}
                 />    
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"Alpha Change"}
                     minMaxStep={[0,10,1]}
@@ -144,14 +144,14 @@ export default function SetupContainer( props: {channel: number}) {
                     onChange={setAlphaDecrease}
                 />    
             <br></br>
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"SpawnOffset X"}
                     minMaxStep={[0,200,1]}
                     value={xSpawnOffset()}
                     onChange={setXSpawnOffset}
                 />    
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"Spawn Offset Y"}
                     minMaxStep={[0,200,1]}
@@ -165,5 +165,5 @@ export default function SetupContainer( props: {channel: number}) {
     //Init Component
     LoadToy();
     UpdateUIValues(); //Get UI Values once at start
-    return DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
+    return ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
 }
