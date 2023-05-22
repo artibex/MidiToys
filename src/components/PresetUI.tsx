@@ -1,8 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { PresetManager } from "../js/PresetManager";
-import { InitToy } from "../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter, JsonFileUploader, Button } from "../js/solidjs/ComponentUtils.jsx";
+import * as utils from "../js/solidjs/ComponentUtils.js";
+import * as ui from "./UIElements.jsx"
 
 var tManager = new ToyManager();
 var pManager = new PresetManager();
@@ -22,12 +22,12 @@ export default function SetupContainer( props: {channel: number}) {
 
     const ToyChanged = () => {
         console.log("PRESET UI event");
-        toy = InitToy(channel, toy, ToyChanged);
+        toy = utils.InitToy(channel, toy, ToyChanged);
         UpdateUIValues();
     };
 
     function LoadToy() {
-        toy = InitToy(channel, toy, ToyChanged);
+        toy = utils.InitToy(channel, toy, ToyChanged);
     }
 
     function UpdateUIValues() {
@@ -91,8 +91,8 @@ export default function SetupContainer( props: {channel: number}) {
 
     function RenderUI() {
         return (
-            <>
-                <div class="flexContainer">
+            <div class="marginAuto">
+                <div class="flexContainer width100">
                     <div class="flexList">
                         <div class="marginBottom5">Save new preset</div>
                         <input
@@ -101,7 +101,7 @@ export default function SetupContainer( props: {channel: number}) {
                             onChange={(event) => setPresetName(event.target.value)}
                         />
                         </div>
-                        <Button 
+                        <ui.Button 
                             class="thinButton marginAuto"
                             onClick={() => SaveNewPreset()}
                             label="Save"
@@ -113,10 +113,10 @@ export default function SetupContainer( props: {channel: number}) {
                 <br></br>
                 {RenderAvailablePresets()}
                 <br></br>
-                <JsonFileUploader 
+                <ui.JsonFileUploader 
                 onFileUpload={UploadPreset}
                 />
-            </>
+            </div>
         )
     }
 
@@ -125,20 +125,20 @@ export default function SetupContainer( props: {channel: number}) {
           <div class="">
             {matchingItems().map((item) => (
                 <div class="flexContainer">
-                        <Button
+                        <ui.Button
                             class="width70 thinButton"
                             onClick={() => LoadPreset(item)}
                             label={GetPresetName(item)}
                         />
-                    <div class="width30">
-                        <Button 
-                            class="squareButton"
-                            label="DL"
+                    <div class="">
+                        <ui.Button 
+                            class="svgButton"
+                            label={<ui.SVG src="src/icons/micions/download.svg" />}
                             onClick={() => DownloadPreset(item)}
                         />
-                        <Button 
-                            class="squareButton"
-                            label="X"
+                        <ui.Button 
+                            class="svgButton"
+                            label={<ui.SVG src="src/icons/micions/x-square.svg" />}
                             onClick={() => DeletePreset(item)}
                         />
                     </div>
@@ -151,5 +151,5 @@ export default function SetupContainer( props: {channel: number}) {
     LoadToy();
     UpdateUIValues(); //Get UI Values once at start
     var sumName = "Load/Save Preset";
-    return DetailsFillerCenter("Load/Save Settings", RenderUI());
+    return ui.DetailsFillerCenter("Load/Save Settings", RenderUI());
 }

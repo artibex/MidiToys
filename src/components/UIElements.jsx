@@ -1,32 +1,6 @@
+import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
-import { ToyManager } from "../miditoy/ToyManager";
 
-const tManager = new ToyManager();
-
-export function InitToy(channel, toy, ToyChanged) {
-    toy = tManager.GetToy(channel);
-    // toy.UnsubscribeFromToyChangedEvent(ToyChanged);
-    if(toy != undefined) {
-        toy.SubscribeToToyChangedEvent(ToyChanged);
-        return toy;
-    }
-}
-
-export function UnsubscribeEvent(targetFunction) {
-    toy.UnsubscribeFromToyChangedEvent(targetFunction);
-}
-
-export function CreateToy(channel, type) {
-    //If toyType changed, create toy, otherwise, just udpate
-    switch(type) {
-        case 0: tManager.CreateEmptyToy(channel);       break;
-        case 1: tManager.CreateGraviBoard(channel);     break;
-        case 2: tManager.CreatePolyDrum(channel);       break;
-        // case 3: tManager.CreateSquareKeyboard(channel, numberOfKeys, startKey); break;
-        default: tManager.CreateEmptyToy(channel);      break;
-    }
-    return tManager.GetToy(channel);
-}
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -124,6 +98,7 @@ export function CheckboxInput(props) {
 export function Button(props) {
   if(props.class == undefined) props.class = "thinButton";
   if(props.label == undefined) props.label = "Please Set Label";
+  if(props.id == undefined) props.id = "";
 
   const handleClick = () => {
     props.onClick();
@@ -132,6 +107,7 @@ export function Button(props) {
   return (
     <button
       class={props.class}
+      id={props.id}
       onClick={handleClick}
     >
       {props.label}
@@ -139,6 +115,32 @@ export function Button(props) {
   );
 }
 
+export function SVG(props) {
+  if(props.alt === undefined) props.alt="SVG Image"
+  if(props.class === undefined) props.class="";
+  if (props.width === undefined) props.width = "20";
+  if (props.height === undefined) props.height = "20";
+  if (props.flipX === undefined) props.flipX = false;
+  if (props.flipY === undefined) props.flipY = false;
+
+  let transformValue = "";
+  if (props.flipX) transformValue += " scaleX(-1) ";
+  if (props.flipY) transformValue += " scaleY(-1) ";
+
+  const svgStyles = {
+    transform: transformValue,
+  };
+  
+  return(
+    <img
+        class={props.class}
+        src={props.src}
+        width={props.width}
+        height={props.height}        
+        style={svgStyles}
+      />
+    );
+}
 
 export function NumberSliderCombo(props) {
   return(
@@ -205,19 +207,6 @@ export function JsonFileUploader(props) {
         reader.readAsText(file);
       });
     }
-    
-
-    // if (file) {
-    //   const reader = new FileReader();
-
-    //   reader.onload = (event) => {
-    //     const jsonData = JSON.parse(event.target.result);
-    //     // Pass the uploaded JSON data to the callback function
-    //     props.onFileUpload(file.name, jsonData);
-    //   };
-
-    //   reader.readAsText(file);
-    // }
   };
 
   return (

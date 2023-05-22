@@ -1,7 +1,7 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
-import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter, NumberSliderUIElement } from "../../js/solidjs/ComponentUtils.jsx";
+import * as utils from "../../js/solidjs/ComponentUtils.js";
+import * as ui from "../UIElements.jsx"
 
 var tManager = new ToyManager();
 
@@ -29,14 +29,14 @@ export default function SetupContainer( props: {channel: number}) {
       };
 
       function LoadToy() {
-        toy = InitToy(channel, toy, ToyChanged);
+        toy = utils.InitToy(channel, toy, ToyChanged);
     }
 
 
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            toy = InitToy(channel, toy, ToyChanged);
+            toy = utils.InitToy(channel, toy, ToyChanged);
 
             //Put values here
             if(toy != undefined) {
@@ -66,16 +66,5 @@ export default function SetupContainer( props: {channel: number}) {
     //Init Component
     LoadToy();
     UpdateUIValues(); //Get UI Values once at start
-    return DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
-    // return(
-    //     <div>
-    //         <details>
-    //             <summary class="textAlignCenter marginAuto">
-    //             Specific Settings
-    //             </summary>
-    //         <br></br>
-    //         {/* Put Special Stuff here */}
-    //         </details>
-    //     </div>  
-    // )
+    return ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
 }

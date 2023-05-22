@@ -1,8 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { GraviBoard } from "../../js/miditoy/GraviBoard";
-import { InitToy } from "../../js/solidjs/ComponentUtils.jsx";
-import { DetailsFillerCenter, NumberSliderUIElement, CheckboxUIElement } from "../../js/solidjs/ComponentUtils.jsx";
+import * as utils from "../../js/solidjs/ComponentUtils.js";
+import * as ui from "../UIElements.jsx"
 
 var tManager = new ToyManager();
 
@@ -42,13 +42,13 @@ export default function SetupContainer( props: {channel: number}) {
     };
 
     function LoadToy() {
-        toy = InitToy(channel, toy, ToyChanged);
+        toy = utils.InitToy(channel, toy, ToyChanged);
     }
 
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            toy = InitToy(channel, toy, ToyChanged);
+            toy = utils.InitToy(channel, toy, ToyChanged);
 
             if(toy != undefined) {
                 setHorizontalAlign(toy.horizontalAlign);
@@ -91,18 +91,18 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderUI() {
         return(
             <>
-            <CheckboxUIElement 
+            <ui.CheckboxUIElement 
                 name="Horizontal Align"
                 checked={horizontalAlign()}
                 onChange={setHorizontalAlign}
             />
-                 <NumberSliderUIElement 
+                 <ui.NumberSliderUIElement 
                     name={"Stroke Width"}
                     minMaxStep={[0,80,1]}
                     value={strokeWidth()}
                     onChange={setStrokeWidth}
                 />
-                <NumberSliderUIElement 
+                <ui.NumberSliderUIElement 
                     name={"Poly Sides"}
                     minMaxStep={[2,20,1]}
                     value={polySides()}
@@ -156,20 +156,20 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
             </div> */}
             <br></br>
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     name={"Velocity Limit"}
                     minMaxStep={[1,200,1]}
                     value={velocityLimit()}
                     onChange={setVelocityLimit}
             />
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"Y Gravity"}
                     minMaxStep={[-150,150,1]}
                     value={yGravity()}
                     onChange={setYGravity}
                 />
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"X Gravity"}
                     minMaxStep={[-150,150,1]}
@@ -222,14 +222,14 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
             </div> */}
             <br></br>
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                 factor={100}
                 name={"Y Friction"}
                 minMaxStep={[20,100,1]}
                 value={yFriction()}
                 onChange={setYFriction}
             />
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     factor={100}
                     name={"X Friction"}
                     minMaxStep={[20,100,1]}
@@ -283,13 +283,13 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
             </div> */}
             <br></br>
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     name={"Y Impulse Power"}
                     minMaxStep={[1,200,1]}
                     value={yImpulsPower()}
                     onChange={setYImpulsPower}
                 />
-            <NumberSliderUIElement 
+            <ui.NumberSliderUIElement 
                     name={"X Impulse Power"}
                     minMaxStep={[1,200,1]}
                     value={xImpulsPower()}
@@ -351,7 +351,7 @@ export default function SetupContainer( props: {channel: number}) {
     //Init Component
     LoadToy();
     UpdateUIValues(); //Get UI Values once at start
-    return DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
+    return ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
 
     // return(
     //     <div>
