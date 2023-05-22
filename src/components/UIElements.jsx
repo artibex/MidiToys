@@ -1,4 +1,6 @@
+import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
+
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -96,6 +98,7 @@ export function CheckboxInput(props) {
 export function Button(props) {
   if(props.class == undefined) props.class = "thinButton";
   if(props.label == undefined) props.label = "Please Set Label";
+  if(props.id == undefined) props.id = "";
 
   const handleClick = () => {
     props.onClick();
@@ -104,6 +107,7 @@ export function Button(props) {
   return (
     <button
       class={props.class}
+      id={props.id}
       onClick={handleClick}
     >
       {props.label}
@@ -111,6 +115,32 @@ export function Button(props) {
   );
 }
 
+export function SVG(props) {
+  if(props.alt === undefined) props.alt="SVG Image"
+  if(props.class === undefined) props.class="";
+  if (props.width === undefined) props.width = "20";
+  if (props.height === undefined) props.height = "20";
+  if (props.flipX === undefined) props.flipX = false;
+  if (props.flipY === undefined) props.flipY = false;
+
+  let transformValue = "";
+  if (props.flipX) transformValue += " scaleX(-1) ";
+  if (props.flipY) transformValue += " scaleY(-1) ";
+
+  const svgStyles = {
+    transform: transformValue,
+  };
+  
+  return(
+    <img
+        class={props.class}
+        src={props.src}
+        width={props.width}
+        height={props.height}        
+        style={svgStyles}
+      />
+    );
+}
 
 export function NumberSliderCombo(props) {
   return(

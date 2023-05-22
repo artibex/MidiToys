@@ -7,6 +7,15 @@
   src: url('../fonts/SlimJoe.otf') format('opentype');
 }
 
+html {
+  color-scheme: light dark;
+}
+
+main{
+  width: min(65ch, 100% - 4rem);
+  margin-inline: auto;
+}
+
 h1, h2, h3 {
   font-family: "BigJohn", sans-serif;
 }
@@ -19,6 +28,11 @@ h2 {
 }
 h3{
   font-size: 13pt;
+}
+
+img,svg,video{
+  max-width: 100%;
+  display: block;
 }
 
 body {
@@ -37,8 +51,8 @@ button {
   padding-right: 20px;
 
   border-radius: 10px;
-  background-color: black;
-  border: 2px dotted white;
+  background-color: rgba(0, 0, 0, 0.4);
+  /* border: 2px dotted white; */
   color: white;
   transition: border 0.2s ease-in-out;
 }
@@ -57,6 +71,12 @@ button:hover {
   font-family: "SlimJoe", sans-serif;
   text-align: center;
 }
+.svgButton{
+  padding: 5px;
+  border: 2px solid rgba(0, 0, 0, 0);
+}
+
+
 .flexList button {
   width: 100%;
   display: block;
@@ -72,7 +92,7 @@ summary {
 
   border-radius: 10px;
   background-color: black;
-  border: 2px dotted white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -89,6 +109,7 @@ summary::marker {
 }
 details[open] summary {
   color: yellow;
+  border: 2px solid rgba(255, 255, 255, 1);
   font-family: "BigJohn", sans-serif;
   font-size: 14pt;
 }
@@ -103,6 +124,11 @@ details[open] summary {
 
 .alignRight {
   justify-content: flex-end;
+  align-items: center;
+}
+
+.alignCenter{
+  justify-content: center;
   align-items: center;
 }
 
@@ -229,7 +255,7 @@ details[open] summary {
   padding-top: 3px;
   padding-bottom: 3px;
 
-  outline: 2px dotted;
+  outline: 2px solid rgba(255, 255, 255, 0.3);
   border: none;
   background-color: black;
   color: white;
@@ -260,7 +286,7 @@ details[open] summary {
   padding-top: 3px;
   padding-bottom: 3px;
 
-  outline: 2px dotted;
+  outline: 2px solid rgba(255, 255, 255, 0.3);
   border: none;
   background-color: black;
   color: white;
@@ -297,7 +323,7 @@ details[open] summary {
   appearance: none;
   border-radius: 10px;
   background-color: black;
-  border: 1px solid white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   /* vertical-align: middle; */
   float: left; /* align to left */
   width: 15vh;

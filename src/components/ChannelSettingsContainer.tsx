@@ -101,7 +101,6 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
         prevToyType = toyType();
     }
-
     function LoadToy() {
         toy = utils.InitToy(channel, toy, ToyChanged);
     }
@@ -212,10 +211,18 @@ export default function SetupContainer( props: {channel: number}) {
         return (
             <>
                 <div class="flexContainer">
-                    <h3 class="marginAuto">{colorSelectionName()}</h3>
+                        <h3 class="marginAuto">{colorSelectionName()}</h3>
                     <div class="flexContainer">
-                    <button class="thinButton" onClick={() => UpdateColorSelection(-1)}>Prev</button>
-                    <button class="thinButton" onClick={() => UpdateColorSelection(1)}>Next</button>
+                        <ui.Button
+                                class="svgButton"
+                                onClick={() => UpdateColorSelection(-1)}
+                                label={<ui.SVG src="src/icons/micions/chevron-right.svg" flipX={true} />}
+                        />
+                        <ui.Button
+                                class="svgButton"
+                                onClick={() => UpdateColorSelection(1)}
+                                label={<ui.SVG src="src/icons/micions/chevron-right.svg" />}
+                        />
                     </div>
                 </div>
                 <br></br>

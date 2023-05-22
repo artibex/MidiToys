@@ -91,8 +91,8 @@ export default function SetupContainer( props: {channel: number}) {
 
     function RenderUI() {
         return (
-            <>
-                <div class="flexContainer">
+            <div class="marginAuto">
+                <div class="flexContainer width100">
                     <div class="flexList">
                         <div class="marginBottom5">Save new preset</div>
                         <input
@@ -116,7 +116,7 @@ export default function SetupContainer( props: {channel: number}) {
                 <ui.JsonFileUploader 
                 onFileUpload={UploadPreset}
                 />
-            </>
+            </div>
         )
     }
 
@@ -130,15 +130,15 @@ export default function SetupContainer( props: {channel: number}) {
                             onClick={() => LoadPreset(item)}
                             label={GetPresetName(item)}
                         />
-                    <div class="width30">
+                    <div class="">
                         <ui.Button 
-                            class="squareButton"
-                            label="DL"
+                            class="svgButton"
+                            label={<ui.SVG src="src/icons/micions/download.svg" />}
                             onClick={() => DownloadPreset(item)}
                         />
                         <ui.Button 
-                            class="squareButton"
-                            label="X"
+                            class="svgButton"
+                            label={<ui.SVG src="src/icons/micions/x-square.svg" />}
                             onClick={() => DeletePreset(item)}
                         />
                     </div>
