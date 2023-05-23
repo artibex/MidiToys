@@ -1,7 +1,6 @@
 import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
 
-
 export function DetailsFillerCenter(summeryName, content) {
     return (
       <details class="marginAuto">
@@ -134,6 +133,7 @@ export function SVG(props) {
   return(
     <img
         class={props.class}
+        alt={props.alt}
         src={props.src}
         width={props.width}
         height={props.height}        
