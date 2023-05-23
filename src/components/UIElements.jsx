@@ -1,5 +1,6 @@
 import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
+import { baseUrl } from "../js/path.js"
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -129,12 +130,14 @@ export function SVG(props) {
   const svgStyles = {
     transform: transformValue,
   };
-  
+
+  var path = baseUrl + props.src;
+
   return(
     <img
         class={props.class}
         alt={props.alt}
-        src={props.src}
+        src={path}
         width={props.width}
         height={props.height}        
         style={svgStyles}
