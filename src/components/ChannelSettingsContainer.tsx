@@ -216,12 +216,12 @@ export default function SetupContainer( props: {channel: number}) {
                         <ui.Button
                                 class="svgButton"
                                 onClick={() => UpdateColorSelection(-1)}
-                                label={<ui.SVG src="src/pages/icons/micions/chevron-right.svg" flipX={true} />}
+                                label={<ui.SVG src="src/public/icons/micions/chevron-right.svg" flipX={true} />}
                         />
                         <ui.Button
                                 class="svgButton"
                                 onClick={() => UpdateColorSelection(1)}
-                                label={<ui.SVG src="src/pages/icons/micions/chevron-right.svg" />}
+                                label={<ui.SVG src="src/public/icons/micions/chevron-right.svg" />}
                         />
                     </div>
                 </div>
