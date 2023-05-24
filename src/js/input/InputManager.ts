@@ -93,13 +93,6 @@ export class InputManager {
         }
     }
 
-    // static GetInstance(): InputManager {
-    //     if (!InputManager.instance) {
-    //       InputManager.instance = new InputManager();
-    //     }
-    //     return InputManager.instance;
-    //   }
-
     InitReaderModules() {
         if(typeof window !== "undefined") {
             this.keyboardReader = new KeyboardInputModule(this);
@@ -167,7 +160,6 @@ export class InputManager {
         }
     }
 
-
     //BPM stuff
     CalcBPM(message) {
         if (message.data[0] == 248) { // MIDI Clock message
@@ -199,5 +191,11 @@ export class InputManager {
     }
     GetVelocity(channel) {
         return this.velocity[channel - 1];
+    }
+
+    GetMIDIDevices() {
+        if(this.midiReader != undefined) {
+            return this.midiReader.GetMIDIDevices();
+        }
     }
 }
