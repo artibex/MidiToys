@@ -1,45 +1,71 @@
 import { InputManager } from "./InputManager";
 
 export class MIDIInputModule {
-  private inputs: WebMidi.MIDIInput[] = [];
-  private inputDevices: string[] = [];
+  private midiInputs: WebMidi.MIDIInput[] = [];
+  private selectedInput: WebMidi.MIDIInput;
   private inputManager: InputManager;
 
   constructor(inputManager: InputManager) {
     this.inputManager = inputManager;
+    
+    this.LoadMIDIDevices();
+    // this.LoadMIDIDevices().then(() => {
+    //     console.log("DONE loading MIDI devices");
+    //     if(this.midiInputs[0] != undefined) this.BindMIDIInput(this.midiInputs[0]);
+    // })
 
-    // navigator.requestMIDIAccess();
-    this.ConnectMIDIDevice();
-    this.GetMIDIDevices();
+    // this.GetMIDIDevices();
 
     console.log("CREATED new MIDIInputModule");
-}
+  }
 
-private ConnectMIDIDevice(): void {
+  private async LoadMIDIDevices() {
+    this.midiInputs = [];
     if (navigator.requestMIDIAccess) {
-        navigator.requestMIDIAccess()
-            .then((midiAccess) => {
-                for (let input of midiAccess.inputs.values()) {
-                    if (!this.inputs.includes(input)) {
-                        this.inputs.push(input);
-                        this.inputDevices.push(input.name as string);
-                        input.onmidimessage = this.HandleMIDIMessage.bind(this);
-                    }
-                }
-            });
-            console.log("Detected midi inputs = " + (this.inputs.length + 1));
-        } else {
-            console.log('WebMIDI is not supported in this browser.');
+      const midiAccess = await navigator.requestMIDIAccess();
+      
+      for (let input of midiAccess.inputs.values()) {
+        if (!this.midiInputs.includes(input)) {
+          this.midiInputs.push(input);
+          if(this.selectedInput == undefined) this.BindMIDIInput(input);
+          console.log("MIDI DEVICE = " + input.name as string);
+        }
+      }
+    } else {
+      console.log("WebMIDI is not supported in this browser.");
     }
-}
-private HandleMIDIMessage(message: WebMidi.MIDIMessageEvent): void {
-    // console.log("HANDLE MIDI Message");
+  }
+  public BindMIDIInput(input : WebMidi.MIDIInput) {
+    if(this.selectedInput != undefined) this.UnbindMIDIInput(this.selectedInput);
+    console.log("BIND MIDI Device = " + input.name as string);
+    input.onmidimessage = this.HandleMIDIMessage.bind(this);
+    this.selectedInput = input;
+  }
+
+  public UnbindMIDIInput(input: WebMidi.MIDIInput) {
+    console.log("UNBIND MIDI Device = " + input.name as string);
+    input.onmidimessage = null;
+  }
+
+  private HandleMIDIMessage(message: WebMidi.MIDIMessageEvent): void {
     this.inputManager.GetMIDIInput(message);
-}
+  }
 
-public GetMIDIDevices(): string[] {
-    if(this.inputDevices.length == 0) return ["No MIDI Devices found"]
-    else return this.inputDevices;
-}
+  public GetMIDIDevices(): WebMidi.MIDIInput[]  {
+    // this.LoadMIDIDevices();
+    return this.midiInputs;
+  }
 
+  public GetSelectedDevice(): WebMidi.MIDIInput {
+    if(this.selectedInput != undefined) return this.selectedInput;
+    else return undefined;
+  }
+
+  public SetInputDevice(device: WebMidi.MIDIInput): void {
+    //this.selectedInput = device;
+    this.BindMIDIInput(device);
+    console.log("Selected MIDI device:", device.name as string);
+    // Perform any necessary actions with the selected MIDI device
+    // ...
+  }
 }

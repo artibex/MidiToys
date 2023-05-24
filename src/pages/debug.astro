@@ -1,5 +1,6 @@
 ---
 import "../css/global.css";
+import * as ui from "../components/UIElements.jsx"
 ---
 <html>
 
@@ -7,8 +8,6 @@ import "../css/global.css";
 
 </head>
 <body>
-    
-
     <h1> MIDI Debugging Page </h1>
 
 <!-- MIDI Toys Setup -->
@@ -28,11 +27,9 @@ import "../css/global.css";
     toyManager.CreateEmptyToys();
 
     toyManager.CreateGraviBoard(1,24*2,12);
-
-    let frameCounter = 0;
-    let updateFrequency = 1;
     
-    let deviceAndBPM = document.getElementById("DeviceAndBPM") as HTMLElement;
+    let devicesAndBPM = document.getElementById("DevicesAndBPM") as HTMLElement;
+    let selectedDevice = document.getElementById("SelectedDevice") as HTMLElement;
     let ch1 = document.getElementById("CH1Keys") as HTMLElement;
     let ch2 = document.getElementById("CH2Keys") as HTMLElement;
     let ch3 = document.getElementById("CH3Keys") as HTMLElement;
@@ -54,42 +51,50 @@ import "../css/global.css";
     let ch16 = document.getElementById("CH16Keys") as HTMLElement;
 
 
+    var frameCount = 0;
     function UpdateChannelDebug() {
-        deviceAndBPM.innerText = "MIDI Device: " + inputManager.GetMIDIDevices() + " BPM: " + inputManager.GetBPM().toString();
-            ch1.innerText = "Channel 1: " + inputManager.GetHoldingKeys(1).toString();
-            ch2.innerText = "Channel 2: " + inputManager.GetHoldingKeys(2).toString();
-            ch3.innerText = "Channel 3: " + inputManager.GetHoldingKeys(3).toString();
-            ch4.innerText = "Channel 4: " + inputManager.GetHoldingKeys(4).toString();
+        console.log("UPDATE debugging info");
+        devicesAndBPM.innerText = "MIDI Devices: " + inputManager.GetMIDIDevices() + " BPM: " + inputManager.GetBPM().toString();
+        selectedDevice.innerText = "Selected MIDI Device: " + inputManager.GetSelectedMIDIDevice();
+        
+        ch1.innerText = "Channel 1: " + inputManager.GetHoldingKeys(1).toString();
+        ch2.innerText = "Channel 2: " + inputManager.GetHoldingKeys(2).toString();
+        ch3.innerText = "Channel 3: " + inputManager.GetHoldingKeys(3).toString();
+        ch4.innerText = "Channel 4: " + inputManager.GetHoldingKeys(4).toString();
 
-            ch5.innerText = "Channel 5: " + inputManager.GetHoldingKeys(5).toString();
-            ch6.innerText = "Channel 6: " + inputManager.GetHoldingKeys(6).toString();
-            ch7.innerText = "Channel 7: " + inputManager.GetHoldingKeys(7).toString();
-            ch8.innerText = "Channel 8: " + inputManager.GetHoldingKeys(8).toString();
-            
-            ch9.innerText = "Channel 9: " + inputManager.GetHoldingKeys(9).toString();
-            ch10.innerText = "Channel 10: " + inputManager.GetHoldingKeys(10).toString();
-            ch11.innerText = "Channel 11: " + inputManager.GetHoldingKeys(11).toString();
-            ch12.innerText = "Channel 12: " + inputManager.GetHoldingKeys(12).toString();
+        ch5.innerText = "Channel 5: " + inputManager.GetHoldingKeys(5).toString();
+        ch6.innerText = "Channel 6: " + inputManager.GetHoldingKeys(6).toString();
+        ch7.innerText = "Channel 7: " + inputManager.GetHoldingKeys(7).toString();
+        ch8.innerText = "Channel 8: " + inputManager.GetHoldingKeys(8).toString();
+        
+        ch9.innerText = "Channel 9: " + inputManager.GetHoldingKeys(9).toString();
+        ch10.innerText = "Channel 10: " + inputManager.GetHoldingKeys(10).toString();
+        ch11.innerText = "Channel 11: " + inputManager.GetHoldingKeys(11).toString();
+        ch12.innerText = "Channel 12: " + inputManager.GetHoldingKeys(12).toString();
 
-            ch13.innerText = "Channel 13: " + inputManager.GetHoldingKeys(13).toString();
-            ch14.innerText = "Channel 14: " + inputManager.GetHoldingKeys(14).toString();
-            ch15.innerText = "Channel 15: " + inputManager.GetHoldingKeys(15).toString();
-            ch16.innerText = "Channel 16: " + inputManager.GetHoldingKeys(16).toString();
+        ch13.innerText = "Channel 13: " + inputManager.GetHoldingKeys(13).toString();
+        ch14.innerText = "Channel 14: " + inputManager.GetHoldingKeys(14).toString();
+        ch15.innerText = "Channel 15: " + inputManager.GetHoldingKeys(15).toString();
+        ch16.innerText = "Channel 16: " + inputManager.GetHoldingKeys(16).toString();
 
     }
 
     paper.view.onFrame = function(event) {
-        frameCounter++;
-
-        if (frameCounter >= updateFrequency) {
-            frameCounter = 0;
-            UpdateChannelDebug();
-            toyManager.UpdateToys(); //Update all keyboards, 60 times a second
+        toyManager.UpdateToys(); //Update all keyboards, 60 times a second
+        
+        if(frameCount > 2) {
+            frameCount = 0;
+            UpdateChannelDebug(); 
         }
+        frameCount++;
     }
 </script>
 
-    <h2 id="DeviceAndBPM">No device found</h2>
+    <h2 id="DevicesAndBPM">No device found</h2>
+    <h3 id="SelectedDevice">No selected device found</h3>
+    
+    
+    <ui.MIDIDropdown client:idle />
 
     <div class="flexContainer">
         <h2 class="width20" id="CH1Keys"></h2>

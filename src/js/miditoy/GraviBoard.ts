@@ -24,7 +24,7 @@ export class GraviBoard extends MIDIToy {
 
     constructor(targetChannel: number) {
         super("GraviBoard", targetChannel, 24, 12, true);
-        console.log("CREATED MusicBalls");
+        // console.log("CREATED GraviBoard");
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
         this.LoadDefaultColorSettings();
         this.SetupKeyboard();

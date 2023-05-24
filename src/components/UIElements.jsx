@@ -2,6 +2,9 @@ import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
 import { baseUrl } from "../js/path.js"
 import { Icon } from '@iconify-icon/solid';
+import { InputManager } from "../js/input/InputManager";
+
+
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -242,5 +245,39 @@ export function JsonFileUploader(props) {
 
   return (
     <input type="file" accept=".json" multiple onChange={handleFileSelect} />
+  );
+}
+
+
+export function MIDIDropdown(props) {
+  const [selectedOption, setSelectedOption] = createSignal('');
+  const inputManager = new InputManager();
+  const devices = inputManager.GetMIDIDevices();
+
+  const options = [];
+
+  function UpdateDevices() {
+    console.log("POPULATE options");
+    options.length = 0;
+    
+    // for (let i = 0; i < devices.length; i++) {
+    //   const device = devices[i];
+    //   options.push(<option value={device.name}>{device.name}</option>);
+    // }
+  }
+
+  const handleOptionChange = (event) => {
+    console.log("UPDATED MIDI device");
+    setSelectedOption(event.target.value);
+    // UpdateDevices();
+  };
+
+  UpdateDevices();
+  return (
+    <select value={selectedOption()} onChange={handleOptionChange}>
+      {options}
+      <option>Test</option>
+      <option>Test 2</option>
+    </select>
   );
 }
