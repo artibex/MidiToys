@@ -1,6 +1,7 @@
 import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
 import { baseUrl } from "../js/path.js"
+import { Icon } from '@iconify-icon/solid';
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -115,35 +116,62 @@ export function Button(props) {
   );
 }
 
-export function SVG(props) {
-  if(props.alt === undefined) props.alt="SVG Image"
-  if(props.class === undefined) props.class="";
-  if (props.width === undefined) props.width = "20";
-  if (props.height === undefined) props.height = "20";
-  if (props.flipX === undefined) props.flipX = false;
-  if (props.flipY === undefined) props.flipY = false;
+export function ButtonIcon(props) {
+  if(props.class == undefined) props.class = "iconButton";
+  if(props.label == undefined) props.label = "";
+  if(props.id == undefined) props.id = "";
 
-  let transformValue = "";
-  if (props.flipX) transformValue += " scaleX(-1) ";
-  if (props.flipY) transformValue += " scaleY(-1) ";
+  if(props.icon == undefined) props.icon = "mdi-light:alert";
+  if(props.width == undefined) props.width = "20";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
 
-  const svgStyles = {
-    transform: transformValue,
+  const handleClick = () => {
+    props.onClick();
   };
 
-  var path = baseUrl + props.src;
-
-  return(
-    <img
-        class={props.class}
-        alt={props.alt}
-        src={path}
-        width={props.width}
-        height={props.height}        
-        style={svgStyles}
-      />
-    );
+  return (
+    <button
+      class={props.class}
+      id={props.id}
+      onClick={handleClick}
+    >
+      {props.label}
+      <Icon icon={props.icon} width={props.width} hFlip={true} vFlip={props.vFlip} />
+    </button>
+  );
 }
+
+
+// export function SVG(props) {
+//   if(props.alt === undefined) props.alt="SVG Image"
+//   if(props.class === undefined) props.class="";
+//   if (props.width === undefined) props.width = "20";
+//   if (props.height === undefined) props.height = "20";
+//   if (props.flipX === undefined) props.flipX = false;
+//   if (props.flipY === undefined) props.flipY = false;
+
+//   let transformValue = "";
+//   if (props.flipX) transformValue += " scaleX(-1) ";
+//   if (props.flipY) transformValue += " scaleY(-1) ";
+
+//   const svgStyles = {
+//     transform: transformValue,
+//   };
+
+//   var path = baseUrl + props.src;
+
+//   return(
+//     <img
+//         class={props.class}
+//         alt={props.alt}
+//         src={path}
+//         width={props.width}
+//         height={props.height}        
+//         style={svgStyles}
+//       />
+//     );
+// }
 
 export function NumberSliderCombo(props) {
   return(

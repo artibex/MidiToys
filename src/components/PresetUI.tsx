@@ -131,14 +131,12 @@ export default function SetupContainer( props: {channel: number}) {
                             label={GetPresetName(item)}
                         />
                     <div class="">
-                        <ui.Button 
-                            class="svgButton"
-                            label={<ui.SVG src="/assets/icons/micions/download.svg" />}
+                        <ui.ButtonIcon 
+                            icon="material-symbols:download"
                             onClick={() => DownloadPreset(item)}
                         />
-                        <ui.Button 
-                            class="svgButton"
-                            label={<ui.SVG src="/assets/icons/micions/x-square.svg" />}
+                        <ui.ButtonIcon 
+                            icon="material-symbols:delete-outline"
                             onClick={() => DeletePreset(item)}
                         />
                     </div>
