@@ -193,9 +193,28 @@ export class InputManager {
         return this.velocity[channel - 1];
     }
 
-    GetMIDIDevices() {
+
+    GetMIDIDevices(): string[] {
         if(this.midiReader != undefined) {
-            return this.midiReader.GetMIDIDevices();
-        }
+            var str: string [] = [];
+            var devices = this.midiReader.GetMIDIDevices();
+            if(devices.length > 0) {
+                devices.forEach((device) => {
+                    var d = device as WebMidi.MIDIInput;
+                    str.push(d.name);
+                })
+            } else str.push("Please Plug In a MIDI Decice");
+            // var midi = element as WebMidi.MIDIInput;
+            // str.push(midi);
+            return str;
+        } else return [("MIDI Reader not found")];
+    }
+
+    GetSelectedMIDIDevice(): string {
+        if(this.midiReader != undefined) {
+            var targetDevice = this.midiReader.GetSelectedDevice() as WebMidi.MIDIInput;
+            if(targetDevice != undefined) return targetDevice.name;
+            else return "[Selected Device is undefined]";
+        } else return "MIDI Reader not found";
     }
 }
