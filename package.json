@@ -12,5 +12,8 @@
   "scripts": {
     "start": "astro dev",
     "build": "astro build"
+  },
+  "devDependencies": {
+    "@iconify-icon/solid": "^1.0.7"
   }
 }

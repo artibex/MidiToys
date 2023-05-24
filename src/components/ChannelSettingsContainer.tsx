@@ -213,15 +213,13 @@ export default function SetupContainer( props: {channel: number}) {
                 <div class="flexContainer">
                         <h3 class="marginAuto">{colorSelectionName()}</h3>
                     <div class="flexContainer">
-                        <ui.Button
-                                class="svgButton"
+                        <ui.ButtonIcon
+                                icon="material-symbols:chevron-left"
                                 onClick={() => UpdateColorSelection(-1)}
-                                label={<ui.SVG src="/assets/icons/micions/chevron-right.svg" flipX={true} />}
                         />
-                        <ui.Button
-                                class="svgButton"
+                        <ui.ButtonIcon
+                                icon="material-symbols:chevron-right"
                                 onClick={() => UpdateColorSelection(1)}
-                                label={<ui.SVG src="/assets/icons/micions/chevron-right.svg" />}
                         />
                     </div>
                 </div>
