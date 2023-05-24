@@ -10,7 +10,7 @@ export class MIDIInputModule {
 
     // navigator.requestMIDIAccess();
     this.ConnectMIDIDevice();
-    this.GetMIDIInputs();
+    this.GetMIDIDevices();
 
     console.log("CREATED new MIDIInputModule");
 }
@@ -37,8 +37,9 @@ private HandleMIDIMessage(message: WebMidi.MIDIMessageEvent): void {
     this.inputManager.GetMIDIInput(message);
 }
 
-public GetMIDIInputs(): string[] {
-    return this.inputDevices;
+public GetMIDIDevices(): string[] {
+    if(this.inputDevices.length == 0) return ["No MIDI Devices found"]
+    else return this.inputDevices;
 }
 
 }

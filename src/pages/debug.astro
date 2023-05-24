@@ -11,53 +11,112 @@ import "../css/global.css";
 
     <h1> MIDI Debugging Page </h1>
 
-    <script>
-        import * as paper from "paper";
-        import { InputManager } from "../js/input/InputManager";
-        import { SquareKeyboard } from "../js/miditoy/SquareKeyboard";
+<!-- MIDI Toys Setup -->
+<script>
+    //Import
+    import { InputManager } from "../js/input/InputManager";
+    import { ToyManager } from "../js/miditoy/ToyManager";
+    import * as paper from "paper";
+    
+    //Base Toys setup
+    let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement; //Get target Canvas
+    paper.setup(toyCanvas); //Paper setup
+    
+    let inputManager = new InputManager(); //Setup input manager
+    let toyManager = new ToyManager(); //Setup toy manager
+    toyManager.SetTargetCanvas(toyCanvas); //Set the target
+    toyManager.CreateEmptyToys();
 
-        let inputManager = new InputManager();
-        let ch1SquareKeyboard;
-        let ch2SquareKeyboard;
+    toyManager.CreateGraviBoard(1,24*2,12);
 
-        // let BPM = 0;
-        
-        if (typeof window !== 'undefined') {
-            let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement;
-            paper.setup(toyCanvas);
-            paper.view.autoUpdate = true;
+    let frameCounter = 0;
+    let updateFrequency = 1;
+    
+    let deviceAndBPM = document.getElementById("DeviceAndBPM") as HTMLElement;
+    let ch1 = document.getElementById("CH1Keys") as HTMLElement;
+    let ch2 = document.getElementById("CH2Keys") as HTMLElement;
+    let ch3 = document.getElementById("CH3Keys") as HTMLElement;
+    let ch4 = document.getElementById("CH4Keys") as HTMLElement;
+    
+    let ch5 = document.getElementById("CH5Keys") as HTMLElement;
+    let ch6 = document.getElementById("CH6Keys") as HTMLElement;
+    let ch7 = document.getElementById("CH7Keys") as HTMLElement;
+    let ch8 = document.getElementById("CH8Keys") as HTMLElement;
 
-            ch1SquareKeyboard = new SquareKeyboard(1) as SquareKeyboard;
-            ch2SquareKeyboard = new SquareKeyboard(2) as SquareKeyboard;
+    let ch9 = document.getElementById("CH9Keys") as HTMLElement;
+    let ch10 = document.getElementById("CH10Keys") as HTMLElement;
+    let ch11 = document.getElementById("CH11Keys") as HTMLElement;
+    let ch12 = document.getElementById("CH12Keys") as HTMLElement;
+
+    let ch13 = document.getElementById("CH13Keys") as HTMLElement;
+    let ch14 = document.getElementById("CH14Keys") as HTMLElement;
+    let ch15 = document.getElementById("CH15Keys") as HTMLElement;
+    let ch16 = document.getElementById("CH16Keys") as HTMLElement;
+
+
+    function UpdateChannelDebug() {
+        deviceAndBPM.innerText = "MIDI Device: " + inputManager.GetMIDIDevices() + " BPM: " + inputManager.GetBPM().toString();
+            ch1.innerText = "Channel 1: " + inputManager.GetHoldingKeys(1).toString();
+            ch2.innerText = "Channel 2: " + inputManager.GetHoldingKeys(2).toString();
+            ch3.innerText = "Channel 3: " + inputManager.GetHoldingKeys(3).toString();
+            ch4.innerText = "Channel 4: " + inputManager.GetHoldingKeys(4).toString();
+
+            ch5.innerText = "Channel 5: " + inputManager.GetHoldingKeys(5).toString();
+            ch6.innerText = "Channel 6: " + inputManager.GetHoldingKeys(6).toString();
+            ch7.innerText = "Channel 7: " + inputManager.GetHoldingKeys(7).toString();
+            ch8.innerText = "Channel 8: " + inputManager.GetHoldingKeys(8).toString();
             
-            paper.view.onFrame = function(event) {
-                // Hier kommt deine onFrame-Logik hin
-                // paper.view.clear;
-                //path.rotate(3);
-                ch1SquareKeyboard.UpdateKeyboard();
-                ch2SquareKeyboard.UpdateKeyboard();
+            ch9.innerText = "Channel 9: " + inputManager.GetHoldingKeys(9).toString();
+            ch10.innerText = "Channel 10: " + inputManager.GetHoldingKeys(10).toString();
+            ch11.innerText = "Channel 11: " + inputManager.GetHoldingKeys(11).toString();
+            ch12.innerText = "Channel 12: " + inputManager.GetHoldingKeys(12).toString();
 
-                document.getElementById("CH1Keys").innerHTML = "Channel 1: " + inputManager.GetHoldingKeys(1) + " Velocity: " + inputManager.GetVelocity(1);
-                document.getElementById("CH2Keys").innerHTML = "Channel 2: " + inputManager.GetHoldingKeys(2) + " Velocity: " + inputManager.GetVelocity(2);
-                document.getElementById("CH3Keys").innerHTML = "Channel 3: " + inputManager.GetHoldingKeys(3) + " Velocity: " + inputManager.GetVelocity(3);
-                document.getElementById("CH4Keys").innerHTML = "Channel 4: " + inputManager.GetHoldingKeys(4) + " Velocity: " + inputManager.GetVelocity(4);
-                document.getElementById("CH15Keys").innerHTML = "Channel 15: " + inputManager.GetHoldingKeys(15) + " Velocity: " + inputManager.GetVelocity(15);
+            ch13.innerText = "Channel 13: " + inputManager.GetHoldingKeys(13).toString();
+            ch14.innerText = "Channel 14: " + inputManager.GetHoldingKeys(14).toString();
+            ch15.innerText = "Channel 15: " + inputManager.GetHoldingKeys(15).toString();
+            ch16.innerText = "Channel 16: " + inputManager.GetHoldingKeys(16).toString();
 
-                let deviceData = "Connected MIDI Devices: " + inputManager.midiReader.GetMIDIInputs() + "<br>  BPM: " + inputManager.GetBPM();
-                document.getElementById("DeviceAndBPM").innerHTML = deviceData;
-            }
+    }
+
+    paper.view.onFrame = function(event) {
+        frameCounter++;
+
+        if (frameCounter >= updateFrequency) {
+            frameCounter = 0;
+            UpdateChannelDebug();
+            toyManager.UpdateToys(); //Update all keyboards, 60 times a second
         }
-    </script>
+    }
+</script>
 
     <h2 id="DeviceAndBPM">No device found</h2>
 
-    <h2 id="CH1Keys">Ch 1</h2>
-    <h2 id="CH2Keys"></h2>
-    <h2 id="CH3Keys"></h2>
-    <h2 id="CH4Keys"></h2>
-    <h2 id="CH15Keys"></h2>
-    <br>
-    <canvas id="toyCanvas" class="toyCanvas"></canvas>
+    <div class="flexContainer">
+        <h2 class="width20" id="CH1Keys"></h2>
+        <h2 class="width20" id="CH2Keys"></h2>
+        <h2 class="width20" id="CH3Keys"></h2>
+        <h2 class="width20" id="CH4Keys"></h2>
+    </div>
+    <div class="flexContainer">
+        <h2 class="width20" id="CH5Keys"></h2>
+        <h2 class="width20" id="CH6Keys"></h2>
+        <h2 class="width20" id="CH7Keys"></h2>
+        <h2 class="width20" id="CH8Keys"></h2>
+    </div>
+    <div class="flexContainer">
+        <h2 class="width20" id="CH9Keys"></h2>
+        <h2 class="width20" id="CH10Keys"></h2>
+        <h2 class="width20" id="CH11Keys"></h2>
+        <h2 class="width20" id="CH12Keys"></h2>
+    </div>
+    <div class="flexContainer">
+        <h2 class="width20" id="CH13Keys"></h2>
+        <h2 class="width20" id="CH14Keys"></h2>
+        <h2 class="width20" id="CH15Keys"></h2>
+        <h2 class="width20" id="CH16Keys"></h2>
+    </div>
+
+    <canvas id="toyCanvas" class="toyCanvasDebug"></canvas>
 
     </body>
 

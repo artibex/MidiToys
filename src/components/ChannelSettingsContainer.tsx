@@ -211,15 +211,17 @@ export default function SetupContainer( props: {channel: number}) {
         return (
             <>
                 <div class="flexContainer">
-                        <h3 class="marginAuto">{colorSelectionName()}</h3>
                     <div class="flexContainer">
                         <ui.ButtonIcon
-                                icon="material-symbols:chevron-left"
-                                onClick={() => UpdateColorSelection(-1)}
+                            icon="material-symbols:chevron-left"
+                            onClick={() => UpdateColorSelection(-1)}
+                            width={30}
                         />
+                        <h3 class="marginAuto">{colorSelectionName()}</h3>
                         <ui.ButtonIcon
-                                icon="material-symbols:chevron-right"
-                                onClick={() => UpdateColorSelection(1)}
+                            icon="material-symbols:chevron-right"
+                            onClick={() => UpdateColorSelection(1)}
+                            width={30}
                         />
                     </div>
                 </div>
