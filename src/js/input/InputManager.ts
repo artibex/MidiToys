@@ -194,7 +194,7 @@ export class InputManager {
     }
 
 
-    GetMIDIDevices(): string[] {
+    GetMIDIDevices(): string[]{
         if(this.midiReader != undefined) {
             var str: string [] = [];
             var devices = this.midiReader.GetMIDIDevices();
@@ -216,5 +216,11 @@ export class InputManager {
             if(targetDevice != undefined) return targetDevice.name;
             else return "[Selected Device is undefined]";
         } else return "MIDI Reader not found";
+    }
+
+    SetTargetMIDIDevice(device: string) {
+        if(this.midiReader != undefined) {
+            this.midiReader.SetTargetDevice(device);
+        }
     }
 }

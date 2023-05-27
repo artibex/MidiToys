@@ -16,7 +16,6 @@ export class ToyManager
         return ToyManager.instance;
         }
         ToyManager.instance = this;
-        
         console.log("CREATED ToyManager");
     }
 

@@ -150,6 +150,10 @@ details[open] summary {
   margin-bottom: 5px;
 }
 
+.marginRight10{
+  margin-right: 10px;
+}
+
 .marginLeft20{
   margin-left: 20px; /* add margin to the right of the heading */
 }
