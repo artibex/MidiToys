@@ -3,8 +3,9 @@ import { createSignal, createEffect } from 'solid-js';
 import { baseUrl } from "../js/path.js"
 import { Icon } from '@iconify-icon/solid';
 import { InputManager } from "../js/input/InputManager";
+import * as paper from "paper";
 
-
+const inputManager = new InputManager();
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -248,36 +249,70 @@ export function JsonFileUploader(props) {
   );
 }
 
-
 export function MIDIDropdown(props) {
-  const [selectedOption, setSelectedOption] = createSignal('');
-  const inputManager = new InputManager();
-  const devices = inputManager.GetMIDIDevices();
+  const [selectedOption, setSelectedOption] = createSignal("");
+  const [devices, setDevices] = createSignal(["", ""]);
+  const [options, setOptions] = createSignal(<option> </option>);
+  if(props.class === undefined) props.class = "";
 
-  const options = [];
-
-  function UpdateDevices() {
-    console.log("POPULATE options");
-    options.length = 0;
-    
-    // for (let i = 0; i < devices.length; i++) {
-    //   const device = devices[i];
-    //   options.push(<option value={device.name}>{device.name}</option>);
-    // }
-  }
-
-  const handleOptionChange = (event) => {
-    console.log("UPDATED MIDI device");
-    setSelectedOption(event.target.value);
-    // UpdateDevices();
+  const loadDevices = async () => {
+    const loadedDevices = await inputManager.GetMIDIDevices();
+    if(loadedDevices != undefined && loadedDevices !== devices()) {
+      console.log("Loaded devices:", loadedDevices);
+      setDevices(loadedDevices);
+      LoadOptions(loadedDevices);
+    }
   };
 
-  UpdateDevices();
+
+  createEffect(() => {
+    // loadDevices();
+  });
+
+  function UpdateDeviceSelection(device) {
+    console.log("NEW device selected " + device);
+    inputManager.SetTargetMIDIDevice(device);
+  }
+
+  function LoadOptions(devices) {
+    console.log("SET options");
+    console.log(devices);
+    var opt = null;
+    if (devices.length > 0) {
+      opt = devices.map((device, index) => (
+        <option key={index} value={device}>
+          {device}
+        </option>
+      ));
+    } else {
+      opt = <option value="">No MIDI devices found</option>;
+    }
+    console.log(opt);
+    setOptions(opt);
+  }
+
+  //Display one empty option
   return (
-    <select value={selectedOption()} onChange={handleOptionChange}>
-      {options}
-      <option>Test</option>
-      <option>Test 2</option>
+    <select 
+    class={props.class}
+    value={selectedOption()} 
+    onFocus={() => loadDevices()} 
+    onChange={(event) => UpdateDeviceSelection(event.target.value)}>
+      {options()}
     </select>
   );
+}
+
+export function BPM(props) {
+  if(props.class === undefined) props.class = "";
+  const {bpm, setBPM} = createSignal("0");
+
+
+  return(
+    <div
+      class={props.class}
+    >
+      BPM: {bpm()};
+    </div>
+  )
 }

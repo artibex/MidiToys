@@ -2,7 +2,7 @@ import { InputManager } from "./InputManager";
 
 export class MIDIInputModule {
   private midiInputs: WebMidi.MIDIInput[] = [];
-  private selectedInput: WebMidi.MIDIInput;
+  private targetInput: WebMidi.MIDIInput;
   private inputManager: InputManager;
 
   constructor(inputManager: InputManager) {
@@ -27,7 +27,7 @@ export class MIDIInputModule {
       for (let input of midiAccess.inputs.values()) {
         if (!this.midiInputs.includes(input)) {
           this.midiInputs.push(input);
-          if(this.selectedInput == undefined) this.BindMIDIInput(input);
+          if(this.targetInput == undefined) this.BindMIDIInput(input);
           console.log("MIDI DEVICE = " + input.name as string);
         }
       }
@@ -36,10 +36,10 @@ export class MIDIInputModule {
     }
   }
   public BindMIDIInput(input : WebMidi.MIDIInput) {
-    if(this.selectedInput != undefined) this.UnbindMIDIInput(this.selectedInput);
+    if(this.targetInput != undefined) this.UnbindMIDIInput(this.targetInput);
     console.log("BIND MIDI Device = " + input.name as string);
     input.onmidimessage = this.HandleMIDIMessage.bind(this);
-    this.selectedInput = input;
+    this.targetInput = input;
   }
 
   public UnbindMIDIInput(input: WebMidi.MIDIInput) {
@@ -57,15 +57,23 @@ export class MIDIInputModule {
   }
 
   public GetSelectedDevice(): WebMidi.MIDIInput {
-    if(this.selectedInput != undefined) return this.selectedInput;
+    if(this.targetInput != undefined) return this.targetInput;
     else return undefined;
   }
 
-  public SetInputDevice(device: WebMidi.MIDIInput): void {
-    //this.selectedInput = device;
-    this.BindMIDIInput(device);
-    console.log("Selected MIDI device:", device.name as string);
-    // Perform any necessary actions with the selected MIDI device
-    // ...
+  // public SetInputDevice(device: WebMidi.MIDIInput): void {
+  //   //this.selectedInput = device;
+  //   this.BindMIDIInput(device);
+  //   console.log("Selected MIDI device:", device.name as string);
+  //   // Perform any necessary actions with the selected MIDI device
+  //   // ...
+  // }
+  public SetTargetDevice(device: string) {
+    this.midiInputs.forEach((element) => {
+      if(element.name == device) {
+        this.BindMIDIInput(element);
+      }
+    })
   }
+
 }
