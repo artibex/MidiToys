@@ -4,10 +4,14 @@ import { ToyManager } from "./miditoy/ToyManager";
 
 export class PaperManager {
     private static instance: PaperManager;
+    
     inputManager: InputManager;
     targetCanvas: HTMLCanvasElement;
     toyManager: ToyManager;
-    frameEventHandlers: (() => void)[];
+
+    //Events
+    fullEvent: (() => void)[];
+    uiEvent: (() => void)[];
 
     constructor() {
         if (PaperManager.instance) {
@@ -17,7 +21,9 @@ export class PaperManager {
 
         this.inputManager = new InputManager();
         this.toyManager = new ToyManager();
-        this.frameEventHandlers = [];
+
+        this.fullEvent = [];
+        this.uiEvent = [];
     }
     
     SetTargetCanvas(canvas: HTMLCanvasElement) {
@@ -29,23 +35,34 @@ export class PaperManager {
     }
 
     SubscribeToOnFrame(handler: () => void) {
-        this.frameEventHandlers.push(handler);
-      }
+        this.fullEvent.push(handler);
+    }
+    SubscribeToUIFrame(handler: () => void) {
+        this.uiEvent.push(handler);
+    }
+
 
     UnsubscribeToOnFrame(handler: () => void) {
-        const index = this.frameEventHandlers.indexOf(handler);
+        const index = this.fullEvent.indexOf(handler);
         if (index !== -1) {
-          this.frameEventHandlers.splice(index, 1);
+          this.fullEvent.splice(index, 1);
         }
-      }
+    }
 
+    frameCount: number = 0;
     private OnFrame = () => {
-        if(this.targetCanvas != undefined) {
+        if(this.targetCanvas != null) {
             this.toyManager.UpdateToys(); // Update all keyboards, 60 times a second
             
-
             // Call registered frame event handlers
-            this.frameEventHandlers.forEach((handler) => handler());
+            this.fullEvent.forEach((handler) => handler());
+           
+            //Update UI with half FPS. Because: why?
+            if(this.frameCount > 1) {
+                this.frameCount = 0
+                this.uiEvent.forEach((handler) => handler());
+            }
+            this.frameCount++;
         }
     };
 }

@@ -198,7 +198,7 @@ export default function SetupContainer( props: {channel: number}) {
         } else {
             return (
                 <ui.NumberSliderUIElement 
-                    name={"Start Key" + MIDIDataTable.MIDINoteToString(startKey())}
+                    name={"Start Key (" + MIDIDataTable.MIDINoteToString(startKey()) + ")"}
                     minMaxStep={[1,100,1]}
                     value={startKey()}
                     onChange={setStartKey}

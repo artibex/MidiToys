@@ -46,8 +46,15 @@ export abstract class MIDIToy {
         this.paperLayer = new paper.Layer();
         this.targetChannel = targetChannel; //The target channel
         this.canvas = this.toyManager.targetCanvas; //Canvas element to draw on
-        this.w = this.canvas.getBoundingClientRect().width;
-        this.h = this.canvas.getBoundingClientRect().height;
+        
+        //Fallback code in case canvas is not there
+        if(this.canvas != null) {
+            this.w = this.canvas.getBoundingClientRect().width;
+            this.h = this.canvas.getBoundingClientRect().height;
+        } else {
+            this.w = 500;
+            this.h = 500;
+        }
 
         //Setup Keys
         this.numberOfKeys = numberOfKeys;

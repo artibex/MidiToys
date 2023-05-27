@@ -57,7 +57,7 @@ import * as ui from "../components/UIElements.jsx"
     var frameCount = 0;
     function UpdateChannelDebug() {
         console.log("UPDATE debugging info");
-        devicesAndBPM.innerText = "MIDI Devices: " + inputManager.GetMIDIDevices() + " BPM: " + inputManager.GetBPM().toString();
+        // devicesAndBPM.innerText = "MIDI Devices: " + inputManager.GetMIDIDevices() + " BPM: " + inputManager.GetBPM().toString();
         selectedDevice.innerText = "Selected MIDI Device: " + inputManager.GetSelectedMIDIDevice();
         
         ch1.innerText = "Channel 1: " + inputManager.GetHoldingKeys(1).toString();
@@ -93,11 +93,12 @@ import * as ui from "../components/UIElements.jsx"
     // }
 </script>
 
-    <h2 id="DevicesAndBPM">No device found</h2>
+    <ui.BPM client:load/>
+    
+    <!-- <h2 id="DevicesAndBPM">No device found</h2> -->
     <h3 id="SelectedDevice">No selected device found</h3>
-    
-    
     <ui.MIDIDropdown client:load />
+    
 
     <div class="flexContainer">
         <h2 class="width20" id="CH1Keys"></h2>

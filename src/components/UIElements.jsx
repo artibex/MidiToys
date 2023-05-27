@@ -1,11 +1,12 @@
-import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
-import { baseUrl } from "../js/path.js"
 import { Icon } from '@iconify-icon/solid';
 import { InputManager } from "../js/input/InputManager";
-import * as paper from "paper";
+import { PaperManager} from "../js/PaperManager"
+import { MIDIInputModule } from '../js/input/MIDIInputModule';
 
 const inputManager = new InputManager();
+const paperManager = new PaperManager();
+const midiInputModule = new MIDIInputModule();
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -146,36 +147,25 @@ export function ButtonIcon(props) {
   );
 }
 
+export function MIDIDeviceReloadButton(props) {
+  if(props.class == undefined) props.class = "iconButton";
+  if(props.label == undefined) props.label = "";
+  if(props.id == undefined) props.id = "";
 
-// export function SVG(props) {
-//   if(props.alt === undefined) props.alt="SVG Image"
-//   if(props.class === undefined) props.class="";
-//   if (props.width === undefined) props.width = "20";
-//   if (props.height === undefined) props.height = "20";
-//   if (props.flipX === undefined) props.flipX = false;
-//   if (props.flipY === undefined) props.flipY = false;
+  if(props.icon == undefined) props.icon = "mdi-light:alert";
+  if(props.width == undefined) props.width = "20";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
 
-//   let transformValue = "";
-//   if (props.flipX) transformValue += " scaleX(-1) ";
-//   if (props.flipY) transformValue += " scaleY(-1) ";
-
-//   const svgStyles = {
-//     transform: transformValue,
-//   };
-
-//   var path = baseUrl + props.src;
-
-//   return(
-//     <img
-//         class={props.class}
-//         alt={props.alt}
-//         src={path}
-//         width={props.width}
-//         height={props.height}        
-//         style={svgStyles}
-//       />
-//     );
-// }
+  return(
+    <></>
+    // <ui.ButtonIcon
+    //   icon="material-symbols:replay"
+    //   width="30"
+    //   onClick={() => midiInputModule.LoadMIDIDevices()}
+    // />
+  )
+}
 
 export function NumberSliderCombo(props) {
   return(
@@ -305,14 +295,18 @@ export function MIDIDropdown(props) {
 
 export function BPM(props) {
   if(props.class === undefined) props.class = "";
-  const {bpm, setBPM} = createSignal("0");
+  const [bpm, setBPM] = createSignal(0);
 
+  function GetBPM() {
+    setBPM(inputManager.GetBPM());
+  };
 
+  paperManager.SubscribeToOnFrame(GetBPM);
   return(
-    <div
+    <h3
       class={props.class}
     >
-      BPM: {bpm()};
-    </div>
+      BPM: {bpm}
+    </h3>
   )
 }
