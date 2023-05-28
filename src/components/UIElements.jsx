@@ -124,6 +124,7 @@ export function Button(props) {
 export function ButtonIcon(props) {
   if(props.class == undefined) props.class = "iconButton";
   if(props.label == undefined) props.label = "";
+
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
@@ -142,14 +143,14 @@ export function ButtonIcon(props) {
       onClick={handleClick}
     >
       {props.label}
-      <Icon icon={props.icon} width={props.width} hFlip={true} vFlip={props.vFlip} />
+      <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
     </button>
   );
 }
 
-export function MIDIDeviceReloadButton(props) {
-  if(props.class == undefined) props.class = "iconButton";
+export function MIDIDeviceReloadUIElement(props) {
   if(props.label == undefined) props.label = "";
+  if(props.class == undefined) props.class = "iconButton";
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
@@ -157,13 +158,62 @@ export function MIDIDeviceReloadButton(props) {
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
+  function handleClick() {
+    // console.log("CLICKED on reload button");
+    midiInputModule.LoadMIDIDevices();
+  }
+
   return(
-    <></>
-    // <ui.ButtonIcon
-    //   icon="material-symbols:replay"
-    //   width="30"
-    //   onClick={() => midiInputModule.LoadMIDIDevices()}
-    // />
+    <ButtonIcon
+      icon="material-symbols:wifi-protected-setup"
+      
+      id={props.id}
+      class={props.class}
+      onClick={handleClick}
+      label={props.label}
+
+      width={props.width}
+      hFlip={props.hFlip}
+      vFlip={props.vFlip}
+    >
+
+    </ButtonIcon>
+  )
+}
+
+export function AvailableMIDIDevicesUIElement(props) {
+  const [midiDevices, setMidiDevices] = createSignal("");
+
+  function UpdateSignal() {
+    const devices = inputManager.GetMIDIDevices();
+  
+    const deviceElements = devices.map((device, index) => (
+      // <div key={index}>{device}</div>
+      [device] + " "
+    ));
+      setMidiDevices(deviceElements);
+  }
+  
+  paperManager.SubscribeToUIFrame(UpdateSignal);
+  return(
+    <div>
+      <h3> MIDI Devices: {midiDevices} </h3>
+    </div>
+  )
+}
+
+export function SelectedMIDIDeviceUIElement(props) {
+  const [midiDevice, setMidiDevice] = createSignal("");
+
+  function UpdateSignal() {
+    setMidiDevice(inputManager.GetSelectedMIDIDevice());
+  }
+  
+  paperManager.SubscribeToUIFrame(UpdateSignal);
+  return(
+    <div>
+      <h3> MIDI Devices: {midiDevice} </h3>
+    </div>
   )
 }
 
@@ -240,6 +290,9 @@ export function JsonFileUploader(props) {
 }
 
 export function MIDIDropdown(props) {
+  if(props.class === undefined) props.class = "dropdown"
+  if(props.label === undefined) props.label = "";
+
   const [selectedOption, setSelectedOption] = createSignal("");
   const [devices, setDevices] = createSignal(["", ""]);
   const [options, setOptions] = createSignal(<option> </option>);
@@ -283,13 +336,16 @@ export function MIDIDropdown(props) {
 
   //Display one empty option
   return (
-    <select 
-    class={props.class}
-    value={selectedOption()} 
-    onFocus={() => loadDevices()} 
-    onChange={(event) => UpdateDeviceSelection(event.target.value)}>
-      {options()}
-    </select>
+    <div>
+      {props.label}
+      <select 
+      class={props.class}
+      value={selectedOption()} 
+      onFocus={() => loadDevices()} 
+      onChange={(event) => UpdateDeviceSelection(event.target.value)}>
+        {options()}
+      </select>
+    </div>
   );
 }
 
@@ -307,6 +363,27 @@ export function BPM(props) {
       class={props.class}
     >
       BPM: {bpm}
+    </h3>
+  )
+}
+
+export function ChannelObserverUIElement(props) {
+  if(props.channel === undefined) props.channel = 1;
+  if(props.class === undefined) props.class = "width20";
+
+  const [holdingKeys, setHoldingKeys] = createSignal([]);
+  
+  function UpdateHoldingKeys() {
+    console.log("GET holding keys");
+    setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
+  }
+  paperManager.SubscribeToUIFrame(UpdateHoldingKeys);
+  
+  return(
+    <h3
+      class={props.class}
+    >
+      Channel {props.channel}: {holdingKeys}
     </h3>
   )
 }

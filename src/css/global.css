@@ -72,10 +72,15 @@ button:hover {
   text-align: center;
 }
 .iconButton{
+  /* display: flex; */
   padding: 5px;
   border: 2px solid rgba(0, 0, 0, 0);
+  vertical-align: middle;
+  align-items: center;
 }
-
+.dropdown{
+  min-width: 100px;
+}
 
 .flexList button {
   width: 100%;
@@ -146,6 +151,10 @@ details[open] summary {
   padding-top: 0px;
   padding-bottom: 0px;
 }
+.padding10{
+  padding: 10px;
+}
+
 .marginBottom5 {
   margin-bottom: 5px;
 }
@@ -352,10 +361,10 @@ details[open] summary {
   font-family: "BigJohn", sans-serif;
   font-size: 16pt;
   position: fixed;
-  padding-top: 20px;
+  /* padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 60px;
-  padding-right: 60px;
+  padding-right: 60px; */
   top: 50px;
   left: 50px;
   display: none;

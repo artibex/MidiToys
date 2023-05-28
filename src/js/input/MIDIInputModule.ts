@@ -1,11 +1,19 @@
 import { InputManager } from "./InputManager";
 
 export class MIDIInputModule {
+  static instance: MIDIInputModule;
+
   private midiInputs: WebMidi.MIDIInput[] = [];
   private targetInput: WebMidi.MIDIInput;
   private inputManager: InputManager;
 
   constructor(inputManager: InputManager) {
+    if (MIDIInputModule.instance) {
+      return MIDIInputModule.instance
+    }
+  MIDIInputModule.instance = this
+  
+    
     this.inputManager = inputManager;
     
     this.LoadMIDIDevices();
@@ -19,8 +27,10 @@ export class MIDIInputModule {
     console.log("CREATED new MIDIInputModule");
   }
 
-  private async LoadMIDIDevices() {
+  async LoadMIDIDevices() {
+    console.log("LOAD MIDI devices");
     this.midiInputs = [];
+    if (typeof window === 'undefined') return;
     if (navigator.requestMIDIAccess) {
       const midiAccess = await navigator.requestMIDIAccess();
       

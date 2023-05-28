@@ -1,6 +1,6 @@
 ---
 import "../css/global.css";
-import * as ui from "../components/UIElements.jsx"
+import * as ui from "../components/UIElements"
 ---
 <html>
 
@@ -23,106 +23,51 @@ import * as ui from "../components/UIElements.jsx"
     // paper.setup(toyCanvas); //Paper setup
     let paperManager = new PaperManager();
     paperManager.SetTargetCanvas(toyCanvas);
-    paperManager.SubscribeToOnFrame(UpdateChannelDebug);
 
-    let inputManager = new InputManager(); //Setup input manager
     let toyManager = new ToyManager(); //Setup toy manager
     toyManager.SetTargetCanvas(toyCanvas); //Set the target
 
     toyManager.CreateEmptyToys();
     toyManager.CreateGraviBoard(1,24*2,12);
-    
-    let devicesAndBPM = document.getElementById("DevicesAndBPM") as HTMLElement;
-    let selectedDevice = document.getElementById("SelectedDevice") as HTMLElement;
-    let ch1 = document.getElementById("CH1Keys") as HTMLElement;
-    let ch2 = document.getElementById("CH2Keys") as HTMLElement;
-    let ch3 = document.getElementById("CH3Keys") as HTMLElement;
-    let ch4 = document.getElementById("CH4Keys") as HTMLElement;
-    
-    let ch5 = document.getElementById("CH5Keys") as HTMLElement;
-    let ch6 = document.getElementById("CH6Keys") as HTMLElement;
-    let ch7 = document.getElementById("CH7Keys") as HTMLElement;
-    let ch8 = document.getElementById("CH8Keys") as HTMLElement;
-
-    let ch9 = document.getElementById("CH9Keys") as HTMLElement;
-    let ch10 = document.getElementById("CH10Keys") as HTMLElement;
-    let ch11 = document.getElementById("CH11Keys") as HTMLElement;
-    let ch12 = document.getElementById("CH12Keys") as HTMLElement;
-
-    let ch13 = document.getElementById("CH13Keys") as HTMLElement;
-    let ch14 = document.getElementById("CH14Keys") as HTMLElement;
-    let ch15 = document.getElementById("CH15Keys") as HTMLElement;
-    let ch16 = document.getElementById("CH16Keys") as HTMLElement;
-
-    var frameCount = 0;
-    function UpdateChannelDebug() {
-        console.log("UPDATE debugging info");
-        // devicesAndBPM.innerText = "MIDI Devices: " + inputManager.GetMIDIDevices() + " BPM: " + inputManager.GetBPM().toString();
-        selectedDevice.innerText = "Selected MIDI Device: " + inputManager.GetSelectedMIDIDevice();
-        
-        ch1.innerText = "Channel 1: " + inputManager.GetHoldingKeys(1).toString();
-        ch2.innerText = "Channel 2: " + inputManager.GetHoldingKeys(2).toString();
-        ch3.innerText = "Channel 3: " + inputManager.GetHoldingKeys(3).toString();
-        ch4.innerText = "Channel 4: " + inputManager.GetHoldingKeys(4).toString();
-
-        ch5.innerText = "Channel 5: " + inputManager.GetHoldingKeys(5).toString();
-        ch6.innerText = "Channel 6: " + inputManager.GetHoldingKeys(6).toString();
-        ch7.innerText = "Channel 7: " + inputManager.GetHoldingKeys(7).toString();
-        ch8.innerText = "Channel 8: " + inputManager.GetHoldingKeys(8).toString();
-        
-        ch9.innerText = "Channel 9: " + inputManager.GetHoldingKeys(9).toString();
-        ch10.innerText = "Channel 10: " + inputManager.GetHoldingKeys(10).toString();
-        ch11.innerText = "Channel 11: " + inputManager.GetHoldingKeys(11).toString();
-        ch12.innerText = "Channel 12: " + inputManager.GetHoldingKeys(12).toString();
-
-        ch13.innerText = "Channel 13: " + inputManager.GetHoldingKeys(13).toString();
-        ch14.innerText = "Channel 14: " + inputManager.GetHoldingKeys(14).toString();
-        ch15.innerText = "Channel 15: " + inputManager.GetHoldingKeys(15).toString();
-        ch16.innerText = "Channel 16: " + inputManager.GetHoldingKeys(16).toString();
-
-    }
-
-    // paper.view.onFrame = function(event) {
-    //     toyManager.UpdateToys(); //Update all keyboards, 60 times a second
-        
-    //     if(frameCount > 2) {
-    //         frameCount = 0;
-    //         UpdateChannelDebug(); 
-    //     }
-    //     frameCount++;
-    // }
 </script>
 
-    <ui.BPM client:load/>
-    
-    <!-- <h2 id="DevicesAndBPM">No device found</h2> -->
-    <h3 id="SelectedDevice">No selected device found</h3>
-    <ui.MIDIDropdown client:load />
-    
+    <div class="flexContainer">
+        <ui.BPM client:idle />
+        <div class="flexList">
+            <ui.MIDIDeviceReloadUIElement label="Reload Devices " client:idle />
+            <ui.AvailableMIDIDevicesUIElement client:idle />
+        </div>
+        <div class="flexList">
+            <ui.SelectedMIDIDeviceUIElement client:idle />
+            <ui.MIDIDropdown label="Set MIDI Device: " client:idle />
+        </div>
+    </div>
 
-    <div class="flexContainer">
-        <h2 class="width20" id="CH1Keys"></h2>
-        <h2 class="width20" id="CH2Keys"></h2>
-        <h2 class="width20" id="CH3Keys"></h2>
-        <h2 class="width20" id="CH4Keys"></h2>
-    </div>
-    <div class="flexContainer">
-        <h2 class="width20" id="CH5Keys"></h2>
-        <h2 class="width20" id="CH6Keys"></h2>
-        <h2 class="width20" id="CH7Keys"></h2>
-        <h2 class="width20" id="CH8Keys"></h2>
-    </div>
-    <div class="flexContainer">
-        <h2 class="width20" id="CH9Keys"></h2>
-        <h2 class="width20" id="CH10Keys"></h2>
-        <h2 class="width20" id="CH11Keys"></h2>
-        <h2 class="width20" id="CH12Keys"></h2>
-    </div>
-    <div class="flexContainer">
-        <h2 class="width20" id="CH13Keys"></h2>
-        <h2 class="width20" id="CH14Keys"></h2>
-        <h2 class="width20" id="CH15Keys"></h2>
-        <h2 class="width20" id="CH16Keys"></h2>
+    <div>
+        <div class="flexContainer">
+            <ui.ChannelObserverUIElement channel=1 client:idle />
+            <ui.ChannelObserverUIElement channel=2 client:idle />
+            <ui.ChannelObserverUIElement channel=3 client:idle />
+            <ui.ChannelObserverUIElement channel=4 client:idle />
+        </div>
+        <div class="flexContainer">
+            <ui.ChannelObserverUIElement channel=5 client:idle />
+            <ui.ChannelObserverUIElement channel=6 client:idle />
+            <ui.ChannelObserverUIElement channel=7 client:idle />
+            <ui.ChannelObserverUIElement channel=8 client:idle />
+        </div>
+        <div class="flexContainer">
+            <ui.ChannelObserverUIElement channel=9 client:idle />
+            <ui.ChannelObserverUIElement channel=10 client:idle />
+            <ui.ChannelObserverUIElement channel=11 client:idle />
+            <ui.ChannelObserverUIElement channel=12 client:idle />
+        </div>
+        <div class="flexContainer">
+            <ui.ChannelObserverUIElement channel=13 client:idle />
+            <ui.ChannelObserverUIElement channel=14 client:idle />
+            <ui.ChannelObserverUIElement channel=15 client:idle />
+            <ui.ChannelObserverUIElement channel=16 client:idle />
+        </div>
     </div>
 
     <canvas id="toyCanvas" class="toyCanvasDebug"></canvas>
