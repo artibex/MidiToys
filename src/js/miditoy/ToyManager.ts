@@ -26,13 +26,15 @@ export class ToyManager
 
     //Loop for updating all toys
     UpdateToys() {
-        for (let i = 0; i < 15; i++) 
-        {
-            if (this.toys[i] !== undefined) {
-                this.toys[i].UpdateKeyboard();
+        if(this.targetCanvas != null) {
+            for (let i = 0; i < 15; i++) 
+            {
+                if (this.toys[i] !== undefined) {
+                    this.toys[i].UpdateKeyboard();
+                }
             }
+            paper.view.update();
         }
-        paper.view.update();
     }
 
     //Creates 16 placeholder toys

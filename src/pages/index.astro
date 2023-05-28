@@ -120,8 +120,14 @@ import { Icon } from '@iconify-icon/solid';
 
 
 <canvas id="toyCanvas" class="toyCanvas"></canvas>
-<button id="openSettingsBtn">Settings</button>
 
+<!-- <button id="openSettingsBtn">Settings</button> -->
+<ui.ButtonIcon 
+    icon="material-symbols:settings-suggest"
+    label="Settings "
+    id="openSettingsBtn"
+    class="padding10"
+/>
 
 <div id="settingsPanel">
     <div id="buttonSettingsGroup">
@@ -144,7 +150,10 @@ import { Icon } from '@iconify-icon/solid';
         
 
             <h3 class="marginLeft20">MIDI Device: </h3>
-            <ui.MIDIDropdown class="marginLeft20" client:load />
+            <ui.MIDIDropdown class="marginLeft20 dropdown" client:load />
+            <ui.MIDIDeviceReloadUIElement class="marginLeft20" label="Reload Devices " client:idle />
+            <ui.BPM class=marginLeft20 client:idle />
+
         </div>
         <br>
     

@@ -66,7 +66,7 @@ export default function SetupContainer( props: {channel: number}) {
                 setStrokeColor({r:sColor.r, g:sColor.g , b:sColor.b, a:sColor.a});
                 setAccentColor({r:aColor.r, g:aColor.g , b:aColor.b, a:aColor.a});
             }
-        } else setToyName("Click 'Select'");
+        } else setToyName("Empty");
     }
     //Update Toy data
     function UpdateToyValues() {
@@ -198,7 +198,7 @@ export default function SetupContainer( props: {channel: number}) {
         } else {
             return (
                 <ui.NumberSliderUIElement 
-                    name={"Start Key" + MIDIDataTable.MIDINoteToString(startKey())}
+                    name={"Start Key (" + MIDIDataTable.MIDINoteToString(startKey()) + ")"}
                     minMaxStep={[1,100,1]}
                     value={startKey()}
                     onChange={setStartKey}
@@ -217,12 +217,12 @@ export default function SetupContainer( props: {channel: number}) {
                             onClick={() => UpdateColorSelection(-1)}
                             width={30}
                         />
-                        <h3 class="marginAuto">{colorSelectionName()}</h3>
                         <ui.ButtonIcon
                             icon="material-symbols:chevron-right"
                             onClick={() => UpdateColorSelection(1)}
                             width={30}
                         />
+                        <h3 class="marginLeft20">{colorSelectionName()}</h3>
                     </div>
                 </div>
                 <br></br>
@@ -341,7 +341,7 @@ export default function SetupContainer( props: {channel: number}) {
                 <button id="thinButton" onClick={() => SetToyType(0)}>None</button>
                 <button id="thinButton" onClick={() => SetToyType(1)}>Gravi Board</button>
                 <button id="thinButton" onClick={() => SetToyType(2)}>Poly Drum</button>
-                <button id="thinButton" onClick={() => SetToyType(3)}>Square Keyboard</button>
+                {/* <button id="thinButton" onClick={() => SetToyType(3)}>Square Keyboard</button> */}
             </div>
         )
     }
@@ -363,7 +363,12 @@ export default function SetupContainer( props: {channel: number}) {
                     <div>MIDI Channel: {channel}</div>
                 </div>
                 <div>
-                    <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button>
+                    <ui.ButtonIcon 
+                    icon="material-symbols:build-outline-sharp"
+                    onClick={() => ToggleSelectToy()}
+                    width="35"
+                    />
+                    {/* <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button> */}
                     {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
                 </div>
             </div>

@@ -1,11 +1,12 @@
-import { Color } from 'paper/dist/paper-core';
 import { createSignal, createEffect } from 'solid-js';
-import { baseUrl } from "../js/path.js"
 import { Icon } from '@iconify-icon/solid';
 import { InputManager } from "../js/input/InputManager";
-import * as paper from "paper";
+import { PaperManager} from "../js/PaperManager"
+import { MIDIInputModule } from '../js/input/MIDIInputModule';
 
 const inputManager = new InputManager();
+const paperManager = new PaperManager();
+const midiInputModule = new MIDIInputModule();
 
 export function DetailsFillerCenter(summeryName, content) {
     return (
@@ -123,6 +124,7 @@ export function Button(props) {
 export function ButtonIcon(props) {
   if(props.class == undefined) props.class = "iconButton";
   if(props.label == undefined) props.label = "";
+
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
@@ -141,41 +143,79 @@ export function ButtonIcon(props) {
       onClick={handleClick}
     >
       {props.label}
-      <Icon icon={props.icon} width={props.width} hFlip={true} vFlip={props.vFlip} />
+      <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
     </button>
   );
 }
 
+export function MIDIDeviceReloadUIElement(props) {
+  if(props.label == undefined) props.label = "";
+  if(props.class == undefined) props.class = "iconButton";
+  if(props.id == undefined) props.id = "";
 
-// export function SVG(props) {
-//   if(props.alt === undefined) props.alt="SVG Image"
-//   if(props.class === undefined) props.class="";
-//   if (props.width === undefined) props.width = "20";
-//   if (props.height === undefined) props.height = "20";
-//   if (props.flipX === undefined) props.flipX = false;
-//   if (props.flipY === undefined) props.flipY = false;
+  if(props.icon == undefined) props.icon = "mdi-light:alert";
+  if(props.width == undefined) props.width = "20";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
 
-//   let transformValue = "";
-//   if (props.flipX) transformValue += " scaleX(-1) ";
-//   if (props.flipY) transformValue += " scaleY(-1) ";
+  function handleClick() {
+    // console.log("CLICKED on reload button");
+    midiInputModule.LoadMIDIDevices();
+  }
 
-//   const svgStyles = {
-//     transform: transformValue,
-//   };
+  return(
+    <ButtonIcon
+      icon="material-symbols:wifi-protected-setup"
+      
+      id={props.id}
+      class={props.class}
+      onClick={handleClick}
+      label={props.label}
 
-//   var path = baseUrl + props.src;
+      width={props.width}
+      hFlip={props.hFlip}
+      vFlip={props.vFlip}
+    >
 
-//   return(
-//     <img
-//         class={props.class}
-//         alt={props.alt}
-//         src={path}
-//         width={props.width}
-//         height={props.height}        
-//         style={svgStyles}
-//       />
-//     );
-// }
+    </ButtonIcon>
+  )
+}
+
+export function AvailableMIDIDevicesUIElement(props) {
+  const [midiDevices, setMidiDevices] = createSignal("");
+
+  function UpdateSignal() {
+    const devices = inputManager.GetMIDIDevices();
+  
+    const deviceElements = devices.map((device, index) => (
+      // <div key={index}>{device}</div>
+      [device] + " "
+    ));
+      setMidiDevices(deviceElements);
+  }
+  
+  paperManager.SubscribeToUIFrame(UpdateSignal);
+  return(
+    <div>
+      <h3> MIDI Devices: {midiDevices} </h3>
+    </div>
+  )
+}
+
+export function SelectedMIDIDeviceUIElement(props) {
+  const [midiDevice, setMidiDevice] = createSignal("");
+
+  function UpdateSignal() {
+    setMidiDevice(inputManager.GetSelectedMIDIDevice());
+  }
+  
+  paperManager.SubscribeToUIFrame(UpdateSignal);
+  return(
+    <div>
+      <h3> MIDI Devices: {midiDevice} </h3>
+    </div>
+  )
+}
 
 export function NumberSliderCombo(props) {
   return(
@@ -250,6 +290,9 @@ export function JsonFileUploader(props) {
 }
 
 export function MIDIDropdown(props) {
+  if(props.class === undefined) props.class = "dropdown"
+  if(props.label === undefined) props.label = "";
+
   const [selectedOption, setSelectedOption] = createSignal("");
   const [devices, setDevices] = createSignal(["", ""]);
   const [options, setOptions] = createSignal(<option> </option>);
@@ -293,26 +336,54 @@ export function MIDIDropdown(props) {
 
   //Display one empty option
   return (
-    <select 
-    class={props.class}
-    value={selectedOption()} 
-    onFocus={() => loadDevices()} 
-    onChange={(event) => UpdateDeviceSelection(event.target.value)}>
-      {options()}
-    </select>
+    <div>
+      {props.label}
+      <select 
+      class={props.class}
+      value={selectedOption()} 
+      onFocus={() => loadDevices()} 
+      onChange={(event) => UpdateDeviceSelection(event.target.value)}>
+        {options()}
+      </select>
+    </div>
   );
 }
 
 export function BPM(props) {
   if(props.class === undefined) props.class = "";
-  const {bpm, setBPM} = createSignal("0");
+  const [bpm, setBPM] = createSignal(0);
 
+  function GetBPM() {
+    setBPM(inputManager.GetBPM());
+  };
 
+  paperManager.SubscribeToOnFrame(GetBPM);
   return(
-    <div
+    <h3
       class={props.class}
     >
-      BPM: {bpm()};
-    </div>
+      BPM: {bpm}
+    </h3>
+  )
+}
+
+export function ChannelObserverUIElement(props) {
+  if(props.channel === undefined) props.channel = 1;
+  if(props.class === undefined) props.class = "width20";
+
+  const [holdingKeys, setHoldingKeys] = createSignal([]);
+  
+  function UpdateHoldingKeys() {
+    console.log("GET holding keys");
+    setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
+  }
+  paperManager.SubscribeToUIFrame(UpdateHoldingKeys);
+  
+  return(
+    <h3
+      class={props.class}
+    >
+      Channel {props.channel}: {holdingKeys}
+    </h3>
   )
 }
