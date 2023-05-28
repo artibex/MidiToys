@@ -1,11 +1,11 @@
 import { createSignal, createEffect } from 'solid-js';
 import { Icon } from '@iconify-icon/solid';
 import { InputManager } from "../js/input/InputManager";
-import { PaperManager} from "../js/PaperManager"
+import { CanvasManager} from "../js/CanvasManager"
 import { MIDIInputModule } from '../js/input/MIDIInputModule';
 
 const inputManager = new InputManager();
-const paperManager = new PaperManager();
+const frameManager = new CanvasManager();
 const midiInputModule = new MIDIInputModule();
 
 export function DetailsFillerCenter(summeryName, content) {
@@ -194,7 +194,7 @@ export function AvailableMIDIDevicesUIElement(props) {
       setMidiDevices(deviceElements);
   }
   
-  paperManager.SubscribeToUIFrame(UpdateSignal);
+  frameManager.SubscribeToUIFrame(UpdateSignal);
   return(
     <div>
       <h3> MIDI Devices: {midiDevices} </h3>
@@ -209,7 +209,7 @@ export function SelectedMIDIDeviceUIElement(props) {
     setMidiDevice(inputManager.GetSelectedMIDIDevice());
   }
   
-  paperManager.SubscribeToUIFrame(UpdateSignal);
+  frameManager.SubscribeToUIFrame(UpdateSignal);
   return(
     <div>
       <h3> MIDI Devices: {midiDevice} </h3>
@@ -357,7 +357,7 @@ export function BPM(props) {
     setBPM(inputManager.GetBPM());
   };
 
-  paperManager.SubscribeToOnFrame(GetBPM);
+  frameManager.SubscribeToOnFrame(GetBPM);
   return(
     <h3
       class={props.class}
@@ -377,7 +377,7 @@ export function ChannelObserverUIElement(props) {
     console.log("GET holding keys");
     setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
   }
-  paperManager.SubscribeToUIFrame(UpdateHoldingKeys);
+  frameManager.SubscribeToUIFrame(UpdateHoldingKeys);
   
   return(
     <h3

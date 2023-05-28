@@ -2,8 +2,8 @@ import * as paper from "paper";
 import { InputManager } from "./input/InputManager";
 import { ToyManager } from "./miditoy/ToyManager";
 
-export class PaperManager {
-    private static instance: PaperManager;
+export class CanvasManager {
+    private static instance: CanvasManager;
     
     inputManager: InputManager;
     targetCanvas: HTMLCanvasElement;
@@ -14,10 +14,10 @@ export class PaperManager {
     uiEvent: (() => void)[];
 
     constructor() {
-        if (PaperManager.instance) {
-        return PaperManager.instance;
+        if (CanvasManager.instance) {
+        return CanvasManager.instance;
         }
-        PaperManager.instance = this;
+        CanvasManager.instance = this;
 
         this.inputManager = new InputManager();
         this.toyManager = new ToyManager();
@@ -26,7 +26,7 @@ export class PaperManager {
         this.uiEvent = [];
     }
     
-    SetTargetCanvas(canvas: HTMLCanvasElement) {
+    SetupCanvas(canvas: HTMLCanvasElement) {
         if(this.targetCanvas === undefined) {
             this.targetCanvas = canvas;
             paper.setup(this.targetCanvas); // Paper setup
