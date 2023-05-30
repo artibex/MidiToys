@@ -42,7 +42,6 @@ export class GraviBoard extends MIDIToy {
 
         this.paperLayer.children.forEach(element => {
             var s = element as paper.Path.RegularPolygon;
-
             s.fillColor = this.fillColor;
             s.strokeColor = this.strokeColor;
         });
@@ -51,8 +50,6 @@ export class GraviBoard extends MIDIToy {
     ApplySettings() {
         this.paperLayer.children.forEach(element => {
             var s = element as paper.Path.RegularPolygon;
-            var cellSize = (this.w / this.numberOfKeys) ;
-            this.circleRadius = cellSize / 4;
             s.strokeWidth = this.strokeWidth;
         });
     }
@@ -74,6 +71,7 @@ export class GraviBoard extends MIDIToy {
             var point = new paper.Point(pos.x, pos.y);
             // var circle = new paper.Path.Circle(point, this.circleRadius);
             var poly = new paper.Path.RegularPolygon(point, this.polySides, this.circleRadius);
+            poly.strokeWidth = this.strokeWidth;
 
             this.paperLayer.addChild(poly); //Work on layer
         })

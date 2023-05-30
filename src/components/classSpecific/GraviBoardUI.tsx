@@ -31,18 +31,10 @@ export default function SetupContainer( props: {channel: number}) {
 
     createEffect(() => {
         if(useEffect()) {
-            console.log("TRIGGER SPECIAL effect");
             UpdateToyValues();
+            console.log("TRIGGER SPECIAL effect");
         }
     })
-
-    // const ToyChanged = () => {
-    //     // Handle the event...
-    //     console.log("TOY changed event");
-    //     setUseEffect(false);
-    //     UpdateUIValues();
-    //     setUseEffect(true);
-    // };
 
     function UpdateComponent() {
         LoadToy();
@@ -59,7 +51,6 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            // toy = utils.InitToy(channel, toy, UpdateComponent);
 
             if(toy != undefined) {
                 setUseEffect(false);
@@ -86,7 +77,6 @@ export default function SetupContainer( props: {channel: number}) {
             if(toy != null) {
                 //Remove old objects
                 // toy.RemoveChildrenFromLayer();
-
                 toy.horizontalAlign = horizontalAlign();
                 toy.strokeWidth = strokeWidth();
                 toy.polySides = polySides();
@@ -102,14 +92,24 @@ export default function SetupContainer( props: {channel: number}) {
                     //Reload Keyboard
                     toy.ApplySettings();
                 } catch {}
-
             }
         }
+    }
+    function Reload() {
+        try{toy.SetupKeyboard()}
+        catch{}
     }
 
     function RenderUI() {
         return(
             <>
+            <ui.Button 
+                label="Reload"
+                onClick={Reload}
+                class="thinButton width100"
+            />
+            <br></br>
+            <br></br>
             <ui.CheckboxUIElement 
                 name="Horizontal Align"
                 checked={horizontalAlign()}
@@ -127,53 +127,6 @@ export default function SetupContainer( props: {channel: number}) {
                     value={polySides()}
                     onChange={setPolySides}
                 />
-
-            {/* <div class="flexContainer">
-                <div>Stroke Width</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="40"
-                        step="1"
-                        value={strokeWidth()}
-                        onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="40"
-                        step="1"
-                        value={strokeWidth()}
-                        onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-                    />
-                </div>
-            </div> */}
-            {/* <div class="flexContainer">
-                <div>Poly Sides</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="2"
-                        max="20"
-                        step="1"
-                        value={polySides()}
-                        onChange={(event) => setPolySides(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="2"
-                        max="40"
-                        step="1"
-                        value={polySides()}
-                        onChange={(event) => setPolySides(parseInt(event.target.value))}
-                    />
-                </div>
-            </div> */}
             <br></br>
             <ui.NumberSliderUIElement 
                     name={"Velocity Limit"}
@@ -195,51 +148,6 @@ export default function SetupContainer( props: {channel: number}) {
                     value={xGravity()}
                     onChange={setXGravity}
                 />
-
-            {/* <div class="flexContainer">
-                <div>Velocity Limit</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={velocityLimit()}
-                        onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="200"
-                        value={velocityLimit()}
-                        onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
-                    />
-                </div>
-            </div> */}
-            {/* <div class="flexContainer">
-                <div>Y Gravity</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="-20"
-                        max="20"
-                        step="1"
-                        value={yGravity()*10}
-                        onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="-20"
-                        max="20"
-                        value={yGravity()*10}
-                        onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
-                    />
-                </div>
-            </div> */}
             <br></br>
             <ui.NumberSliderUIElement 
                 factor={100}
@@ -255,52 +163,6 @@ export default function SetupContainer( props: {channel: number}) {
                     value={xFriction()}
                     onChange={setXFriction}
                 />
-
-
-            {/* <div class="flexContainer">
-                <div>Y Friction</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="10"
-                        max="100"
-                        step="1"
-                        value={yFriction()*100}
-                        onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="10"
-                        max="100"
-                        value={yFriction()*100}
-                        onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
-                    />
-                </div>
-            </div> */}
-            {/* <div class="flexContainer">
-                <div>X Friction</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="10"
-                        max="100"
-                        step="1"
-                        value={xFriction()*100}
-                        onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="10"
-                        max="100"
-                        value={xFriction()*100}
-                        onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
-                    />
-                </div>
-            </div> */}
             <br></br>
             <ui.NumberSliderUIElement 
                     name={"Y Impulse Power"}
@@ -314,55 +176,6 @@ export default function SetupContainer( props: {channel: number}) {
                     value={xImpulsPower()}
                     onChange={setXImpulsPower}
                 />
-
-
-            {/* <div class="flexContainer">
-                <div>Y Impuls Power</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={yImpulsPower()}
-                        onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={yImpulsPower()}
-                        onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
-                    />
-                </div>
-            </div> */}
-            {/* <div class="flexContainer">
-                <div>X Impuls Power</div> 
-                <div class="flexContainer">
-                    <input
-                        class="numberInput"
-                        type="number"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={xImpulsPower()}
-                        onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
-                    />
-                    <input
-                        class="sliderInput marginLeft10"
-                        type="range"
-                        min="1"
-                        max="200"
-                        step="1"
-                        value={xImpulsPower()}
-                        onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
-                    />
-                </div>
-            </div> */}
-
             </>
         )
     }
@@ -371,6 +184,6 @@ export default function SetupContainer( props: {channel: number}) {
     LoadToy();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
-        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI}  />
+        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI()}  />
     ) 
 }
