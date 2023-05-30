@@ -1,16 +1,19 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../js/miditoy/ToyManager";
 import { PresetManager } from "../js/PresetManager";
+import { CanvasManager } from "../js/CanvasManager";
 import * as utils from "../js/solidjs/ComponentUtils.js";
 import * as ui from "./UIElements.jsx"
 
 var tManager = new ToyManager();
 var pManager = new PresetManager();
+const canvasManager = new CanvasManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
-
+    
+    const [useEffect, setUseEffect] = createSignal(true);
     const [presetName, setPresetName] = createSignal("");
     const [matchingItems, setMetchingItems] = createSignal([]);
 
@@ -19,20 +22,27 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Special settings
-
     const ToyChanged = () => {
         console.log("PRESET UI event");
         toy = utils.InitToy(channel, toy, ToyChanged);
         UpdateUIValues();
     };
 
+    function UpdateComponent() {
+        LoadToy();
+    }
+
     function LoadToy() {
-        toy = utils.InitToy(channel, toy, ToyChanged);
+        var t = utils.InitToy(channel, toy, UpdateComponent);
+        if(toy != t) {
+            toy = t;
+            UpdateUIValues();
+        }
     }
 
     function UpdateUIValues() {
-        console.log("UPDATE PRESET UI values");
-        if (typeof window !== 'undefined') {
+    console.log("UPDATE PRESET UI values");
+    if (typeof window !== 'undefined') {
             //Put values here
             if(toy != undefined) {
                 GetMatchingItems();
@@ -53,12 +63,10 @@ export default function SetupContainer( props: {channel: number}) {
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
     }
-
     function DeletePreset(item) {
         pManager.DeletePreset(item)
         GetMatchingItems();
     }
-
     //Upload a Preset from local system
     function UploadPreset(presetName, jsonObj) {
         // console.log("UPLOAD FILE");
@@ -66,7 +74,6 @@ export default function SetupContainer( props: {channel: number}) {
         pManager.SaveNewPresetUpload(presetName, jsonObj);
         UpdateUIValues();
     }
-
     //Open system file explorer and give a JSON file to save
     function DownloadPreset(item) {
         const blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
@@ -82,13 +89,36 @@ export default function SetupContainer( props: {channel: number}) {
         // Clean up the URL object
         URL.revokeObjectURL(url);
     }
-
     //Get the name of the preset for button display
     function GetPresetName(item) {
         const split = item.key.split(".");
         return split[0];
     }
-
+    function RenderAvailablePresets() {            
+        return (
+          <div class="">
+            {matchingItems().map((item) => (
+                <div class="flexContainer">
+                        <ui.Button
+                            class="width70 thinButton"
+                            onClick={() => LoadPreset(item)}
+                            label={GetPresetName(item)}
+                        />
+                    <div class="">
+                        <ui.ButtonIcon 
+                            icon="material-symbols:download"
+                            onClick={() => DownloadPreset(item)}
+                        />
+                        <ui.ButtonIcon 
+                            icon="material-symbols:delete-outline"
+                            onClick={() => DeletePreset(item)}
+                        />
+                    </div>
+                </div>
+            ))}
+        </div>
+        )
+    }
     function RenderUI() {
         return (
             <div class="marginAuto">
@@ -120,34 +150,10 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
 
-    function RenderAvailablePresets() {            
-        return (
-          <div class="">
-            {matchingItems().map((item) => (
-                <div class="flexContainer">
-                        <ui.Button
-                            class="width70 thinButton"
-                            onClick={() => LoadPreset(item)}
-                            label={GetPresetName(item)}
-                        />
-                    <div class="">
-                        <ui.ButtonIcon 
-                            icon="material-symbols:download"
-                            onClick={() => DownloadPreset(item)}
-                        />
-                        <ui.ButtonIcon 
-                            icon="material-symbols:delete-outline"
-                            onClick={() => DeletePreset(item)}
-                        />
-                    </div>
-                </div>
-            ))}
-        </div>
-        )
-    }
-
     LoadToy();
-    UpdateUIValues(); //Get UI Values once at start
+    canvasManager.SubscribeOneFPS(UpdateComponent);
     var sumName = "Load/Save Preset";
-    return ui.DetailsFillerCenter("Load/Save Settings", RenderUI());
+    return (
+        <ui.DetailsFillerCenter summeryName={"Load/Save Settings"} content={RenderUI()} />
+    )
 }

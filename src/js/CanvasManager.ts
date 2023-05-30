@@ -10,8 +10,10 @@ export class CanvasManager {
     toyManager: ToyManager;
 
     //Events
-    fullEvent: (() => void)[];
-    uiEvent: (() => void)[];
+    fullFramerate: (() => void)[];
+    halfFramerate: (() => void)[];
+    oneFPS: (() => void)[];
+
 
     constructor() {
         if (CanvasManager.instance) {
@@ -22,8 +24,9 @@ export class CanvasManager {
         this.inputManager = new InputManager();
         this.toyManager = new ToyManager();
 
-        this.fullEvent = [];
-        this.uiEvent = [];
+        this.fullFramerate = [];
+        this.halfFramerate = [];
+        this.oneFPS = [];
     }
     
     SetupCanvas(canvas: HTMLCanvasElement) {
@@ -34,35 +37,59 @@ export class CanvasManager {
         } else this.targetCanvas = canvas;
     }
 
-    SubscribeToOnFrame(handler: () => void) {
-        this.fullEvent.push(handler);
+    SubscribeFullFramerate(handler: () => void) {
+        this.fullFramerate.push(handler);
     }
-    SubscribeToUIFrame(handler: () => void) {
-        this.uiEvent.push(handler);
+    SubscribeHalfFramerate(handler: () => void) {
+        this.halfFramerate.push(handler);
+    }
+    SubscribeOneFPS(handler: () => void) {
+        this.oneFPS.push(handler);
     }
 
 
-    UnsubscribeToOnFrame(handler: () => void) {
-        const index = this.fullEvent.indexOf(handler);
+    UnsubscribeOnFrame(handler: () => void) {
+        const index = this.fullFramerate.indexOf(handler);
         if (index !== -1) {
-          this.fullEvent.splice(index, 1);
+          this.fullFramerate.splice(index, 1);
+        }
+    }
+    UnsubscribeHalfFrame(handler: () => void) {
+        const index = this.halfFramerate.indexOf(handler);
+        if (index !== -1) {
+          this.halfFramerate.splice(index, 1);
+        }
+    }
+    UnsubscribeOneFPS(handler: () => void) {
+        const index = this.oneFPS.indexOf(handler);
+        if (index !== -1) {
+          this.oneFPS.splice(index, 1);
         }
     }
 
-    frameCount: number = 0;
+
+
+    frameCountHalf: number = 0;
+    frameCountOneFPS: number = 0;
     private OnFrame = () => {
         if(this.targetCanvas != null) {
             this.toyManager.UpdateToys(); // Update all keyboards, 60 times a second
             
             // Call registered frame event handlers
-            this.fullEvent.forEach((handler) => handler());
+            this.fullFramerate.forEach((handler) => handler());
            
-            //Update UI with half FPS. Because: why?
-            if(this.frameCount > 1) {
-                this.frameCount = 0
-                this.uiEvent.forEach((handler) => handler());
+            //30FPS update and 1 FPS update
+            if(this.frameCountHalf > 1) {
+                this.frameCountHalf = 0
+                this.halfFramerate.forEach((handler) => handler());
             }
-            this.frameCount++;
+            if(this.frameCountOneFPS > 60) {
+                this.frameCountOneFPS = 0;
+                this.oneFPS.forEach((handler) => handler());
+            }
+
+            this.frameCountHalf++;
+            this.frameCountOneFPS++;
         }
     };
 }

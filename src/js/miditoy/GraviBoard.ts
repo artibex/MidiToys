@@ -26,15 +26,60 @@ export class GraviBoard extends MIDIToy {
         super("GraviBoard", targetChannel, 24, 12, true);
         // console.log("CREATED GraviBoard");
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
-        this.LoadDefaultColorSettings();
+        this.LoadDefaultColors();
         this.SetupKeyboard();
     }
 
-    LoadDefaultColorSettings() {
+    LoadDefaultColors() {
         this.fillColor = new paper.Color(0,0,0,0);
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
+        this.ApplyColors();
     }
+
+    ApplyColors() {
+        console.log("UPDATE color values in Toy");
+
+        this.paperLayer.children.forEach(element => {
+            var s = element as paper.Path.RegularPolygon;
+
+            s.fillColor = this.fillColor;
+            s.strokeColor = this.strokeColor;
+        });
+    };
+
+    ApplySettings() {
+        this.paperLayer.children.forEach(element => {
+            var s = element as paper.Path.RegularPolygon;
+            var cellSize = (this.w / this.numberOfKeys) ;
+            this.circleRadius = cellSize / 4;
+            s.strokeWidth = this.strokeWidth;
+        });
+    }
+
+    // [O][O][O][O][O][O][O][O]
+    SetupKeyboard() {
+        // this.InitDrawPositions();
+        this.RemoveChildrenFromLayer();
+        this.InitVelocity();
+        var cellSize = (this.w / this.numberOfKeys) ;
+        this.circleRadius = cellSize / 4;
+        
+        if(this.horizontalAlign) this.HorizontalDrawPositionDistrubution(cellSize);
+        else this.VerticalDrawPositionDistrubution(cellSize);
+
+        // this.shapes.length = 0;
+        this.drawPositions.forEach(element => {
+            var pos = element as Vector2D;
+            var point = new paper.Point(pos.x, pos.y);
+            // var circle = new paper.Path.Circle(point, this.circleRadius);
+            var poly = new paper.Path.RegularPolygon(point, this.polySides, this.circleRadius);
+
+            this.paperLayer.addChild(poly); //Work on layer
+        })
+        this.ApplyColors();
+    }
+
     ToJSON() {
         return {
         //MIDIToy data
@@ -75,30 +120,6 @@ export class GraviBoard extends MIDIToy {
         this.TriggerToyChangedEvent();
     }
     
-    // [O][O][O][O][O][O][O][O]
-    SetupKeyboard() {
-        // this.InitDrawPositions();
-        this.InitVelocity();
-        this.RemoveChildrenFromLayer();
-        var cellSize = (this.w / this.numberOfKeys) ;
-        this.circleRadius = cellSize / 4;
-        
-        if(this.horizontalAlign) this.HorizontalDrawPositionDistrubution(cellSize);
-        else this.VerticalDrawPositionDistrubution(cellSize);
-
-        // this.shapes.length = 0;
-        this.drawPositions.forEach(element => {
-            var pos = element as Vector2D;
-            var point = new paper.Point(pos.x, pos.y);
-            // var circle = new paper.Path.Circle(point, this.circleRadius);
-            var poly = new paper.Path.RegularPolygon(point, this.polySides, this.circleRadius);
-
-            poly.fillColor = this.fillColor;
-            poly.strokeColor = this.strokeColor;
-            poly.strokeWidth = this.strokeWidth;
-            this.paperLayer.addChild(poly); //Work on layer
-        })
-    }
 
     InitVelocity() {
         this.velocity.length = 0;
@@ -207,7 +228,7 @@ export class GraviBoard extends MIDIToy {
 
             indexValue++;
         });
-    }
+    };
 
     Impuls(indexValue: number, yForce: number, xForce: number) {
         var vel = this.velocity[indexValue];

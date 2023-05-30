@@ -33,14 +33,27 @@ export class PolyDrum extends MIDIToy {
         console.log("CREATED PolyDrum");
         console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
-        this.LoadDefaultColorSettings();
+        this.LoadDefaultColors();
         this.SetupKeyboard();
     }
 
-    LoadDefaultColorSettings() {
+    LoadDefaultColors() {
         this.fillColor = new paper.Color(0,0,0,0.1);
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
+    }
+
+    ApplyColors() {
+        this.paperLayer.children.forEach(element => {
+            var s = element as paper.Path.RegularPolygon;
+
+            s.fillColor = this.fillColor;
+            s.strokeColor = this.strokeColor;
+        });
+    }
+
+    ApplySettings() {
+        
     }
 
     ToJSON() {

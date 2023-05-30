@@ -8,14 +8,17 @@ const inputManager = new InputManager();
 const frameManager = new CanvasManager();
 const midiInputModule = new MIDIInputModule();
 
-export function DetailsFillerCenter(summeryName, content) {
-    return (
+export function DetailsFillerCenter(props) {
+  if(props.summeryName == undefined) props.summeryName = "";
+  if(props.content == undefined) props.content = <></>;  
+  
+  return (
       <details class="marginAuto">
         <summary class="textAlignCenter marginAuto">
-          {summeryName}
+          {props.summeryName}
         </summary>
         <br />
-        {content}
+        {props.content}
       </details>
     );
 }
@@ -194,7 +197,7 @@ export function AvailableMIDIDevicesUIElement(props) {
       setMidiDevices(deviceElements);
   }
   
-  frameManager.SubscribeToUIFrame(UpdateSignal);
+  frameManager.SubscribeHalfFramerate(UpdateSignal);
   return(
     <div>
       <h3> MIDI Devices: {midiDevices} </h3>
@@ -209,7 +212,7 @@ export function SelectedMIDIDeviceUIElement(props) {
     setMidiDevice(inputManager.GetSelectedMIDIDevice());
   }
   
-  frameManager.SubscribeToUIFrame(UpdateSignal);
+  frameManager.SubscribeHalfFramerate(UpdateSignal);
   return(
     <div>
       <h3> MIDI Devices: {midiDevice} </h3>
@@ -357,7 +360,7 @@ export function BPM(props) {
     setBPM(inputManager.GetBPM());
   };
 
-  frameManager.SubscribeToOnFrame(GetBPM);
+  frameManager.SubscribeFullFramerate(GetBPM);
   return(
     <h3
       class={props.class}
@@ -377,7 +380,7 @@ export function ChannelObserverUIElement(props) {
     console.log("GET holding keys");
     setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
   }
-  frameManager.SubscribeToUIFrame(UpdateHoldingKeys);
+  frameManager.SubscribeHalfFramerate(UpdateHoldingKeys);
   
   return(
     <h3

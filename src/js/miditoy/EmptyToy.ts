@@ -7,7 +7,7 @@ export class EmptyToy extends MIDIToy {
         super( "Empty", targetChannel, 13, 12, true);
     }
 
-    LoadDefaultColorSettings() {
+    LoadDefaultColors() {
         
     }
     SetupKeyboard() {

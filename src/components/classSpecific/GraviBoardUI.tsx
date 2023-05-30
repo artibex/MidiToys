@@ -3,14 +3,17 @@ import { ToyManager } from "../../js/miditoy/ToyManager";
 import { GraviBoard } from "../../js/miditoy/GraviBoard";
 import * as utils from "../../js/solidjs/ComponentUtils.js";
 import * as ui from "../UIElements.jsx"
+import { CanvasManager } from "../../js/CanvasManager";
 
 var tManager = new ToyManager();
+const canvasManager = new CanvasManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
     const [useEffect, setUseEffect] = createSignal(true);
 
+    const [toyName, setToyName] = createSignal("ToyName");
     //Special settings
     const [horizontalAlign, setHorizontalAlign] = createSignal(true);
     const [strokeWidth, setStrokeWidth] = createSignal(2);
@@ -33,24 +36,35 @@ export default function SetupContainer( props: {channel: number}) {
         }
     })
 
-    const ToyChanged = () => {
-        // Handle the event...
-        console.log("TOY changed event");
-        setUseEffect(false);
-        UpdateUIValues();
-        setUseEffect(true);
-    };
+    // const ToyChanged = () => {
+    //     // Handle the event...
+    //     console.log("TOY changed event");
+    //     setUseEffect(false);
+    //     UpdateUIValues();
+    //     setUseEffect(true);
+    // };
+
+    function UpdateComponent() {
+        LoadToy();
+    }
 
     function LoadToy() {
-        toy = utils.InitToy(channel, toy, ToyChanged);
+        var t = utils.InitToy(channel, toy, UpdateComponent);
+        if(toy != t) {
+            toy = t;
+            UpdateUIValues();
+        }
     }
 
     function UpdateUIValues() {
         console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            toy = utils.InitToy(channel, toy, ToyChanged);
+            // toy = utils.InitToy(channel, toy, UpdateComponent);
 
             if(toy != undefined) {
+                setUseEffect(false);
+
+                setToyName(toy.toyName);
                 setHorizontalAlign(toy.horizontalAlign);
                 setStrokeWidth(toy.strokeWidth);
                 setPolySides(toy.polySides);
@@ -61,13 +75,15 @@ export default function SetupContainer( props: {channel: number}) {
                 setXFriction(toy.xFriction);
                 setYImpulsPower(toy.yImpulsPower);
                 setXImpulsPower(toy.xImpulsPower);
+
+                setUseEffect(true);
             }
         }
     }
     function UpdateToyValues() {
         console.log("UPDATE GraviBoard toy values");
         if (typeof window !== 'undefined') {
-            if(toy != undefined) {
+            if(toy != null) {
                 //Remove old objects
                 // toy.RemoveChildrenFromLayer();
 
@@ -82,8 +98,11 @@ export default function SetupContainer( props: {channel: number}) {
                 toy.yImpulsPower = yImpulsPower();
                 toy.xImpulsPower = xImpulsPower();
                 
-                //Reload Keyboard
-                toy.SetupKeyboard();
+                try {
+                    //Reload Keyboard
+                    toy.ApplySettings();
+                } catch {}
+
             }
         }
     }
@@ -350,200 +369,8 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Init Component
     LoadToy();
-    UpdateUIValues(); //Get UI Values once at start
-    return ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
-
-    // return(
-    //     <div>
-    //         <details>
-    //         <summary class="textAlignCenter marginAuto">
-    //             Specific Settings
-    //         </summary>
-    //         <br></br>
-    //         <div class="flexContainer">
-    //             <div>Stroke Width</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="1"
-    //                     max="40"
-    //                     step="1"
-    //                     value={strokeWidth()}
-    //                     onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="1"
-    //                     max="40"
-    //                     step="1"
-    //                     value={strokeWidth()}
-    //                     onChange={(event) => setStrokeWidth(parseInt(event.target.value))}
-    //                 />
-    //             </div>
-    //         </div>
-    //         <div class="flexContainer">
-    //             <div>Poly Sides</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="2"
-    //                     max="20"
-    //                     step="1"
-    //                     value={polySides()}
-    //                     onChange={(event) => setPolySides(parseInt(event.target.value))}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="2"
-    //                     max="40"
-    //                     step="1"
-    //                     value={polySides()}
-    //                     onChange={(event) => setPolySides(parseInt(event.target.value))}
-    //                 />
-    //             </div>
-    //         </div>
-    //         <br></br>
-    //         <div class="flexContainer">
-    //             <div>Velocity Limit</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="1"
-    //                     max="200"
-    //                     step="1"
-    //                     value={velocityLimit()}
-    //                     onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="1"
-    //                     max="200"
-    //                     value={velocityLimit()}
-    //                     onChange={(event) => setVelocityLimit(parseInt(event.target.value))}
-    //                 />
-    //             </div>
-    //         </div>
-    //         <div class="flexContainer">
-    //             <div>Y Gravity</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="-20"
-    //                     max="20"
-    //                     step="1"
-    //                     value={yGravity()*10}
-    //                     onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="-20"
-    //                     max="20"
-    //                     value={yGravity()*10}
-    //                     onChange={(event) => setYGravity(parseInt(event.target.value)/10)}
-    //                 />
-    //             </div>
-    //         </div>
-    //         <br></br>
-    //         <div class="flexContainer">
-    //             <div>Y Friction</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="10"
-    //                     max="100"
-    //                     step="1"
-    //                     value={yFriction()*100}
-    //                     onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="10"
-    //                     max="100"
-    //                     value={yFriction()*100}
-    //                     onChange={(event) => setYFriction(parseInt(event.target.value)/100)}
-    //                 />
-    //             </div>
-    //         </div>
-    //         <div class="flexContainer">
-    //             <div>X Friction</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="10"
-    //                     max="100"
-    //                     step="1"
-    //                     value={xFriction()*100}
-    //                     onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="10"
-    //                     max="100"
-    //                     value={xFriction()*100}
-    //                     onChange={(event) => setXFriction(parseInt(event.target.value)/100)}
-    //                 />
-    //             </div>
-    //         </div>
-    //         <br></br>
-    //         <div class="flexContainer">
-    //             <div>Y Impuls Power</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="1"
-    //                     max="200"
-    //                     step="1"
-    //                     value={yImpulsPower()}
-    //                     onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="1"
-    //                     max="200"
-    //                     step="1"
-    //                     value={yImpulsPower()}
-    //                     onChange={(event) => setYImpulsPower(parseInt(event.target.value))}
-    //                 />
-    //             </div>
-    //         </div>
-    //         <div class="flexContainer">
-    //             <div>X Impuls Power</div> 
-    //             <div class="flexContainer">
-    //                 <input
-    //                     class="numberInput"
-    //                     type="number"
-    //                     min="1"
-    //                     max="200"
-    //                     step="1"
-    //                     value={xImpulsPower()}
-    //                     onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
-    //                 />
-    //                 <input
-    //                     class="sliderInput marginLeft10"
-    //                     type="range"
-    //                     min="1"
-    //                     max="200"
-    //                     step="1"
-    //                     value={xImpulsPower()}
-    //                     onChange={(event) => setXImpulsPower(parseInt(event.target.value))}
-    //                 />
-    //             </div>
-    //         </div>
-    //     </details>
-    //     </div>
-    // )
+    canvasManager.SubscribeOneFPS(UpdateComponent);
+    return (
+        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI}  />
+    ) 
 }

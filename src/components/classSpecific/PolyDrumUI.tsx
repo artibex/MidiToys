@@ -3,13 +3,17 @@ import { ToyManager } from "../../js/miditoy/ToyManager";
 import { PolyDrum } from "../../js/miditoy/PolyDrum";
 import * as utils from "../../js/solidjs/ComponentUtils.js";
 import * as ui from "../UIElements.jsx"
+import { CanvasManager } from "../../js/CanvasManager";
 
 var tManager = new ToyManager();
+const canvasManager = new CanvasManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
     const [useEffect, setUseEffect] = createSignal(true);
+    const [toyName, setToyName] = createSignal("ToyName");
+
 
     //Special settings
     const [shapeLimit, setShapeLimit] = createSignal(20);
@@ -30,6 +34,10 @@ export default function SetupContainer( props: {channel: number}) {
         }
     })
 
+    function UpdateComponent() {
+        LoadToy();
+    }
+
     const ToyChanged = () => {
         // Handle the event...
         console.log("DEFAULT UI event");
@@ -39,7 +47,11 @@ export default function SetupContainer( props: {channel: number}) {
     };
 
     function LoadToy() {
-        toy = utils.InitToy(channel, toy, ToyChanged);
+        var t = utils.InitToy(channel, toy, UpdateComponent);
+        if(toy != t) {
+            toy = t;
+            UpdateUIValues();
+        }
     }
 
     function UpdateUIValues() {
@@ -48,6 +60,9 @@ export default function SetupContainer( props: {channel: number}) {
             toy = utils.InitToy(channel, toy, ToyChanged);
 
             if(toy != undefined) {
+                setUseEffect(false);
+
+                setToyName(toy.toyName);
                 setShapeLimit(toy.shapeLimit);
                 setPolySides(toy.polySides);
                 setStartSize(toy.startSize);
@@ -58,6 +73,8 @@ export default function SetupContainer( props: {channel: number}) {
                 setStrokeWidthDecrease(toy.strokeWidthDecrease);
                 setXSpawnOffset(toy.xSpawnOffset);
                 setYSpawnOffset(toy.ySpawnOffset);
+
+                setUseEffect(true);
             }
         }
     }
@@ -164,6 +181,11 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Init Component
     LoadToy();
-    UpdateUIValues(); //Get UI Values once at start
-    return ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
+    // UpdateUIValues(); //Get UI Values once at start
+    canvasManager.SubscribeOneFPS(UpdateComponent);
+    return (
+        // ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
+        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI()} />
+    )
+
 }
