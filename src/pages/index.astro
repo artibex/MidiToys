@@ -19,12 +19,16 @@ import { Icon } from '@iconify-icon/solid';
     //Import
     import { InputManager } from "../js/input/InputManager";
     import { ToyManager } from "../js/miditoy/ToyManager";
-    import * as paper from "paper";
+    import {CanvasManager} from "../js/CanvasManager"
+    // import * as paper from "paper";
     
+
     //Base Toys setup
     let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement; //Get target Canvas
-    paper.setup(toyCanvas); //Paper setup
+    // paper.setup(toyCanvas); //Paper setup
     
+    let canvasManager = new CanvasManager();
+    canvasManager.SetupCanvas(toyCanvas);
     let inputManager = new InputManager(); //Setup input manager
     let toyManager = new ToyManager(); //Setup toy manager
     toyManager.SetTargetCanvas(toyCanvas); //Set the target
@@ -32,14 +36,14 @@ import { Icon } from '@iconify-icon/solid';
 
     let frameCounter = 0;
     let updateFrequency = 1;
-    paper.view.onFrame = function(event) {
-        frameCounter++;
+    // paper.view.onFrame = function(event) {
+    //     frameCounter++;
 
-        if (frameCounter >= updateFrequency) {
-            frameCounter = 0;
-            toyManager.UpdateToys(); //Update all keyboards, 60 times a second
-        }
-    }
+    //     if (frameCounter >= updateFrequency) {
+    //         frameCounter = 0;
+    //         toyManager.UpdateToys(); //Update all keyboards, 60 times a second
+    //     }
+    // }
 </script>
 
 <!-- Open SettingsPanel -->
@@ -158,7 +162,7 @@ import { Icon } from '@iconify-icon/solid';
         <br>
     
     <div class="channelGroup">
-        <ChannelSettingsContainer channel={1} client:load />
+        <ChannelSettingsContainer channel={1} client:idle />
         <ChannelSettingsContainer channel={2} client:load />
         <ChannelSettingsContainer channel={3} client:load />
         <ChannelSettingsContainer channel={4} client:load />

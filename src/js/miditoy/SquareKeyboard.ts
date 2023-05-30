@@ -16,10 +16,14 @@ export class SquareKeyboard extends MIDIToy {
         // window.addEventListener("resize", this.CalculateXValues);
     }
 
-    LoadDefaultColorSettings() {
+    LoadDefaultColors() {
         this.fillColor = new paper.Color(0,0,0,0);
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
+    }
+
+    ApplyColors() {
+        
     }
 
     LoadJSON(data: any) {

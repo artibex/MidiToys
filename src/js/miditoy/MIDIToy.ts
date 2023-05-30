@@ -38,6 +38,18 @@ export abstract class MIDIToy {
     strokeColor: paper.Color = new paper.Color(1/4);
     accentColor: paper.Color = new paper.Color(1/2);
 
+    //Abstract functions that need to exist
+    abstract SetupKeyboard(); //Setup the keyboard
+    abstract ApplySettings(); //Apply value change on running toy
+    abstract UpdateKeyboard(); //Update function to fall 60 frames a second
+
+    abstract LoadDefaultColors(); //Load the default settings
+    abstract ApplyColors(); //Adjust only colors
+
+    abstract ToJSON();
+    abstract LoadJSON(data);
+
+
     //Construct everything basic that is needed for a MIDIKeyboard
     constructor(toyName: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
         this.toyName = toyName;
@@ -163,14 +175,6 @@ export abstract class MIDIToy {
     }
 
 
-    //Abstract functions that need to exist
-    abstract UpdateKeyboard();
-    abstract SetupKeyboard();
-    abstract LoadDefaultColorSettings();
-
-    abstract ToJSON();
-    abstract LoadJSON(data);
-
     //Base JSON data that this class uses
     GetBaseJSON() {
         return {
@@ -207,13 +211,6 @@ export abstract class MIDIToy {
         this.startKey = data.startKey;
         this.useRegExp = data.useRegExp;
 
-        // this.SetColor(this.fillColor, 
-        //     data.fillColor.red, 
-        //     data.fillColor.green,
-        //     data.fillColor.blue,
-        //     data.fillColor.alpha
-        // );
-
         this.fillColor = new paper.Color(
           data.fillColor.red,
           data.fillColor.green,
@@ -221,26 +218,12 @@ export abstract class MIDIToy {
           data.fillColor.alpha
         );
       
-        // this.SetColor(this.strokeColor, 
-        //     data.strokeColor.red, 
-        //     data.strokeColor.green,
-        //     data.strokeColor.blue,
-        //     data.strokeColor.alpha
-        // );
-
         this.strokeColor = new paper.Color(
           data.strokeColor.red,
           data.strokeColor.green,
           data.strokeColor.blue,
           data.strokeColor.alpha
         );
-
-        // this.SetColor(this.accentColor, 
-        //     data.accentColor.red, 
-        //     data.accentColor.green,
-        //     data.accentColor.blue,
-        //     data.accentColor.alpha
-        // );
 
         this.accentColor = new paper.Color(
           data.accentColor.red,

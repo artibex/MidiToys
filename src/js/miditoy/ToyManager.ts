@@ -1,5 +1,6 @@
 import { EmptyToy } from "./EmptyToy";
 import { GraviBoard } from "./GraviBoard";
+import { MIDIToy } from "./MIDIToy";
 import { PolyDrum } from "./PolyDrum";
 import { SquareKeyboard } from "./SquareKeyboard";
 import * as paper from "paper";
@@ -69,7 +70,7 @@ export class ToyManager
         if (channel < 1 || channel > this.toys.length) {
             return undefined;
         }
-        return this.toys[channel - 1];
+        return this.toys[channel - 1] as MIDIToy;
     }
 
     //Clears the complete canvas with all elements on it
