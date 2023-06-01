@@ -1,5 +1,5 @@
-import * as utils from "../js/solidjs/ComponentUtils.js";
-import * as ui from "./UIElements.jsx"
+import * as utils from "@utils";
+import * as ui from "@ui";
 import { createSignal, createEffect } from "solid-js";
 import { RGBA } from "../js/Interfaces";
 import { CanvasManager } from "../js/CanvasManager";

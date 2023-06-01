@@ -2,6 +2,15 @@
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "baseUrl": ".",
+    "paths": {
+      "@miditoy/*": ["src/js/miditoy/*"],
+      "@solidjs/*": ["src/js/solidjs/*"],
+      "@components/*": ["src/components/*"],
+      "@ui": ["src/components/UIElements.jsx"],
+      "@utils": ["src/components/ComponentUtils.js"],
+      "@interfaces": ["src/js/Interfaces.ts"]
+    }
   }
 }

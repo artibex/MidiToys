@@ -1,7 +1,7 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
 import { PolyDrum } from "../../js/miditoy/PolyDrum";
-import * as utils from "../../js/solidjs/ComponentUtils.js";
+import * as utils from "../ComponentUtils.js";
 import * as ui from "../UIElements.jsx"
 import { CanvasManager } from "../../js/CanvasManager";
 

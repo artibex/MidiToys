@@ -1,4 +1,4 @@
-import { ToyManager } from "../miditoy/ToyManager";
+import { ToyManager } from "../js/miditoy/ToyManager";
 
 const tManager = new ToyManager();
 

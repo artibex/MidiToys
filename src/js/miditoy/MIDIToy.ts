@@ -2,7 +2,7 @@ import { MIDIDataTable } from "../MIDIDataTable";
 import { MIDIReceiver } from "./MIDIReceiver";
 import { InputManager } from "../input/InputManager";
 import { ToyManager } from "./ToyManager";
-import { RGBA, Vector2D } from "../Interfaces";
+import { RGBA, Vector2D } from "@interfaces";
 import paper from 'paper';
 
 //Abstract class that forms the base of every MIDIToy
