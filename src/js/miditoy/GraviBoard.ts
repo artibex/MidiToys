@@ -1,6 +1,6 @@
-import { MIDIReceiver } from "./MIDIReceiver";
-import { MIDIToy } from "./MIDIToy";
-import { Vector2D } from "../Interfaces";
+import { MIDIReceiver } from "@midireceiver";
+import { MIDIToy } from "@miditoy";
+import { Vector2D } from "@interfaces";
 import paper from 'paper';
 
 export class GraviBoard extends MIDIToy {

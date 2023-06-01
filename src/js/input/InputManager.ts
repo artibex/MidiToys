@@ -1,6 +1,6 @@
-import { MIDIDataTable } from "../MIDIDataTable";
-import { KeyboardInputModule } from "./KeyboardInputModule";
-import { MIDIInputModule } from "./MIDIInputModule";
+import { MIDIDataTable } from "@mididata";
+import { KeyboardInputModule } from "@input/KeyboardInputModule";
+import { MIDIInputModule } from "@input/MIDIInputModule";
 
 interface UpdateEvent {
     // Define properties and/or methods for the event

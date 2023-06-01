@@ -1,4 +1,4 @@
-import { MIDIToy } from "./MIDIToy";
+import { MIDIToy } from "@miditoy";
 
 //Empty Toy class, does nothing
 export class EmptyToy extends MIDIToy {
@@ -20,6 +20,12 @@ export class EmptyToy extends MIDIToy {
         
     }
     LoadJSON(data: any) {
+        
+    }
+    ApplyColors() {
+        
+    }
+    ApplySettings() {
         
     }
 }

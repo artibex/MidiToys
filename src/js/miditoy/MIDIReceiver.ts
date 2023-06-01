@@ -1,4 +1,4 @@
-import { MIDIDataTable } from "../MIDIDataTable";
+import { MIDIDataTable } from "@mididata";
 
 // Generic class that can listen to midi events
 // Holds all important information

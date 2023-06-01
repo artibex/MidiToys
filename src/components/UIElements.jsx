@@ -1,8 +1,8 @@
 import { createSignal, createEffect } from 'solid-js';
 import { Icon } from '@iconify-icon/solid';
-import { InputManager } from "../js/input/InputManager";
-import { CanvasManager} from "../js/CanvasManager"
-import { MIDIInputModule } from '../js/input/MIDIInputModule';
+import { InputManager } from "@inputmanager";
+import { CanvasManager} from "@canvasmanager"
+import { MIDIInputModule } from "@input/MIDIInputModule";
 
 const inputManager = new InputManager();
 const frameManager = new CanvasManager();

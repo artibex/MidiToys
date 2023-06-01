@@ -1,8 +1,7 @@
-import { EmptyToy } from "./EmptyToy";
-import { GraviBoard } from "./GraviBoard";
-import { MIDIToy } from "./MIDIToy";
-import { PolyDrum } from "./PolyDrum";
-import { SquareKeyboard } from "./SquareKeyboard";
+import { MIDIToy } from "@miditoy";
+import { EmptyToy } from "@miditoy/EmptyToy";
+import { GraviBoard } from "@miditoy/GraviBoard";
+import { PolyDrum } from "@miditoy/PolyDrum";
 import * as paper from "paper";
 
 export class ToyManager 
@@ -60,11 +59,11 @@ export class ToyManager
         console.log("CREATE PolyDrum on channel " + channel);
         this.toys[channel - 1] = new PolyDrum(channel);
     }
-    CreateSquareKeyboard(channel: number, numberOfKeys: number, startKey: number) {
-        this.RemovePaperLayer(channel);
-        console.log("CREATE SquareKeyboard on channel " + channel);
-        this.toys[channel - 1] = new SquareKeyboard(channel);
-    }
+    // CreateSquareKeyboard(channel: number, numberOfKeys: number, startKey: number) {
+    //     this.RemovePaperLayer(channel);
+    //     console.log("CREATE SquareKeyboard on channel " + channel);
+    //     this.toys[channel - 1] = new SquareKeyboard(channel);
+    // }
 
     GetToy(channel: number) {
         if (channel < 1 || channel > this.toys.length) {

@@ -1,7 +1,7 @@
-import { MIDIDataTable } from "../MIDIDataTable";
-import { MIDIReceiver } from "./MIDIReceiver";
-import { InputManager } from "../input/InputManager";
-import { ToyManager } from "./ToyManager";
+import { MIDIDataTable } from "@mididata";
+import { MIDIReceiver } from "@midireceiver";
+import { InputManager } from "@inputmanager";
+import { ToyManager } from "@toymanager";
 import { RGBA, Vector2D } from "@interfaces";
 import paper from 'paper';
 

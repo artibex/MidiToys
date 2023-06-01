@@ -1,4 +1,4 @@
-import { InputManager } from "./InputManager";
+import { InputManager } from "@inputmanager";
 
 export class MIDIInputModule {
   static instance: MIDIInputModule;

@@ -1,8 +1,8 @@
 //takes a QWERTY or QWERTZ keyboard
 //and convertes it into MIDI signal
 
-import { InputManager } from "./InputManager";
-import { MIDIDataTable } from "../MIDIDataTable";
+import { InputManager } from "@inputmanager";
+import { MIDIDataTable } from "@mididata";
 
 export class KeyboardInputModule {
   inputManager: InputManager;

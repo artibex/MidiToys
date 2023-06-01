@@ -1,9 +1,9 @@
 import { createSignal, createEffect } from "solid-js";
-import GraviBoardUI from "./classSpecific/GraviBoardUI";
-import PolyDrumUI from "./classSpecific/PolyDrumUI";
-import PresetUI from "./PresetUI";
-import ColorSettingsUI from "./ColorSettingsUI"
-import KeySettingsUI from "./KeySettingsUI"
+import * as SpecificUI from "@specificui";
+
+import PresetUI from "@components/PresetUI";
+import ColorSettingsUI from "@components/ColorSettingsUI"
+import KeySettingsUI from "@components/KeySettingsUI"
 
 import * as utils from "@utils";
 import * as ui from "@ui";
@@ -147,8 +147,8 @@ export default function SetupContainer( props: {channel: number}) {
         else {
             // NewToy();
             switch(toyType()) {
-                case 1: return (<GraviBoardUI channel={channel}></GraviBoardUI>);
-                case 2: return (<PolyDrumUI channel={channel}></PolyDrumUI>);
+                case 1: return (<SpecificUI.GraviBoardUI channel={channel}></SpecificUI.GraviBoardUI>);
+                case 2: return (<SpecificUI.PolyDrumUI channel={channel}></SpecificUI.PolyDrumUI>);
                 default: return(<></>);
             }
         }
