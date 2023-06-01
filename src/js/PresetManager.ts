@@ -1,6 +1,5 @@
-
+//Manages your presets for toys
 export class PresetManager{
-
   static instance: PresetManager;
 
   constructor() {

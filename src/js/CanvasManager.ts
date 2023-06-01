@@ -1,6 +1,6 @@
+import { InputManager } from "@inputmanager";
+import { ToyManager } from "@toymanager";
 import * as paper from "paper";
-import { InputManager } from "./input/InputManager";
-import { ToyManager } from "./miditoy/ToyManager";
 
 export class CanvasManager {
     private static instance: CanvasManager;

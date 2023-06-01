@@ -1,9 +1,8 @@
+import { createSignal, createEffect } from "solid-js";
 import * as utils from "@utils";
 import * as ui from "@ui";
-import { createSignal, createEffect } from "solid-js";
-import { RGBA } from "../js/Interfaces";
-import { CanvasManager } from "../js/CanvasManager";
-import { ToyManager } from "../js/miditoy/ToyManager";
+import { RGBA } from "@interfaces";
+import { CanvasManager } from "@canvasmanager";
 
 const canvasManager = new CanvasManager();
 

@@ -1,9 +1,8 @@
 import { createSignal, createEffect } from "solid-js";
-import { ToyManager } from "../../js/miditoy/ToyManager";
-import { PolyDrum } from "../../js/miditoy/PolyDrum";
-import * as utils from "../ComponentUtils.js";
-import * as ui from "../UIElements.jsx"
-import { CanvasManager } from "../../js/CanvasManager";
+import { CanvasManager } from "@canvasmanager";
+import { ToyManager } from "@toymanager";
+import * as utils from "@utils";
+import * as ui from "@ui"
 
 var tManager = new ToyManager();
 const canvasManager = new CanvasManager();

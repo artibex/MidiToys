@@ -1,12 +1,10 @@
 import { createSignal, createEffect } from "solid-js";
-import { ToyManager } from "../js/miditoy/ToyManager";
-import { PresetManager } from "../js/PresetManager";
-import { CanvasManager } from "../js/CanvasManager";
-import * as utils from "./ComponentUtils.js";
-import * as ui from "./UIElements.jsx"
+import * as ui from "@ui"
+import * as utils from "@utils";
+import { PresetManager } from "@presetmanager";
+import { CanvasManager } from "@canvasmanager";
 
-var tManager = new ToyManager();
-var pManager = new PresetManager();
+var presetManager = new PresetManager();
 const canvasManager = new CanvasManager();
 
 export default function SetupContainer( props: {channel: number}) {
@@ -18,7 +16,7 @@ export default function SetupContainer( props: {channel: number}) {
     const [matchingItems, setMetchingItems] = createSignal([]);
 
     function GetMatchingItems() {
-        setMetchingItems(pManager.FilterPresetsByType(toy.toyName));      
+        setMetchingItems(presetManager.FilterPresetsByType(toy.toyName));      
     }
 
     //Special settings
@@ -59,19 +57,19 @@ export default function SetupContainer( props: {channel: number}) {
     }
     
     function SaveNewPreset() {
-        if(presetName() != "") pManager.SaveNewPresetToy(presetName(), toy);
+        if(presetName() != "") presetManager.SaveNewPresetToy(presetName(), toy);
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
     }
     function DeletePreset(item) {
-        pManager.DeletePreset(item)
+        presetManager.DeletePreset(item)
         GetMatchingItems();
     }
     //Upload a Preset from local system
     function UploadPreset(presetName, jsonObj) {
         // console.log("UPLOAD FILE");
         // console.log("name=" + presetName, " json=" + jsonObj);
-        pManager.SaveNewPresetUpload(presetName, jsonObj);
+        presetManager.SaveNewPresetUpload(presetName, jsonObj);
         UpdateUIValues();
     }
     //Open system file explorer and give a JSON file to save
