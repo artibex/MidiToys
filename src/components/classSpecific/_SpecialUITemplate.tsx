@@ -1,6 +1,6 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "../../js/miditoy/ToyManager";
-import * as utils from "../../js/solidjs/ComponentUtils.js";
+import * as utils from "../ComponentUtils.js";
 import * as ui from "../UIElements.jsx"
 
 var tManager = new ToyManager();

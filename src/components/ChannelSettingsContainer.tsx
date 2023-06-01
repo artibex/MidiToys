@@ -1,15 +1,13 @@
 import { createSignal, createEffect } from "solid-js";
-import { ToyManager } from "../js/miditoy/ToyManager";
-import { RGBA } from "../js/Interfaces";
-import { MIDIDataTable } from "../js/MIDIDataTable";
 import GraviBoardUI from "./classSpecific/GraviBoardUI";
 import PolyDrumUI from "./classSpecific/PolyDrumUI";
 import PresetUI from "./PresetUI";
 import ColorSettingsUI from "./ColorSettingsUI"
 import KeySettingsUI from "./KeySettingsUI"
 
-import * as utils from "../js/solidjs/ComponentUtils.js";
-import * as ui from "./UIElements.jsx"
+import * as utils from "@utils";
+import * as ui from "@ui";
+
 
 export default function SetupContainer( props: {channel: number}) {
     var toy;
