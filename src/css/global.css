@@ -84,7 +84,8 @@ button:hover {
   align-items: center;
 }
 .dropdown{
-  min-width: 100px;
+  width: 80%;
+  height: auto;
 }
 
 .flexList button {
@@ -189,6 +190,10 @@ details[open] summary {
 .width100{
   width: 100%;
 }
+.width95{
+  width: 95%;
+}
+
 .width80 {
   width: 80%;
 }
@@ -217,11 +222,20 @@ details[open] summary {
   width: 5%;
 }
 
+.heightAuto{
+  height: auto;
+}
+.height95{
+  height: 95%;
+}
+.height80{
+  height: 80%;
+}
 .heigt50{
   height: 50%;
 }
-.heigt80{
-  height: 80%;
+.height10{
+  height: 10%;
 }
 
 .channelGroup {
@@ -247,8 +261,12 @@ details[open] summary {
   border: 1px solid white;
 }
 
-.top10{
-  top: 10px;
+.top1{
+  top: 1%;
+  position: fixed;
+}
+.top2{
+  top: 10%;
   position: fixed;
 }
 
@@ -258,6 +276,8 @@ details[open] summary {
   padding-bottom: 1px;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
+  width: 100%;
 }
 .alignFlexStart{
   display: flex;
@@ -268,11 +288,15 @@ details[open] summary {
   align-items: flex-end;
 }
 
-.flexList{
+.flexList {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
+  height: 100%; /* Set the height of the container to make it expand to the full height */
 }
+
+
 
 .numberInput {
   appearance: textfield;

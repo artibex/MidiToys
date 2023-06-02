@@ -298,7 +298,7 @@ export function MIDIDropdown(props) {
 
   const [selectedOption, setSelectedOption] = createSignal("");
   const [devices, setDevices] = createSignal(["", ""]);
-  const [options, setOptions] = createSignal(<option> </option>);
+  const [options, setOptions] = createSignal(<option value="">No MIDI devices found</option>);
   if(props.class === undefined) props.class = "";
 
   const loadDevices = async () => {

@@ -36,7 +36,16 @@ export default function SetupContainer() {
             }
     }
 
-    
+    function RenderCloseButton() {
+        return(
+            <ui.ButtonIcon 
+                class="marginLeft20 width10"
+                icon="mdi:close-thick"
+                width={30}
+                onClick={() => CloseSettings()}
+            />
+        )
+    }
 
     function RenderChannelButtons() {
         return(
@@ -127,38 +136,46 @@ export default function SetupContainer() {
 
     function RenderSettingsHeadline() {
         return(
-            <div class="flexContainer top10">
-            <div class="flexContainer">
-                <Icon 
-                    icon="mdi:cog-outline" 
-                    width={35}
-                    />
-                <h1 class="marginLeft10">Settings</h1>
+            <div class="height10 width95">
+                <div class="flexContainer">
+                    <div class="alignFlexStart">
+                        <Icon 
+                            icon="mdi:cog-outline" 
+                            width={35}
+                            class="marginLeft20 marginAuto "
+                            />
+                        <h1 class="marginLeft10 marginAuto">Channel {selectedChannel()} </h1>
+                    </div>
+                    <div class="alignFlexEnd">
+                        {RenderCloseButton()}
+                    </div>
+                </div>
+            <div>
             </div>
-            {RenderCloseButton()}
         </div>
 
         )
     }
 
-    function RenderCloseButton() {
-        return(
-            <ui.ButtonIcon 
-                class="marginLeft20"
-                icon="mdi:close-thick"
-                width={30}
-                onClick={() => CloseSettings()}
-            />
-        )
-    }
-
     function RenderMIDIDeviceSelection() {
         return( 
-            <div class="flexContainer ">
-            <div class="flexContainer">
-                MIDI Device:
-                <ui.MIDIDropdown />
-                <ui.MIDIDeviceReloadUIElement />
+            <div class="height10 width95">
+            <div>
+                <div class="flexContainer heightAuto">
+                    <div class="flexContainer">
+                        <div class="marginLeft20">
+                            MIDI Device 
+                        </div>
+                        <div class="marginAuto">
+                            <ui.MIDIDropdown />
+                        </div>
+                    </div>
+                    <div class="">
+                        <ui.Button 
+                            label="Reload"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
         )
@@ -167,9 +184,11 @@ export default function SetupContainer() {
     function RenderUI() {
         return(
             <div id="settingsPanel">
-                <div class="flexContainer">
-                    {RenderChannelButtons()}
-                    <div class="flexList width100">
+                <div class="flexContainer widthAuto noSelect">
+                        {RenderChannelButtons()}
+                    <div>
+                    </div>
+                    <div class="flexList width95 height95">
                         {RenderSettingsHeadline()}           
                         {RenderMIDIDeviceSelection()}
                         {RenderContainer()}

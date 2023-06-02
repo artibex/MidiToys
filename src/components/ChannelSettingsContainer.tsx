@@ -159,20 +159,22 @@ export default function SetupContainer( props: {channel: number}) {
     LoadToy();
     UpdateUIValues();
     return (
-        <div class="channelContainer noSelect width70">
-            <div class="flexContainer noSelect">
-                <div>
-                    <h3 class="marginAuto">{toyName()}</h3>
-                    <div>MIDI Channel: {channel}</div>
-                </div>
-                <div>
-                    <ui.ButtonIcon 
-                    icon="material-symbols:build-outline-sharp"
-                    onClick={() => ToggleSelectToy()}
-                    width="35"
-                    />
-                    {/* <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button> */}
-                    {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
+        <div class="channelContainer noSelect width80 height80">
+            <div>
+                <div class="flexContainer">
+                    <div class="">
+                        <h3 class="marginAuto">{toyName()}</h3>
+                        <div>MIDI Channel: {channel}</div>
+                    </div>
+                    <div>
+                        <ui.ButtonIcon 
+                        icon="material-symbols:build-outline-sharp"
+                        onClick={() => ToggleSelectToy()}
+                        width="35"
+                        />
+                        {/* <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button> */}
+                        {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
+                    </div>
                 </div>
             </div>
             <br></br>
