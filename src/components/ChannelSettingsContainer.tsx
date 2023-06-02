@@ -19,9 +19,6 @@ export default function SetupContainer( props: {channel: number}) {
     const [selectToy, setSelectToy] = createSignal(false);
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("EmptyToy");
-    // const [numberOfKeys, setNumberOfKeys] = createSignal(12);
-    // const [startKey, setStartKey] = createSignal(12);
-    // const [collapsNote, setCollapsNote] = createSignal(true);
 
     createEffect(() => {
         if(useEffect()) {
@@ -34,14 +31,6 @@ export default function SetupContainer( props: {channel: number}) {
 
         } 
     })
-
-    // const ToyChanged = () => {
-    //     // Handle the event...
-    //     // console.log("DEFAULT UI event");
-    //     setUseEffect(false);
-    //     UpdateUIValues();
-    //     setUseEffect(true);
-    // };
 
     //Update UI data
     function UpdateUIValues() {
@@ -88,6 +77,7 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
         prevToyType = toyType();
     }
+
     function UpdateComponent() {
         UpdateUIValues();
     }
@@ -141,6 +131,7 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+
     //Specific UI's from a toy
     function RenderSpecificUISettings() {
         if(toyType() == 0) return(<></>)
@@ -153,6 +144,7 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+    
     function RenderToySelection() {
         return(
             <div class="flexList">
@@ -167,7 +159,7 @@ export default function SetupContainer( props: {channel: number}) {
     LoadToy();
     UpdateUIValues();
     return (
-        <div class="channelContainer noSelect">
+        <div class="channelContainer noSelect width70">
             <div class="flexContainer noSelect">
                 <div>
                     <h3 class="marginAuto">{toyName()}</h3>

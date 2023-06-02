@@ -35,6 +35,11 @@ img,svg,video{
   display: block;
 }
 
+.positionFixed{
+  position: fixed;
+  top: 0px;
+}
+
 body {
   font-family: "SlimJoe", sans-serif;
   font-size: 10pt;
@@ -208,9 +213,15 @@ details[open] summary {
 .width10{
   width: 10%;
 }
+.width5{
+  width: 5%;
+}
 
 .heigt50{
   height: 50%;
+}
+.heigt80{
+  height: 80%;
 }
 
 .channelGroup {
@@ -236,6 +247,10 @@ details[open] summary {
   border: 1px solid white;
 }
 
+.top10{
+  top: 10px;
+  position: fixed;
+}
 
 .flexContainer{
   display: flex;
@@ -377,10 +392,10 @@ details[open] summary {
 }
 #settingsPanel {
   position: fixed;
-  top: 50px;
-  left: 50px;
-  width: 50%;
-  height: 85%;
+  top: 0px;
+  left: 0px;
+  width: 25%;
+  height: 95%;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid white;
@@ -389,7 +404,7 @@ details[open] summary {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(1, 1fr);
   grid-gap: 10px;
-  display: none;
+  /* display: none; */
 }
 .toyCanvas {
   width: 100%;
