@@ -11,7 +11,10 @@ export default function SetupContainer() {
 
     }
     function CloseSettings() {
-
+        var panel = document.getElementById("settingsPanel");
+        if(panel != undefined) {
+            panel.style.display = "none";
+        }
     }
     function RenderContainer() {
             switch(selectedChannel()) {
