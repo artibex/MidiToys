@@ -14,8 +14,16 @@ export default function SetupContainer() {
         var panel = document.getElementById("settingsPanel");
         if(panel != undefined) {
             panel.style.display = "none";
+            ShowSettingsButton();
         }
     }
+    function ShowSettingsButton() {
+        var button = document.getElementById("openSettingsButton");
+        if(button != undefined) {
+          button.style.display = "block";
+        }
+      }
+
     function RenderContainer() {
             switch(selectedChannel()) {
                 case 1: return <ChannelSettingsContainer channel={1} />;

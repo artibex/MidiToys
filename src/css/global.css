@@ -396,7 +396,7 @@ details[open] summary {
   /* position: absolute; */
 }
 
-#openSettingsBtn {
+#openSettingsButton {
   font-family: "BigJohn", sans-serif;
   font-size: 16pt;
   position: fixed;
@@ -406,7 +406,7 @@ details[open] summary {
   padding-right: 60px; */
   top: 50px;
   left: 50px;
-  display: none;
+  display: block;
 }
 #buttonSettingsGroup {
   user-select: none;
@@ -428,7 +428,7 @@ details[open] summary {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(1, 1fr);
   grid-gap: 10px;
-  /* display: none; */
+  display: none;
 }
 .toyCanvas {
   width: 100%;

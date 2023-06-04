@@ -109,14 +109,15 @@ import { Icon } from '@iconify-icon/solid';
 
     <canvas id="toyCanvas" class="toyCanvas"></canvas>
 
-    <button id="openSettingsBtn">Settings</button>
+    <!-- <button id="openSettingsBtn">Settings</button>
     <ui.ButtonIcon 
         icon="material-symbols:settings-suggest"
         label="Settings "
         id="openSettingsBtn"
         class="padding10"
-    />
-
+    /> -->
+    
+    <ui.OpenSettingsButton client:idle />
     <SettingsPanel client:idle />
 
 <!-- <div id="settingsPanel">
