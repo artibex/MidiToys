@@ -4,10 +4,8 @@ import { Icon } from '@iconify-icon/solid';
 import * as utils from "@utils";
 import * as ui from "@ui";
 
-
 export default function SetupContainer() {
     const [selectedChannel, setSelectedChannel] = createSignal(1);
-
 
     function OpenSettings() {
 

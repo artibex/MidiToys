@@ -24,7 +24,6 @@ export default function SetupContainer( props: {channel: number}) {
         }
     })
 
-
     function UpdateUIValues() {
         // console.log("UPDATE DEFAULT UI values");
         if (typeof window !== 'undefined') {

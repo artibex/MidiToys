@@ -10,9 +10,9 @@ const canvasManager = new CanvasManager();
 export default function SetupContainer( props: {channel: number}) {
     var toy;
     var channel = props.channel;
+    var updateToy = false;
 
     const [useEffect, setUseEffect] = createSignal(true);
-
 
     const [numberOfKeys, setNumberOfKeys] = createSignal(12);
     const [startKey, setStartKey] = createSignal(12);
@@ -27,6 +27,7 @@ export default function SetupContainer( props: {channel: number}) {
     function UpdateComponent() {
         LoadToy();
     }
+
     //Key note settings
     function RenderKeySettings() {
         return(
@@ -56,6 +57,7 @@ export default function SetupContainer( props: {channel: number}) {
             </>
         )
     }
+
     //Retusn more or less UI, depends on a settings
     function RenderStartKeySetting() {
         //If collaps note is true, there is no need to set a start key, hide it
@@ -75,6 +77,7 @@ export default function SetupContainer( props: {channel: number}) {
             )
         }
     }
+
     function LoadToy() {
         var t = utils.InitToy(channel, toy, UpdateComponent);
         if(toy != t) {
@@ -82,6 +85,7 @@ export default function SetupContainer( props: {channel: number}) {
             UpdateUIValues();
         }
     }
+
     function UpdateUIValues() {
         // console.log("UPDATE DEFAULT UI values");
         if (typeof window !== 'undefined') {
@@ -96,30 +100,27 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+
     function UpdateToyValues() {
         // console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
-            //Remove old children
-            // toy.RemoveChildrenFromLayer();
-
-            toy.numberOfKeys = numberOfKeys();
-            toy.startKey = startKey();
-            toy.useRegExp = collapsNote();
-
-            try {
-                toy.SetupMIDIReceiver(collapsNote());
-                toy.SetupKeyboard();
-
-            } catch {}
-
-            // if(toyType() != 0) {
-            // }
+            if(toy != undefined) {
+                    toy.numberOfKeys = numberOfKeys();
+                    toy.startKey = startKey();
+                    toy.useRegExp = collapsNote();
+        
+                    try {
+                        if(updateToy) {
+                            toy.SetupMIDIReceiver(collapsNote());
+                            toy.SetupKeyboard();
+                        } else updateToy = true;
+                    } catch {}
+            }
         }
     }
 
 
-
-    LoadToy();
+    // LoadToy();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return(
         <ui.DetailsFillerCenter summeryName={"Key settings"} content={RenderKeySettings()} />
