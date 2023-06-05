@@ -152,15 +152,26 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
     
-    function RenderToySelection() {
-        return(
-            <div class="flexList">
-                <button id="thinButton" onClick={() => SetToyType(0, true)}>None</button>
-                <button id="thinButton" onClick={() => SetToyType(1, true)}>Gravi Board</button>
-                <button id="thinButton" onClick={() => SetToyType(2, true)}>Poly Drum</button>
-                {/* <button id="thinButton" onClick={() => SetToyType(3)}>Square Keyboard</button> */}
-            </div>
-        )
+    function RenderToySelection() {        
+        var emptyToy = <button id="thinButton" onClick={() => SetToyType(0, true)}>None</button>
+        var toys = <>
+            <button id="thinButton" onClick={() => SetToyType(1, true)}>Gravi Board</button>
+            <button id="thinButton" onClick={() => SetToyType(2, true)}>Poly Drum</button>
+        </>;
+        
+        if(toyType() > 0) {
+            return (
+                <div>
+                    {emptyToy}
+                    {toys}
+                </div>
+            )
+        } else {
+            return (
+                toys
+            )
+        }
+        
     }
 
     LoadToy();
