@@ -26,7 +26,7 @@ export default function SetupContainer( props: {channel: number}) {
         if(useEffect()) {
             // console.log("TRIGGER effect");
             if(toyType() > 0 && toy != undefined) {
-                UpdateToyValues();
+                // UpdateToyValues();
             }
         } else {
             // console.log("DO NOT useEffect");
@@ -47,26 +47,6 @@ export default function SetupContainer( props: {channel: number}) {
         } else setToyName("Empty");
     }
     //Update Toy data
-    function UpdateToyValues() {
-        // console.log("UPDATE toy values");
-        if (typeof window !== 'undefined') {
-            //Remove old children
-            // toy.RemoveChildrenFromLayer();
-
-            // toy.numberOfKeys = numberOfKeys();
-            // toy.startKey = startKey();
-            // toy.useRegExp = collapsNote();
-
-            // toy.SetPaperColor(toy.fillColor, fillColor().r, fillColor().g, fillColor().b, fillColor().a);
-            // toy.SetPaperColor(toy.strokeColor, strokeColor().r, strokeColor().g, strokeColor().b, strokeColor().a);
-            // toy.SetPaperColor(toy.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
-
-            try {
-                // toy.SetupMIDIReceiver(collapsNote());
-                // toy.SetupKeyboard();
-            } catch{}
-        }
-    }
 
     //Create a new Toy, get help from imported function to reduce code
     function NewToy() {
@@ -182,7 +162,7 @@ export default function SetupContainer( props: {channel: number}) {
     UpdateUIValues();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
-        <div class="channelContainer noSelect width80 height80">
+        <div class="channelContainer noSelect">
             <div>
                 <div class="flexContainer">
                     <div class="">

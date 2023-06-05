@@ -25,7 +25,7 @@ export function DetailsFillerCenter(props) {
 
 export function SliderInput(props) {
   const [value, setValue] = createSignal(props.value);
-  if(props.class == undefined) props.class = "SliderInput marginLeft10";
+  if(props.class == undefined) props.class = "sliderInput marginLeft10";
   var factor = props.factor;
   if(factor == undefined) factor = 1;
 
@@ -222,20 +222,45 @@ export function SelectedMIDIDeviceUIElement(props) {
 
 export function NumberSliderCombo(props) {
   return(
-    <div class="flexContainer">
+    <div class="flexContainer justifyEnd">
       <NumberInput
           factor={props.factor}
           minMaxStep={props.minMaxStep}
           value={props.value}
           onChange={props.onChange}
       />
-      <div class="width80">
+      <div class="width50">
         <SliderInput
             factor={props.factor}
             minMaxStep={props.minMaxStep}
             value={props.value}
             onChange={props.onChange}
         />
+      </div>
+    </div>
+  )
+}
+
+export function NumberSliderComboVertical(props) {
+  return(
+    <div>
+      <div class="flexList">
+          <div class="sliderContainer">
+            <SliderInput
+                class="verticalSlider"
+                factor={props.factor}
+                minMaxStep={props.minMaxStep}
+                value={props.value}
+                onChange={props.onChange}
+            />
+        </div>
+        <NumberInput
+            factor={props.factor}
+            minMaxStep={props.minMaxStep}
+            value={props.value}
+            onChange={props.onChange}
+        />
+        Cool Text
       </div>
     </div>
   )
@@ -255,17 +280,33 @@ export function CheckboxUIElement(props) {
 
 export function NumberSliderUIElement(props) {
   if(props.name == undefined) props.name = "define props.name pls";
-  return(
-    <div class="flexContainer">
-      <div class="width50">{props.name}</div>
-      <NumberSliderCombo 
-        factor={props.factor}
-        minMaxStep={props.minMaxStep}
-        value={props.value}
-        onChange={props.onChange}
-      />
-    </div>
-  )
+  if(props.vertical == undefined) props.vertical = false;
+  
+  if(props.vertical) {
+    return(
+      <div class="flexContainer">
+        <div class="justifyStart">{props.name}</div>
+          <NumberSliderComboVertical 
+            factor={props.factor}
+            minMaxStep={props.minMaxStep}
+            value={props.value}
+            onChange={props.onChange}
+          />
+      </div>
+    )
+  } else {
+    return(
+      <div class="flexContainer">
+        <div class="width50">{props.name}</div>
+        <NumberSliderCombo 
+          factor={props.factor}
+          minMaxStep={props.minMaxStep}
+          value={props.value}
+          onChange={props.onChange}
+        />
+      </div>
+    )
+  }
 }
 
 export function JsonFileUploader(props) {

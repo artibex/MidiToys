@@ -103,16 +103,19 @@ export default function SetupContainer( props: {channel: number}) {
             {matchingItems().map((item) => (
                 <div class="flexContainer">
                         <ui.Button
-                            class="width70 thinButton"
+                            class="width80 thinButton"
                             onClick={() => LoadPreset(item)}
                             label={GetPresetName(item)}
                         />
-                    <div class="">
+                    <div class="width20"></div>
+                    <div class="flexContainer">
                         <ui.ButtonIcon 
+                            class="squareButton"
                             icon="material-symbols:download"
                             onClick={() => DownloadPreset(item)}
                         />
-                        <ui.ButtonIcon 
+                        <ui.ButtonIcon
+                            class="squareButton"
                             icon="material-symbols:delete-outline"
                             onClick={() => DeletePreset(item)}
                         />
@@ -125,8 +128,8 @@ export default function SetupContainer( props: {channel: number}) {
     
     function RenderUI() {
         return (
-            <div class="marginAuto">
-                <div class="flexContainer width100">
+            <div class="">
+                <div class="flexContainer">
                     <div class="flexList">
                         <div class="marginBottom5">Save new preset</div>
                         <input
@@ -135,8 +138,9 @@ export default function SetupContainer( props: {channel: number}) {
                             onChange={(event) => setPresetName(event.target.value)}
                         />
                         </div>
+                        <div class="width20"></div>
                         <ui.Button 
-                            class="thinButton marginAuto"
+                            class="marginAuto thinButton"
                             onClick={() => SaveNewPreset()}
                             label="Save"
                         />
@@ -147,9 +151,11 @@ export default function SetupContainer( props: {channel: number}) {
                 <br></br>
                 {RenderAvailablePresets()}
                 <br></br>
-                <ui.JsonFileUploader 
-                onFileUpload={UploadPreset}
-                />
+                <div class="flexList">
+                    <ui.JsonFileUploader 
+                    onFileUpload={UploadPreset}
+                    />
+                </div>
             </div>
         )
     }

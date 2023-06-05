@@ -189,11 +189,11 @@ export default function SetupContainer() {
 
     function RenderUI() {
         return(
-            <div id="settingsPanel" class="noSelect">
-                <div class="flexContainer widthAuto">
+            <div id="settingsPanel" class="noSelect width100 height100">
+                <div class="flexContainer">
                     {RenderChannelButtons()}
                     
-                    <div class="flexList width95 height95">
+                    <div class="flexList">
                         {RenderSettingsHeadline()}           
                         {RenderMIDIDeviceSelection()}
                         {RenderContainer()}

@@ -47,14 +47,15 @@ export default function SetupContainer( props: {channel: number}) {
         // console.log("UPDATE toy values");
         if (typeof window !== 'undefined') {
             //Remove old children
-
-            toy.SetPaperColor(toy.fillColor, fillColor().r, fillColor().g, fillColor().b, fillColor().a);
-            toy.SetPaperColor(toy.strokeColor, strokeColor().r, strokeColor().g, strokeColor().b, strokeColor().a);
-            toy.SetPaperColor(toy.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
-
-            try {
-                toy.ApplyColors();
-            } catch {}
+            if(toy != undefined) {
+                toy.SetPaperColor(toy.fillColor, fillColor().r, fillColor().g, fillColor().b, fillColor().a);
+                toy.SetPaperColor(toy.strokeColor, strokeColor().r, strokeColor().g, strokeColor().b, strokeColor().a);
+                toy.SetPaperColor(toy.accentColor, accentColor().r, accentColor().g, accentColor().b, accentColor().a);
+    
+                try {
+                    toy.ApplyColors();
+                } catch {}
+            }
         }
     }
     console.log("CREATE ColorSettingsUI");
@@ -83,7 +84,10 @@ export default function SetupContainer( props: {channel: number}) {
         return (
             <>
                 <div class="flexContainer">
-                    <div class="flexContainer">
+                    <div class="width80">
+                        <h3 class="textAlignCenter">{colorSelectionName()}</h3>
+                    </div>
+                    <div class="flex  justifyCenter">
                         <ui.ButtonIcon
                             icon="material-symbols:chevron-left"
                             onClick={() => UpdateColorSelection(-1)}
@@ -94,7 +98,6 @@ export default function SetupContainer( props: {channel: number}) {
                             onClick={() => UpdateColorSelection(1)}
                             width={30}
                         />
-                        <h3 class="marginLeft20">{colorSelectionName()}</h3>
                     </div>
                 </div>
                 <br></br>
@@ -204,7 +207,7 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
 
-    LoadToy();
+    // LoadToy();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
         // <ui.DetailsFillerCenter("Color Settings", RenderColorSettings()) />
