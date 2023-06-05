@@ -448,12 +448,14 @@ export function OpenSettingsButton(props) {
 
   if (typeof window !== 'undefined') {
     document.addEventListener("mousemove", (event) => {
-      if(panel.style.display != "block") {
-        if (event.clientY < window.innerHeight / 4) {
-          if(event.clientX < window.innerHeight / 4) {
-            ShowButton();
-          } else HideButton();
-        } else HideButton();
+      if(panel != undefined) {
+          if(panel.style.display != "block") {
+            if (event.clientY < window.innerHeight / 4) {
+              if(event.clientX < window.innerHeight / 4) {
+                ShowButton();
+              } else HideButton();
+            } else HideButton();
+          }
       }
     });
   }

@@ -127,7 +127,6 @@ export default function SetupContainer( props: {channel: number}) {
             else {
                 return(
                     <div class="noSelect">
-                        {/* {RenderPresetUI()} */}
                         <PresetUI channel={channel} />
                         <br></br>
                         {RenderSpecificUISettings()}
@@ -135,7 +134,6 @@ export default function SetupContainer( props: {channel: number}) {
                         <ColorSettingsUI channel={channel} />
                         <br></br>
                         <KeySettingsUI channel={channel} />
-                        {/* <ui.DetailsFillerCenter summeryName={"Key Settings"} content={RenderKeySettings} /> */}
                     </div>
                 )
             }
@@ -173,8 +171,7 @@ export default function SetupContainer( props: {channel: number}) {
             <div>
                 <div class="flexContainer">
                     <div class="">
-                        <h3 class="marginAuto">{toyName()}</h3>
-                        <div>MIDI Channel: {channel}</div>
+                        <h2 class="marginAuto">{toyName()}</h2>
                     </div>
                     <div>
                         <ui.ButtonIcon 

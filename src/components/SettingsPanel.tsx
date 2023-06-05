@@ -30,7 +30,7 @@ export default function SetupContainer() {
 
     function RenderGlobalSettings() {
         return(
-            <div>
+            <div class="channelContainer">
                 {RenderMIDIDeviceSelection()}
             </div>
        )
@@ -194,9 +194,9 @@ export default function SetupContainer() {
 
     function RenderMIDIDeviceSelection() {
         return( 
-            <div class="height10 width95">
+            <div class="">
             <div>
-                <div class="flexContainer heightAuto">
+                <div class="flex heightAuto">
                     <div class="flexContainer">
                         <div class="marginLeft20">
                             MIDI Device 
@@ -218,10 +218,10 @@ export default function SetupContainer() {
 
     function RenderUI() {
         return(
-            <div id="settingsPanel" class="noSelect width100 height100">
+            <div id="settingsPanel" class="noSelect width100 height90">
                 <div class="flexContainer justifyStart">
                     {RenderChannelButtons()}
-                    <div class="flexList marginLeft20">
+                    <div class="flexList marginLeft20 width100">
                         {RenderUIHeadline()}           
                         {RenderContainer()}
                     </div>   
