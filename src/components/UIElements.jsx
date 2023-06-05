@@ -25,7 +25,7 @@ export function DetailsFillerCenter(props) {
 
 export function SliderInput(props) {
   const [value, setValue] = createSignal(props.value);
-  if(props.class == undefined) props.class = "sliderInput marginLeft10";
+  if(props.class == undefined) props.class = "SliderInput marginLeft10";
   var factor = props.factor;
   if(factor == undefined) factor = 1;
 
@@ -229,12 +229,14 @@ export function NumberSliderCombo(props) {
           value={props.value}
           onChange={props.onChange}
       />
-      <SliderInput
-          factor={props.factor}
-          minMaxStep={props.minMaxStep}
-          value={props.value}
-          onChange={props.onChange}
-      />
+      <div class="width80">
+        <SliderInput
+            factor={props.factor}
+            minMaxStep={props.minMaxStep}
+            value={props.value}
+            onChange={props.onChange}
+        />
+      </div>
     </div>
   )
 }
@@ -255,7 +257,7 @@ export function NumberSliderUIElement(props) {
   if(props.name == undefined) props.name = "define props.name pls";
   return(
     <div class="flexContainer">
-      <div>{props.name}</div>
+      <div class="width50">{props.name}</div>
       <NumberSliderCombo 
         factor={props.factor}
         minMaxStep={props.minMaxStep}

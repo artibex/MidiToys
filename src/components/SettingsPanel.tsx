@@ -7,9 +7,6 @@ import * as ui from "@ui";
 export default function SetupContainer() {
     const [selectedChannel, setSelectedChannel] = createSignal(1);
 
-    function OpenSettings() {
-
-    }
     function CloseSettings() {
         var panel = document.getElementById("settingsPanel");
         if(panel != undefined) {
@@ -61,82 +58,82 @@ export default function SetupContainer() {
             <div class="flexList width10">
                 <ui.Button
                     label="1"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(1)}
                 />
                 <ui.Button
                     label="2"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(2)}
                 />
                 <ui.Button
                     label="3"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(3)}            
                 />
                 <ui.Button
                     label="4"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(4)}
                 />
                 <ui.Button
                     label="5"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(5)}
                 />
                 <ui.Button
                     label="6"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(6)}
                 /> 
                 <ui.Button
                     label="7"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(7)}
                 />
                 <ui.Button
                     label="8"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(8)}
                 /> 
                 <ui.Button
                     label="9"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(9)}
                 /> 
                 <ui.Button
                     label="10"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(10)}
                 /> 
                 <ui.Button
                     label="11"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(11)}
                 /> 
                 <ui.Button
                     label="12"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(12)}
                 /> 
                 <ui.Button
                     label="13"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(13)}
                 /> 
                 <ui.Button
                     label="14"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(14)}
                 /> 
                 <ui.Button
                     label="15"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(15)}
                 /> 
                 <ui.Button
                     label="16"
-                    class="squareButton"
+                    class="channelButton"
                     onClick={() => setSelectedChannel(16)}
                 />                                                                                                                                                                              
             </div>
@@ -148,11 +145,11 @@ export default function SetupContainer() {
             <div class="height10 width95">
                 <div class="flexContainer">
                     <div class="alignFlexStart">
-                        <Icon 
+                        {/* <Icon 
                             icon="mdi:cog-outline" 
                             width={35}
                             class="marginLeft20 marginAuto "
-                            />
+                            /> */}
                         <h1 class="marginLeft10 marginAuto">Channel {selectedChannel()} </h1>
                     </div>
                     <div class="alignFlexEnd">
@@ -192,11 +189,10 @@ export default function SetupContainer() {
 
     function RenderUI() {
         return(
-            <div id="settingsPanel">
-                <div class="flexContainer widthAuto noSelect">
-                        {RenderChannelButtons()}
-                    <div>
-                    </div>
+            <div id="settingsPanel" class="noSelect">
+                <div class="flexContainer widthAuto">
+                    {RenderChannelButtons()}
+                    
                     <div class="flexList width95 height95">
                         {RenderSettingsHeadline()}           
                         {RenderMIDIDeviceSelection()}
