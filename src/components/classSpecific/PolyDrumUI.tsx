@@ -35,6 +35,7 @@ export default function SetupContainer( props: {channel: number}) {
     })
 
     function UpdateComponent() {
+        console.log("UPDATE PolyDrum toy");
         LoadToy();
     }
 

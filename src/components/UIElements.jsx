@@ -393,6 +393,8 @@ export function ChannelObserverUIElement(props) {
 
 export function OpenSettingsButton(props) {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
+  var panel;
+
 
   createEffect(() => {
     if(settingsOpen()) {
@@ -422,19 +424,31 @@ export function OpenSettingsButton(props) {
     }
   }
 
-  function GetSettingsState() {
+  if (typeof window !== 'undefined') {
+    document.addEventListener("mousemove", (event) => {
+      if(panel.style.display != "block") {
+        if (event.clientY < window.innerHeight / 4) {
+          if(event.clientX < window.innerHeight / 4) {
+            ShowButton();
+          } else HideButton();
+        } else HideButton();
+      }
+    });
+  }
+  
+
+  function GetPanel() {
     if (typeof window !== 'undefined') {
-      var panel = document.getElementById("settingsPanel");
-      if(panel.style.display = "none") setSettingsOpen(false);
-      else setSettingsOpen(true);
+      panel = document.getElementById("settingsPanel");
     }
   }
 
-  frameManager.SubscribeOneFPS(GetSettingsState());
+  frameManager.SubscribeOneFPS(GetPanel);
   return(
     <ButtonIcon
       id="openSettingsButton"
-      label="Settings "
+      // label="Settings "
+      width="50"
       onClick={() => OpenSettings()}
       icon="mdi:cog-outline"
     />
