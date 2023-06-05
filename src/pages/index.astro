@@ -1,7 +1,7 @@
 ---
+import * as ui from "@ui"
 import "../css/global.css";
-import ChannelSettingsContainer from "../components/ChannelSettingsContainer";
-import * as ui from "../components/UIElements.jsx"
+import SettingsPanel from "@components/SettingsPanel";
 import { Icon } from '@iconify-icon/solid';
 ---
 
@@ -11,129 +11,116 @@ import { Icon } from '@iconify-icon/solid';
     <meta charset="UTF-8">
     <title>MIDI Toys</title>
 </head>
-<body>
+    <body>
 
+    <!-- MIDI Toys Setup -->
+    <script>
+        //Import
+        import { InputManager } from "../js/input/InputManager";
+        import { ToyManager } from "../js/miditoy/ToyManager";
+        import {CanvasManager} from "../js/CanvasManager"
 
-<!-- MIDI Toys Setup -->
-<script>
-    //Import
-    import { InputManager } from "../js/input/InputManager";
-    import { ToyManager } from "../js/miditoy/ToyManager";
-    import {CanvasManager} from "../js/CanvasManager"
-    // import * as paper from "paper";
-    
-
-    //Base Toys setup
-    let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement; //Get target Canvas
-    // paper.setup(toyCanvas); //Paper setup
-    
-    let canvasManager = new CanvasManager();
-    canvasManager.SetupCanvas(toyCanvas);
-    let inputManager = new InputManager(); //Setup input manager
-    let toyManager = new ToyManager(); //Setup toy manager
-    toyManager.SetTargetCanvas(toyCanvas); //Set the target
-    toyManager.CreateEmptyToys();
-
-    let frameCounter = 0;
-    let updateFrequency = 1;
-    // paper.view.onFrame = function(event) {
-    //     frameCounter++;
-
-    //     if (frameCounter >= updateFrequency) {
-    //         frameCounter = 0;
-    //         toyManager.UpdateToys(); //Update all keyboards, 60 times a second
-    //     }
-    // }
-</script>
+        //Base Toys setup
+        let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement; //Get target Canvas
+        // paper.setup(toyCanvas); //Paper setup
+        
+        let canvasManager = new CanvasManager();
+        canvasManager.SetupCanvas(toyCanvas);
+        let inputManager = new InputManager(); //Setup input manager
+        let toyManager = new ToyManager(); //Setup toy manager
+        toyManager.SetTargetCanvas(toyCanvas); //Set the target
+        toyManager.CreateEmptyToys();
+    </script>
 
 <!-- Open SettingsPanel -->
-<script>
+    <!-- <script>
+        import { AnimationCollection } from "../js/AnimationCollection";
 
-    import { AnimationCollection } from "../js/AnimationCollection";
+        const settingsPanel = document.getElementById("settingsPanel");
+        const openSettingsBtn = document.getElementById("openSettingsBtn");
+        const closeBtn = document.querySelector('#closeButton');
 
-    const settingsPanel = document.getElementById("settingsPanel");
-    const openSettingsBtn = document.getElementById("openSettingsBtn");
-    const closeBtn = document.querySelector('#closeButton');
-
-    const CloseSettings = () => settingsPanel.style.display = "none";
-    function OpenSettings() {
-        settingsPanel.style.display = "block";
-        HideOpenSettingsBtn();
-    }
-
-    const ShowOpenSettingsBtn = () => openSettingsBtn.style.display = "block";
-    const HideOpenSettingsBtn = () => openSettingsBtn.style.display = "none";
-
-    document.addEventListener("mousemove", (event) => {
-        if (event.clientY > window.innerHeight / 2) {
+        const CloseSettings = () => settingsPanel.style.display = "none";
+        function OpenSettings() {
+            settingsPanel.style.display = "block";
             HideOpenSettingsBtn();
-            // CloseSettings();
-        } else { 
-            let calc = settingsPanel.style.left + settingsPanel.style.padding;
-            settingsPanel.style.width = `${window.innerWidth - 150}px`;
-            if(settingsPanel.style.display != "block") ShowOpenSettingsBtn();
-            //OpenSettings();
         }
-    });
-    openSettingsBtn.addEventListener("click", () => {
-        if(settingsPanel.style.display == "none") {
-            AnimationCollection.AnimateFromTop(settingsPanel, 50);
-            OpenSettings();
+
+        const ShowOpenSettingsBtn = () => openSettingsBtn.style.display = "block";
+        const HideOpenSettingsBtn = () => openSettingsBtn.style.display = "none";
+
+        document.addEventListener("mousemove", (event) => {
+            if (event.clientY > window.innerHeight / 2) {
+                HideOpenSettingsBtn();
+                // CloseSettings();
+            } else { 
+                let calc = settingsPanel.style.left + settingsPanel.style.padding;
+                settingsPanel.style.width = `${window.innerWidth - 150}px`;
+                if(settingsPanel.style.display != "block") ShowOpenSettingsBtn();
+                //OpenSettings();
+            }
+        });
+        openSettingsBtn.addEventListener("click", () => {
+            if(settingsPanel.style.display == "none") {
+                AnimationCollection.AnimateFromTop(settingsPanel, 50);
+                OpenSettings();
+            }
+            else CloseSettings();
+        });
+        closeBtn.addEventListener("click", CloseSettings);
+
+    </script> -->
+
+    <!-- ContainerGroups Controls -->
+    <!-- <script>
+        const containerGroups = document.querySelectorAll('.channelGroup');
+        const prevButton = document.querySelector('#prevButton');
+        const nextButton = document.querySelector('#nextButton');
+        let currentIndex = 0;
+
+        function showContainers(index) {
+        // Hide all container groups
+        containerGroups.forEach(group => {
+            var g = group as HTMLElement;
+            g.style.display = "none";
+        });
+            // Show the current set of containers
+            var g = containerGroups[index] as HTMLElement;
+            g.style.display = "grid";
         }
-        else CloseSettings();
-    });
-    closeBtn.addEventListener("click", CloseSettings);
 
-</script>
+        prevButton.addEventListener('click', () => {
+            // Decrement the index and show the new set of containers
+            currentIndex--;
+                if (currentIndex < 0) {
+                    currentIndex = containerGroups.length - 1;
+                }
+            showContainers(currentIndex);
+        });
+        nextButton.addEventListener('click', () => {
+            // Increment the index and show the new set of containers
+            currentIndex++;
+                if (currentIndex >= containerGroups.length) {
+                    currentIndex = 0;
+                }
+            showContainers(currentIndex);
+        });
+    </script> -->
 
-<!-- ContainerGroups Controls -->
-<script>
-    const containerGroups = document.querySelectorAll('.channelGroup');
-    const prevButton = document.querySelector('#prevButton');
-    const nextButton = document.querySelector('#nextButton');
-    let currentIndex = 0;
+    <canvas id="toyCanvas" class="toyCanvas"></canvas>
 
-    function showContainers(index) {
-    // Hide all container groups
-    containerGroups.forEach(group => {
-        var g = group as HTMLElement;
-        g.style.display = "none";
-    });
-        // Show the current set of containers
-        var g = containerGroups[index] as HTMLElement;
-        g.style.display = "grid";
-    }
+    <!-- <button id="openSettingsBtn">Settings</button>
+    <ui.ButtonIcon 
+        icon="material-symbols:settings-suggest"
+        label="Settings "
+        id="openSettingsBtn"
+        class="padding10"
+    /> -->
+    
+    <ui.OpenSettingsButton client:idle />
+    <SettingsPanel client:idle />
 
-    prevButton.addEventListener('click', () => {
-        // Decrement the index and show the new set of containers
-        currentIndex--;
-            if (currentIndex < 0) {
-                currentIndex = containerGroups.length - 1;
-            }
-        showContainers(currentIndex);
-    });
-    nextButton.addEventListener('click', () => {
-        // Increment the index and show the new set of containers
-        currentIndex++;
-            if (currentIndex >= containerGroups.length) {
-                currentIndex = 0;
-            }
-        showContainers(currentIndex);
-    });
-</script>
-
-
-<canvas id="toyCanvas" class="toyCanvas"></canvas>
-
-<!-- <button id="openSettingsBtn">Settings</button> -->
-<ui.ButtonIcon 
-    icon="material-symbols:settings-suggest"
-    label="Settings "
-    id="openSettingsBtn"
-    class="padding10"
-/>
-
-<div id="settingsPanel">
+<!-- <div id="settingsPanel">
     <div id="buttonSettingsGroup">
             <ui.ButtonIcon
                 id="closeButton"
@@ -185,12 +172,12 @@ import { Icon } from '@iconify-icon/solid';
         <ChannelSettingsContainer channel={15} client:load />
         <ChannelSettingsContainer channel={16} client:load />
     </div>
-</div>
+</div> -->
 
 
-<!-- <footer>
-    <p>© 2023 Korbinian Maag</p>
-</footer> -->
+    <!-- <footer>
+        <p>© 2023 Korbinian Maag</p>
+    </footer> -->
 
-</body>
+    </body>
 </html>

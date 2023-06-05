@@ -25,7 +25,7 @@ export function DetailsFillerCenter(props) {
 
 export function SliderInput(props) {
   const [value, setValue] = createSignal(props.value);
-  if(props.class == undefined) props.class = "sliderInput marginLeft10";
+  if(props.class == undefined) props.class = "SliderInput marginLeft10";
   var factor = props.factor;
   if(factor == undefined) factor = 1;
 
@@ -229,12 +229,14 @@ export function NumberSliderCombo(props) {
           value={props.value}
           onChange={props.onChange}
       />
-      <SliderInput
-          factor={props.factor}
-          minMaxStep={props.minMaxStep}
-          value={props.value}
-          onChange={props.onChange}
-      />
+      <div class="width80">
+        <SliderInput
+            factor={props.factor}
+            minMaxStep={props.minMaxStep}
+            value={props.value}
+            onChange={props.onChange}
+        />
+      </div>
     </div>
   )
 }
@@ -255,7 +257,7 @@ export function NumberSliderUIElement(props) {
   if(props.name == undefined) props.name = "define props.name pls";
   return(
     <div class="flexContainer">
-      <div>{props.name}</div>
+      <div class="width50">{props.name}</div>
       <NumberSliderCombo 
         factor={props.factor}
         minMaxStep={props.minMaxStep}
@@ -298,7 +300,7 @@ export function MIDIDropdown(props) {
 
   const [selectedOption, setSelectedOption] = createSignal("");
   const [devices, setDevices] = createSignal(["", ""]);
-  const [options, setOptions] = createSignal(<option> </option>);
+  const [options, setOptions] = createSignal(<option value="">No MIDI devices found</option>);
   if(props.class === undefined) props.class = "";
 
   const loadDevices = async () => {
@@ -388,5 +390,69 @@ export function ChannelObserverUIElement(props) {
     >
       Channel {props.channel}: {holdingKeys}
     </h3>
+  )
+}
+
+export function OpenSettingsButton(props) {
+  const [settingsOpen, setSettingsOpen] = createSignal(false);
+  var panel;
+
+
+  createEffect(() => {
+    if(settingsOpen()) {
+      HideButton();
+    } else {
+      ShowButton();
+    }
+  })
+
+  function OpenSettings() {
+      var panel = document.getElementById("settingsPanel");
+      if(panel != undefined) {
+          panel.style.display = "block";
+          HideButton();
+      }
+  }
+  function HideButton() {
+    var button = document.getElementById("openSettingsButton");
+    if(button != undefined) {
+      button.style.display = "none";
+    }
+  }
+  function ShowButton() {
+    var button = document.getElementById("openSettingsButton");
+    if(button != undefined) {
+      button.style.display = "block";
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    document.addEventListener("mousemove", (event) => {
+      if(panel.style.display != "block") {
+        if (event.clientY < window.innerHeight / 4) {
+          if(event.clientX < window.innerHeight / 4) {
+            ShowButton();
+          } else HideButton();
+        } else HideButton();
+      }
+    });
+  }
+  
+
+  function GetPanel() {
+    if (typeof window !== 'undefined') {
+      panel = document.getElementById("settingsPanel");
+    }
+  }
+
+  frameManager.SubscribeOneFPS(GetPanel);
+  return(
+    <ButtonIcon
+      id="openSettingsButton"
+      // label="Settings "
+      width="50"
+      onClick={() => OpenSettings()}
+      icon="mdi:cog-outline"
+    />
   )
 }

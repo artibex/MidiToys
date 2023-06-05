@@ -10,7 +10,8 @@ const canvasManager = new CanvasManager();
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
-    
+    var updateToy = false;
+
     const [useEffect, setUseEffect] = createSignal(true);
     const [presetName, setPresetName] = createSignal("");
     const [matchingItems, setMetchingItems] = createSignal([]);
@@ -61,6 +62,7 @@ export default function SetupContainer( props: {channel: number}) {
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
     }
+
     function DeletePreset(item) {
         presetManager.DeletePreset(item)
         GetMatchingItems();
@@ -72,6 +74,7 @@ export default function SetupContainer( props: {channel: number}) {
         presetManager.SaveNewPresetUpload(presetName, jsonObj);
         UpdateUIValues();
     }
+
     //Open system file explorer and give a JSON file to save
     function DownloadPreset(item) {
         const blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
@@ -87,11 +90,13 @@ export default function SetupContainer( props: {channel: number}) {
         // Clean up the URL object
         URL.revokeObjectURL(url);
     }
+
     //Get the name of the preset for button display
     function GetPresetName(item) {
         const split = item.key.split(".");
         return split[0];
     }
+
     function RenderAvailablePresets() {            
         return (
           <div class="">
@@ -117,6 +122,7 @@ export default function SetupContainer( props: {channel: number}) {
         </div>
         )
     }
+    
     function RenderUI() {
         return (
             <div class="marginAuto">

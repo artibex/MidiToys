@@ -7,8 +7,21 @@
   src: url('../fonts/SlimJoe.otf') format('opentype');
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 html {
   color-scheme: light dark;
+}
+
+body {
+  font-family: "SlimJoe", sans-serif;
+  font-size: 10pt;
+  background-color: black;
+  color: white;
 }
 
 main{
@@ -35,11 +48,9 @@ img,svg,video{
   display: block;
 }
 
-body {
-  font-family: "SlimJoe", sans-serif;
-  font-size: 10pt;
-  background-color: black;
-  color: white;
+.positionFixed{
+  position: fixed;
+  top: 0px;
 }
 
 button {
@@ -70,7 +81,16 @@ button:hover {
   padding: 5px;
   font-family: "SlimJoe", sans-serif;
   text-align: center;
+  font-family: "SlimJoe", sans-serif;
 }
+
+.channelButton{
+  padding: 1px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
 .iconButton{
   /* display: flex; */
   padding: 5px;
@@ -79,7 +99,8 @@ button:hover {
   align-items: center;
 }
 .dropdown{
-  min-width: 100px;
+  width: 80%;
+  height: auto;
 }
 
 .flexList button {
@@ -184,6 +205,10 @@ details[open] summary {
 .width100{
   width: 100%;
 }
+.width95{
+  width: 95%;
+}
+
 .width80 {
   width: 80%;
 }
@@ -208,9 +233,24 @@ details[open] summary {
 .width10{
   width: 10%;
 }
+.width5{
+  width: 5%;
+}
 
+.heightAuto{
+  height: auto;
+}
+.height95{
+  height: 95%;
+}
+.height80{
+  height: 80%;
+}
 .heigt50{
   height: 50%;
+}
+.height10{
+  height: 10%;
 }
 
 .channelGroup {
@@ -236,6 +276,14 @@ details[open] summary {
   border: 1px solid white;
 }
 
+.top1{
+  top: 1%;
+  position: fixed;
+}
+.top2{
+  top: 10%;
+  position: fixed;
+}
 
 .flexContainer{
   display: flex;
@@ -243,6 +291,8 @@ details[open] summary {
   padding-bottom: 1px;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
+  width: 100%;
 }
 .alignFlexStart{
   display: flex;
@@ -253,11 +303,15 @@ details[open] summary {
   align-items: flex-end;
 }
 
-.flexList{
+.flexList {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
+  height: 100%; /* Set the height of the container to make it expand to the full height */
 }
+
+
 
 .numberInput {
   appearance: textfield;
@@ -320,8 +374,8 @@ details[open] summary {
 .sliderInput{
   -webkit-appearance: none;
   appearance: none;
-  width: 15vh;
-  height: 10px;
+  width: 100%;
+  height: 100%;
   background: gray;
   outline: none;
   opacity: 0.6;
@@ -330,6 +384,13 @@ details[open] summary {
 }
 .sliderInput:hover {
   opacity: 1;
+}
+.sliderVertical{
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  transform-origin: top; /* Set the thumb position to the top */
+  transform: rotate(180deg); /* Rotate the slider 180 degrees */
 }
 
 .toggleInput{
@@ -357,7 +418,7 @@ details[open] summary {
   /* position: absolute; */
 }
 
-#openSettingsBtn {
+#openSettingsButton {
   font-family: "BigJohn", sans-serif;
   font-size: 16pt;
   position: fixed;
@@ -365,9 +426,9 @@ details[open] summary {
   padding-bottom: 20px;
   padding-left: 60px;
   padding-right: 60px; */
-  top: 50px;
-  left: 50px;
-  display: none;
+  top: 0px;
+  left: 0px;
+  display: block;
 }
 #buttonSettingsGroup {
   user-select: none;
@@ -377,10 +438,10 @@ details[open] summary {
 }
 #settingsPanel {
   position: fixed;
-  top: 50px;
-  left: 50px;
-  width: 50%;
-  height: 85%;
+  top: 0px;
+  left: 0px;
+  width: 25%;
+  height: 95%;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid white;
@@ -394,7 +455,8 @@ details[open] summary {
 .toyCanvas {
   width: 100%;
   height: 100%;
-  overflow: hidden;    /* add other styles as desired */
+  overflow: hidden;    
+  /* add other styles as desired */
 }
 
 .toyCanvasDebug {

@@ -1,13 +1,15 @@
 import { createSignal, createEffect } from "solid-js";
-import * as SpecificUI from "@specificui";
+import { CanvasManager } from "@canvasmanager";
 
 import PresetUI from "@components/PresetUI";
 import ColorSettingsUI from "@components/ColorSettingsUI"
 import KeySettingsUI from "@components/KeySettingsUI"
 
+import * as SpecificUI from "@specificui";
 import * as utils from "@utils";
 import * as ui from "@ui";
 
+const canvasManager = new CanvasManager;
 
 export default function SetupContainer( props: {channel: number}) {
     var toy;
@@ -19,9 +21,6 @@ export default function SetupContainer( props: {channel: number}) {
     const [selectToy, setSelectToy] = createSignal(false);
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("EmptyToy");
-    // const [numberOfKeys, setNumberOfKeys] = createSignal(12);
-    // const [startKey, setStartKey] = createSignal(12);
-    // const [collapsNote, setCollapsNote] = createSignal(true);
 
     createEffect(() => {
         if(useEffect()) {
@@ -34,14 +33,6 @@ export default function SetupContainer( props: {channel: number}) {
 
         } 
     })
-
-    // const ToyChanged = () => {
-    //     // Handle the event...
-    //     // console.log("DEFAULT UI event");
-    //     setUseEffect(false);
-    //     UpdateUIValues();
-    //     setUseEffect(true);
-    // };
 
     //Update UI data
     function UpdateUIValues() {
@@ -88,6 +79,7 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
         prevToyType = toyType();
     }
+
     function UpdateComponent() {
         UpdateUIValues();
     }
@@ -96,6 +88,11 @@ export default function SetupContainer( props: {channel: number}) {
         var t = utils.InitToy(channel, toy, UpdateComponent);
         if(toy != t) {
             toy = t;
+            if(toy.toyName.toLowerCase().includes("Empty")) {
+                setSelectToy(true);
+            } else {
+                GetToyType();
+            }
             UpdateUIValues();
         }
     }
@@ -107,11 +104,27 @@ export default function SetupContainer( props: {channel: number}) {
         else setSelectToy(true);
     }
 
+    function GetToyType() {
+        if(toy != undefined) {
+        var name = toy.toyName.toLowerCase();
+            
+            switch(true) {
+                case name.includes("gravi"):
+                    SetToyType(1, false);
+                    break;
+                case name.includes("poly"):
+                    SetToyType(2, false);
+                    break;
+            }
+        }
+    }
+
     //Set's a new Toy Type and creates new Toy
-    function SetToyType(value: number) {
+    function SetToyType(value: number, newToy: boolean) {
         setToyType(value);
         setSelectToy(false);
-        NewToy();
+        
+        if(newToy) NewToy();
     }
 
     //Takes all UI functions and returns it in one big package
@@ -141,11 +154,11 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+
     //Specific UI's from a toy
     function RenderSpecificUISettings() {
         if(toyType() == 0) return(<></>)
         else {
-            // NewToy();
             switch(toyType()) {
                 case 1: return (<SpecificUI.GraviBoardUI channel={channel}></SpecificUI.GraviBoardUI>);
                 case 2: return (<SpecificUI.PolyDrumUI channel={channel}></SpecificUI.PolyDrumUI>);
@@ -153,12 +166,13 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+    
     function RenderToySelection() {
         return(
             <div class="flexList">
-                <button id="thinButton" onClick={() => SetToyType(0)}>None</button>
-                <button id="thinButton" onClick={() => SetToyType(1)}>Gravi Board</button>
-                <button id="thinButton" onClick={() => SetToyType(2)}>Poly Drum</button>
+                <button id="thinButton" onClick={() => SetToyType(0, true)}>None</button>
+                <button id="thinButton" onClick={() => SetToyType(1, true)}>Gravi Board</button>
+                <button id="thinButton" onClick={() => SetToyType(2, true)}>Poly Drum</button>
                 {/* <button id="thinButton" onClick={() => SetToyType(3)}>Square Keyboard</button> */}
             </div>
         )
@@ -166,21 +180,24 @@ export default function SetupContainer( props: {channel: number}) {
 
     LoadToy();
     UpdateUIValues();
+    canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
-        <div class="channelContainer noSelect">
-            <div class="flexContainer noSelect">
-                <div>
-                    <h3 class="marginAuto">{toyName()}</h3>
-                    <div>MIDI Channel: {channel}</div>
-                </div>
-                <div>
-                    <ui.ButtonIcon 
-                    icon="material-symbols:build-outline-sharp"
-                    onClick={() => ToggleSelectToy()}
-                    width="35"
-                    />
-                    {/* <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button> */}
-                    {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
+        <div class="channelContainer noSelect width80 height80">
+            <div>
+                <div class="flexContainer">
+                    <div class="">
+                        <h3 class="marginAuto">{toyName()}</h3>
+                        <div>MIDI Channel: {channel}</div>
+                    </div>
+                    <div>
+                        <ui.ButtonIcon 
+                        icon="material-symbols:build-outline-sharp"
+                        onClick={() => ToggleSelectToy()}
+                        width="35"
+                        />
+                        {/* <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button> */}
+                        {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
+                    </div>
                 </div>
             </div>
             <br></br>

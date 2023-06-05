@@ -10,6 +10,8 @@ const canvasManager = new CanvasManager();
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
+    var updateToy = false;
+
     const [useEffect, setUseEffect] = createSignal(true);
     const [toyName, setToyName] = createSignal("ToyName");
 
@@ -28,12 +30,12 @@ export default function SetupContainer( props: {channel: number}) {
 
     createEffect(() => {
         if(useEffect()) {
-            console.log("TRIGGER SPECIAL effect");
             UpdateToyValues();
         }
     })
 
     function UpdateComponent() {
+        console.log("UPDATE PolyDrum toy");
         LoadToy();
     }
 
@@ -97,7 +99,10 @@ export default function SetupContainer( props: {channel: number}) {
                 toy.ySpawnOffset = ySpawnOffset();
 
                 //Reload Keyboard
-                toy.SetupKeyboard();
+                try{
+                    if(updateToy) toy.SetupKeyboard();
+                    else updateToy = true;
+                } catch {}
             }
         }
     }
@@ -179,7 +184,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Init Component
-    LoadToy();
+    // LoadToy();
     // UpdateUIValues(); //Get UI Values once at start
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
