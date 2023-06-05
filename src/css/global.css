@@ -186,6 +186,9 @@ details[open] summary {
 .marginRight10{
   margin-right: 10px;
 }
+.marginRight20{
+  margin-right: 200px;
+}
 
 .marginLeft20{
   margin-left: 20px; /* add margin to the right of the heading */
@@ -273,11 +276,12 @@ details[open] summary {
 }
 .channelContainer {
   overflow: auto;
-  padding: 20px;
+  padding: 5px;
   border-radius: 10px;
   height: 100%;
-  width: 85%;
-  border: 1px solid white;
+  min-width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  /* border: 1px solid white; */
 }
 
 .top1{
@@ -459,7 +463,7 @@ details[open] summary {
   width: 25%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0);
-  border-radius: 10px;
+  border-radius: 5px;
   /* border: 1px solid white; */
   /* padding: 20px; */
 

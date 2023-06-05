@@ -1,11 +1,18 @@
 import { createSignal, createEffect } from "solid-js";
 import ChannelSettingsContainer from "@components/ChannelSettingsContainer";
-import { Icon } from '@iconify-icon/solid';
 import * as utils from "@utils";
 import * as ui from "@ui";
 
 export default function SetupContainer() {
     const [selectedChannel, setSelectedChannel] = createSignal(1);
+    var toy;
+
+    function LoadToy() {
+        var t = utils.InitToy(selectedChannel(), toy);
+        if(toy != t) {
+            toy = t;
+        }
+    }
 
     function CloseSettings() {
         var panel = document.getElementById("settingsPanel");
@@ -19,10 +26,19 @@ export default function SetupContainer() {
         if(button != undefined) {
           button.style.display = "block";
         }
-      }
+    }
+
+    function RenderGlobalSettings() {
+        return(
+            <div>
+                {RenderMIDIDeviceSelection()}
+            </div>
+       )
+    }
 
     function RenderContainer() {
             switch(selectedChannel()) {
+                case 0: return RenderGlobalSettings();
                 case 1: return <ChannelSettingsContainer channel={1} />;
                 case 2: return <ChannelSettingsContainer channel={2} />;
                 case 3: return <ChannelSettingsContainer channel={3} />;
@@ -45,7 +61,7 @@ export default function SetupContainer() {
     function RenderCloseButton() {
         return(
             <ui.ButtonIcon 
-                class="marginLeft20 width10"
+                class="marginLeft20 squareButton"
                 icon="mdi:close-thick"
                 width={30}
                 onClick={() => CloseSettings()}
@@ -56,6 +72,11 @@ export default function SetupContainer() {
     function RenderChannelButtons() {
         return(
             <div class="flexList width10">
+                <ui.ButtonIcon 
+                    class="channelButton"
+                    icon="grommet-icons:globe"
+                    onClick={() => setSelectedChannel(0)}
+                />
                 <ui.Button
                     label="1"
                     class="channelButton"
@@ -140,17 +161,25 @@ export default function SetupContainer() {
         )
     }
 
-    function RenderSettingsHeadline() {
+    function RenderHeadline() {
+        if(selectedChannel() > 0) {
+            return(
+                <h1 class="marginAuto">Channel {selectedChannel()} </h1>
+            )
+        } else {
+            return(
+                <h1 class="marginAuto">Global Settings</h1>
+            )
+        }
+        
+    }
+
+    function RenderUIHeadline() {
         return(
-            <div class="height10 width95">
+            <div class="height10 width100">
                 <div class="flexContainer">
-                    <div class="alignFlexStart">
-                        {/* <Icon 
-                            icon="mdi:cog-outline" 
-                            width={35}
-                            class="marginLeft20 marginAuto "
-                            /> */}
-                        <h1 class="marginLeft10 marginAuto">Channel {selectedChannel()} </h1>
+                    <div class="justifyStart textAlignLeft">
+                        {RenderHeadline()}
                     </div>
                     <div class="alignFlexEnd">
                         {RenderCloseButton()}
@@ -190,12 +219,10 @@ export default function SetupContainer() {
     function RenderUI() {
         return(
             <div id="settingsPanel" class="noSelect width100 height100">
-                <div class="flexContainer">
+                <div class="flexContainer justifyStart">
                     {RenderChannelButtons()}
-                    
-                    <div class="flexList">
-                        {RenderSettingsHeadline()}           
-                        {RenderMIDIDeviceSelection()}
+                    <div class="flexList marginLeft20">
+                        {RenderUIHeadline()}           
                         {RenderContainer()}
                     </div>   
                 </div>

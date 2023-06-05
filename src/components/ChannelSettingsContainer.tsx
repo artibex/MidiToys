@@ -115,8 +115,15 @@ export default function SetupContainer( props: {channel: number}) {
                     {RenderToySelection()}
                 </div>
             )
-        } else {
-            if(toyType() < 1) return (<></>)
+        } 
+        else {
+            if(toyType() < 1) {
+                return(
+                    <div>
+                        {RenderToySelection()}
+                    </div>        
+                )
+            }
             else {
                 return(
                     <div class="noSelect">

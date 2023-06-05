@@ -13,7 +13,7 @@ export function DetailsFillerCenter(props) {
   if(props.content == undefined) props.content = <></>;  
   
   return (
-      <details class="marginAuto">
+      <details class="marginAuto width95">
         <summary class="textAlignCenter marginAuto">
           {props.summeryName}
         </summary>
@@ -25,7 +25,7 @@ export function DetailsFillerCenter(props) {
 
 export function SliderInput(props) {
   const [value, setValue] = createSignal(props.value);
-  if(props.class == undefined) props.class = "sliderInput marginLeft10";
+  if(props.class == undefined) props.class = "sliderInput ";
   var factor = props.factor;
   if(factor == undefined) factor = 1;
 
@@ -222,14 +222,14 @@ export function SelectedMIDIDeviceUIElement(props) {
 
 export function NumberSliderCombo(props) {
   return(
-    <div class="flexContainer justifyEnd">
+    <div class="flexContainer justifyEnd widthAuto">
       <NumberInput
           factor={props.factor}
           minMaxStep={props.minMaxStep}
           value={props.value}
           onChange={props.onChange}
       />
-      <div class="width50">
+      <div class="marginLeft10">
         <SliderInput
             factor={props.factor}
             minMaxStep={props.minMaxStep}
@@ -413,27 +413,6 @@ export function BPM(props) {
   )
 }
 
-export function ChannelObserverUIElement(props) {
-  if(props.channel === undefined) props.channel = 1;
-  if(props.class === undefined) props.class = "width20";
-
-  const [holdingKeys, setHoldingKeys] = createSignal([]);
-  
-  function UpdateHoldingKeys() {
-    console.log("GET holding keys");
-    setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
-  }
-  frameManager.SubscribeHalfFramerate(UpdateHoldingKeys);
-  
-  return(
-    <h3
-      class={props.class}
-    >
-      Channel {props.channel}: {holdingKeys}
-    </h3>
-  )
-}
-
 export function OpenSettingsButton(props) {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
   var panel;
@@ -495,5 +474,27 @@ export function OpenSettingsButton(props) {
       onClick={() => OpenSettings()}
       icon="mdi:cog-outline"
     />
+  )
+}
+
+//Debug tool
+export function ChannelObserverUIElement(props) {
+  if(props.channel === undefined) props.channel = 1;
+  if(props.class === undefined) props.class = "width20";
+
+  const [holdingKeys, setHoldingKeys] = createSignal([]);
+  
+  function UpdateHoldingKeys() {
+    console.log("GET holding keys");
+    setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
+  }
+  frameManager.SubscribeHalfFramerate(UpdateHoldingKeys);
+  
+  return(
+    <h3
+      class={props.class}
+    >
+      Channel {props.channel}: {holdingKeys}
+    </h3>
   )
 }
