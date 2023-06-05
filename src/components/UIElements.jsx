@@ -13,7 +13,7 @@ export function DetailsFillerCenter(props) {
   if(props.content == undefined) props.content = <></>;  
   
   return (
-      <details class="marginAuto">
+      <details class="marginAuto width95">
         <summary class="textAlignCenter marginAuto">
           {props.summeryName}
         </summary>
@@ -25,7 +25,7 @@ export function DetailsFillerCenter(props) {
 
 export function SliderInput(props) {
   const [value, setValue] = createSignal(props.value);
-  if(props.class == undefined) props.class = "SliderInput marginLeft10";
+  if(props.class == undefined) props.class = "sliderInput ";
   var factor = props.factor;
   if(factor == undefined) factor = 1;
 
@@ -222,20 +222,45 @@ export function SelectedMIDIDeviceUIElement(props) {
 
 export function NumberSliderCombo(props) {
   return(
-    <div class="flexContainer">
+    <div class="flexContainer justifyEnd widthAuto">
       <NumberInput
           factor={props.factor}
           minMaxStep={props.minMaxStep}
           value={props.value}
           onChange={props.onChange}
       />
-      <div class="width80">
+      <div class="marginLeft10">
         <SliderInput
             factor={props.factor}
             minMaxStep={props.minMaxStep}
             value={props.value}
             onChange={props.onChange}
         />
+      </div>
+    </div>
+  )
+}
+
+export function NumberSliderComboVertical(props) {
+  return(
+    <div>
+      <div class="flexList">
+          <div class="sliderContainer">
+            <SliderInput
+                class="verticalSlider"
+                factor={props.factor}
+                minMaxStep={props.minMaxStep}
+                value={props.value}
+                onChange={props.onChange}
+            />
+        </div>
+        <NumberInput
+            factor={props.factor}
+            minMaxStep={props.minMaxStep}
+            value={props.value}
+            onChange={props.onChange}
+        />
+        Cool Text
       </div>
     </div>
   )
@@ -255,17 +280,33 @@ export function CheckboxUIElement(props) {
 
 export function NumberSliderUIElement(props) {
   if(props.name == undefined) props.name = "define props.name pls";
-  return(
-    <div class="flexContainer">
-      <div class="width50">{props.name}</div>
-      <NumberSliderCombo 
-        factor={props.factor}
-        minMaxStep={props.minMaxStep}
-        value={props.value}
-        onChange={props.onChange}
-      />
-    </div>
-  )
+  if(props.vertical == undefined) props.vertical = false;
+  
+  if(props.vertical) {
+    return(
+      <div class="flexContainer">
+        <div class="justifyStart">{props.name}</div>
+          <NumberSliderComboVertical 
+            factor={props.factor}
+            minMaxStep={props.minMaxStep}
+            value={props.value}
+            onChange={props.onChange}
+          />
+      </div>
+    )
+  } else {
+    return(
+      <div class="flexContainer">
+        <div class="width50">{props.name}</div>
+        <NumberSliderCombo 
+          factor={props.factor}
+          minMaxStep={props.minMaxStep}
+          value={props.value}
+          onChange={props.onChange}
+        />
+      </div>
+    )
+  }
 }
 
 export function JsonFileUploader(props) {
@@ -372,27 +413,6 @@ export function BPM(props) {
   )
 }
 
-export function ChannelObserverUIElement(props) {
-  if(props.channel === undefined) props.channel = 1;
-  if(props.class === undefined) props.class = "width20";
-
-  const [holdingKeys, setHoldingKeys] = createSignal([]);
-  
-  function UpdateHoldingKeys() {
-    console.log("GET holding keys");
-    setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
-  }
-  frameManager.SubscribeHalfFramerate(UpdateHoldingKeys);
-  
-  return(
-    <h3
-      class={props.class}
-    >
-      Channel {props.channel}: {holdingKeys}
-    </h3>
-  )
-}
-
 export function OpenSettingsButton(props) {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
   var panel;
@@ -428,12 +448,14 @@ export function OpenSettingsButton(props) {
 
   if (typeof window !== 'undefined') {
     document.addEventListener("mousemove", (event) => {
-      if(panel.style.display != "block") {
-        if (event.clientY < window.innerHeight / 4) {
-          if(event.clientX < window.innerHeight / 4) {
-            ShowButton();
-          } else HideButton();
-        } else HideButton();
+      if(panel != undefined) {
+          if(panel.style.display != "block") {
+            if (event.clientY < window.innerHeight / 4) {
+              if(event.clientX < window.innerHeight / 4) {
+                ShowButton();
+              } else HideButton();
+            } else HideButton();
+          }
       }
     });
   }
@@ -454,5 +476,27 @@ export function OpenSettingsButton(props) {
       onClick={() => OpenSettings()}
       icon="mdi:cog-outline"
     />
+  )
+}
+
+//Debug tool
+export function ChannelObserverUIElement(props) {
+  if(props.channel === undefined) props.channel = 1;
+  if(props.class === undefined) props.class = "width20";
+
+  const [holdingKeys, setHoldingKeys] = createSignal([]);
+  
+  function UpdateHoldingKeys() {
+    console.log("GET holding keys");
+    setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
+  }
+  frameManager.SubscribeHalfFramerate(UpdateHoldingKeys);
+  
+  return(
+    <h3
+      class={props.class}
+    >
+      Channel {props.channel}: {holdingKeys}
+    </h3>
   )
 }

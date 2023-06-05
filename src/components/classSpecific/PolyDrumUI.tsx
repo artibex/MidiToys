@@ -79,6 +79,7 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+    
     function UpdateToyValues() {
         console.log("UPDATE PolyDrum toy values");
         if (typeof window !== 'undefined') {
@@ -183,9 +184,6 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
 
-    //Init Component
-    // LoadToy();
-    // UpdateUIValues(); //Get UI Values once at start
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
         // ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
