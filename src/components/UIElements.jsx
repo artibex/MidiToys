@@ -331,7 +331,19 @@ export function JsonFileUploader(props) {
   };
 
   return (
-    <input type="file" accept=".json" multiple onChange={handleFileSelect} />
+    <div>
+        <label htmlFor="file-input" className="file-input-button">
+          select file(s) to upload
+        </label>
+        <input 
+        type="file" 
+        accept=".json" 
+        multiple 
+        onChange={handleFileSelect} 
+        id="file-input"
+        style={{ display: 'none' }}
+        />
+    </div>
   );
 }
 
@@ -449,17 +461,16 @@ export function OpenSettingsButton(props) {
   if (typeof window !== 'undefined') {
     document.addEventListener("mousemove", (event) => {
       if(panel != undefined) {
-          if(panel.style.display != "block") {
-            if (event.clientY < window.innerHeight / 4) {
-              if(event.clientX < window.innerHeight / 4) {
-                ShowButton();
-              } else HideButton();
+        if(panel.style.display != "block") {
+          if (event.clientY < window.innerHeight / 4) {
+            if(event.clientX < window.innerHeight / 4) {
+              ShowButton();
             } else HideButton();
-          }
+          } else HideButton();
+        }
       }
     });
   }
-  
 
   function GetPanel() {
     if (typeof window !== 'undefined') {
