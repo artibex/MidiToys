@@ -180,9 +180,7 @@ export function MIDIDeviceReloadUIElement(props) {
       width={props.width}
       hFlip={props.hFlip}
       vFlip={props.vFlip}
-    >
-
-    </ButtonIcon>
+    />
   )
 }
 
@@ -351,7 +349,7 @@ export function JsonFileUploader(props) {
 
 export function MIDIDropdown(props) {
   if(props.class === undefined) props.class = "dropdown"
-  if(props.label === undefined) props.label = "";
+  if(props.label === undefined) props.label = "MIDI Devices";
 
   const [selectedOption, setSelectedOption] = createSignal("");
   const [devices, setDevices] = createSignal(["", ""]);
@@ -366,11 +364,6 @@ export function MIDIDropdown(props) {
       LoadOptions(loadedDevices);
     }
   };
-
-
-  createEffect(() => {
-    // loadDevices();
-  });
 
   function UpdateDeviceSelection(device) {
     // console.log("NEW device selected " + device);
@@ -397,20 +390,27 @@ export function MIDIDropdown(props) {
   //Display one empty option
   return (
     <div>
-      {props.label}
-      <select 
-      class={props.class}
-      value={selectedOption()} 
-      onFocus={() => loadDevices()} 
-      onChange={(event) => UpdateDeviceSelection(event.target.value)}>
-        {options()}
-      </select>
+      <h2 class="textAlignCenter">
+        {props.label}
+      </h2>
+      <div class="flex width80 marginAuto justifyCenter">
+        <select 
+          class={props.class}
+          value={selectedOption()} 
+          onFocus={() => loadDevices()} 
+          onChange={(event) => UpdateDeviceSelection(event.target.value)}>
+          {options()}
+        </select>
+        <div class="marginAuto justifyCenter">
+          <MIDIDeviceReloadUIElement />
+        </div>
+      </div>
     </div>
   );
 }
 
 export function BPM(props) {
-  if(props.class === undefined) props.class = "";
+  if(props.class === undefined) props.class = "textAlignCenter";
   const [bpm, setBPM] = createSignal(0);
 
   function GetBPM() {
@@ -419,11 +419,11 @@ export function BPM(props) {
 
   frameManager.SubscribeFullFramerate(GetBPM);
   return(
-    <h3
+    <h2
       class={props.class}
     >
       BPM: {bpm}
-    </h3>
+    </h2>
   )
 }
 

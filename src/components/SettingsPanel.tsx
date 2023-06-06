@@ -2,6 +2,7 @@ import { createSignal, createEffect } from "solid-js";
 import ChannelSettingsContainer from "@components/ChannelSettingsContainer";
 import * as utils from "@utils";
 import * as ui from "@ui";
+import { RGBA } from "@interfaces";
 import { ToyManager } from "@miditoy/ToyManager";
 import { CanvasManager } from "@canvasmanager";
 
@@ -11,10 +12,15 @@ const canvasManager = new CanvasManager();
 export default function SetupContainer() {
     var toy;
 
+    const [backGroundColor, setBackgroundColor] = createSignal<RGBA>({ r:0, g:0, b:0, a:0});
     const [selectedChannel, setSelectedChannel] = createSignal(1);
     const [channelButtonClass, setChannelButtonClass] = createSignal(
         Array.from({ length: 16 }, () => "channelButton")
     );
+
+    createEffect(() => {
+        SetBackgroundColor();
+    })
 
     function LoadToy() {
         var t = utils.InitToy(selectedChannel(), toy);
@@ -30,6 +36,7 @@ export default function SetupContainer() {
             ShowSettingsButton();
         }
     }
+
     function ShowSettingsButton() {
         var button = document.getElementById("openSettingsButton");
         if(button != undefined) {
@@ -37,17 +44,103 @@ export default function SetupContainer() {
         }
     }
 
-    function RenderGlobalSettings() {
+    function OpenLink(link: string) {
+        window.open(link, '_blank');
+    }
+
+    function RenderGlobalSettingsUI() {
         return(
             <div class="channelContainer">
-                {RenderMIDIDeviceSelection()}
+                <div>
+                    <ui.MIDIDropdown />
+                    <ui.BPM />
+                </div>
+                <br></br>
+                {RenderBgColorUI()}
+                <br></br>
+                {RenderSocialUI()}
             </div>
        )
     }
 
+    function RenderSocialUI() {
+        return(
+            <div>
+                <h2 class="textAlignCenter">Social</h2>
+                <div class="flexContainer justifyCenter marginAuto width50">
+                    <div>
+                        <ui.ButtonIcon 
+                            width={50}
+                            icon="mdi:github"
+                            onClick={OpenLink("https://github.com/Artibex/MidiToys")}
+                        />            
+                    </div>
+                    <div class="marginLeft20">
+                        <ui.ButtonIcon 
+                            width={50}
+                            icon="ic:baseline-reddit"
+                            onClick={OpenLink("https://www.reddit.com/r/miditoys/")}
+                        />
+                    </div>
+                </div>
+
+            </div>
+        )
+    }
+
+    function RenderBgColorUI() {
+        return(
+            <div class="marginAuto width80">
+                <h2 class="textAlignCenter">Background Color</h2>
+                <ui.NumberSliderUIElement 
+                    name={"Red"}
+                    minMaxStep={[0,255,1]}
+                    value={backGroundColor().r}
+                    onChange={(value) => setBackgroundColor({ ...backGroundColor(), r: value })}
+                />
+                <ui.NumberSliderUIElement 
+                    name={"Green"}
+                    minMaxStep={[0,255,1]}
+                    value={backGroundColor().g}
+                    onChange={(value) => setBackgroundColor({ ...backGroundColor(), g: value })}
+                />
+                <ui.NumberSliderUIElement 
+                    name={"Blue"}
+                    minMaxStep={[0,255,1]}
+                    value={backGroundColor().b}
+                    onChange={(value) => setBackgroundColor({ ...backGroundColor(), b: value })}
+                />
+                <ui.NumberSliderUIElement 
+                    name={"Alpha"}
+                    minMaxStep={[0,100,1]}
+                    factor={100}
+                    value={backGroundColor().a}
+                    onChange={(value) => setBackgroundColor({ ...backGroundColor(), a: value })}
+                />
+            </div>
+        )
+    }
+
+    function SetBackgroundColor() {
+        if (typeof window !== 'undefined') { 
+            const cssColor = `rgba(${backGroundColor().r}, ${backGroundColor().g}, ${backGroundColor().b}, ${backGroundColor().a})`;
+            document.body.style.backgroundColor = cssColor;
+        }
+    }
+
+    function GetBackgroundColor() {
+        if (typeof window !== 'undefined') {
+            const bodyColor = window.getComputedStyle(document.body).backgroundColor;
+            const color = utils.ExtractRGBAColor(bodyColor); // Extract the RGBA values from the computed color
+            
+            setBackgroundColor({ ...backGroundColor(), r: color.r, g: color.g ,b: color.b, a: color.a })
+            console.log(backGroundColor());
+        }
+    }
+
     function RenderContainer() {
             switch(selectedChannel()) {
-                case 0: return RenderGlobalSettings();
+                case 0: return RenderGlobalSettingsUI();
                 case 1: return <ChannelSettingsContainer channel={1} />;
                 case 2: return <ChannelSettingsContainer channel={2} />;
                 case 3: return <ChannelSettingsContainer channel={3} />;
@@ -70,7 +163,7 @@ export default function SetupContainer() {
     function RenderCloseButton() {
         return(
             <ui.ButtonIcon 
-                class="marginLeft20 squareButton"
+                class="squareButton"
                 icon="mdi:close-thick"
                 width={30}
                 onClick={() => CloseSettings()}
@@ -220,22 +313,8 @@ export default function SetupContainer() {
     function RenderMIDIDeviceSelection() {
         return(
             <div class="">
-            <div>
-                <div class="flex heightAuto">
-                    <div class="flexContainer">
-                        <div class="marginLeft20">
-                            MIDI Device 
-                        </div>
-                        <div class="marginAuto">
-                            <ui.MIDIDropdown />
-                        </div>
-                    </div>
-                    <div class="">
-                        <ui.MIDIDeviceReloadUIElement />
-                    </div>
-                </div>
+                <ui.MIDIDropdown />
             </div>
-        </div>
         )
     }
 
@@ -253,6 +332,7 @@ export default function SetupContainer() {
         )
     }
 
+    GetBackgroundColor();
     canvasManager.SubscribeOneFPS(UpdateChannelButtonClass);
     return RenderUI();
 }

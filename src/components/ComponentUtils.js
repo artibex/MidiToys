@@ -26,3 +26,21 @@ export function CreateToy(channel, type) {
     }
     return toyManager.GetToy(channel);
 }
+
+
+export function ExtractRGBAColor(colorString) {
+    const rgbaRegex = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/i;
+    const matches = colorString.match(rgbaRegex);
+  
+    if (matches) {
+      const r = parseInt(matches[1], 10);
+      const g = parseInt(matches[2], 10);
+      const b = parseInt(matches[3], 10);
+      const a = matches[4] ? parseFloat(matches[4]) : 1;
+  
+      return { r, g, b, a };
+    }
+  
+    // Return default color if extraction fails
+    return { r: 0, g: 0, b: 0, a: 0 };
+  }
