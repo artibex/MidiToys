@@ -3,10 +3,12 @@ import { Icon } from '@iconify-icon/solid';
 import { InputManager } from "@inputmanager";
 import { CanvasManager} from "@canvasmanager"
 import { MIDIInputModule } from "@input/MIDIInputModule";
+import {ToyManager} from "@toymanager";
 
 const inputManager = new InputManager();
 const frameManager = new CanvasManager();
 const midiInputModule = new MIDIInputModule();
+const toyManager = new ToyManager();
 
 export function DetailsFillerCenter(props) {
   if(props.summeryName == undefined) props.summeryName = "";
@@ -157,7 +159,7 @@ export function MIDIDeviceReloadUIElement(props) {
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
-  if(props.width == undefined) props.width = "20";
+  if(props.width == undefined) props.width = "30";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
@@ -168,11 +170,11 @@ export function MIDIDeviceReloadUIElement(props) {
 
   return(
     <ButtonIcon
-      icon="material-symbols:wifi-protected-setup"
-      
       id={props.id}
       class={props.class}
-      onClick={handleClick}
+      icon="material-symbols:wifi-protected-setup"
+
+      onClick={() => handleClick}
       label={props.label}
 
       width={props.width}
@@ -429,7 +431,6 @@ export function OpenSettingsButton(props) {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
   var panel;
 
-
   createEffect(() => {
     if(settingsOpen()) {
       HideButton();
@@ -439,18 +440,20 @@ export function OpenSettingsButton(props) {
   })
 
   function OpenSettings() {
-      var panel = document.getElementById("settingsPanel");
-      if(panel != undefined) {
-          panel.style.display = "block";
-          HideButton();
-      }
+    var panel = document.getElementById("settingsPanel");
+    if(panel != undefined) {
+        panel.style.display = "block";
+        HideButton();
+    }
   }
+
   function HideButton() {
     var button = document.getElementById("openSettingsButton");
     if(button != undefined) {
       button.style.display = "none";
     }
   }
+
   function ShowButton() {
     var button = document.getElementById("openSettingsButton");
     if(button != undefined) {
@@ -458,15 +461,35 @@ export function OpenSettingsButton(props) {
     }
   }
 
+  function CheckAllEmpty(toys) {
+    var toys = toyManager.GetToys();
+    if(toys != undefined) {
+      var allEmpty = true;
+      toys.forEach((element) => {
+        if(!element.toyName.includes("Empty")){
+          allEmpty = false;
+          return;
+        }
+      })
+      
+      if(allEmpty) return true;
+      else return false;
+    }
+  }
+
   if (typeof window !== 'undefined') {
     document.addEventListener("mousemove", (event) => {
       if(panel != undefined) {
         if(panel.style.display != "block") {
-          if (event.clientY < window.innerHeight / 4) {
-            if(event.clientX < window.innerHeight / 4) {
-              ShowButton();
+          if(CheckAllEmpty()) {
+            ShowButton();
+          } else {
+            if (event.clientY < window.innerHeight / 4) {
+              if(event.clientX < window.innerHeight / 4) {
+                ShowButton();
+              } else HideButton();
             } else HideButton();
-          } else HideButton();
+          }
         }
       }
     });

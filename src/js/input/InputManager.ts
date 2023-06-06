@@ -46,7 +46,7 @@ export class InputManager {
         
         this.InitVariables();
         this.InitReaderModules();
-        console.log("CREATED InputManager");
+        // console.log("CREATED InputManager");
     }
 
     public Subscribe(channel: number, callback: (event: UpdateEvent) => void) {
@@ -97,7 +97,7 @@ export class InputManager {
         if(typeof window !== "undefined") {
             this.keyboardReader = new KeyboardInputModule(this);
             this.midiReader = new MIDIInputModule(this);
-            console.log("CREATED Keyboard and MIDI Reader");
+            // console.log("CREATED Keyboard and MIDI Reader");
         }
     }
 
@@ -128,7 +128,7 @@ export class InputManager {
     }
 
     GetInputKeyboard(command, note, velocity) {
-        console.log("KEYBOARD detected");
+        // console.log("KEYBOARD detected");
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
         let stringNote = MIDIDataTable.MIDINoteToString(note);
 
@@ -174,7 +174,9 @@ export class InputManager {
                 this.prevTimestamp = message.timeStamp;
               
                 //If bpm changed, put it into console
-                if(this.oldBPM != this.bpm) console.log("BPM:" + this.bpm);
+                if(this.oldBPM != this.bpm) {
+                    // console.log("BPM:" + this.bpm);
+                }
               
                 this.clockCount = 0;
             }

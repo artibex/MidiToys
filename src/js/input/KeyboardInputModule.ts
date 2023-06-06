@@ -8,7 +8,7 @@ export class KeyboardInputModule {
   inputManager: InputManager;
 
   constructor(inputManager: InputManager) {
-    console.log("CREATED new KeyboardInputModule");
+    // console.log("CREATED new KeyboardInputModule");
     this.inputManager = inputManager;
     this.SetKeyboardListener();
   }
