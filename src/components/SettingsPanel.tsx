@@ -218,7 +218,7 @@ export default function SetupContainer() {
     }
 
     function RenderMIDIDeviceSelection() {
-        return( 
+        return(
             <div class="">
             <div>
                 <div class="flex heightAuto">
@@ -231,9 +231,7 @@ export default function SetupContainer() {
                         </div>
                     </div>
                     <div class="">
-                        <ui.Button 
-                            label="Reload"
-                        />
+                        <ui.MIDIDeviceReloadUIElement />
                     </div>
                 </div>
             </div>

@@ -24,11 +24,11 @@ export class MIDIInputModule {
 
     // this.GetMIDIDevices();
 
-    console.log("CREATED new MIDIInputModule");
+    // console.log("CREATED new MIDIInputModule");
   }
 
   async LoadMIDIDevices() {
-    console.log("LOAD MIDI devices");
+    // console.log("LOAD MIDI devices");
     this.midiInputs = [];
     if (typeof window === 'undefined') return;
     if (navigator.requestMIDIAccess) {
@@ -38,22 +38,22 @@ export class MIDIInputModule {
         if (!this.midiInputs.includes(input)) {
           this.midiInputs.push(input);
           if(this.targetInput == undefined) this.BindMIDIInput(input);
-          console.log("MIDI DEVICE = " + input.name as string);
+          // console.log("MIDI DEVICE = " + input.name as string);
         }
       }
     } else {
-      console.log("WebMIDI is not supported in this browser.");
+      // console.log("WebMIDI is not supported in this browser.");
     }
   }
   public BindMIDIInput(input : WebMidi.MIDIInput) {
     if(this.targetInput != undefined) this.UnbindMIDIInput(this.targetInput);
-    console.log("BIND MIDI Device = " + input.name as string);
+    // console.log("BIND MIDI Device = " + input.name as string);
     input.onmidimessage = this.HandleMIDIMessage.bind(this);
     this.targetInput = input;
   }
 
   public UnbindMIDIInput(input: WebMidi.MIDIInput) {
-    console.log("UNBIND MIDI Device = " + input.name as string);
+    // console.log("UNBIND MIDI Device = " + input.name as string);
     input.onmidimessage = null;
   }
 

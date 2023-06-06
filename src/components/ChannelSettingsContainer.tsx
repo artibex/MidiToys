@@ -22,16 +22,16 @@ export default function SetupContainer( props: {channel: number}) {
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("EmptyToy");
 
-    createEffect(() => {
-        // if(useEffect()) {
-        //     // console.log("TRIGGER effect");
-        //     if(toyType() > 0 && toy != undefined) {
-        //         // UpdateToyValues();
-        //     }
-        // } else {
-        //     // console.log("DO NOT useEffect");
-        // } 
-    })
+    // createEffect(() => {
+    //     // if(useEffect()) {
+    //     //     // console.log("TRIGGER effect");
+    //     //     if(toyType() > 0 && toy != undefined) {
+    //     //         // UpdateToyValues();
+    //     //     }
+    //     // } else {
+    //     //     // console.log("DO NOT useEffect");
+    //     // } 
+    // })
 
     //Update UI data
     function UpdateUIValues() {
