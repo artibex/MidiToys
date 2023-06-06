@@ -22,7 +22,7 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Special settings
     const ToyChanged = () => {
-        console.log("PRESET UI event");
+        // console.log("PRESET UI event");
         toy = utils.InitToy(channel, toy, ToyChanged);
         UpdateUIValues();
     };
@@ -40,7 +40,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function UpdateUIValues() {
-    console.log("UPDATE PRESET UI values");
+    // console.log("UPDATE PRESET UI values");
     if (typeof window !== 'undefined') {
             //Put values here
             if(toy != undefined) {
@@ -53,7 +53,7 @@ export default function SetupContainer( props: {channel: number}) {
         if(toy != undefined) {
             // console.log(item.item);
             toy.LoadJSON(JSON.parse(item.item));
-            console.log("DONE loading Preset with name = " + item.key);
+            // console.log("DONE loading Preset with name = " + item.key);
         }
     }
     

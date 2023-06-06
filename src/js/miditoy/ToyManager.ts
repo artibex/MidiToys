@@ -27,7 +27,7 @@ export class ToyManager
     //Loop for updating all toys
     UpdateToys() {
         if(this.targetCanvas != null) {
-            for (let i = 0; i < 15; i++) 
+            for (let i = 0; i <= 15; i++) 
             {
                 if (this.toys[i] !== undefined) {
                     this.toys[i].UpdateKeyboard();
@@ -59,17 +59,17 @@ export class ToyManager
         console.log("CREATE PolyDrum on channel " + channel);
         this.toys[channel - 1] = new PolyDrum(channel);
     }
-    // CreateSquareKeyboard(channel: number, numberOfKeys: number, startKey: number) {
-    //     this.RemovePaperLayer(channel);
-    //     console.log("CREATE SquareKeyboard on channel " + channel);
-    //     this.toys[channel - 1] = new SquareKeyboard(channel);
-    // }
 
     GetToy(channel: number) {
         if (channel < 1 || channel > this.toys.length) {
             return undefined;
         }
         return this.toys[channel - 1] as MIDIToy;
+    }
+
+    //Returns whole array of toys
+    GetToys() {
+        return this.toys;
     }
 
     //Clears the complete canvas with all elements on it

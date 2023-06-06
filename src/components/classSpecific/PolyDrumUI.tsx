@@ -35,13 +35,13 @@ export default function SetupContainer( props: {channel: number}) {
     })
 
     function UpdateComponent() {
-        console.log("UPDATE PolyDrum toy");
+        // console.log("UPDATE PolyDrum toy");
         LoadToy();
     }
 
     const ToyChanged = () => {
         // Handle the event...
-        console.log("DEFAULT UI event");
+        // console.log("DEFAULT UI event");
         setUseEffect(false);
         UpdateUIValues();
         setUseEffect(true);
@@ -56,7 +56,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function UpdateUIValues() {
-        console.log("UPDATE SPECIAL UI values");
+        // console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
             toy = utils.InitToy(channel, toy, ToyChanged);
 
@@ -81,7 +81,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
     
     function UpdateToyValues() {
-        console.log("UPDATE PolyDrum toy values");
+        // console.log("UPDATE PolyDrum toy values");
         if (typeof window !== 'undefined') {
 
             if(toy != undefined) {

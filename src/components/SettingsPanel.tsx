@@ -2,10 +2,19 @@ import { createSignal, createEffect } from "solid-js";
 import ChannelSettingsContainer from "@components/ChannelSettingsContainer";
 import * as utils from "@utils";
 import * as ui from "@ui";
+import { ToyManager } from "@miditoy/ToyManager";
+import { CanvasManager } from "@canvasmanager";
+
+const toyManager = new ToyManager();
+const canvasManager = new CanvasManager();
 
 export default function SetupContainer() {
-    const [selectedChannel, setSelectedChannel] = createSignal(1);
     var toy;
+
+    const [selectedChannel, setSelectedChannel] = createSignal(1);
+    const [channelButtonClass, setChannelButtonClass] = createSignal(
+        Array.from({ length: 16 }, () => "channelButton")
+    );
 
     function LoadToy() {
         var t = utils.InitToy(selectedChannel(), toy);
@@ -69,6 +78,22 @@ export default function SetupContainer() {
         )
     }
 
+    function UpdateChannelButtonClass() {
+        var toys = toyManager.GetToys();
+        var array = [...toys];
+
+        if(toys != undefined) {
+            for(var i = 0; i <= toys.length -1; i++) {
+                if(toys[i].toyName.includes("Empty")){
+                    array[i] = "channelButton";
+                } else {
+                    array[i] = "channelButtonActiv";
+                }
+            }
+            setChannelButtonClass(array);
+        }
+    }
+
     function RenderChannelButtons() {
         return(
             <div class="flexList width10">
@@ -79,82 +104,82 @@ export default function SetupContainer() {
                 />
                 <ui.Button
                     label="1"
-                    class="channelButton"
+                    class={channelButtonClass()[0]}
                     onClick={() => setSelectedChannel(1)}
                 />
                 <ui.Button
                     label="2"
-                    class="channelButton"
+                    class={channelButtonClass()[1]}
                     onClick={() => setSelectedChannel(2)}
                 />
                 <ui.Button
                     label="3"
-                    class="channelButton"
+                    class={channelButtonClass()[2]}
                     onClick={() => setSelectedChannel(3)}            
                 />
                 <ui.Button
                     label="4"
-                    class="channelButton"
+                    class={channelButtonClass()[3]}
                     onClick={() => setSelectedChannel(4)}
                 />
                 <ui.Button
                     label="5"
-                    class="channelButton"
+                    class={channelButtonClass()[4]}
                     onClick={() => setSelectedChannel(5)}
                 />
                 <ui.Button
                     label="6"
-                    class="channelButton"
+                    class={channelButtonClass()[5]}
                     onClick={() => setSelectedChannel(6)}
                 /> 
                 <ui.Button
                     label="7"
-                    class="channelButton"
+                    class={channelButtonClass()[6]}
                     onClick={() => setSelectedChannel(7)}
                 />
                 <ui.Button
                     label="8"
-                    class="channelButton"
+                    class={channelButtonClass()[7]}
                     onClick={() => setSelectedChannel(8)}
                 /> 
                 <ui.Button
                     label="9"
-                    class="channelButton"
+                    class={channelButtonClass()[8]}
                     onClick={() => setSelectedChannel(9)}
                 /> 
                 <ui.Button
                     label="10"
-                    class="channelButton"
+                    class={channelButtonClass()[9]}
                     onClick={() => setSelectedChannel(10)}
                 /> 
                 <ui.Button
                     label="11"
-                    class="channelButton"
+                    class={channelButtonClass()[10]}
                     onClick={() => setSelectedChannel(11)}
                 /> 
                 <ui.Button
                     label="12"
-                    class="channelButton"
+                    class={channelButtonClass()[11]}
                     onClick={() => setSelectedChannel(12)}
                 /> 
                 <ui.Button
                     label="13"
-                    class="channelButton"
+                    class={channelButtonClass()[12]}
                     onClick={() => setSelectedChannel(13)}
                 /> 
                 <ui.Button
                     label="14"
-                    class="channelButton"
+                    class={channelButtonClass()[13]}
                     onClick={() => setSelectedChannel(14)}
                 /> 
                 <ui.Button
                     label="15"
-                    class="channelButton"
+                    class={channelButtonClass()[14]}
                     onClick={() => setSelectedChannel(15)}
                 /> 
                 <ui.Button
                     label="16"
-                    class="channelButton"
+                    class={channelButtonClass()[15]}
                     onClick={() => setSelectedChannel(16)}
                 />                                                                                                                                                                              
             </div>
@@ -230,5 +255,6 @@ export default function SetupContainer() {
         )
     }
 
+    canvasManager.SubscribeOneFPS(UpdateChannelButtonClass);
     return RenderUI();
 }
