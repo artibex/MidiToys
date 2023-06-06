@@ -31,7 +31,7 @@ export default function SetupContainer( props: {channel: number}) {
     createEffect(() => {
         if(useEffect()) {
             UpdateToyValues();
-            console.log("TRIGGER SPECIAL effect");
+            // console.log("TRIGGER SPECIAL effect");
         }
     })
 
@@ -48,7 +48,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function UpdateUIValues() {
-        console.log("UPDATE SPECIAL UI values");
+        // console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
 
             if(toy != undefined) {
@@ -71,7 +71,7 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
     function UpdateToyValues() {
-        console.log("UPDATE GraviBoard toy values");
+        // console.log("UPDATE GraviBoard toy values");
         if (typeof window !== 'undefined') {
             if(toy != null) {
                 //Remove old objects

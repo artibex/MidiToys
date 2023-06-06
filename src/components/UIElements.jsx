@@ -315,7 +315,7 @@ export function JsonFileUploader(props) {
     // const file = event.target.files[0];
     
     if (files.length > 0) {
-      console.log("UPLOADED file count = " + files.length);
+      // console.log("UPLOADED file count = " + files.length);
       Array.from(files).forEach((file) => {
         const reader = new FileReader();
 
@@ -331,7 +331,19 @@ export function JsonFileUploader(props) {
   };
 
   return (
-    <input type="file" accept=".json" multiple onChange={handleFileSelect} />
+    <div>
+        <label htmlFor="file-input" className="file-input-button">
+          select file(s) to upload
+        </label>
+        <input 
+        type="file" 
+        accept=".json" 
+        multiple 
+        onChange={handleFileSelect} 
+        id="file-input"
+        style={{ display: 'none' }}
+        />
+    </div>
   );
 }
 
@@ -347,7 +359,7 @@ export function MIDIDropdown(props) {
   const loadDevices = async () => {
     const loadedDevices = await inputManager.GetMIDIDevices();
     if(loadedDevices != undefined && loadedDevices !== devices()) {
-      console.log("Loaded devices:", loadedDevices);
+      // console.log("Loaded devices:", loadedDevices);
       setDevices(loadedDevices);
       LoadOptions(loadedDevices);
     }
@@ -359,13 +371,13 @@ export function MIDIDropdown(props) {
   });
 
   function UpdateDeviceSelection(device) {
-    console.log("NEW device selected " + device);
+    // console.log("NEW device selected " + device);
     inputManager.SetTargetMIDIDevice(device);
   }
 
   function LoadOptions(devices) {
-    console.log("SET options");
-    console.log(devices);
+    // console.log("SET options");
+    // console.log(devices);
     var opt = null;
     if (devices.length > 0) {
       opt = devices.map((device, index) => (
@@ -376,7 +388,7 @@ export function MIDIDropdown(props) {
     } else {
       opt = <option value="">No MIDI devices found</option>;
     }
-    console.log(opt);
+    // console.log(opt);
     setOptions(opt);
   }
 
@@ -449,17 +461,16 @@ export function OpenSettingsButton(props) {
   if (typeof window !== 'undefined') {
     document.addEventListener("mousemove", (event) => {
       if(panel != undefined) {
-          if(panel.style.display != "block") {
-            if (event.clientY < window.innerHeight / 4) {
-              if(event.clientX < window.innerHeight / 4) {
-                ShowButton();
-              } else HideButton();
+        if(panel.style.display != "block") {
+          if (event.clientY < window.innerHeight / 4) {
+            if(event.clientX < window.innerHeight / 4) {
+              ShowButton();
             } else HideButton();
-          }
+          } else HideButton();
+        }
       }
     });
   }
-  
 
   function GetPanel() {
     if (typeof window !== 'undefined') {
@@ -487,7 +498,7 @@ export function ChannelObserverUIElement(props) {
   const [holdingKeys, setHoldingKeys] = createSignal([]);
   
   function UpdateHoldingKeys() {
-    console.log("GET holding keys");
+    // console.log("GET holding keys");
     setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
   }
   frameManager.SubscribeHalfFramerate(UpdateHoldingKeys);

@@ -58,7 +58,7 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
-    console.log("CREATE ColorSettingsUI");
+    // console.log("CREATE ColorSettingsUI");
 
 
     function UpdateComponent() {
