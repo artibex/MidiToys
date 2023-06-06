@@ -187,7 +187,7 @@ export default function SetupContainer( props: {channel: number}) {
                         <ui.ButtonIcon 
                         icon="material-symbols:build-outline-sharp"
                         onClick={() => ToggleSelectToy()}
-                        width="35"
+                        width="30"
                         />
                         {/* <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button> */}
                         {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
