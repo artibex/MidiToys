@@ -1,6 +1,6 @@
 import { MIDIReceiver } from "@midireceiver";
 import { MIDIToy } from "@miditoy";
-import paper from 'paper';
+import * as paper from 'paper';
 
 export class PolyDrum extends MIDIToy {
     // shapes: paper.Path[] = [];
@@ -29,8 +29,8 @@ export class PolyDrum extends MIDIToy {
 
     constructor(targetChannel: number) {
         super("PolyDrum", targetChannel, 24, 12, true);
-        console.log("CREATED PolyDrum");
-        console.log(this.receiver.length);
+        // console.log("CREATED PolyDrum");
+        // console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
         this.LoadDefaultColors();
         this.SetupKeyboard();
@@ -132,7 +132,7 @@ export class PolyDrum extends MIDIToy {
         this.receiver.forEach(element => {
             var r = element as MIDIReceiver;
             if(r.GetMIDIInput(holdingKeys, velocities)) {
-                console.log("FOUND key, spawn square");
+                // console.log("FOUND key, spawn square");
                 this.SpawnShape(r.GetVelocity());
             }
         })
@@ -143,7 +143,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     SpawnShape(velocity: number) {
-        console.log("DRAW shape");
+        // console.log("DRAW shape");
         var xSpawn = this.xSpawnPos * this.xSpawnOffset;
         var ySpawn = this.ySpawnPos * this.ySpawnOffset;
 
@@ -196,7 +196,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     RemoveShape(shape) {
-        console.log("REMOVING shape from layer");
+        // console.log("REMOVING shape from layer");
         this.paperLayer.remove(shape);
     }
 }

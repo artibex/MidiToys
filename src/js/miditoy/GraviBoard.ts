@@ -38,7 +38,7 @@ export class GraviBoard extends MIDIToy {
     }
 
     ApplyColors() {
-        console.log("UPDATE color values in Toy");
+        // console.log("UPDATE color values in Toy");
 
         this.paperLayer.children.forEach(element => {
             var s = element as paper.Path.RegularPolygon;
