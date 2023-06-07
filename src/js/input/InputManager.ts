@@ -95,8 +95,8 @@ export class InputManager {
 
     InitReaderModules() {
         if(typeof window !== "undefined") {
-            this.keyboardReader = new KeyboardInputModule(this);
-            this.midiReader = new MIDIInputModule(this);
+            this.keyboardReader = new KeyboardInputModule();
+            this.midiReader = new MIDIInputModule();
             // console.log("CREATED Keyboard and MIDI Reader");
         }
     }
@@ -127,14 +127,13 @@ export class InputManager {
         this.CalcBPM(message);
     }
 
-    GetInputKeyboard(command, note, velocity) {
+    GetInputKeyboard(channel, command, note, velocity) {
         // console.log("KEYBOARD detected");
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
         let stringNote = MIDIDataTable.MIDINoteToString(note);
 
         if (stringCommand.includes("NoteOn") || stringCommand.includes("NoteOff")) {
-            let ch = 1;
-            this.UpdateHoldingKeys(stringCommand, ch, stringNote, velocity);
+            this.UpdateHoldingKeys(stringCommand, channel, stringNote, velocity);
         }
     }
 
