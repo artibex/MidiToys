@@ -16,7 +16,7 @@ export class ToyManager
         return ToyManager.instance;
         }
         ToyManager.instance = this;
-        console.log("CREATED ToyManager");
+        // console.log("CREATED ToyManager");
     }
 
     //The canvas everything get's rendered on
@@ -46,17 +46,17 @@ export class ToyManager
     //Creates a "empty" toy aka the base class
     CreateEmptyToy(channel: number) {
         this.RemovePaperLayer(channel);
-        console.log("CREATE EmptyToy on channel " + channel);
+        // console.log("CREATE EmptyToy on channel " + channel);
         this.toys[channel -1] = new EmptyToy(channel);
     }
     CreateGraviBoard(channel:number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
-        console.log("CREATE GraviBoard on channel " + channel);
+        // console.log("CREATE GraviBoard on channel " + channel);
         this.toys[channel - 1] = new GraviBoard(channel);
     }
     CreatePolyDrum(channel: number, numberOfKeys: number, startKey: number) {
         this.RemovePaperLayer(channel);
-        console.log("CREATE PolyDrum on channel " + channel);
+        // console.log("CREATE PolyDrum on channel " + channel);
         this.toys[channel - 1] = new PolyDrum(channel);
     }
 
@@ -74,7 +74,7 @@ export class ToyManager
 
     //Clears the complete canvas with all elements on it
     ClearCanvas() {
-        console.log("CLEAR paper canvas");
+        // console.log("CLEAR paper canvas");
         paper.project.clear();
     }
     RemovePaperLayer(channel: number) {
