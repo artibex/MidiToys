@@ -6,6 +6,7 @@ import { MIDIDataTable } from "@mididata";
 
 export class KeyboardInputModule {
   inputManager: InputManager;
+  channel: number = 1;
 
   constructor(inputManager: InputManager) {
     // console.log("CREATED new KeyboardInputModule");
@@ -111,18 +112,13 @@ export class KeyboardInputModule {
     let midiNote = this.GetMIDINote(key);
     let midiVelocity = 127;
 
-    this.inputManager.GetInputKeyboard(midiCommand, midiNote, midiVelocity);
+    this.inputManager.GetInputKeyboard(this.channel, midiCommand, midiNote, midiVelocity);
+  }
 
-    // if(downPress) {
-    //   // this.inputManager.GetKeyboard(100,100,100);
-    //   // this.manager.GetMIDIInput([22,22,22]);
-    //   console.log(`Die Taste '${key}' wurde gedrückt.`);
-    //   console.log(MIDIDataTable.MIDICommandToString(this.GetMIDICommand(downPress)));
-    //   console.log("MIDI Code:" + this.GetMIDINote(key) + " StringNote:" + this.GetStringNote(key));
-    // } else {
-    //   console.log(`Die Taste '${key}' wurde angehoben.`);
-    //   console.log(MIDIDataTable.MIDICommandToString(this.GetMIDICommand(downPress)));
-    // }
+  SetChannel(channel: number) {
+    if(channel > 0 && channel < 17) {
+      this.channel = channel;
+    }
   }
 
   //Takes a keyboard key and returns a string note
