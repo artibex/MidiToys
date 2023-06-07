@@ -102,7 +102,7 @@ export default function SetupContainer() {
 
     function RenderChannelButtons() {
         return(
-            <div class="flexList width10">
+            <div class="flexList width10 overflowAuto">
                 <ui.ButtonIcon 
                     class="channelButton"
                     icon="grommet-icons:globe"
