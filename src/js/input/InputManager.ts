@@ -95,8 +95,8 @@ export class InputManager {
 
     InitReaderModules() {
         if(typeof window !== "undefined") {
-            this.keyboardReader = new KeyboardInputModule(this);
-            this.midiReader = new MIDIInputModule(this);
+            this.keyboardReader = new KeyboardInputModule();
+            this.midiReader = new MIDIInputModule();
             // console.log("CREATED Keyboard and MIDI Reader");
         }
     }

@@ -7,14 +7,13 @@ export class MIDIInputModule {
   private targetInput: WebMidi.MIDIInput;
   private inputManager: InputManager;
 
-  constructor(inputManager: InputManager) {
+  constructor() {
     if (MIDIInputModule.instance) {
       return MIDIInputModule.instance
     }
   MIDIInputModule.instance = this
   
-    
-    this.inputManager = inputManager;
+    this.inputManager = new InputManager();
     
     this.LoadMIDIDevices();
     // this.LoadMIDIDevices().then(() => {

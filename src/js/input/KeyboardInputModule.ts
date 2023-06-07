@@ -5,105 +5,113 @@ import { InputManager } from "@inputmanager";
 import { MIDIDataTable } from "@mididata";
 
 export class KeyboardInputModule {
+  private static instance: KeyboardInputModule;
   inputManager: InputManager;
   channel: number = 1;
 
-  constructor(inputManager: InputManager) {
+  constructor() {
+    if (KeyboardInputModule.instance) {
+      return KeyboardInputModule.instance
+    }
+    KeyboardInputModule.instance = this
+    
     // console.log("CREATED new KeyboardInputModule");
-    this.inputManager = inputManager;
+    this.inputManager = new InputManager();
     this.SetKeyboardListener();
   }
 
   SetKeyboardListener() {
-    document.addEventListener("keydown", (event) => {
-      switch (event.keyCode) {
-        case 65:
-          this.SendMIDIMessage("A", true);
-          break;
-        case 87:
-          this.SendMIDIMessage("W", true);
-          break;
-        case 83:
-          this.SendMIDIMessage("S", true);
-          break;
-        case 69:
-          this.SendMIDIMessage("E", true);
-          break;
-        case 68:
-          this.SendMIDIMessage("D", true);
-          break;
-        case 70:
-          this.SendMIDIMessage("F", true);
-          break;
-        case 71:
-          this.SendMIDIMessage("G", true);
-          break;
-        case 84:
-          this.SendMIDIMessage("T", true);
-          break;
-        case 90:
-          this.SendMIDIMessage("Z", true);
-          break;
-        case 85:
-          this.SendMIDIMessage("U", true);
-          break;
-        case 72:
-          this.SendMIDIMessage("H", true);
-          break;
-        case 74:
-          this.SendMIDIMessage("J", true);
-          break;
-        case 75:
-          this.SendMIDIMessage("K", true);
-          break;
-        default:
-          // console.log("Eine andere Taste wurde gedrückt.");
-      }
-    });
+    if (typeof window !== 'undefined') {
+      document.addEventListener("keydown", (event) => {
+        switch (event.keyCode) {
+          case 65:
+            this.SendMIDIMessage("A", true);
+            break;
+          case 87:
+            this.SendMIDIMessage("W", true);
+            break;
+          case 83:
+            this.SendMIDIMessage("S", true);
+            break;
+          case 69:
+            this.SendMIDIMessage("E", true);
+            break;
+          case 68:
+            this.SendMIDIMessage("D", true);
+            break;
+          case 70:
+            this.SendMIDIMessage("F", true);
+            break;
+          case 71:
+            this.SendMIDIMessage("G", true);
+            break;
+          case 84:
+            this.SendMIDIMessage("T", true);
+            break;
+          case 90:
+            this.SendMIDIMessage("Z", true);
+            break;
+          case 85:
+            this.SendMIDIMessage("U", true);
+            break;
+          case 72:
+            this.SendMIDIMessage("H", true);
+            break;
+          case 74:
+            this.SendMIDIMessage("J", true);
+            break;
+          case 75:
+            this.SendMIDIMessage("K", true);
+            break;
+          default:
+            // console.log("Eine andere Taste wurde gedrückt.");
+        }
+      });
 
-    document.addEventListener("keyup", (event) => {
-      switch (event.keyCode) {
-        case 65:
-          this.SendMIDIMessage("A", false);
-          break;
-        case 87:
-          this.SendMIDIMessage("W", false);
-          break;
-        case 83:
-          this.SendMIDIMessage("S", false);
-          break;
-        case 69:
-          this.SendMIDIMessage("E", false);
-          break;
-        case 68:
-          this.SendMIDIMessage("D", false);
-          break;
-        case 70:
-          this.SendMIDIMessage("F", false);
-          break;
-        case 71:
-          this.SendMIDIMessage("G", false);
-          break;
-        case 84:
-          this.SendMIDIMessage("T", false);
-          break;
-        case 90:
-          this.SendMIDIMessage("Z", false);
-          break;
-        case 85:
-          this.SendMIDIMessage("U", false);
-          break;
-        case 72:
-          this.SendMIDIMessage("H", false);
-          break;
-        case 74:
-          this.SendMIDIMessage("J", false);
-          break;
-        case 75:
-          this.SendMIDIMessage("K", false);
-          break;
-      }
-    });
+      document.addEventListener("keyup", (event) => {
+        switch (event.keyCode) {
+          case 65:
+            this.SendMIDIMessage("A", false);
+            break;
+          case 87:
+            this.SendMIDIMessage("W", false);
+            break;
+          case 83:
+            this.SendMIDIMessage("S", false);
+            break;
+          case 69:
+            this.SendMIDIMessage("E", false);
+            break;
+          case 68:
+            this.SendMIDIMessage("D", false);
+            break;
+          case 70:
+            this.SendMIDIMessage("F", false);
+            break;
+          case 71:
+            this.SendMIDIMessage("G", false);
+            break;
+          case 84:
+            this.SendMIDIMessage("T", false);
+            break;
+          case 90:
+            this.SendMIDIMessage("Z", false);
+            break;
+          case 85:
+            this.SendMIDIMessage("U", false);
+            break;
+          case 72:
+            this.SendMIDIMessage("H", false);
+            break;
+          case 74:
+            this.SendMIDIMessage("J", false);
+            break;
+          case 75:
+            this.SendMIDIMessage("K", false);
+            break;
+        }
+      });
+    }
   }
 
   SendMIDIMessage(key, downPress: boolean) {

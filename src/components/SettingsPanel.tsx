@@ -6,9 +6,11 @@ import { RGBA } from "@interfaces";
 import { ToyManager } from "@miditoy/ToyManager";
 import { CanvasManager } from "@canvasmanager";
 import GlobalSettings from "@components/GlobalSettingsUI";
+import { KeyboardInputModule } from "@input/KeyboardInputModule";
 
 const toyManager = new ToyManager();
 const canvasManager = new CanvasManager();
+const keyboardInput = new KeyboardInputModule();
 
 export default function SetupContainer() {
     var toy;
@@ -18,6 +20,14 @@ export default function SetupContainer() {
     const [channelButtonClass, setChannelButtonClass] = createSignal(
         Array.from({ length: 16 }, () => "channelButton")
     );
+
+    createEffect(() => {
+        SetKeyboardChannel(selectedChannel())
+    });
+
+    function SetKeyboardChannel(channel) {
+        keyboardInput.SetChannel(channel);
+    }
 
     function LoadToy() {
         var t = utils.InitToy(selectedChannel(), toy);
