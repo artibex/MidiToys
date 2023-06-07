@@ -20,7 +20,12 @@ export default function SetupContainer( props: {channel: number}) {
     const [shapeLimit, setShapeLimit] = createSignal(20);
     const [polySides, setPolySides] = createSignal(3);
     const [startSize, setStartSize] = createSignal(500);
-    const [sizeIncrease, setSizeIncrease] = createSignal(0.98);
+    const [xSizeChange, setXSizeChange] = createSignal(0.98);
+    const [ySizeChange, setYSizeChange] = createSignal(0.98);
+
+    const [xSpawnScale, setXSpawnScale] = createSignal(1);
+    const [ySpawnScale, setYSpawnScale] = createSignal(1);
+
     const [alphaDecrease, setAlphaDecrease] = createSignal(0);
     const [rotationSpeed, setRotationSpeed] = createSignal(0.01);
     const [strokeWidth, setStrokeWidth] = createSignal(10);
@@ -67,7 +72,11 @@ export default function SetupContainer( props: {channel: number}) {
                 setShapeLimit(toy.shapeLimit);
                 setPolySides(toy.polySides);
                 setStartSize(toy.startSize);
-                setSizeIncrease(toy.sizeIncrease);
+                setXSizeChange(toy.xSizeChange);
+                setYSizeChange(toy.ySizeChange);
+                setXSpawnScale(toy.xSpawnScale)
+                setYSpawnScale(toy.ySpawnScale);
+
                 setAlphaDecrease(toy.alphaDecrease);
                 setRotationSpeed(toy.rotationSpeed);
                 setStrokeWidth(toy.strokeWidth);
@@ -91,7 +100,11 @@ export default function SetupContainer( props: {channel: number}) {
                 toy.shapeLimit = shapeLimit();
                 toy.polySides = polySides();
                 toy.startSize = startSize();
-                toy.sizeIncrease = sizeIncrease();
+                toy.xSizeChange = xSizeChange();
+                toy.ySizeChange = ySizeChange();
+                toy.xSpawnScale = xSpawnScale();
+                toy.ySpawnScale = ySpawnScale();
+
                 toy.alphaDecrease = alphaDecrease();
                 toy.rotationSpeed = rotationSpeed();
                 toy.strokeWidth = strokeWidth();
@@ -146,11 +159,35 @@ export default function SetupContainer( props: {channel: number}) {
             <br></br>
             <ui.NumberSliderUIElement 
                     factor={100}
-                    name={"Size Change"}
-                    minMaxStep={[50,120,1]}
-                    value={sizeIncrease()}
-                    onChange={setSizeIncrease}
+                    name={"X Scale Start"}
+                    minMaxStep={[50,300,1]}
+                    value={xSpawnScale()}
+                    onChange={setXSpawnScale}
                 />
+            <ui.NumberSliderUIElement 
+                    factor={100}
+                    name={"Y Scale Start"}
+                    minMaxStep={[50,300,1]}
+                    value={ySpawnScale()}
+                    onChange={setYSpawnScale}
+                />
+
+            <br></br>
+            <ui.NumberSliderUIElement 
+                    factor={100}
+                    name={"X Scale Change"}
+                    minMaxStep={[50,120,1]}
+                    value={xSizeChange()}
+                    onChange={setXSizeChange}
+                />
+            <ui.NumberSliderUIElement 
+                    factor={100}
+                    name={"Y Scale Change"}
+                    minMaxStep={[50,120,1]}
+                    value={ySizeChange()}
+                    onChange={setYSizeChange}
+                />
+            <br></br>
             <ui.NumberSliderUIElement 
                     factor={100}
                     name={"Stroke Change"}
@@ -168,14 +205,14 @@ export default function SetupContainer( props: {channel: number}) {
             <br></br>
             <ui.NumberSliderUIElement 
                     factor={100}
-                    name={"SpawnOffset X"}
+                    name={"X SpawnOffset"}
                     minMaxStep={[0,200,1]}
                     value={xSpawnOffset()}
                     onChange={setXSpawnOffset}
                 />    
             <ui.NumberSliderUIElement 
                     factor={100}
-                    name={"Spawn Offset Y"}
+                    name={"Y Spawn Offset"}
                     minMaxStep={[0,200,1]}
                     value={ySpawnOffset()}
                     onChange={setYSpawnOffset}
