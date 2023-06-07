@@ -8,7 +8,10 @@ export class PolyDrum extends MIDIToy {
     polySides: number = 3;
 
     startSize: number = 500;
-    sizeIncrease: number = 0.98;
+
+    xSizeChange: number = 0.98;
+    ySizeChange: number = 0.98;
+
     alphaDecrease: number = 0.01;
     rotationSpeed: number = 0;
 
@@ -26,6 +29,9 @@ export class PolyDrum extends MIDIToy {
 
     minHeight: number = this.h * 0.5;
     maxHeight: number = this.h * 0.5;
+
+    xSpawnScale: number = 1;
+    ySpawnScale: number = 1;
 
     constructor(targetChannel: number) {
         super("PolyDrum", targetChannel, 24, 12, true);
@@ -64,7 +70,7 @@ export class PolyDrum extends MIDIToy {
         shapeLimit: this.shapeLimit,
         polySides: this.polySides,
         startSize: this.startSize,
-        sizeIncrease: this.sizeIncrease,
+        sizeIncrease: this.xSizeChange,
         alphaDecrease: this.alphaDecrease,
         rotationSpeed: this.rotationSpeed,
         strokeWidth: this.strokeWidth,
@@ -81,7 +87,7 @@ export class PolyDrum extends MIDIToy {
         this.shapeLimit = data.shapeLimit;
         this.polySides = data.polySides;
         this.startSize = data.startSize;
-        this.sizeIncrease = data.sizeIncrease;
+        this.xSizeChange = data.sizeIncrease;
         this.alphaDecrease = data.alphaDecrease;
         this.rotationSpeed = data.rotationSpeed;
         this.strokeWidth = data.strokeWidth;
@@ -100,11 +106,6 @@ export class PolyDrum extends MIDIToy {
     frameCount: number = 0;
     UpdateKeyboard() {
         this.UpdateShapes();
-        // this.frameCount++;
-        // if(this.frameCount > 600) {
-        //     this.frameCount = 0;
-        //     this.ChangePolySideCount();
-        // }
     }
 
     ChangePolySideCount() {
@@ -152,6 +153,7 @@ export class PolyDrum extends MIDIToy {
         poly.fillColor = new paper.Color(this.fillColor);
         poly.strokeColor = new paper.Color(this.strokeColor);
         poly.strokeWidth = this.strokeWidth + velocity/10;
+        poly.scale([this.xSpawnScale, this.ySpawnScale]);
 
         this.paperLayer.addChild(poly);
         // this.paperGroup.addChild(poly);
@@ -179,7 +181,7 @@ export class PolyDrum extends MIDIToy {
             newFillColor.alpha -= alphaDecrease;
 
             poly.set({
-                scaling: poly.scaling.multiply(this.sizeIncrease),
+                scaling: poly.scaling.multiply([this.xSizeChange, this.ySizeChange]),
                 strokeWidth: poly.strokeWidth * strokeWidthDecrease,
                 strokeColor: newStrokeColor,
                 fillColor: newFillColor
