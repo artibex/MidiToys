@@ -463,8 +463,8 @@ export function OpenSettingsButton(props) {
 
   function CheckAllEmpty(toys) {
     var toys = toyManager.GetToys();
+    var allEmpty = true;
     if(toys != undefined) {
-      var allEmpty = true;
       toys.forEach((element) => {
         if(!element.toyName.includes("Empty")){
           allEmpty = false;
@@ -505,11 +505,46 @@ export function OpenSettingsButton(props) {
   return(
     <ButtonIcon
       id="openSettingsButton"
-      // label="Settings "
+      icon="mdi:cog-outline"
       width="50"
       onClick={() => OpenSettings()}
-      icon="mdi:cog-outline"
     />
+  )
+}
+
+export function StartText(props) {
+  if(props.label == undefined) props.label = "No MIDI toy loaded, add a toy to start"
+  if(props.id == undefined) props.id = "startText";
+
+  const [text, setText] = createSignal(props.label);
+
+  function CheckAllEmpty() {
+    var toys = toyManager.GetToys();
+    var allEmpty = true;
+    if(toys != undefined) {
+      toys.forEach((element) => {
+        if(!element.toyName.includes("Empty")){
+          allEmpty = false;
+          return;
+        }
+      })
+      
+      if(allEmpty) return true;
+      else return false;
+    }
+  }
+
+  function TextSetter() {
+    console.log("SETTING Text");
+    if(CheckAllEmpty()) setText(props.label)
+    else setText(""); 
+  }
+
+  frameManager.SubscribeOneFPS(TextSetter);
+  return(
+    <h1 id={props.id}>
+      {text()}
+    </h1>
   )
 }
 
