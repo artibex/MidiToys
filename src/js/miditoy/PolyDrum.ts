@@ -75,8 +75,15 @@ export class PolyDrum extends MIDIToy {
         rotationSpeed: this.rotationSpeed,
         strokeWidth: this.strokeWidth,
         strokeWidthDecrease: this.strokeWidthDecrease,
+        
         ySpawnOffset: this.ySpawnOffset,
         xSpawnOffset: this.xSpawnOffset,
+        
+        xSpawnScale: this.xSpawnScale,
+        ySpawnScale: this.ySpawnScale,
+
+        xSizeChange: this.xSizeChange,
+        ySizeChange: this.ySizeChange
         };
     }
     LoadJSON(data: any) {
@@ -92,9 +99,17 @@ export class PolyDrum extends MIDIToy {
         this.rotationSpeed = data.rotationSpeed;
         this.strokeWidth = data.strokeWidth;
         this.strokeWidthDecrease = data.strokeWidthDecrease;
+        
         this.xSpawnOffset = data.xSpawnOffset;
         this.ySpawnOffset = data.ySpawnOffset;
-        this.TriggerToyChangedEvent();
+
+        this.xSpawnScale = data.xSpawnScale;
+        this.ySpawnScale = data.ySpawnScale;
+
+        this.xSizeChange = data.xSizeChange;
+        this.ySizeChange = data.ySizeChange;
+
+        this.SetupKeyboard();
     }
 
     SetupKeyboard() {
