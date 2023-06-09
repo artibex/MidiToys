@@ -116,6 +116,8 @@ export class GraviBoard extends MIDIToy {
         this.yImpulsPower = data.yImpulsPower;
         this.xImpulsPower = data.xImpulsPower;
         this.TriggerToyChangedEvent();
+
+        this.SetupKeyboard();
     }
     
 
