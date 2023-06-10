@@ -29,6 +29,7 @@ import { Icon } from '@iconify-icon/solid';
         let toyManager = new ToyManager(); //Setup toy manager
         toyManager.SetTargetCanvas(toyCanvas); //Set the target
         toyManager.CreateEmptyToys();
+        toyManager.CreateMIDIMatrix(1);
     </script>
 
     <canvas id="toyCanvas" class="toyCanvas"></canvas>

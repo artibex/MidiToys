@@ -21,8 +21,8 @@ export abstract class MIDIToy {
     //Canvas settings
     // devicePixelRatio: number;
     canvas: HTMLCanvasElement; //The canvas
-    w: number;
-    h: number;
+    w: number; //The width of the canvas
+    h: number; //The height of the canvas
     
     //MIDI Receiver settings
     numberOfKeys: number = 24; //How many keys are on this keyboard?
@@ -74,7 +74,7 @@ export abstract class MIDIToy {
         this.useRegExp = useRegExp;
 
         // this.ResizeCanvas();
-        this.SetupMIDIReceiver(this.useRegExp);
+        this.SetupMIDIReceiver(this.numberOfKeys, this.useRegExp);
         // console.log("CREATED new MIDIToy on channel " + this.targetChannel);
     }
 
@@ -102,13 +102,13 @@ export abstract class MIDIToy {
     }
 
     //Generates needed MIDI Receiver
-    SetupMIDIReceiver(value: boolean) {
+    SetupMIDIReceiver(amount: number, useExpression: boolean) {
         this.receiver.length = 0;
         //this.receiver.length = 0;
         let note = this.startKey;
-        for(let i = 0; i < this.numberOfKeys; i++) {
+        for(let i = 0; i < amount; i++) {
             var rec = new MIDIReceiver(this.targetChannel, MIDIDataTable.MIDINoteToString(note));
-            rec.useRegExp = value;
+            rec.useRegExp = useExpression;
             this.receiver.push(rec);
             note++;
         }
@@ -158,6 +158,7 @@ export abstract class MIDIToy {
         }
         return avgCellSize;
     }
+
 
     GetRandomNumber(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
