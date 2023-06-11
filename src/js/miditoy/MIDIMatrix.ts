@@ -7,11 +7,11 @@ export class MIDIMatrix extends MIDIToy {
     gridCells: paper.Path[][];
     rows: number = 12;
     colums: number;
-    strokeWidth: number = 5;
     polySides: number = 4;
-
-    cellHeightScale: number = 0.5;
-    cellWidthScale: number = 0.7;
+    
+    strokeWidth: number = 5;
+    cellHeightScale: number = 0.8;
+    cellWidthScale: number = 0.8;
 
     constructor(targetChannel: number) {
         super("MIDI Matrix", targetChannel, 10, 12, true);
@@ -37,6 +37,7 @@ export class MIDIMatrix extends MIDIToy {
             poly.fillColor = this.fillColor;
             poly.strokeWidth = this.strokeWidth;
             poly.strokeColor = this.strokeColor;
+            poly.strokeScaling = false;
             gridRow.push(poly);
             this.paperLayer.addChild(poly);
           }
@@ -49,6 +50,7 @@ export class MIDIMatrix extends MIDIToy {
     }
       
     SetupKeyboard() {
+        this.RemoveChildrenFromLayer();
         this.CreateGrid();
     }
 
@@ -75,6 +77,7 @@ export class MIDIMatrix extends MIDIToy {
 
     MatrixONEvent(x: number, y: number) {
         this.gridCells[x][y].fillColor = this.accentColor;
+        // this.gridCells[x][y].strokeWidth += this.strokeWidth
     }
 
     MatrixOFFEvent(x: number, y: number) {
@@ -82,13 +85,21 @@ export class MIDIMatrix extends MIDIToy {
     }
 
     ApplySettings() {
+        this.SetupKeyboard();
         // Implement applying settings here
     }
 
     UpdateKeyboard() {
-
+        for (let row = 0; row < this.rows; row++) {
+            for (let col = 0; col < this.colums; col++) {
+                // if(this.gridCells[row][col].strokeWidth > this.strokeWidth) {
+                //     this.gridCells[row][col].strokeWidth -= 1;
+                // }
+            }
+        }
+  
     }
-      
+    
     LoadDefaultColors() {
         this.fillColor = new paper.Color(1);
         this.strokeColor = new paper.Color(1 / 4);
@@ -98,7 +109,7 @@ export class MIDIMatrix extends MIDIToy {
     ApplyColors() {
         this.gridCells.forEach((row) => {
         row.forEach((cell) => {
-            cell.fillColor = this.accentColor;
+            cell.fillColor = this.fillColor;
             cell.strokeColor = this.strokeColor;
         });
         });
@@ -110,23 +121,24 @@ export class MIDIMatrix extends MIDIToy {
 
           rows: this.rows,
           colums: this.colums,
-          strokeWidth: this.strokeWidth,
           polySides: this.polySides,
+          strokeWidth: this.strokeWidth,
           cellHeightScale: this.cellHeightScale,
           cellWidthScale: this.cellWidthScale
         };
-      }
-      
-      LoadJSON(data: any) {
-        this.LoadBaseJSON(data);
+    }  
 
-        this.rows = data.rows;
-        this.colums = data.colums;
-        this.strokeWidth = data.strokeWidth;
-        this.polySides = data.polySides;
-        this.cellHeightScale = data.cellHeightScale;
-        this.cellWidthScale = data.cellWidthScale;
-      
-        this.SetupKeyboard();
-      }
+    LoadJSON(data: any) {
+    this.LoadBaseJSON(data);
+
+    this.rows = data.rows;
+    this.colums = data.colums;
+    this.polySides = data.polySides;
+
+    this.strokeWidth = data.strokeWidth;
+    this.cellHeightScale = data.cellHeightScale;
+    this.cellWidthScale = data.cellWidthScale;
+    
+    this.SetupKeyboard();
+    }
 }

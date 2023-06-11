@@ -61,6 +61,7 @@ export class ToyManager
         this.toys[channel - 1] = new PolyDrum(channel);
     }
     CreateMIDIMatrix(channel: number) {
+        this.RemovePaperLayer(channel);
         this.toys[channel - 1] = new MIDIMatrix(channel);
     }
 
