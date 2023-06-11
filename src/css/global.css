@@ -111,10 +111,22 @@ button:hover {
   align-items: center; */
   justify-content: center;
 }
-.dropdown{
-  width: 80%;
-  height: auto;
+
+.dropdown {
+  /* position: relative;
+  display: inline-block; */
+  background-color: black;
+  text-align: center;
+  border: dashed 1px;
+  margin: auto;
+  padding: 5px;
 }
+
+.dropdown:hover {
+  background-color: rgba(128, 128, 128, 0.381);
+  color: yellow;
+}
+
 
 .flexList button {
   width: 100%;
