@@ -19,7 +19,7 @@ export class MIDIMatrix extends MIDIToy {
         this.colums = this.numberOfKeys;
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
 
-        this.CreateGrid();
+        this.SetupKeyboard();
     }
 
     CreateGrid() {
@@ -45,13 +45,12 @@ export class MIDIMatrix extends MIDIToy {
           // Store the grid row
           this.gridCells[row] = gridRow;
         }
-
-        this.SetupMIDIReceiver(this.numberOfKeys * this.rows, true);
     }
       
     SetupKeyboard() {
         this.RemoveChildrenFromLayer();
         this.CreateGrid();
+        this.SetupMIDIReceiver(this.colums * this.rows, this.useRegExp);
     }
 
     InputEvent(onEvent: boolean) {
@@ -68,7 +67,7 @@ export class MIDIMatrix extends MIDIToy {
             }
 
             xIndex++;
-            if(xIndex >= this.numberOfKeys) {
+            if(xIndex >= this.colums) {
                 xIndex = 0;
                 yIndex++;
             }
