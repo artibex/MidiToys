@@ -21,6 +21,7 @@ export function CreateToy(channel, type) {
         case 0: toyManager.CreateEmptyToy(channel);       break;
         case 1: toyManager.CreateGraviBoard(channel);     break;
         case 2: toyManager.CreatePolyDrum(channel);       break;
+        case 3: toyManager.CreateMIDIMatrix(channel);     break;
         // case 3: tManager.CreateSquareKeyboard(channel, numberOfKeys, startKey); break;
         default: toyManager.CreateEmptyToy(channel);      break;
     }

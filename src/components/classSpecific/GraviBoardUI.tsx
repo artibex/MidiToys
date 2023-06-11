@@ -4,7 +4,7 @@ import { CanvasManager } from "@canvasmanager";
 import * as utils from "@utils";
 import * as ui from "@ui"
 
-var tManager = new ToyManager();
+var toyManager = new ToyManager();
 const canvasManager = new CanvasManager();
 
 export default function SetupContainer( props: {channel: number}) {

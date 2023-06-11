@@ -3,6 +3,7 @@ import { EmptyToy } from "@miditoy/EmptyToy";
 import { GraviBoard } from "@miditoy/GraviBoard";
 import { PolyDrum } from "@miditoy/PolyDrum";
 import * as paper from "paper";
+import { MIDIMatrix } from "./MIDIMatrix";
 
 export class ToyManager 
 {
@@ -58,6 +59,10 @@ export class ToyManager
         this.RemovePaperLayer(channel);
         // console.log("CREATE PolyDrum on channel " + channel);
         this.toys[channel - 1] = new PolyDrum(channel);
+    }
+    CreateMIDIMatrix(channel: number) {
+        this.RemovePaperLayer(channel);
+        this.toys[channel - 1] = new MIDIMatrix(channel);
     }
 
     GetToy(channel: number) {

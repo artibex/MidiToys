@@ -146,6 +146,8 @@ export default function SetupContainer( props: {channel: number}) {
             switch(toyType()) {
                 case 1: return (<SpecificUI.GraviBoardUI channel={channel}></SpecificUI.GraviBoardUI>);
                 case 2: return (<SpecificUI.PolyDrumUI channel={channel}></SpecificUI.PolyDrumUI>);
+                case 3: return (<SpecificUI.MIDIMatrixUI channel={channel}></SpecificUI.MIDIMatrixUI>);
+
                 default: return(<></>);
             }
         }
@@ -156,6 +158,7 @@ export default function SetupContainer( props: {channel: number}) {
         var toys = <>
             <button id="thinButton" onClick={() => SetToyType(1, true)}>Gravi Board</button>
             <button id="thinButton" onClick={() => SetToyType(2, true)}>Poly Drum</button>
+            <button id="thinButton" onClick={() => SetToyType(3, true)}>MIDI Matrix</button>
         </>;
         
         if(toyType() > 0) {

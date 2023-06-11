@@ -1,70 +1,80 @@
 import { createSignal, createEffect } from "solid-js";
 import { ToyManager } from "@toymanager";
+import { CanvasManager } from "@canvasmanager";
 import * as utils from "@utils";
 import * as ui from "@ui";
 
-var tManager = new ToyManager();
+var toyManager = new ToyManager();
+const canvasManager = new CanvasManager
+
 
 //This is a template to create a UI for a ToyClass
 export default function SetupContainer( props: {channel: number}) {
-    var channel = props.channel;
     var toy;
+    var channel = props.channel;
     const [useEffect, setUseEffect] = createSignal(true);
 
+    const [toyName, setToyName] = createSignal("ToyName");
     //Special settings
 
     createEffect(() => {
         if(useEffect()) {
-            console.log("TRIGGER SPECIAL effect");
             UpdateToyValues();
+            // console.log("TRIGGER SPECIAL effect");
         }
     })
 
-    const ToyChanged = () => {
-        // Handle the event...
-        console.log("DEFAULT UI event");
-        setUseEffect(false);
-        UpdateUIValues();
-        setUseEffect(true);
-      };
-
-      function LoadToy() {
-        toy = utils.InitToy(channel, toy, ToyChanged);
+    function UpdateComponent() {
+        LoadToy();
     }
 
+    function LoadToy() {
+        var t = utils.InitToy(channel, toy, UpdateComponent);
+        if(toy != t) {
+            toy = t;
+            UpdateUIValues();
+        }
+    }
 
     function UpdateUIValues() {
-        console.log("UPDATE SPECIAL UI values");
+        // console.log("UPDATE SPECIAL UI values");
         if (typeof window !== 'undefined') {
-            toy = utils.InitToy(channel, toy, ToyChanged);
-
-            //Put values here
             if(toy != undefined) {
-                
+                setUseEffect(false);
+
+                setUseEffect(true);
             }
         }
     }
-    
     function UpdateToyValues() {
-        console.log("UPDATE toy values");
+        // console.log("UPDATE GraviBoard toy values");
         if (typeof window !== 'undefined') {
-            //Put values here
             if(toy != undefined) {
-                //Remove old objects
-                toy.RemoveChildrenFromLayer();
                 
-                //Reload Keyboard
-                toy.SetupKeyboard();
+                try {
+                    //Reload Keyboard
+                    toy.ApplySettings();
+                } catch {}
             }
         }
+    }
+    function Reload() {
+        try{toy.SetupKeyboard()}
+        catch{}
     }
 
     function RenderUI() {
-        
+        return(
+            <>
+
+            </>
+        )
     }
 
     //Init Component
     LoadToy();
-    UpdateUIValues(); //Get UI Values once at start
-    return ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
+    canvasManager.SubscribeOneFPS(UpdateComponent);
+    return (
+        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI()}  />
+    )
 }
