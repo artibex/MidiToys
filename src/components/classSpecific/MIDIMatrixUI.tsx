@@ -95,7 +95,7 @@ export default function SetupContainer( props: {channel: number}) {
             <>
                 <ui.NumberSliderUIElement 
                     name={"Poly Sides"}
-                    minMaxStep={[2,20,1]}
+                    minMaxStep={[3,20,1]}
                     value={polySides()}
                     onChange={setPolySides}
                 />

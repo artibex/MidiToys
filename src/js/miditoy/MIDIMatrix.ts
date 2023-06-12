@@ -100,8 +100,8 @@ export class MIDIMatrix extends MIDIToy {
     }
     
     LoadDefaultColors() {
-        this.fillColor = new paper.Color(1);
-        this.strokeColor = new paper.Color(1 / 4);
+        this.fillColor = new paper.Color(100,100,100,0.2);
+        this.strokeColor = new paper.Color(100,100,100,0.4);
         this.accentColor = new paper.Color(1 / 2);
     }
 

@@ -43,7 +43,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     LoadDefaultColors() {
-        this.fillColor = new paper.Color(0,0,0,0.1);
+        this.fillColor = new paper.Color(0,0,0,0.4);
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(0,0,0,0);
     }

@@ -31,7 +31,7 @@ export class GraviBoard extends MIDIToy {
     }
 
     LoadDefaultColors() {
-        this.fillColor = new paper.Color(0,0,0,0);
+        this.fillColor = new paper.Color(0,0,0,1);
         this.strokeColor = new paper.Color(1);
         this.accentColor = new paper.Color(1);
         this.ApplyColors();
@@ -120,7 +120,6 @@ export class GraviBoard extends MIDIToy {
         this.SetupKeyboard();
     }
     
-
     InitVelocity() {
         this.velocity.length = 0;
         for(let i = 0; i < this.numberOfKeys; i++) {
