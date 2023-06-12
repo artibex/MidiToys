@@ -15,20 +15,7 @@ export function UnsubscribeEvent(targetFunction) {
     toy.UnsubscribeFromToyChangedEvent(targetFunction);
 }
 
-export function CreateToy(channel, type) {
-    //If toyType changed, create toy, otherwise, just udpate
-    switch(type) {
-        case 0: toyManager.CreateEmptyToy(channel);       break;
-        case 1: toyManager.CreateGraviBoard(channel);     break;
-        case 2: toyManager.CreatePolyDrum(channel);       break;
-        case 3: toyManager.CreateMIDIMatrix(channel);     break;
-        // case 3: tManager.CreateSquareKeyboard(channel, numberOfKeys, startKey); break;
-        default: toyManager.CreateEmptyToy(channel);      break;
-    }
-    return toyManager.GetToy(channel);
-}
-
-
+//Takes a string and converts it into a RGBA interface object
 export function ExtractRGBAColor(colorString) {
     const rgbaRegex = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/i;
     const matches = colorString.match(rgbaRegex);
@@ -44,4 +31,4 @@ export function ExtractRGBAColor(colorString) {
   
     // Return default color if extraction fails
     return { r: 0, g: 0, b: 0, a: 0 };
-  }
+}
