@@ -7,6 +7,19 @@
   src: url('../fonts/SlimJoe.otf') format('opentype');
 }
 
+:root {
+  --body-background-color: black;
+  --primary-color: yellow;
+  --secondary-color: rgba(31, 31, 31, 0.3);
+  --item-background-color: rgba(45, 45, 45, 0.6);
+
+  --item-hover-color: rgba(255, 255, 0, 0.434);
+  --border-color: white;
+  --border-hover-color: yellow;
+  --text-color: white;
+  --text-hover-color: yellow;
+}
+
 html, body {
   height: 100%;
   margin: 0;
@@ -20,8 +33,7 @@ html {
 body {
   font-family: "SlimJoe", sans-serif;
   font-size: 10pt;
-  background-color: black;
-  color: white;
+  background-color: var(--body-background-color);
 }
 
 main{
@@ -64,13 +76,13 @@ button {
   padding-right: 20px;
 
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.4);
-  /* border: 2px dotted white; */
-  color: white;
+  background-color: var(--item-background-color);
+  color: var(--text-color);
   transition: border 0.2s ease-in-out;
 }
 button:hover {
-  border: 2px solid white;
+  border: 2px solid var(--item-hover-color);
+  color: var(--text-hover-color);
 }
 .thinButton{
   padding-top: 5px;
@@ -99,32 +111,27 @@ button:hover {
   width: 100%;
   height: 100%;
   text-align: center;
-  background-color: rgba(230, 255, 0, 0.5);
+  background-color: var(--item-hover-color)
 }
 
 
 .iconButton{
-  /* display: flex; */
   padding: 2px;
-  border: 2px solid rgba(0, 0, 0, 0);
-  /* vertical-align: middle;
-  align-items: center; */
+  border: 1px solid var(--border-color);
   justify-content: center;
 }
 
 .dropdown {
-  /* position: relative;
-  display: inline-block; */
-  background-color: black;
+  background-color: var(--item-background-color);
   text-align: center;
-  border: dashed 1px;
+  border: dashed 1px var(--border-color);
   margin: auto;
   padding: 5px;
 }
 
 .dropdown:hover {
-  background-color: rgba(128, 128, 128, 0.381);
-  color: yellow;
+  background-color: var(--item-hover-color);
+  color: var(--text-hover-color);
 }
 
 
@@ -142,9 +149,9 @@ summary {
   font-size: 13pt;
 
   border-radius: 5px;
-  background-color: black;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: white;
+  background-color: var(--item-background-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 20px;
@@ -153,14 +160,14 @@ summary {
   transition: border-color 0.2s ease-in-out;
 }
 summary:hover {
-  border: 2px solid white;
+  border: 1px solid var(--border-hover-color);
 }
 summary::marker {
   content: ""; /* hide the marker */
 }
 details[open] summary {
-  color: yellow;
-  border: 2px solid rgba(255, 255, 255, 1);
+  color: var(--text-hover-color);
+  border: 1px solid var(--border-color);
   font-family: "BigJohn", sans-serif;
   font-size: 14pt;
 }
@@ -191,7 +198,7 @@ details[open] summary {
 }
 
 .marginAuto{
-  margin:auto;
+  margin: auto;
 }
 .paddingTopBottom0{
   padding-top: 0px;
@@ -283,9 +290,6 @@ details[open] summary {
 
 .channelGroup {
   border-radius: 5px;
-  /* background-color: rgba(0, 0, 0, 0.2); */
-  /* border: 1px solid white; */
-  /* padding: 1px; */
   width: 99%;
   height: 85%;
   grid-gap: 5px;
@@ -293,7 +297,6 @@ details[open] summary {
   grid-template-rows: repeat(1, 1fr);
   margin-left: auto;
   margin-right: auto;
-  /* box-sizing: border-box; */
   display: grid;
 }
 .channelContainer {
@@ -302,8 +305,6 @@ details[open] summary {
   border-radius: 5px;
   height: 100%;
   width: 100%;
-  /* background-color: rgba(0, 0, 0, 0.2); */
-  /* border: 1px solid white; */
 }
 .overflowAuto{
   overflow: auto;
@@ -312,13 +313,13 @@ details[open] summary {
 .file-input-button {
   display: inline-block;
   padding: 8px 16px;
-  background-color: rgba(0, 0, 0, 0);
-  color: #fff;
-  border: 1px dashed white;
+  background-color: var(--item-background-color);
+  color: var(--text-color);
+  border: 1px dashed var(--border-color);
   cursor: pointer;
 }
 .file-input-button:hover{
-  background-color: rgba(100, 100, 100, 0.4);
+  background-color: var(--item-hover-color);
   text-decoration: underline;
 }
 
@@ -376,10 +377,10 @@ details[open] summary {
   padding-top: 3px;
   padding-bottom: 3px;
 
-  outline: 2px solid rgba(255, 255, 255, 0.3);
+  outline: 1px solid var(--border-color);
   border: none;
-  background-color: black;
-  color: white;
+  background-color: var(--item-background-color);
+  color: var(--text-color);
   border-radius: 5px;
   box-sizing: border-box;
   height: 30px;
@@ -387,12 +388,11 @@ details[open] summary {
   transition: color 0.2s ease-in-out;
 }
 .numberInput:focus {
-  outline: 2px solid;
-  color: yellow;
-  /* border-color: #4da6ff; */
+  outline: 1px solid var(--border-hover-color);
+  color: var(--text-hover-color);
 }
 .numberInput:hover{
-  outline: 2px solid;
+  outline: 1px solid var(--border-hover-color);
 }
 .numberInput::-webkit-inner-spin-button,
 .numberInput::-webkit-outer-spin-button {
@@ -407,7 +407,7 @@ details[open] summary {
   padding-top: 3px;
   padding-bottom: 3px;
 
-  outline: 2px solid rgba(255, 255, 255, 0.3);
+  outline: 1px solid var(--border-color);
   border: none;
   background-color: black;
   color: white;
@@ -417,9 +417,8 @@ details[open] summary {
   transition: color 0.2s ease-in-out;
 }
 .textInput:focus {
-  outline: 2px solid;
-  color: yellow;
-  /* border-color: #4da6ff; */
+  outline: 1px solid var(--border-hover-color);
+  color: var(--text-hover-color);
 }
 .textInput:hover{
   outline: 2px solid;
@@ -430,7 +429,7 @@ details[open] summary {
   appearance: none;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--item-background-color));
   outline: none;
   opacity: 0.6;
   transition: opacity 0.1s;
@@ -442,11 +441,7 @@ details[open] summary {
 .sliderInput::-moz-range-thumb {
   width: 16px;
   height: 24px;
-  /* background: #fff; */
-  color: blue;
-  /* background-color: white; */
-  /* border: 2px solid #333; */
-  /* border-radius: 50%; */
+  color: var(--primary-color);
   cursor: pointer;
 }
 
@@ -455,7 +450,7 @@ details[open] summary {
 }
 
 .verticalSlider {
-  background: #ddd;
+  background: var(--item-background-color);
   outline: none;
   width: 100px;
   transform: rotate(90deg);
@@ -465,35 +460,29 @@ details[open] summary {
 .toggleInput{
   appearance: none;
   border-radius: 5px;
-  background-color: black;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  /* vertical-align: middle; */
+  background-color: var(--item-background-color);
+  border: 1px solid var(--border-color);
   width: 15vh;
   height: 25px;
 }
 .toggleInput:hover{
-  background-color: rgba(100, 100, 100, 0.4);
+  background-color: var(--item-hover-color);
 }
 .toggleInput:checked:hover {
-  background-color: rgba(100, 100, 100, 0.8);
+  background-color: var(--item-hover-color);
 }
 .toggleInput:checked {
   content: "";
-  background-color: white;
+  background-color: var(--primary-color);
   border-radius: 5px;
   width: 15vh;
   height: 25px;
-  /* position: absolute; */
 }
 
 #openSettingsButton {
   font-family: "BigJohn", sans-serif;
   font-size: 16pt;
   position: fixed;
-  /* padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 60px;
-  padding-right: 60px; */
   top: 0px;
   left: 0px;
   display: block;
@@ -511,25 +500,17 @@ details[open] summary {
   width: 25%;
   padding-right: 20px;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--item-background-color);
   border-radius: 5px;
-  /* border: 1px solid white; */
-  /* padding: 20px; */
 
-  /* grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  grid-gap: 10px; */
   display: none;
-
 }
 @media (max-width: 1100px) {
-  /* Set width to 100% for screens with width less than or equal to 767px */
   #settingsPanel {
     width: 70%;
   }
 }
 @media (max-width: 576px) {
-  /* Set width to 100% for screens with width less than or equal to 767px */
   #settingsPanel {
     width: 100%;
   }
@@ -547,12 +528,11 @@ details[open] summary {
   width: 100%;
   height: 100%;
   overflow: hidden;    
-  /* add other styles as desired */
 }
 
 .toyCanvasDebug {
   width: 100%;
   height: 420px;
   overflow: hidden;    /* add other styles as desired */
-  outline: 2px solid white;
+  outline: 1px solid var(--border-color);
 }
