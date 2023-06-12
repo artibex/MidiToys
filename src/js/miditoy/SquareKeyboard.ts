@@ -2,6 +2,8 @@ import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIToy } from "./MIDIToy";
 import paper from 'paper';
 
+//WARNING: THIS ONE IS BROKEN AND SUCKS!
+
 //Takes a canvas HTMLElement and draws cool things on it
 export class SquareKeyboard extends MIDIToy {
     // squareSize: number[] = [];

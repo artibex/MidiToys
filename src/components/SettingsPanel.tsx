@@ -77,7 +77,7 @@ export default function SetupContainer() {
         return(
             <ui.ButtonIcon 
                 class="squareButton"
-                icon="mdi:cog-outline"
+                icon="ic:outline-arrow-back-ios"
                 width={30}
                 onClick={() => CloseSettings()}
             />

@@ -33,7 +33,7 @@ export class GraviBoard extends MIDIToy {
     LoadDefaultColors() {
         this.fillColor = new paper.Color(0,0,0,0);
         this.strokeColor = new paper.Color(1);
-        this.accentColor = new paper.Color(0,0,0,0);
+        this.accentColor = new paper.Color(1);
         this.ApplyColors();
     }
 
@@ -146,8 +146,9 @@ export class GraviBoard extends MIDIToy {
                 var r = element as MIDIReceiver;
                 if(r.GetMIDIInput(holdingKeys, velocities)) {
                     // console.log("FOUND key, spawn square");
+                    this.SetAccentColor(index);
                     this.Impuls(index, this.yImpulsPower, this.xImpulsPower);
-                }
+                } else this.SetFillColor(index);
                 index++;
             })
         }
@@ -229,6 +230,13 @@ export class GraviBoard extends MIDIToy {
             indexValue++;
         });
     };
+
+    SetFillColor(index: number) {
+        this.paperLayer.children[index].fillColor = this.fillColor;
+    }
+    SetAccentColor(index: number) {
+        this.paperLayer.children[index].fillColor = this.accentColor;
+    }
 
     Impuls(indexValue: number, yForce: number, xForce: number) {
         var vel = this.velocity[indexValue];

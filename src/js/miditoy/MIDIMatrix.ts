@@ -107,10 +107,10 @@ export class MIDIMatrix extends MIDIToy {
 
     ApplyColors() {
         this.gridCells.forEach((row) => {
-        row.forEach((cell) => {
-            cell.fillColor = this.fillColor;
-            cell.strokeColor = this.strokeColor;
-        });
+            row.forEach((cell) => {
+                cell.fillColor = this.fillColor;
+                cell.strokeColor = this.strokeColor;
+            });
         });
     }
 

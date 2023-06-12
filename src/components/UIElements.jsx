@@ -428,8 +428,10 @@ export function BPM(props) {
 }
 
 export function OpenSettingsButton(props) {
-  const [settingsOpen, setSettingsOpen] = createSignal(false);
   var panel;
+  if(props.width == undefined) props.width = "35";
+  if(props.icon == undefined) props.icon = "ic:baseline-arrow-forward-ios";
+  const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   createEffect(() => {
     if(settingsOpen()) {
@@ -505,8 +507,8 @@ export function OpenSettingsButton(props) {
   return(
     <ButtonIcon
       id="openSettingsButton"
-      icon="mdi:cog-outline"
-      width="50"
+      icon={props.icon}
+      width={props.width}
       onClick={() => OpenSettings()}
     />
   )
