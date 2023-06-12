@@ -19,6 +19,7 @@ export class MIDIMatrix extends MIDIToy {
         this.colums = this.numberOfKeys;
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
 
+        this.LoadDefaultColors();
         this.SetupKeyboard();
     }
 
@@ -100,9 +101,9 @@ export class MIDIMatrix extends MIDIToy {
     }
     
     LoadDefaultColors() {
-        this.fillColor = new paper.Color(1);
-        this.strokeColor = new paper.Color(1 / 4);
-        this.accentColor = new paper.Color(1 / 2);
+        this.fillColor = new paper.Color(100,100,100,0.5);
+        this.strokeColor = new paper.Color(100,100,100,0.4);
+        this.accentColor = new paper.Color(0,0,0,1);
     }
 
     ApplyColors() {
