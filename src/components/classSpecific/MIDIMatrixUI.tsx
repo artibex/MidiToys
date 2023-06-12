@@ -61,6 +61,7 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+
     function UpdateToyValues() {
         // console.log("UPDATE GraviBoard toy values");
         if (typeof window !== 'undefined') {
@@ -80,11 +81,11 @@ export default function SetupContainer( props: {channel: number}) {
             }
         }
     }
+    
     function Reload() {
         try{toy.SetupKeyboard()}
         catch{}
     }
-
 
     // const [cellHeightScale, setCellHeightScale] = createSignal(1);
     // const [cellWidthScale, setCellWidthScale] = createSignal(1);

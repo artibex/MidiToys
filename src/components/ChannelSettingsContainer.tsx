@@ -8,8 +8,10 @@ import KeySettingsUI from "@components/KeySettingsUI"
 import * as SpecificUI from "@specificui";
 import * as utils from "@utils";
 import * as ui from "@ui";
+import { ToyManager } from "@miditoy/ToyManager";
 
 const canvasManager = new CanvasManager;
+const toyManager = new ToyManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var toy;
@@ -22,17 +24,6 @@ export default function SetupContainer( props: {channel: number}) {
     const [toyType, setToyType] = createSignal(0);
     const [toyName, setToyName] = createSignal("EmptyToy");
 
-    // createEffect(() => {
-    //     // if(useEffect()) {
-    //     //     // console.log("TRIGGER effect");
-    //     //     if(toyType() > 0 && toy != undefined) {
-    //     //         // UpdateToyValues();
-    //     //     }
-    //     // } else {
-    //     //     // console.log("DO NOT useEffect");
-    //     // } 
-    // })
-
     //Update UI data
     function UpdateUIValues() {
         // console.log("UPDATE DEFAULT UI values");
@@ -40,7 +31,9 @@ export default function SetupContainer( props: {channel: number}) {
 
             if(toy != undefined) {
                 setUseEffect(false);
+                
                 setToyName(toy.toyName);
+
                 setUseEffect(true);
             }
         } else setToyName("Empty");
@@ -51,7 +44,8 @@ export default function SetupContainer( props: {channel: number}) {
     function NewToy() {
         //If toyType changed, create toy, otherwise, just udpate
         if(prevToyType != toyType()) {
-            toy = utils.CreateToy(channel, toyType());
+            // toy = utils.CreateToy(channel, toyType());
+            toy = toyManager.CreateToy(channel, toyType());
             toy.TriggerToyChangedEvent();
         }
         LoadToy();
@@ -67,10 +61,11 @@ export default function SetupContainer( props: {channel: number}) {
         var t = utils.InitToy(channel, toy, UpdateComponent);
         if(toy != t) {
             toy = t;
-            if(toy.toyName.toLowerCase().includes("Empty")) {
+            if(toy.toyName.includes("Empty")) {
                 setSelectToy(true);
             } else {
-                GetToyType();
+                var value = toyManager.GetToyType(channel);
+                SetToyType(value, false);
             }
             UpdateUIValues();
         }
@@ -83,26 +78,10 @@ export default function SetupContainer( props: {channel: number}) {
         else setSelectToy(true);
     }
 
-    function GetToyType() {
-        if(toy != undefined) {
-        var name = toy.toyName.toLowerCase();
-            
-            switch(true) {
-                case name.includes("gravi"):
-                    SetToyType(1, false);
-                    break;
-                case name.includes("poly"):
-                    SetToyType(2, false);
-                    break;
-            }
-        }
-    }
-
     //Set's a new Toy Type and creates new Toy
     function SetToyType(value: number, newToy: boolean) {
         setToyType(value);
         setSelectToy(false);
-        
         if(newToy) NewToy();
     }
 
@@ -148,7 +127,7 @@ export default function SetupContainer( props: {channel: number}) {
                 case 2: return (<SpecificUI.PolyDrumUI channel={channel}></SpecificUI.PolyDrumUI>);
                 case 3: return (<SpecificUI.MIDIMatrixUI channel={channel}></SpecificUI.MIDIMatrixUI>);
 
-                default: return(<></>);
+                default: return(<h3>Sorry, nothing</h3>);
             }
         }
     }

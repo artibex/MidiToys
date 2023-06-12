@@ -3,7 +3,7 @@ import { MIDIReceiver } from "@midireceiver";
 import { InputManager } from "@inputmanager";
 import { ToyManager } from "@toymanager";
 import { RGBA, Vector2D } from "@interfaces";
-import paper from 'paper';
+import * as paper from 'paper';
 
 //Abstract class that forms the base of every MIDIToy
 export abstract class MIDIToy {
@@ -202,7 +202,7 @@ export abstract class MIDIToy {
                 green: this.accentColor.green,
                 blue: this.accentColor.blue,
                 alpha: this.accentColor.alpha
-            }  
+            }
         }
     }
     //Load base data from every toy class
@@ -232,5 +232,6 @@ export abstract class MIDIToy {
           data.accentColor.blue,
           data.accentColor.alpha
         );
+        this.TriggerToyChangedEvent();
     }
 }

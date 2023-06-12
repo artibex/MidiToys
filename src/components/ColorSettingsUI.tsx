@@ -204,6 +204,7 @@ export default function SetupContainer( props: {channel: number}) {
         if(toy != t) {
             toy = t;
             UpdateUIValues();
+            toy.SubscribeToToyChangedEvent(UpdateUIValues);
         }
     }
 

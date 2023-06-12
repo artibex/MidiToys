@@ -50,12 +50,12 @@ export class ToyManager
         // console.log("CREATE EmptyToy on channel " + channel);
         this.toys[channel -1] = new EmptyToy(channel);
     }
-    CreateGraviBoard(channel:number, numberOfKeys: number, startKey: number) {
+    CreateGraviBoard(channel:number) {
         this.RemovePaperLayer(channel);
         // console.log("CREATE GraviBoard on channel " + channel);
         this.toys[channel - 1] = new GraviBoard(channel);
     }
-    CreatePolyDrum(channel: number, numberOfKeys: number, startKey: number) {
+    CreatePolyDrum(channel: number) {
         this.RemovePaperLayer(channel);
         // console.log("CREATE PolyDrum on channel " + channel);
         this.toys[channel - 1] = new PolyDrum(channel);
@@ -63,6 +63,33 @@ export class ToyManager
     CreateMIDIMatrix(channel: number) {
         this.RemovePaperLayer(channel);
         this.toys[channel - 1] = new MIDIMatrix(channel);
+    }
+
+    CreateToy(channel: number, toyNumber: number) {
+        switch(toyNumber) {
+            case 0: this.CreateEmptyToy(channel);       return this.GetToy(channel);
+            case 1: this.CreateGraviBoard(channel);     return this.GetToy(channel);
+            case 2: this.CreatePolyDrum(channel);       return this.GetToy(channel);
+            case 3: this.CreateMIDIMatrix(channel);     return this.GetToy(channel);
+
+            default: this.CreateEmptyToy(channel); return this.GetToy(channel);
+        }
+    }
+
+    GetToyType(channel: number) {
+        var toy = this.GetToy(channel);
+        if(toy != undefined) {
+            var name = toy.toyName;
+            switch(true) {
+                case name.includes("Empty"): return 0;
+                case name.includes("Gravi"): return 1;
+                case name.includes("Poly"): return 2;
+                case name.includes("Matrix"): return 3;
+            }
+        } else {
+            this.CreateEmptyToy(channel);
+            return 0;
+        }
     }
 
     GetToy(channel: number) {

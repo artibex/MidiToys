@@ -128,16 +128,15 @@ export class MIDIMatrix extends MIDIToy {
     }  
 
     LoadJSON(data: any) {
-    this.LoadBaseJSON(data);
-
-    this.rows = data.rows;
-    this.colums = data.colums;
-    this.polySides = data.polySides;
-
-    this.strokeWidth = data.strokeWidth;
-    this.cellHeightScale = data.cellHeightScale;
-    this.cellWidthScale = data.cellWidthScale;
-    
-    this.SetupKeyboard();
+        this.rows = data.rows;
+        this.colums = data.colums;
+        this.polySides = data.polySides;
+        
+        this.strokeWidth = data.strokeWidth;
+        this.cellHeightScale = data.cellHeightScale;
+        this.cellWidthScale = data.cellWidthScale;
+        
+        this.LoadBaseJSON(data);
+        this.SetupKeyboard();
     }
 }
