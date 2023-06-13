@@ -88,7 +88,6 @@ export class PolyDrum extends MIDIToy {
     }
     LoadJSON(data: any) {
         //MIDIToy Loading
-        this.LoadBaseJSON(data);
 
         //Class specific loading
         this.shapeLimit = data.shapeLimit;
@@ -109,14 +108,16 @@ export class PolyDrum extends MIDIToy {
         this.xSizeChange = data.xSizeChange;
         this.ySizeChange = data.ySizeChange;
 
-        this.TriggerToyChangedEvent();
-        this.SetupKeyboard();
+        this.LoadBaseJSON(data);
+        // this.SetupKeyboard();
+        // this.TriggerToyChangedEvent();
     }
 
     SetupKeyboard() {
         this.RemoveChildrenFromLayer();
-        // this.paperLayer.addChild(this.paperGroup);
         this.SpawnShape(120);
+        this.SetupMIDIReceiver(this.numberOfKeys, this.useRegExp);
+        // this.paperLayer.addChild(this.paperGroup);
     }
 
     frameCount: number = 0;

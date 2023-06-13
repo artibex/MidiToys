@@ -23,6 +23,12 @@ export class MIDIMatrix extends MIDIToy {
         this.SetupKeyboard();
     }
 
+    SetupKeyboard() {
+        this.RemoveChildrenFromLayer();
+        this.CreateGrid();
+        this.SetupMIDIReceiver(this.colums * this.rows, this.useRegExp);
+    }
+
     CreateGrid() {
         var cellWidth = this.w / this.colums;
         var cellHeight = this.h / this.rows;
@@ -47,13 +53,7 @@ export class MIDIMatrix extends MIDIToy {
           this.gridCells[row] = gridRow;
         }
     }
-      
-    SetupKeyboard() {
-        this.RemoveChildrenFromLayer();
-        this.CreateGrid();
-        this.SetupMIDIReceiver(this.colums * this.rows, this.useRegExp);
-    }
-
+    
     InputEvent(onEvent: boolean) {
         let holdingKeys = this.inputManager.GetHoldingKeys(this.targetChannel);
         let velocities = this.inputManager.GetVelocity(this.targetChannel);
@@ -138,7 +138,5 @@ export class MIDIMatrix extends MIDIToy {
         this.cellWidthScale = data.cellWidthScale;
         
         this.LoadBaseJSON(data);
-        this.TriggerToyChangedEvent();
-        this.SetupKeyboard();
     }
 }

@@ -56,8 +56,9 @@ export class GraviBoard extends MIDIToy {
 
     // [O][O][O][O][O][O][O][O]
     SetupKeyboard() {
-        // this.InitDrawPositions();
+        console.log("INIT keyboard");
         this.RemoveChildrenFromLayer();
+        this.SetupMIDIReceiver(this.numberOfKeys, this.useRegExp);
         this.InitVelocity();
         var cellSize = (this.w / this.numberOfKeys) ;
         this.circleRadius = cellSize / 4;
@@ -99,9 +100,6 @@ export class GraviBoard extends MIDIToy {
         };
     }
     LoadJSON(data) {
-        //MIDIToy data
-        this.LoadBaseJSON(data);
-
         // Class specific data
         this.horizontalAlign = data.horizontalAlign;
         this.circleRadius = data.circleRadius;
@@ -116,8 +114,8 @@ export class GraviBoard extends MIDIToy {
         this.yImpulsPower = data.yImpulsPower;
         this.xImpulsPower = data.xImpulsPower;
 
-        this.TriggerToyChangedEvent();
-        this.SetupKeyboard();
+        //MIDIToy data
+        this.LoadBaseJSON(data);
     }
     
     InitVelocity() {
@@ -128,30 +126,25 @@ export class GraviBoard extends MIDIToy {
         }
     }
 
-    prevHoldingKeys: string[] = [];
+    // prevHoldingKeys: string[] = [];
     InputEvent(onEvent: boolean) {
         let holdingKeys = this.inputManager.GetHoldingKeys(this.targetChannel);
         let velocities = this.inputManager.GetVelocity(this.targetChannel);
         this.bpm = this.inputManager.GetBPM();
         
-        if(!onEvent) {
-            this.prevHoldingKeys = [...holdingKeys];
-            return;
-        }
-        
         let index = 0;
-        if(JSON.stringify(holdingKeys) !== JSON.stringify(this.prevHoldingKeys)) {
-            this.receiver.forEach(element => {
-                var r = element as MIDIReceiver;
-                if(r.GetMIDIInput(holdingKeys, velocities)) {
-                    // console.log("FOUND key, spawn square");
-                    this.SetAccentColor(index);
-                    this.Impuls(index, this.yImpulsPower, this.xImpulsPower);
-                } else this.SetFillColor(index);
-                index++;
-            })
-        }
-        this.prevHoldingKeys = [...holdingKeys];
+        this.receiver.forEach(element => {
+            var r = element as MIDIReceiver;
+            if(r.GetMIDIInput(holdingKeys, velocities)) {
+                // console.log("FOUND key, spawn square");
+                this.SetAccentColor(index);
+                this.Impuls(index, this.yImpulsPower, this.xImpulsPower);
+            } else this.SetFillColor(index);
+            index++;
+        })
+        // if(JSON.stringify(holdingKeys) !== JSON.stringify(this.prevHoldingKeys)) {
+        // }
+        // this.prevHoldingKeys = [...holdingKeys];
     }
 
     UpdateKeyboard() {
@@ -250,8 +243,6 @@ export class GraviBoard extends MIDIToy {
         if(this.xGravity < 0) vel.x += xForce;
         else vel.x -= xForce;
 
-
         this.velocity[indexValue] = vel;
     }
-
 }

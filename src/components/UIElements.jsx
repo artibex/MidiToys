@@ -537,7 +537,7 @@ export function StartText(props) {
   }
 
   function TextSetter() {
-    console.log("SETTING Text");
+    // console.log("SETTING Text");
     if(CheckAllEmpty()) setText(props.label)
     else setText(""); 
   }
