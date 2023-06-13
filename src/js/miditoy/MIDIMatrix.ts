@@ -138,6 +138,7 @@ export class MIDIMatrix extends MIDIToy {
         this.cellWidthScale = data.cellWidthScale;
         
         this.LoadBaseJSON(data);
+        this.TriggerToyChangedEvent();
         this.SetupKeyboard();
     }
 }

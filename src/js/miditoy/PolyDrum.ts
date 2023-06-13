@@ -109,6 +109,7 @@ export class PolyDrum extends MIDIToy {
         this.xSizeChange = data.xSizeChange;
         this.ySizeChange = data.ySizeChange;
 
+        this.TriggerToyChangedEvent();
         this.SetupKeyboard();
     }
 

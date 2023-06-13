@@ -39,6 +39,7 @@ export default function SetupContainer( props: {channel: number}) {
         var t = utils.InitToy(channel, toy, UpdateComponent);
         if(toy != t) {
             toy = t;
+            toy.SubscribeToToyChangedEvent(UpdateUIValues);
             UpdateUIValues();
         }
     }
