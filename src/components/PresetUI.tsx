@@ -10,7 +10,6 @@ const canvasManager = new CanvasManager();
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
-    var updateToy = false;
 
     const [useEffect, setUseEffect] = createSignal(true);
     const [presetName, setPresetName] = createSignal("");
@@ -35,8 +34,8 @@ export default function SetupContainer( props: {channel: number}) {
         var t = utils.InitToy(channel, toy, UpdateComponent);
         if(toy != t) {
             toy = t;
-            toy.SubscribeToToyChangedEvent(UpdateUIValues);
             UpdateUIValues();
+            // toy.SubscribeToToyChangedEvent(UpdateUIValues);
         }
     }
 
@@ -52,8 +51,8 @@ export default function SetupContainer( props: {channel: number}) {
     
     function LoadPreset(item) {
         if(toy != undefined) {
-            // console.log(item.item);
             toy.LoadJSON(JSON.parse(item.item));
+            // console.log(item.item);
             // console.log("DONE loading Preset with name = " + item.key);
         }
     }

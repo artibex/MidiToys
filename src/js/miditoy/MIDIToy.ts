@@ -218,14 +218,12 @@ export abstract class MIDIToy {
           data.fillColor.blue,
           data.fillColor.alpha
         );
-      
         this.strokeColor = new paper.Color(
           data.strokeColor.red,
           data.strokeColor.green,
           data.strokeColor.blue,
           data.strokeColor.alpha
         );
-
         this.accentColor = new paper.Color(
           data.accentColor.red,
           data.accentColor.green,
@@ -233,5 +231,6 @@ export abstract class MIDIToy {
           data.accentColor.alpha
         );
         this.TriggerToyChangedEvent();
+        this.SetupKeyboard();
     }
 }
