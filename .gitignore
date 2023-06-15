@@ -25,6 +25,7 @@ output.json
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
+.env
 
 # Android Profiling
 *.hprof
