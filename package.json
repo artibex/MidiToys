@@ -15,6 +15,7 @@
     "build": "astro build"
   },
   "devDependencies": {
-    "@iconify-icon/solid": "^1.0.7"
+    "@iconify-icon/solid": "^1.0.7",
+    "@types/node": "^20.3.1"
   }
 }

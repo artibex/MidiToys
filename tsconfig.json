@@ -4,6 +4,8 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "baseUrl": "./",
+    "module": "es2022",
+
     "paths": {
       "@miditoy/*": ["src/js/miditoy/*"],
       "@input/*": ["src/js/input/*"],
@@ -17,7 +19,6 @@
       "@toymanager": ["src/js/miditoy/ToyManager.ts"],
       "@canvasmanager": ["src/js/CanvasManager.ts"],
       "@presetmanager": ["src/js/PresetManager.ts"],
-
 
       "@ui": ["src/components/UIElements.jsx"],
       "@utils": ["src/components/ComponentUtils.js"],
