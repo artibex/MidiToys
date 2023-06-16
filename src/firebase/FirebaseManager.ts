@@ -1,4 +1,4 @@
-import { app, db } from "./client";
+// import { app, db } from "./client";
 
 export class FirebaseManager {
     static instance: FirebaseManager;
@@ -9,8 +9,8 @@ export class FirebaseManager {
         }
         FirebaseManager.instance = this;
 
-        console.log(app);
-        console.log(db);
-        console.log("CONNECTED to Firebase");
+        // console.log(app);
+        // console.log(db);
+        // console.log("CONNECTED to Firebase");
     }
 }
