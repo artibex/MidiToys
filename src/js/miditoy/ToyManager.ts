@@ -4,8 +4,7 @@ import { GraviBoard } from "@miditoy/GraviBoard";
 import { PolyDrum } from "@miditoy/PolyDrum";
 import * as paper from 'paper';
 import { MIDIMatrix } from "./MIDIMatrix";
-import { login } from "../../env";
-
+import { credentials } from "@env";
 
 export class ToyManager 
 {
@@ -15,7 +14,7 @@ export class ToyManager
     targetCanvas: HTMLCanvasElement;
     
     constructor() {
-        console.log(login.VARIABLE);
+        console.log(credentials.API_KEY);
         if (ToyManager.instance) {
         return ToyManager.instance;
         }
