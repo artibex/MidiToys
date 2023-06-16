@@ -1,15 +1,20 @@
 {
   // "extends": "astro/tsconfigs/base",
   "compilerOptions": {
+    "moduleResolution": "node", // Add this line
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "baseUrl": "./",
-    "module": "es2022",
+    "baseUrl": ".",
+    "module": "esnext",
+    "lib": ["DOM", "ESNext"],
 
     "paths": {
+      "*": ["src/*"],
       "@miditoy/*": ["src/js/miditoy/*"],
       "@input/*": ["src/js/input/*"],
       "@components/*": ["src/components/*"],
+      "@firebaseManager": ["src/firebase/FirebaseManager.ts"],
+      "@firebaseClient": ["src/firebase/client.ts"],
 
       "@miditoy": ["src/js/miditoy/MIDIToy.ts"],
       "@midireceiver": ["src/js/miditoy/MIDIReceiver.ts"],

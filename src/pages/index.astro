@@ -19,11 +19,10 @@ import { Icon } from '@iconify-icon/solid';
         import { InputManager } from "../js/input/InputManager";
         import { ToyManager } from "../js/miditoy/ToyManager";
         import {CanvasManager} from "../js/CanvasManager"
-        
 
         //Base Toys setup
         let toyCanvas = document.getElementById("toyCanvas") as HTMLCanvasElement; //Get target Canvas
-        
+
         let canvasManager = new CanvasManager();
         canvasManager.SetupCanvas(toyCanvas);
         let inputManager = new InputManager(); //Setup input manager
