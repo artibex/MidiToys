@@ -4,6 +4,7 @@ import { GraviBoard } from "@miditoy/GraviBoard";
 import { PolyDrum } from "@miditoy/PolyDrum";
 import * as paper from 'paper';
 import { MIDIMatrix } from "./MIDIMatrix";
+import { FirebaseManager } from "@firebaseManager";
 
 export class ToyManager 
 {
@@ -16,6 +17,7 @@ export class ToyManager
         if (ToyManager.instance) {
         return ToyManager.instance;
         }
+        var f = new FirebaseManager();
         ToyManager.instance = this;
         // console.log("CREATED ToyManager");
     }

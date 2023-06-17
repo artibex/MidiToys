@@ -1,6 +1,13 @@
-// import * from 'firebase/app';
-// import 'firebase/firestore';
+import {initializeApp } from "firebase/app";
+import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 
-// export const app = initializeApp(firebaseConfig);
-// export const db = getFirestore(app);
-// export const auth = getAuth(app);
+import { firebaseConfig } from '@env';
+
+export const app = initializeApp(firebaseConfig);
+export var auth = getAuth(app);
+  
+export var user = undefined;
+export function SetUser(u) {
+    console.log("SET user " + user);
+    user = u;
+}

@@ -6,6 +6,7 @@ import { RGBA } from "@interfaces";
 import { ToyManager } from "@miditoy/ToyManager";
 import { CanvasManager } from "@canvasmanager";
 import GlobalSettings from "@components/GlobalSettingsUI";
+import LoginUI from "@components/LoginUI"
 import { KeyboardInputModule } from "@input/KeyboardInputModule";
 
 const toyManager = new ToyManager();
@@ -53,6 +54,7 @@ export default function SetupContainer() {
 
     function RenderContainer() {
             switch(selectedChannel()) {
+                case -1: return <LoginUI />;
                 case 0: return <GlobalSettings />;
                 case 1: return <ChannelSettingsContainer channel={1} />;
                 case 2: return <ChannelSettingsContainer channel={2} />;
@@ -103,6 +105,11 @@ export default function SetupContainer() {
     function RenderChannelButtons() {
         return(
             <div class="flexList width10 overflowAuto">
+                <ui.ButtonIcon 
+                    class="channelButton"
+                    icon="ic:sharp-login"
+                    onClick={() => setSelectedChannel(-1)}
+                />
                 <ui.ButtonIcon 
                     class="channelButton"
                     icon="grommet-icons:globe"
@@ -198,11 +205,11 @@ export default function SetupContainer() {
                 <h1 class="marginAuto">Channel {selectedChannel()} </h1>
             )
         } else {
-            return(
-                <h1 class="marginAuto">Global Settings</h1>
-            )
+            switch(selectedChannel()) {
+                case 0: return <h1 class="marginAuto">Global Settings</h1>;
+                case -1: return <h1 class="marginAuto">Login</h1>;
+            }
         }
-        
     }
 
     function RenderUIHeadline() {

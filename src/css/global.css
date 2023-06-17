@@ -402,7 +402,7 @@ details[open] summary {
 }
 
 .textInput {
-  text-align: center;
+  /* text-align: center;
   padding: 10px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -413,7 +413,8 @@ details[open] summary {
   color: white;
   border-radius: 5px;
   box-sizing: border-box;
-  height: 30px;
+  height: 30px; */
+  outline: 1px dashed;
   transition: color 0.2s ease-in-out;
 }
 .textInput:focus {
@@ -421,7 +422,7 @@ details[open] summary {
   color: var(--text-hover-color);
 }
 .textInput:hover{
-  outline: 2px solid;
+  outline: 1px solid;
 }
 
 .sliderInput{
@@ -429,7 +430,7 @@ details[open] summary {
   appearance: none;
   width: 100%;
   height: 100%;
-  background: var(--item-background-color));
+  background: var(--item-background-color);
   outline: none;
   opacity: 0.6;
   transition: opacity 0.1s;

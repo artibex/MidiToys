@@ -84,6 +84,34 @@ export function NumberInput(props) {
   );
 }
 
+export function TextInput(props) {
+  if(props.placeholder == undefined) props.placeholder = "Cool Placeholder";
+  if(props.id == undefined) props.id = "";
+  if(props.class == undefined) props.class = "textInput";
+  if(props.type == undefined) props.type = "";
+  if(props.required == undefined) props.required = false;
+  
+  if(props.required) {
+    return(
+      <input 
+      type={props.type}
+      class={props.class}
+      id={props.id}
+      placeholder={props.placeholder}
+      required
+      />
+    )
+  } else {
+    return(
+      <input 
+      type={props.type}
+      id={props.id}
+      placeholder={props.placeholder}
+      />
+    )
+  }
+}
+
 export function CheckboxInput(props) {
   const [checked, setChecked] = createSignal(props.checked);
 
