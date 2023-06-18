@@ -102,7 +102,7 @@ export default function SetupContainer() {
         }
     }
 
-    function RenderChannelButtons() {
+    function RenderSidebarButtons() {
         return(
             <div class="flexList width10 overflowAuto">
                 <ui.ButtonIcon 
@@ -112,7 +112,7 @@ export default function SetupContainer() {
                 />
                 <ui.ButtonIcon 
                     class="channelButton"
-                    icon="grommet-icons:globe"
+                    icon="mdi:cog-outline"
                     onClick={() => setSelectedChannel(0)}
                 />
                 <ui.Button
@@ -206,7 +206,7 @@ export default function SetupContainer() {
             )
         } else {
             switch(selectedChannel()) {
-                case 0: return <h1 class="marginAuto">Global Settings</h1>;
+                case 0: return <h1 class="marginAuto">Settings</h1>;
                 case -1: return <h1 class="marginAuto">Login</h1>;
             }
         }
@@ -234,7 +234,7 @@ export default function SetupContainer() {
         return(
             <div id="settingsPanel" class="noSelect width100 height90">
                 <div class="flexContainer justifyStart">
-                    {RenderChannelButtons()}
+                    {RenderSidebarButtons()}
                     <div class="flexList marginLeft20 width100">
                         {RenderUIHeadline()}           
                         {RenderContainer()}

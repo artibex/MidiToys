@@ -81,7 +81,7 @@ button {
   transition: border 0.2s ease-in-out;
 }
 button:hover {
-  border: 2px solid var(--item-hover-color);
+  border: 1px solid var(--item-hover-color);
   color: var(--text-hover-color);
 }
 .thinButton{
@@ -105,7 +105,6 @@ button:hover {
   height: 100%;
   text-align: center;
 }
-
 .channelButtonActiv{
   padding: 1px;
   width: 100%;
@@ -124,7 +123,7 @@ button:hover {
 .dropdown {
   background-color: var(--item-background-color);
   text-align: center;
-  border: dashed 1px var(--border-color);
+  border: 1px var(--border-color) dashed;
   margin: auto;
   padding: 5px;
 }
@@ -362,6 +361,7 @@ details[open] summary {
 }
 .justifyStart{
   justify-content: start;
+  align-items: start;
 }
 .justifySpace{
   justify-content: space-between;
@@ -378,6 +378,18 @@ details[open] summary {
   align-items: center;
   justify-content: space-between;
   height: 100%; /* Set the height of the container to make it expand to the full height */
+}
+
+.clickableText{
+  color: var(--text-color);
+  text-decoration: none;
+
+  /* Hover effect */
+  transition: color 0.3s ease;
+}
+.clickableText:hover{
+  color: var(--text-hover-color);
+  text-decoration: underline;
 }
 
 .numberInput {

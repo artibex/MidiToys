@@ -253,6 +253,8 @@ export function AvailableMIDIDevicesUIElement(props) {
 }
 
 export function EmailLoginRegister(props) {
+  const [infoText, setInfoText] = createSignal("");
+  
   if(props.class == undefined) props.class = "";
   if(props.id == undefined) props.id = "emailLogin";
 
@@ -264,9 +266,10 @@ export function EmailLoginRegister(props) {
     console.log("HANDLE email login")
   }
 
+
   return(
     <div id={props.id}>
-      <h3>Login with Email</h3>
+      <h3 class="textAlignCenter">Login with Email</h3>
       <div>
         <div class="flexContainer">
           <Icon
@@ -287,11 +290,32 @@ export function EmailLoginRegister(props) {
           <TextInput required={true} type="password" placeholder="Password" />
         </div>
       </div>
-      <div class="flexContainer marginTop10 width50 marginAuto">
-        <Button class="marginRight10 thinButton" label="Register" onClick={HandleLogin} />
-        <Button label="Login" onClick={HandleLogin} />
+      <div class="marginTop10 flexContainer">
+        <div class="marginAuto">
+          <ClickableText class="justifyCenter clickableText" label="Register Account" />
+        </div>
+        <div class="width40">
+          <Button label="Login" onClick={HandleLogin} />
+        </div>
       </div>
+      <div class="textAlignCenter marginTop10"> {infoText()} </div>
     </div>
+  )
+}
+
+export function ClickableText(props) {
+  if(props.label == undefined) props.label="Click on me!"
+  if(props.href == undefined) props.href = "";
+  if(props.class == undefined) props.class = "clickableText textAlignCenter";
+
+  function HandleClick() {
+    if(props.onClick != undefined) {
+      props.onChange();
+    } else console.log("NO ON CLICK FUNCTION DEFINED");
+  }
+
+  return(
+    <a class={props.class} onClick={HandleClick}>{props.label}</a>
   )
 }
 

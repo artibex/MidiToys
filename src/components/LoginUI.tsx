@@ -22,14 +22,21 @@ export default function SetupContainer() {
     function RenderLogInUI() {
         return(
             <div class="channelContainer">
-                <ui.EmailLoginRegister />
+                <h2 class="textAlignCenter">
+                    Upload your presets or
+                    <br></br>
+                    use presets made by the community
+                </h2>
                 <br></br>
+                <h3 class="textAlignCenter">Login with Account</h3>
                 <ui.ServiceLogin 
                     icon="uit:google"
                 />
                 <ui.ServiceLogin 
                     icon="codicon:github"
                 />
+                <br></br>
+                <ui.EmailLoginRegister />
             </div>
         )
     }
