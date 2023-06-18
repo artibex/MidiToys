@@ -267,23 +267,23 @@ export function EmailLoginRegister(props) {
   return(
     <div id={props.id}>
       <h3>Login with Email</h3>
-      <div class="flexContainer justifyCenter">
-        <div class="flexList marginRight10">
-          <Icon 
+      <div>
+        <div class="flexContainer">
+          <Icon
             icon="fontisto:email"
             width={props.width}
             hFlip={props.hFlip}
             vFlip={props.vFlip}
           />
+          <TextInput required={true} type="email" placeholder="E-Mail" />
+        </div>
+        <div class="flexContainer">
           <Icon 
             icon="bi:key"
             width={props.width}
             hFlip={props.hFlip}
             vFlip={props.vFlip}
           />
-        </div>
-        <div class="flexList width100">
-          <TextInput required={true} type="email" placeholder="E-Mail" />
           <TextInput required={true} type="password" placeholder="Password" />
         </div>
       </div>
