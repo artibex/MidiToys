@@ -252,9 +252,8 @@ export function AvailableMIDIDevicesUIElement(props) {
   )
 }
 
-export function EmailLogin(props) {
+export function EmailLoginRegister(props) {
   if(props.class == undefined) props.class = "";
-  if(props.label == undefined) props.label = "Login";
   if(props.id == undefined) props.id = "emailLogin";
 
   if(props.width == undefined) props.width = "30";
@@ -267,27 +266,31 @@ export function EmailLogin(props) {
 
   return(
     <div id={props.id}>
-      <h2>Login with Email</h2>
-      <div class="flexContainer">
-        <Icon 
-          icon="fontisto:email"
-          width={props.width} 
-          hFlip={props.hFlip} 
-          vFlip={props.vFlip} 
-        />
-        <TextInput required={true} type="email" placeholder="E-Mail" />
+      <h3>Login with Email</h3>
+      <div class="flexContainer justifyCenter">
+        <div class="flexList marginRight10">
+          <Icon 
+            icon="fontisto:email"
+            width={props.width}
+            hFlip={props.hFlip}
+            vFlip={props.vFlip}
+          />
+          <Icon 
+            icon="bi:key"
+            width={props.width}
+            hFlip={props.hFlip}
+            vFlip={props.vFlip}
+          />
+        </div>
+        <div class="flexList width100">
+          <TextInput required={true} type="email" placeholder="E-Mail" />
+          <TextInput required={true} type="password" placeholder="Password" />
+        </div>
       </div>
-      <div class="flexContainer">
-        <Icon 
-          icon="bi:key"
-          width={props.width} 
-          hFlip={props.hFlip} 
-          vFlip={props.vFlip} 
-        />
-        <TextInput required={true} type="password" placeholder="Password" />
+      <div class="flexContainer marginTop10 width50 marginAuto">
+        <Button class="marginRight10 thinButton" label="Register" onClick={HandleLogin} />
+        <Button label="Login" onClick={HandleLogin} />
       </div>
-      <br></br>
-      <Button label={props.label} onClick={HandleLogin} />
     </div>
   )
 }
@@ -303,7 +306,10 @@ export function ServiceLogin(props) {
   if(props.vFlip == undefined) props.vFlip = false;
 
   const HandleClick = () => {
-    props.onClick();
+    console.log("SERVICE LOGIN");
+    if(props.onChange != undefined) {
+      props.onClick();
+    } else console.log("NO SERVICE FUNCTION")
   };
 
   return(
@@ -315,7 +321,7 @@ export function ServiceLogin(props) {
         hFlip={props.hFlip}
         vFlip={props.vFlip}
         label={props.label}
-        onChange={HandleClick}
+        onClick={HandleClick}
       />
     </div>
   )
@@ -661,7 +667,7 @@ export function StartText(props) {
 
   frameManager.SubscribeOneFPS(TextSetter);
   return(
-    <h1 id={props.id}>
+    <h1 id={props.id} class="noSelect">
       {text()}
     </h1>
   )

@@ -201,10 +201,16 @@ details[open] summary {
 .marginAuto{
   margin: auto;
 }
+
 .paddingTopBottom0{
   padding-top: 0px;
   padding-bottom: 0px;
 }
+
+.paddingTop10{
+  padding-top: 10px;
+}
+
 .padding10{
   padding: 10px;
 }
@@ -212,7 +218,12 @@ details[open] summary {
 .marginBottom5 {
   margin-bottom: 5px;
 }
-
+.marginTop5 {
+  margin-top: 5px;
+}
+.marginTop10 {
+  margin-top: 10px;
+}
 .marginRight10{
   margin-right: 10px;
 }
@@ -403,18 +414,7 @@ details[open] summary {
 }
 
 .textInput {
-  /* text-align: center;
-  padding: 10px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-
-  outline: 1px solid var(--border-color);
-  border: none;
-  background-color: black;
-  color: white;
-  border-radius: 5px;
-  box-sizing: border-box;
-  height: 30px; */
+  padding: 8px;
   height: 80%;
   width: 80%;
   outline: 1px dashed;

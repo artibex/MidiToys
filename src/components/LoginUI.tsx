@@ -22,7 +22,7 @@ export default function SetupContainer() {
     function RenderLogInUI() {
         return(
             <div class="channelContainer">
-                <ui.EmailLogin />
+                <ui.EmailLoginRegister />
                 <br></br>
                 <ui.ServiceLogin 
                     icon="uit:google"
@@ -30,7 +30,6 @@ export default function SetupContainer() {
                 <ui.ServiceLogin 
                     icon="codicon:github"
                 />
-
             </div>
         )
     }
