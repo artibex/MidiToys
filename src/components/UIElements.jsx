@@ -105,6 +105,7 @@ export function TextInput(props) {
     return(
       <input 
       type={props.type}
+      class={props.class}
       id={props.id}
       placeholder={props.placeholder}
       />
@@ -155,9 +156,8 @@ export function Button(props) {
 }
 
 export function ButtonIcon(props) {
-  if(props.class == undefined) props.class = "iconButton";
+  if(props.class == undefined) props.class = "iconButton textAlignCenter";
   if(props.label == undefined) props.label = "";
-
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
@@ -169,16 +169,35 @@ export function ButtonIcon(props) {
     props.onClick();
   };
 
-  return (
-    <button
-      class={props.class}
-      id={props.id}
-      onClick={handleClick}
-    >
-      {props.label}
-      <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
-    </button>
-  );
+  if(props.label == "") {
+    return (
+      <button
+        class={props.class}
+        id={props.id}
+        onClick={handleClick}
+      >
+        <div class="flexContainer justifyCenter">
+          <div>{props.label}</div>
+          <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+        </div>
+      </button>
+    );
+  } else {
+    return (
+      <button
+        class={props.class}
+        id={props.id}
+        onClick={handleClick}
+      >
+        <div class="flexContainer justifyCenter">
+          <div class="marginRight10">{props.label}</div>
+          <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+        </div>
+      </button>
+    );
+
+  }
+
 }
 
 export function MIDIDeviceReloadUIElement(props) {
@@ -231,6 +250,76 @@ export function AvailableMIDIDevicesUIElement(props) {
       <h3> MIDI Devices: {midiDevices} </h3>
     </div>
   )
+}
+
+export function EmailLogin(props) {
+  if(props.class == undefined) props.class = "";
+  if(props.label == undefined) props.label = "Login";
+  if(props.id == undefined) props.id = "emailLogin";
+
+  if(props.width == undefined) props.width = "30";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
+
+  function HandleLogin() {
+    console.log("HANDLE email login")
+  }
+
+  return(
+    <div id={props.id}>
+      <h2>Login with Email</h2>
+      <div class="flexContainer">
+        <Icon 
+          icon="fontisto:email"
+          width={props.width} 
+          hFlip={props.hFlip} 
+          vFlip={props.vFlip} 
+        />
+        <TextInput required={true} type="email" placeholder="E-Mail" />
+      </div>
+      <div class="flexContainer">
+        <Icon 
+          icon="bi:key"
+          width={props.width} 
+          hFlip={props.hFlip} 
+          vFlip={props.vFlip} 
+        />
+        <TextInput required={true} type="password" placeholder="Password" />
+      </div>
+      <br></br>
+      <Button label={props.label} onClick={HandleLogin} />
+    </div>
+  )
+}
+
+export function ServiceLogin(props) {
+  if(props.class == undefined) props.class = "iconButton justifyCenter";
+  if(props.label == undefined) props.label = "Login with";
+  if(props.id == undefined) props.id = "myCoolService";
+
+  if(props.icon == undefined) props.icon = "zondicons:key";
+  if(props.width == undefined) props.width = "30";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
+
+  const HandleClick = () => {
+    props.onClick();
+  };
+
+  return(
+    <div id={props.id}>
+      <ButtonIcon 
+        class={props.class}
+        icon={props.icon}
+        width={props.width}
+        hFlip={props.hFlip}
+        vFlip={props.vFlip}
+        label={props.label}
+        onChange={HandleClick}
+      />
+    </div>
+  )
+
 }
 
 export function SelectedMIDIDeviceUIElement(props) {

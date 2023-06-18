@@ -22,7 +22,15 @@ export default function SetupContainer() {
     function RenderLogInUI() {
         return(
             <div class="channelContainer">
-                <ui.TextInput />
+                <ui.EmailLogin />
+                <br></br>
+                <ui.ServiceLogin 
+                    icon="uit:google"
+                />
+                <ui.ServiceLogin 
+                    icon="codicon:github"
+                />
+
             </div>
         )
     }
