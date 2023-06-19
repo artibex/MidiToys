@@ -207,7 +207,7 @@ export default function SetupContainer() {
         } else {
             switch(selectedChannel()) {
                 case 0: return <h1 class="marginAuto">Settings</h1>;
-                case -1: return <h1 class="marginAuto">Login</h1>;
+                case -1: return <h1 class="marginAuto">Sign In</h1>;
             }
         }
     }

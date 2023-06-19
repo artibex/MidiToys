@@ -291,7 +291,7 @@ export function EmailLoginRegisterUIElement(props) {
 
   return(
     <div id={props.id}>
-      <h3 class="textAlignCenter">Login with Email</h3>
+      <h3 class="textAlignCenter">Sign In with Email</h3>
       <div>
         <div class="flexContainer">
           <Icon
@@ -319,6 +319,48 @@ export function EmailLoginRegisterUIElement(props) {
         </div>
       </div>
       <div class="textAlignCenter marginTop10"> {infoText()} </div>
+    </div>
+  )
+}
+
+export function IconTextInputUIElement(props) {
+  if(props.class == undefined) props.class = "flex";
+  if(props.id == undefined) props.id = "textInput";
+  
+  //Icon
+  if(props.width == undefined) props.width = "30";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
+
+  //Text input
+  if(props.required == undefined) props.required = false;
+  if(props.type == undefined) props.type = "";
+  if(props.placeholder == undefined) props.placeholder = "My cool Placeholder";
+
+  function HandleValueChange(event) {
+    console.log("NEW VALUE = " + event.target.value);
+    if(props.onChange != undefined) {
+      props.onChange(event.target.value);
+    }
+  }
+  
+  return(
+  <div class={props.class}>
+      <div class="marginRight10">
+        <Icon
+          icon="fontisto:email"
+          width={props.width}
+          hFlip={props.hFlip}
+          vFlip={props.vFlip}
+          />
+      </div>
+      <TextInput 
+        required={props.required} 
+        id={props.id}
+        type={props.type}
+        placeholder={props.placeholder}
+        onChange={HandleValueChange}
+      />
     </div>
   )
 }

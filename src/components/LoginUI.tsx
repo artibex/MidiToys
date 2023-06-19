@@ -15,15 +15,25 @@ export default function SetupContainer() {
         if(user != undefined) setUserLoggedIn(true);
     }
 
-    function SetSomething() {
+    function SetEmailSignUp(showSignUp: boolean) {
         console.log("SET email sign up UI")
-        setEmailSignUp(true);
+        setEmailSignUp(showSignUp);
     }
 
     //Put int your redentials and create an account
     function RenderEmailSignUpUI() {
         return(
-            <></>
+            <div class="channelContainer">
+                <ui.Button 
+                    label="Back to Login"
+                    onClick={SetEmailSignUp(false)}
+                />
+                <br></br>
+                <h3 class="textAlignCenter">E-Mail</h3>
+                <ui.IconTextInputUIElement 
+                
+                />
+            </div>
         )
     }
 
@@ -36,7 +46,7 @@ export default function SetupContainer() {
                     use presets made by the community
                 </h2>
                 <br></br>
-                <h3 class="textAlignCenter">Login with Account</h3>
+                <h3 class="textAlignCenter">Sign In with Account</h3>
                 <ui.ServiceLogin 
                     icon="uit:google"
                 />
@@ -45,7 +55,7 @@ export default function SetupContainer() {
                 />
                 <br></br>
                 <ui.EmailLoginRegisterUIElement
-                    onRegister={SetSomething}
+                    onRegister={SetEmailSignUp(true)}
                 />
             </div>
         )
@@ -55,6 +65,9 @@ export default function SetupContainer() {
         return(
             <div class="channelContainer">
                 <h1>User IS logged in!</h1>
+                <ui.Button 
+                    label="Sign Out"
+                />
             </div>
         )
     }
