@@ -7,7 +7,6 @@ import * as ui from "@ui";
 const canvasManager = new CanvasManager;
 
 export default function SetupContainer() {
-
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [emailSignUp, setEmailSignUp] = createSignal(false);
     const [userName, setUserName] = createSignal("Cool Username");
@@ -64,7 +63,7 @@ export default function SetupContainer() {
         if(userLoggedIn()) {
             return RenderLoggedInUI();
         } else {
-            if(emailSignUp()) {
+            if(emailSignUp() == true) {
                 return RenderEmailSignUpUI();
             } else {
                 return RenderLogInUI();
@@ -73,5 +72,9 @@ export default function SetupContainer() {
     }
 
     canvasManager.SubscribeOneFPS(UpdateComponent);
-    return RenderUI();
+    return (
+        <>
+            {RenderUI()}
+        </>
+    )
 }
