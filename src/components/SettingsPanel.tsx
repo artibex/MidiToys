@@ -104,7 +104,7 @@ export default function SetupContainer() {
 
     function RenderSidebarButtons() {
         return(
-            <div class="flexList width10 overflowAuto">
+            <div class="flexList width10">
                 <ui.ButtonIcon 
                     class="channelButton"
                     icon="ic:sharp-login"
@@ -215,18 +215,15 @@ export default function SetupContainer() {
     function RenderUIHeadline() {
         return(
             <div class="height10 width100">
-                <div class="flexContainer">
-                    <div class="justifyStart textAlignLeft">
-                        {RenderHeadline()}
-                    </div>
-                    <div class="alignFlexEnd">
-                        {RenderCloseButton()}
-                    </div>
+            <div class="flexContainer">
+                <div class="justifyStart textAlignLeft">
+                    {RenderHeadline()}
                 </div>
-            <div>
+                <div class="alignFlexEnd">
+                    {RenderCloseButton()}
+                </div>
             </div>
         </div>
-
         )
     }
 

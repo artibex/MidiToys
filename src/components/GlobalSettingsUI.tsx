@@ -20,7 +20,7 @@ export default function SetupContainer() {
         return(
             <div class="channelContainer">
                 <div>
-                    <ui.MIDIDropdown />
+                    <ui.MIDIDropdownUIElement />
                     <ui.BPM />
                 </div>
                 <br></br>

@@ -9,14 +9,23 @@ const canvasManager = new CanvasManager;
 export default function SetupContainer() {
 
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
+    const [emailSignUp, setEmailSignUp] = createSignal(false);
     const [userName, setUserName] = createSignal("Cool Username");
 
     function UpdateComponent() {
         if(user != undefined) setUserLoggedIn(true);
     }
 
-    function RenderSignUpUI() {
+    function SetSomething() {
+        console.log("SET email sign up UI")
+        setEmailSignUp(true);
+    }
 
+    //Put int your redentials and create an account
+    function RenderEmailSignUpUI() {
+        return(
+            <></>
+        )
     }
 
     function RenderLogInUI() {
@@ -36,7 +45,9 @@ export default function SetupContainer() {
                     icon="codicon:github"
                 />
                 <br></br>
-                <ui.EmailLoginRegister />
+                <ui.EmailLoginRegisterUIElement
+                    onRegister={SetSomething}
+                />
             </div>
         )
     }
@@ -52,7 +63,13 @@ export default function SetupContainer() {
     function RenderUI() {
         if(userLoggedIn()) {
             return RenderLoggedInUI();
-        } else return RenderLogInUI();
+        } else {
+            if(emailSignUp()) {
+                return RenderEmailSignUpUI();
+            } else {
+                return RenderLogInUI();
+            }
+        }
     }
 
     canvasManager.SubscribeOneFPS(UpdateComponent);

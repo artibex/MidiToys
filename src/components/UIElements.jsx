@@ -90,7 +90,14 @@ export function TextInput(props) {
   if(props.class == undefined) props.class = "textInput";
   if(props.type == undefined) props.type = "";
   if(props.required == undefined) props.required = false;
-  
+  if(props.value == undefined) props.value = "";
+
+  function HandleOnChange(event) {
+    if (props.onChange !== undefined) {
+      props.onChange(event);
+    }
+  };
+
   if(props.required) {
     return(
       <input 
@@ -98,6 +105,8 @@ export function TextInput(props) {
       class={props.class}
       id={props.id}
       placeholder={props.placeholder}
+      value={props.value}
+      onChange={HandleOnChange}
       required
       />
     )
@@ -108,6 +117,8 @@ export function TextInput(props) {
       class={props.class}
       id={props.id}
       placeholder={props.placeholder}
+      onChange={HandleOnChange}
+      value={props.value}
       />
     )
   }
@@ -145,13 +156,15 @@ export function Button(props) {
   };
 
   return (
-    <button
-      class={props.class}
-      id={props.id}
-      onClick={handleClick}
-    >
-      {props.label}
-    </button>
+    <div class={props.class}>
+      <button
+        class={props.class}
+        id={props.id}
+        onClick={handleClick}
+      >
+        {props.label}
+      </button>
+    </div>
   );
 }
 
@@ -171,36 +184,36 @@ export function ButtonIcon(props) {
 
   if(props.label == "") {
     return (
-      <button
-        class={props.class}
-        id={props.id}
-        onClick={handleClick}
-      >
-        <div class="flexContainer justifyCenter">
-          <div>{props.label}</div>
-          <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
-        </div>
-      </button>
+      <div class={props.class} >
+        <button
+          id={props.id}
+          onClick={handleClick}
+        >
+          <div class="flexContainer justifyCenter">
+            <div>{props.label}</div>
+            <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+          </div>
+        </button>
+      </div>
     );
   } else {
     return (
-      <button
-        class={props.class}
-        id={props.id}
-        onClick={handleClick}
-      >
-        <div class="flexContainer justifyCenter">
-          <div class="marginRight10">{props.label}</div>
-          <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
-        </div>
-      </button>
+      <div class={props.class} >
+        <button
+          id={props.id}
+          onClick={handleClick}
+        >
+          <div class="flexContainer justifyCenter">
+            <div class="marginRight10">{props.label}</div>
+            <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+          </div>
+        </button>
+      </div>
     );
-
   }
-
 }
 
-export function MIDIDeviceReloadUIElement(props) {
+export function MIDIDeviceReloadButton(props) {
   if(props.label == undefined) props.label = "";
   if(props.class == undefined) props.class = "iconButton";
   if(props.id == undefined) props.id = "";
@@ -216,18 +229,19 @@ export function MIDIDeviceReloadUIElement(props) {
   }
 
   return(
-    <ButtonIcon
-      id={props.id}
-      class={props.class}
-      icon="material-symbols:wifi-protected-setup"
-
-      onClick={() => handleClick}
-      label={props.label}
-
-      width={props.width}
-      hFlip={props.hFlip}
-      vFlip={props.vFlip}
-    />
+    <div class={props.class}>
+      <ButtonIcon
+        id={props.id}
+        icon="material-symbols:wifi-protected-setup"
+  
+        onClick={() => handleClick}
+        label={props.label}
+  
+        width={props.width}
+        hFlip={props.hFlip}
+        vFlip={props.vFlip}
+      />
+    </div>
   )
 }
 
@@ -252,7 +266,7 @@ export function AvailableMIDIDevicesUIElement(props) {
   )
 }
 
-export function EmailLoginRegister(props) {
+export function EmailLoginRegisterUIElement(props) {
   const [infoText, setInfoText] = createSignal("");
   
   if(props.class == undefined) props.class = "";
@@ -264,8 +278,16 @@ export function EmailLoginRegister(props) {
 
   function HandleLogin() {
     console.log("HANDLE email login")
+    if(props.onLogin != undefined) {
+      props.onLogin();
+    }
   }
 
+  function HandleRegister() {
+    if(props.onRegister != undefined) {
+      props.onRegister();
+    }
+  }
 
   return(
     <div id={props.id}>
@@ -290,12 +312,10 @@ export function EmailLoginRegister(props) {
           <TextInput required={true} type="password" placeholder="Password" />
         </div>
       </div>
-      <div class="marginTop10 flexContainer">
-        <div class="marginAuto">
-          <ClickableText class="justifyCenter clickableText" label="Register Account" />
-        </div>
-        <div class="width40">
-          <Button label="Login" onClick={HandleLogin} />
+      <div class="marginTop10 width100 justifyEnd">
+        <div class="flex justifyEnd">
+          <ClickableText class=" textAlignRight justifyEnd paddingTop10 clickableText" onClick={HandleRegister} label="register" />
+          <Button class="width40 thinButton" label="Login" onClick={HandleLogin} />
         </div>
       </div>
       <div class="textAlignCenter marginTop10"> {infoText()} </div>
@@ -310,12 +330,14 @@ export function ClickableText(props) {
 
   function HandleClick() {
     if(props.onClick != undefined) {
-      props.onChange();
+      props.onClick();
     } else console.log("NO ON CLICK FUNCTION DEFINED");
   }
 
   return(
-    <a class={props.class} onClick={HandleClick}>{props.label}</a>
+    <div class={props.class}>
+      <a onClick={HandleClick}>{props.label}</a>
+    </div>
   )
 }
 
@@ -432,7 +454,7 @@ export function NumberSliderUIElement(props) {
   if(props.vertical) {
     return(
       <div class="flexContainer">
-        <div class="justifyStart">{props.name}</div>
+        <div class="textAlignRight">{props.name}</div>
           <NumberSliderComboVertical 
             factor={props.factor}
             minMaxStep={props.minMaxStep}
@@ -494,7 +516,7 @@ export function JsonFileUploader(props) {
   );
 }
 
-export function MIDIDropdown(props) {
+export function MIDIDropdownUIElement(props) {
   if(props.class === undefined) props.class = "dropdown"
   if(props.label === undefined) props.label = "MIDI Devices";
 
@@ -540,16 +562,18 @@ export function MIDIDropdown(props) {
       <h2 class="textAlignCenter">
         {props.label}
       </h2>
-      <div class="flex width80 marginAuto justifyCenter">
-        <select 
-          class={props.class}
-          value={selectedOption()} 
-          onFocus={() => loadDevices()} 
-          onChange={(event) => UpdateDeviceSelection(event.target.value)}>
-          {options()}
-        </select>
-        <div class="marginAuto justifyCenter">
-          <MIDIDeviceReloadUIElement />
+      <div class="flex">
+        <div class="justifyStart marginAuto">
+          <select 
+            class={props.class}
+            value={selectedOption()} 
+            onFocus={() => loadDevices()} 
+            onChange={(event) => UpdateDeviceSelection(event.target.value)}>
+            {options()}
+          </select>
+        </div>
+        <div class="marginAuto justifyEnd">
+          <MIDIDeviceReloadButton />
         </div>
       </div>
     </div>

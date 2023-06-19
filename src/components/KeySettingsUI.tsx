@@ -123,6 +123,6 @@ export default function SetupContainer( props: {channel: number}) {
     // LoadToy();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return(
-        <ui.DetailsFillerCenter summeryName={"Key settings"} content={RenderKeySettings()} />
+        <ui.DetailsFillerCenter summeryName={"Keys"} content={RenderKeySettings()} />
     )
 }
