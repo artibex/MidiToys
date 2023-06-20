@@ -120,8 +120,9 @@ button:hover {
 .iconButton{
   display: flex;
   padding: 1px;
-  /* border: 1px solid var(--border-color); */
-  margin: auto;
+  font-family: "SlimJoe", sans-serif;
+  word-break: break-word;
+  /* margin: auto; */
 }
 
 .dropdown {
@@ -368,6 +369,7 @@ details[open] summary {
 }
 .justifyEnd{
   justify-content: end;
+  /* align-items: end; */
 }
 .justifyStart{
   justify-content: start;

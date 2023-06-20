@@ -24,15 +24,34 @@ export default function SetupContainer() {
     function RenderEmailSignUpUI() {
         return(
             <div class="channelContainer">
-                <ui.Button 
-                    label="Back to Login"
-                    onClick={SetEmailSignUp(false)}
+                    <ui.ButtonIcon
+                        label="Go back"
+                        icon="ep:back"
+                        iconFirst={true}
+                        onClick={SetEmailSignUp(false)}
+                    />
+                <br></br>
+                <h3 class="textAlignCenter">Create new Account</h3>
+                <ui.IconTextInputUIElement 
+                    icon="fontisto:email"
+                    placeholder="E-Mail"                    
                 />
                 <br></br>
-                <h3 class="textAlignCenter">E-Mail</h3>
                 <ui.IconTextInputUIElement 
-                
+                    icon="bi:key-fill"
+                    placeholder="Password"                    
                 />
+                <ui.IconTextInputUIElement
+                    icon="bi:key"
+                    placeholder="Repeat Password"                    
+                />
+                <br></br>
+                <div class="">
+                    <ui.Button 
+                        class="thinButton width50 justifySpace"
+                        label="Submit"
+                    />
+                </div>
             </div>
         )
     }
@@ -54,7 +73,7 @@ export default function SetupContainer() {
                     icon="codicon:github"
                 />
                 <br></br>
-                <ui.EmailLoginRegisterUIElement
+                <ui.EmailLoginUIElement
                     onRegister={SetEmailSignUp(true)}
                 />
             </div>

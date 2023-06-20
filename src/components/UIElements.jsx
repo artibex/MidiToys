@@ -174,12 +174,15 @@ export function ButtonIcon(props) {
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
+  if(props.iconFirst == undefined) props.iconFirst = false;
   if(props.width == undefined) props.width = "20";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
-  const handleClick = () => {
-    props.onClick();
+  function HandleClick() {
+    if(props.onClick != undefined) {
+      props.onClick();
+    }
   };
 
   if(props.label == "") {
@@ -187,29 +190,54 @@ export function ButtonIcon(props) {
       <div class={props.class} >
         <button
           id={props.id}
-          onClick={handleClick}
+          onClick={HandleClick}
         >
           <div class="flexContainer justifyCenter">
-            <div>{props.label}</div>
+            <div class={props.class}>
+              {props.label}
+            </div>
             <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
           </div>
         </button>
       </div>
     );
   } else {
-    return (
-      <div class={props.class} >
-        <button
-          id={props.id}
-          onClick={handleClick}
-        >
-          <div class="flexContainer justifyCenter">
-            <div class="marginRight10">{props.label}</div>
-            <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+    if(props.iconFirst) { //Display icon before text
+      return (
+        <div class={props.class} >
+          <button
+            id={props.id}
+            onClick={HandleClick}
+          >
+            <div class="flexContainer justifyCenter">
+              <div class="marginRight10">
+                <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+              </div>
+              <div class={props.class}>
+                {props.label}
+              </div>
+            </div>
+          </button>
+        </div>
+      );
+
+    } else { //Display Icon after text
+        return (
+          <div class={props.class} >
+            <button
+              id={props.id}
+              onClick={HandleClick}
+            >
+              <div class="flexContainer justifyCenter">
+                <div class={props.class}>
+                  <div class="marginRight10">{props.label}</div>
+                </div>
+                <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+              </div>
+            </button>
           </div>
-        </button>
-      </div>
-    );
+        );
+    }
   }
 }
 
@@ -266,7 +294,7 @@ export function AvailableMIDIDevicesUIElement(props) {
   )
 }
 
-export function EmailLoginRegisterUIElement(props) {
+export function EmailLoginUIElement(props) {
   const [infoText, setInfoText] = createSignal("");
   
   if(props.class == undefined) props.class = "";
@@ -275,6 +303,9 @@ export function EmailLoginRegisterUIElement(props) {
   if(props.width == undefined) props.width = "30";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
+
+  var email = "";
+  var password = "";
 
   function HandleLogin() {
     console.log("HANDLE email login")
@@ -289,28 +320,32 @@ export function EmailLoginRegisterUIElement(props) {
     }
   }
 
+  function HandleEmailChange(event) {
+    email = event.target.value;
+  }
+
+  function HandlePasswordChange(event) {
+    password = event.target.value;
+  }
+
   return(
     <div id={props.id}>
       <h3 class="textAlignCenter">Sign In with Email</h3>
       <div>
-        <div class="flexContainer">
-          <Icon
+          <IconTextInputUIElement 
             icon="fontisto:email"
-            width={props.width}
-            hFlip={props.hFlip}
-            vFlip={props.vFlip}
+            required={true} 
+            type="email" 
+            placeholder="E-Mail"
+            onChange={HandleEmailChange(event)}
           />
-          <TextInput required={true} type="email" placeholder="E-Mail" />
-        </div>
-        <div class="flexContainer">
-          <Icon 
+        <IconTextInputUIElement 
             icon="bi:key"
-            width={props.width}
-            hFlip={props.hFlip}
-            vFlip={props.vFlip}
+            required={true} 
+            type="password" 
+            placeholder="Password"
+            onChange={HandlePasswordChange(event)}
           />
-          <TextInput required={true} type="password" placeholder="Password" />
-        </div>
       </div>
       <div class="marginTop10 width100 justifyEnd">
         <div class="flex justifyEnd">
@@ -324,10 +359,12 @@ export function EmailLoginRegisterUIElement(props) {
 }
 
 export function IconTextInputUIElement(props) {
-  if(props.class == undefined) props.class = "flex";
+  if(props.class == undefined) props.class = "flex justifySpace";
   if(props.id == undefined) props.id = "textInput";
   
   //Icon
+  if(props.icon == undefined) props.icon = "ep:warn-triangle-filled";
+  if(props.iconFirst == undefined) props.iconFirst = false;
   if(props.width == undefined) props.width = "30";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
@@ -345,10 +382,10 @@ export function IconTextInputUIElement(props) {
   }
   
   return(
-  <div class={props.class}>
-      <div class="marginRight10">
+    <div class={props.class}>
+      <div class="marginAuto">
         <Icon
-          icon="fontisto:email"
+          icon={props.icon}
           width={props.width}
           hFlip={props.hFlip}
           vFlip={props.vFlip}
@@ -377,15 +414,15 @@ export function ClickableText(props) {
   }
 
   return(
-    <div class={props.class}>
-      <a onClick={HandleClick}>{props.label}</a>
+    <div class={props.class} onClick={HandleClick}>
+      <a>{props.label}</a>
     </div>
   )
 }
 
 export function ServiceLogin(props) {
   if(props.class == undefined) props.class = "iconButton justifyCenter";
-  if(props.label == undefined) props.label = "Login with";
+  if(props.label == undefined) props.label = "Sign in with";
   if(props.id == undefined) props.id = "myCoolService";
 
   if(props.icon == undefined) props.icon = "zondicons:key";
