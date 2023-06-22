@@ -6,8 +6,11 @@ import { firebaseConfig } from '@env';
 export const app = initializeApp(firebaseConfig);
 export var auth = getAuth(app);
   
-export var user = undefined;
+var user;
 export function SetUser(u) {
-    console.log("SET user " + user);
+    console.log("SET user " + u);
     user = u;
+}
+export function GetUser() {
+    return user;
 }

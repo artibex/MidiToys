@@ -1,10 +1,12 @@
+import * as ui from "@ui";
+import * as utils from "@utils";
 import { createSignal, createEffect } from "solid-js";
 import { CanvasManager } from "@canvasmanager";
-import {user} from "@firebaseClient";
-import * as utils from "@utils";
-import * as ui from "@ui";
+import {GetUser} from "@firebaseClient";
+import { FirebaseManager } from "@firebaseManager";
 
-const canvasManager = new CanvasManager;
+const canvasManager = new CanvasManager();
+const firebaseManager = new FirebaseManager();
 
 export default function SetupContainer() {
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
@@ -13,7 +15,7 @@ export default function SetupContainer() {
     const [userName, setUserName] = createSignal("Cool Username");
 
     function UpdateComponent() {
-        if(user != undefined) setUserLoggedIn(true);
+        if(GetUser() != undefined) setUserLoggedIn(true);
     }
 
     function SetEmailSignUp(showSignUp: boolean) {
@@ -88,12 +90,21 @@ export default function SetupContainer() {
     function RenderLoggedInUI() {
         return(
             <div class="channelContainer">
-                <h1>User IS logged in!</h1>
-                <ui.Button 
+                <h2 class="textAlignCenter">Hello {GetUser().displayName}</h2>
+                <h2 class="textAlignCenter">You can now browse or upload presets in your toys</h2>
+                <ui.ButtonIcon 
                     label="Sign Out"
+                    iconFirst={true}
+                    icon="gg:log-out"
+                    onClick={SignOut}
                 />
             </div>
         )
+    }
+
+    function SignOut() {
+        firebaseManager.SignOut();
+        setUserLoggedIn(false);
     }
 
     function RenderUI() {
@@ -111,6 +122,7 @@ export default function SetupContainer() {
         }
     }
 
+    if(GetUser() != undefined) setUserLoggedIn(true);
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
         <>

@@ -1,6 +1,6 @@
 import * as client from "./client";
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 
 export class FirebaseManager {
@@ -21,33 +21,62 @@ export class FirebaseManager {
         //this.AuthWithEmailLink();
     }
 
-    EmailSignUp(email, password) {
-        createUserWithEmailAndPassword(client.auth, email, password)
+    async EmailSignUp(email, password, username) {
+      createUserWithEmailAndPassword(client.auth, email, password)
           .then((userCredential) => {
             // User sign-up successful, do something with userCredential.user
             const user = userCredential.user;
+            client.SetUser(user);
             console.log('User sign-up successful:', user);
+
+            updateProfile(client.GetUser(), { displayName: username })
+            .then(() => {
+              console.log("SET username to " + username)
+            })
+            .catch((error) => {
+              console.log("CAN'T update Username");
+            });
+            
+            return(true);
           })
           .catch((error) => {
             // Handle sign-up error
             console.log('Sign-up error:', error);
-          });
-      }
+            return(false);
+        }
+      )
+    ;
+    }
 
     EmailSignIn(email, password) {
         signInWithEmailAndPassword(client.auth, email, password)
           .then((userCredential) => {
             // Login successful, do something with userCredential.user
-            client.SetUser(userCredential.user);
-            // const user = userCredential.user;
-            console.log('Logged in user:', client.user);
+            const user = userCredential.user;
+            client.SetUser(user);
+            console.log('Logged in user:', client.GetUser());
+            return true;
           })
           .catch((error) => {
             // Handle login error
             console.log('Login error:', error);
+            return false;
           });
     }
     
+    // Function to sign out the user
+    SignOut() {
+      client.auth.signOut()
+        .then(() => {
+          console.log("User signed out successfully");
+          client.SetUser(undefined);
+          // Additional actions after sign-out
+        })
+        .catch((error) => {
+          console.error("Error signing out:", error);
+        });
+    }
+
     SendSignInLinkToEmail(email) {
         if(typeof window == 'undefined') return;
         const actionCodeSettings = {
@@ -76,11 +105,13 @@ export class FirebaseManager {
         .then((userCredential) => {
           // Reauthentication successful, do something with userCredential.user
           client.SetUser(userCredential.user);
-          console.log('USER AUTHENTICATED:', client.user);
+          // console.log('USER AUTHENTICATED:', client.GetUser());
+          return("Account created!")
         })
         .catch((error) => {
           // Handle reauthentication error
-          console.log('Reauthentication error:', error);
+          // console.log('Reauthentication error:', error);
+          return (error.message)
         });    
     }
 }

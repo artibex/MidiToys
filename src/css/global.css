@@ -217,6 +217,11 @@ details[open] summary {
   padding-bottom: 0px;
 }
 
+.paddingLeftRight10{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .paddingTop10{
   padding-top: 10px;
 }

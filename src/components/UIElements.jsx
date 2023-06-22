@@ -4,11 +4,13 @@ import { InputManager } from "@inputmanager";
 import { CanvasManager} from "@canvasmanager"
 import { MIDIInputModule } from "@input/MIDIInputModule";
 import {ToyManager} from "@toymanager";
+import {FirebaseManager} from "@firebaseManager"
 
 const inputManager = new InputManager();
 const frameManager = new CanvasManager();
 const midiInputModule = new MIDIInputModule();
 const toyManager = new ToyManager();
+const firebaseManager = new FirebaseManager();
 
 export function DetailsFillerCenter(props) {
   if(props.summeryName == undefined) props.summeryName = "";
@@ -209,7 +211,7 @@ export function ButtonIcon(props) {
             id={props.id}
             onClick={HandleClick}
           >
-            <div class="flexContainer justifyCenter">
+            <div class="flex justifyCenter">
               <div class="marginRight10">
                 <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
               </div>
@@ -304,11 +306,13 @@ export function EmailLoginUIElement(props) {
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
-  var email = "";
-  var password = "";
+  const [email, setEmail] = createSignal("");
+  const [password, setPassword] = createSignal("");
 
   function HandleLogin() {
     console.log("HANDLE email login")
+
+    firebaseManager.EmailSignIn(email(), password());
     if(props.onLogin != undefined) {
       props.onLogin();
     }
@@ -327,11 +331,13 @@ export function EmailLoginUIElement(props) {
   }
 
   function HandleEmailChange(event) {
-    email = event.target.value;
+    setEmail(event.target.value);
+    // email = event.target.value;
   }
 
   function HandlePasswordChange(event) {
-    password = event.target.value;
+    setPassword(event.target.value);
+    // password = event.target.value;
   }
 
   return(
@@ -366,40 +372,81 @@ export function EmailLoginUIElement(props) {
 }
 
 export function EmailSignUpUIElement(props) {
-  
-  function HandleSubmit() {
-    if(props.onClick != undefined) {
-      props.onClick();
+  const [infoText, setInfoText] = createSignal("");
+  const [email, setEmail] = createSignal("");
+  const [username, setUsername] = createSignal("");
+  const [password, setPassword] = createSignal("");
+  const [repeatPassword, setRepeatPassword] = createSignal("");
+
+  function SubmitCredentials() {
+    HandleEmailSignUp(email(), password(), repeatPassword(), setInfoText);
+  }
+
+  async function HandleEmailSignUp() {
+    if(password() == repeatPassword() && email().includes("@")) {
+      if(password().length >= 6) {
+        if(username().length >= 3) {
+          // console.log("email: " + email() + " pw: " + password())
+          var result = await firebaseManager.EmailSignUp(email(), password(), username());
+          if(result) setInfoText("Created account!");
+          else setInfoText("Something went wrong...");
+        } else {
+          setInfoText("Please choose a longer username")
+        }
+
+      } else {
+        setInfoText("Password must be at least 6 characters long");
+      }
+
+    } else {
+      setInfoText("Please check your email and password");
     }
   }
-  
+
   return (
     <div class="">
         <h3 class="textAlignCenter">Create new Account</h3>
         <IconTextInputUIElement 
             icon="fontisto:email"
-            placeholder="E-Mail"                    
+            placeholder="E-Mail"
+            type="email"
+            onChange={(value) => setEmail(value)}
+        />
+        <IconTextInputUIElement 
+            icon="mdi:account-outline"
+            placeholder="Username"
+            type="username"
+            onChange={(value) => setUsername(value)}
         />
         <br></br>
         <IconTextInputUIElement 
             icon="bi:key-fill"
-            placeholder="Password"                    
+            placeholder="Password"
+            type="password"
+            onChange={(value) => setPassword(value)}
         />
         <IconTextInputUIElement
             icon="bi:key"
-            placeholder="Repeat Password"                    
+            placeholder="Repeat Password"
+            type="password"
+            onChange={(value) => setRepeatPassword(value)}
         />
+        <br></br>
+        <div class="textAlignRight">
+          {infoText()}
+        </div>
         <br></br>
         <div class="justifyEnd flex">
           <Button 
               class="thinButton width50"
               label="Submit"
-              onClick={HandleSubmit}
+              onClick={SubmitCredentials}
           />
         </div>
     </div>
   )
 }
+
 
 export function EmailForgotPasswordUIElement(props) {
 
@@ -443,9 +490,9 @@ export function IconTextInputUIElement(props) {
   if(props.required == undefined) props.required = false;
   if(props.type == undefined) props.type = "";
   if(props.placeholder == undefined) props.placeholder = "My cool Placeholder";
+  if(props.label == undefined) props.label = "";
 
   function HandleValueChange(event) {
-    console.log("NEW VALUE = " + event.target.value);
     if(props.onChange != undefined) {
       props.onChange(event.target.value);
     }
@@ -461,6 +508,10 @@ export function IconTextInputUIElement(props) {
           vFlip={props.vFlip}
           />
       </div>
+      <div class="marginAuto paddingLeftRight10">
+        {props.label}
+      </div>
+
       <TextInput 
         required={props.required} 
         id={props.id}
@@ -501,7 +552,7 @@ export function ServiceLogin(props) {
   if(props.vFlip == undefined) props.vFlip = false;
 
   function HandleClick() {
-    console.log("SERVICE LOGIN");
+    // console.log("SERVICE LOGIN");
     if(props.onChange != undefined) {
       props.onClick();
     } else console.log("NO SERVICE FUNCTION")

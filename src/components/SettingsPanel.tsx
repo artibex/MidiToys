@@ -107,12 +107,14 @@ export default function SetupContainer() {
             <div class="flexList width10">
                 <ui.ButtonIcon 
                     class="channelButton"
-                    icon="ic:sharp-login"
+                    icon="mdi:account-outline"
+                    width={40}
                     onClick={() => setSelectedChannel(-1)}
                 />
                 <ui.ButtonIcon 
                     class="channelButton"
                     icon="mdi:cog-outline"
+                    width={25}
                     onClick={() => setSelectedChannel(0)}
                 />
                 <br></br>
