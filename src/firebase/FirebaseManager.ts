@@ -1,6 +1,6 @@
 import * as client from "./client";
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 
 
 export class FirebaseManager {
@@ -21,6 +21,7 @@ export class FirebaseManager {
         //this.AuthWithEmailLink();
     }
 
+    //Create new email acount
     async EmailSignUp(email, password, username) {
       createUserWithEmailAndPassword(client.auth, email, password)
           .then((userCredential) => {
@@ -37,17 +38,32 @@ export class FirebaseManager {
               console.log("CAN'T update Username");
             });
             
-            return(true);
+            return true;
           })
           .catch((error) => {
             // Handle sign-up error
             console.log('Sign-up error:', error);
-            return(false);
+            return error;
         }
       )
     ;
     }
 
+    SendPasswordResetEmail(email) {
+      return new Promise((resolve, reject) => {
+        sendPasswordResetEmail(client.auth, email)
+          .then(() => {
+            console.log("Password reset email sent successfully");
+            resolve(true);
+          })
+          .catch((error) => {
+            console.error("Error sending password reset email:", error);
+            reject(false);
+          });
+      });
+    }
+    
+    //Sign in with email and password
     EmailSignIn(email, password) {
         signInWithEmailAndPassword(client.auth, email, password)
           .then((userCredential) => {

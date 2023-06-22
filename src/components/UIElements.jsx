@@ -449,8 +449,22 @@ export function EmailSignUpUIElement(props) {
 
 
 export function EmailForgotPasswordUIElement(props) {
+  const [email, setEmail] = createSignal("");
+  const [infoText, setInfoText] = createSignal("");
 
-  function HandleSubmit() {
+  async function HandleSubmit() {
+    if(email().includes("@")) {
+      var worked = await firebaseManager.SendPasswordResetEmail(email());
+      if(worked) {
+        setInfoText("Sent Recovery E-Mail");
+      } else {
+        setInfoText("Error: Please check your E-Mail");
+      }
+      
+    } else {
+
+      setInfoText("Please check your E-Mail");
+    }
     if(props.onClick != undefined) {
       props.onClick();
     }
@@ -461,7 +475,8 @@ export function EmailForgotPasswordUIElement(props) {
         <h3 class="textAlignCenter">Recover Account</h3>
         <IconTextInputUIElement 
             icon="fontisto:email"
-            placeholder="E-Mail"                    
+            placeholder="E-Mail"    
+            onChange={(event) => setEmail(event)}                
         />
         <br></br>
         <div class="flex justifyEnd">
@@ -470,6 +485,9 @@ export function EmailForgotPasswordUIElement(props) {
               label="Submit"
               onClick={HandleSubmit}
           />
+        </div>
+        <div class="textAlignRight">
+          {infoText()}
         </div>
     </div>
   )
