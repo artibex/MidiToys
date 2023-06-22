@@ -122,6 +122,9 @@ button:hover {
   padding: 1px;
   font-family: "SlimJoe", sans-serif;
   word-break: break-word;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
   /* margin: auto; */
 }
 

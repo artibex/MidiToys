@@ -169,7 +169,7 @@ export function Button(props) {
 }
 
 export function ButtonIcon(props) {
-  if(props.class == undefined) props.class = "iconButton textAlignCenter";
+  if(props.class == undefined) props.class = "iconButton";
   if(props.label == undefined) props.label = "";
   if(props.id == undefined) props.id = "";
 
@@ -320,6 +320,12 @@ export function EmailLoginUIElement(props) {
     }
   }
 
+  function HandleForgotPassword() {
+    if(props.onPasswordForgot != undefined) {
+      props.onPasswordForgot();
+    }
+  }
+
   function HandleEmailChange(event) {
     email = event.target.value;
   }
@@ -352,8 +358,72 @@ export function EmailLoginUIElement(props) {
           <ClickableText class=" textAlignRight justifyEnd paddingTop10 clickableText" onClick={HandleRegister} label="register" />
           <Button class="width40 thinButton" label="Login" onClick={HandleLogin} />
         </div>
+        <ClickableText class=" textAlignRight justifyEnd paddingTop10 clickableText" onClick={HandleForgotPassword} label="Forgot password?" />
       </div>
       <div class="textAlignCenter marginTop10"> {infoText()} </div>
+    </div>
+  )
+}
+
+export function EmailSignUpUIElement(props) {
+  
+  function HandleSubmit() {
+    if(props.onClick != undefined) {
+      props.onClick();
+    }
+  }
+  
+  return (
+    <div class="">
+        <h3 class="textAlignCenter">Create new Account</h3>
+        <IconTextInputUIElement 
+            icon="fontisto:email"
+            placeholder="E-Mail"                    
+        />
+        <br></br>
+        <IconTextInputUIElement 
+            icon="bi:key-fill"
+            placeholder="Password"                    
+        />
+        <IconTextInputUIElement
+            icon="bi:key"
+            placeholder="Repeat Password"                    
+        />
+        <br></br>
+        <div class="justifyEnd flex">
+          <Button 
+              class="thinButton width50"
+              label="Submit"
+              onClick={HandleSubmit}
+          />
+        </div>
+    </div>
+  )
+}
+
+export function EmailForgotPasswordUIElement(props) {
+
+  function HandleSubmit() {
+    if(props.onClick != undefined) {
+      props.onClick();
+    }
+  }
+
+  return(
+    <div>
+        <h3 class="textAlignCenter">Recover Account</h3>
+        <IconTextInputUIElement 
+            icon="fontisto:email"
+            placeholder="E-Mail"                    
+        />
+        <br></br>
+        <div class="flex justifyEnd">
+          <Button 
+              class="thinButton width50"
+              label="Submit"
+              onClick={HandleSubmit}
+          />
+        </div>
     </div>
   )
 }
@@ -430,7 +500,7 @@ export function ServiceLogin(props) {
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
-  const HandleClick = () => {
+  function HandleClick() {
     console.log("SERVICE LOGIN");
     if(props.onChange != undefined) {
       props.onClick();

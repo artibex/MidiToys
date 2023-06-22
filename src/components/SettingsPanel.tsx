@@ -115,6 +115,7 @@ export default function SetupContainer() {
                     icon="mdi:cog-outline"
                     onClick={() => setSelectedChannel(0)}
                 />
+                <br></br>
                 <ui.Button
                     label="1"
                     class={channelButtonClass()[0]}
@@ -207,7 +208,7 @@ export default function SetupContainer() {
         } else {
             switch(selectedChannel()) {
                 case 0: return <h1 class="marginAuto">Settings</h1>;
-                case -1: return <h1 class="marginAuto">Sign In</h1>;
+                case -1: return <h1 class="marginAuto">Account</h1>;
             }
         }
     }

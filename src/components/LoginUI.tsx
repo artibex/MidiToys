@@ -9,6 +9,7 @@ const canvasManager = new CanvasManager;
 export default function SetupContainer() {
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [emailSignUp, setEmailSignUp] = createSignal(false);
+    const [forgotPassword, setForgotPassword] = createSignal(false);
     const [userName, setUserName] = createSignal("Cool Username");
 
     function UpdateComponent() {
@@ -16,42 +17,45 @@ export default function SetupContainer() {
     }
 
     function SetEmailSignUp(showSignUp: boolean) {
-        console.log("SET email sign up UI")
         setEmailSignUp(showSignUp);
+    }
+    function SetForgotPassword(showForgotPassword: boolean) {
+        setForgotPassword(showForgotPassword);
+    }
+
+
+    function RenderForgotPasswordUI() {
+        return(
+            <div class="channelContainer">
+                <div class="flex justifyStart">
+                    <ui.ButtonIcon
+                        label="Go back"
+                        icon="ep:back"
+                        class="iconButton"
+                        iconFirst={true}
+                        onClick={SetForgotPassword(false)}
+                    />
+                    <br></br>
+                </div>
+                <ui.EmailForgotPasswordUIElement />
+            </div>
+        )
     }
 
     //Put int your redentials and create an account
     function RenderEmailSignUpUI() {
         return(
             <div class="channelContainer">
+                <div class="flex justifyStart">
                     <ui.ButtonIcon
                         label="Go back"
                         icon="ep:back"
+                        class="iconButton"
                         iconFirst={true}
                         onClick={SetEmailSignUp(false)}
                     />
-                <br></br>
-                <h3 class="textAlignCenter">Create new Account</h3>
-                <ui.IconTextInputUIElement 
-                    icon="fontisto:email"
-                    placeholder="E-Mail"                    
-                />
-                <br></br>
-                <ui.IconTextInputUIElement 
-                    icon="bi:key-fill"
-                    placeholder="Password"                    
-                />
-                <ui.IconTextInputUIElement
-                    icon="bi:key"
-                    placeholder="Repeat Password"                    
-                />
-                <br></br>
-                <div class="">
-                    <ui.Button 
-                        class="thinButton width50 justifySpace"
-                        label="Submit"
-                    />
                 </div>
+                <ui.EmailSignUpUIElement />
             </div>
         )
     }
@@ -75,6 +79,7 @@ export default function SetupContainer() {
                 <br></br>
                 <ui.EmailLoginUIElement
                     onRegister={SetEmailSignUp(true)}
+                    onPasswordForgot={SetForgotPassword(true)}
                 />
             </div>
         )
@@ -97,7 +102,10 @@ export default function SetupContainer() {
         } else {
             if(emailSignUp() == true) {
                 return RenderEmailSignUpUI();
-            } else {
+            } else if(forgotPassword() == true) {
+                return RenderForgotPasswordUI();
+            }
+            else {
                 return RenderLogInUI();
             }
         }
