@@ -34,12 +34,12 @@ import * as ui from "../components/UIElements"
     <div class="flexContainer">
         <ui.BPM client:idle />
         <div class="flexList">
-            <ui.MIDIDeviceReloadUIElement label="Reload Devices " client:idle />
+            <ui.MIDIDeviceReloadButton label="Reload Devices " client:idle />
             <ui.AvailableMIDIDevicesUIElement client:idle />
         </div>
         <div class="flexList">
             <ui.SelectedMIDIDeviceUIElement client:idle />
-            <ui.MIDIDropdown label="Set MIDI Device: " client:idle />
+            <ui.MIDIDropdownUIElement label="Set MIDI Device: " client:idle />
         </div>
     </div>
 
