@@ -23,61 +23,80 @@ export class FirebaseManager {
 
     //Create new email acount
     async EmailSignUp(email, password, username) {
-      createUserWithEmailAndPassword(client.auth, email, password)
-          .then((userCredential) => {
-            // User sign-up successful, do something with userCredential.user
-            const user = userCredential.user;
-            client.SetUser(user);
-            console.log('User sign-up successful:', user);
+      return new Promise((resolve) => {
+        createUserWithEmailAndPassword(client.auth, email, password)
+            .then((userCredential) => {
+              // User sign-up successful, do something with userCredential.user
+              const user = userCredential.user;
+              client.SetUser(user);
+              console.log('User sign-up successful:', user);
+  
+              this.UpdateUsername(username);
 
-            updateProfile(client.GetUser(), { displayName: username })
-            .then(() => {
-              console.log("SET username to " + username)
+              // updateProfile(client.GetUser(), { displayName: username })
+              // .then(() => {
+              //   console.log("SET username to " + username)
+              // })
+              // .catch((error) => {
+              //   console.log("CAN'T update Username");
+              // });
+              
+              resolve(true);
             })
             .catch((error) => {
-              console.log("CAN'T update Username");
-            });
-            
-            return true;
-          })
-          .catch((error) => {
-            // Handle sign-up error
-            console.log('Sign-up error:', error);
-            return error;
-        }
-      )
-    ;
+              // Handle sign-up error
+              // console.log('Sign-up error:', error);
+              resolve(false);
+            }
+          )
+      });
     }
 
-    SendPasswordResetEmail(email) {
-      return new Promise((resolve, reject) => {
+    async UpdateUsername(username) {
+      return new Promise((resolve) => {
+        updateProfile(client.GetUser(), { displayName: username })
+        .then(() => {
+          // console.log("SET username to " + username)
+          resolve(true);
+        })
+        .catch((error) => {
+          // console.log("CAN'T update Username");
+          resolve(false);
+        });
+      })
+    }
+
+    async SendPasswordResetEmail(email) {
+      return new Promise((resolve) => {
         sendPasswordResetEmail(client.auth, email)
           .then(() => {
-            console.log("Password reset email sent successfully");
+            // console.log("Password reset email sent successfully");
             resolve(true);
           })
           .catch((error) => {
-            console.error("Error sending password reset email:", error);
-            reject(false);
+            // console.error("Error sending password reset email:", error);
+            resolve(false);
           });
       });
     }
-    
+
     //Sign in with email and password
-    EmailSignIn(email, password) {
+    async EmailSignIn(email, password) {
+      return new Promise((resolve) => { 
         signInWithEmailAndPassword(client.auth, email, password)
           .then((userCredential) => {
             // Login successful, do something with userCredential.user
             const user = userCredential.user;
             client.SetUser(user);
-            console.log('Logged in user:', client.GetUser());
-            return true;
+            // console.log('Logged in user:', client.GetUser());
+            resolve(true);
           })
           .catch((error) => {
             // Handle login error
             console.log('Login error:', error);
-            return false;
+            resolve(false);
           });
+      })
     }
     
     // Function to sign out the user

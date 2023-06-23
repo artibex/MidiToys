@@ -176,7 +176,7 @@ details[open] summary {
   color: var(--text-hover-color);
   border: 1px solid var(--border-color);
   font-family: "BigJohn", sans-serif;
-  font-size: 14pt;
+  /* font-size: 14pt; */
 }
 
 .noSelect{
@@ -230,6 +230,10 @@ details[open] summary {
   padding: 10px;
 }
 
+.paddingAuto{
+  padding: auto;
+}
+
 .marginBottom5 {
   margin-bottom: 5px;
 }
@@ -243,7 +247,7 @@ details[open] summary {
   margin-right: 10px;
 }
 .marginRight20{
-  margin-right: 200px;
+  margin-right: 60px;
 }
 
 .marginLeft20{
@@ -302,6 +306,10 @@ details[open] summary {
 .heightAuto{
   height: auto;
 }
+.height100{
+  height: 100%;
+}
+
 .height95{
   height: 95%;
 }
@@ -467,9 +475,9 @@ details[open] summary {
   appearance: none;
   width: 100%;
   height: 100%;
-  background: var(--item-background-color);
+  background: var(--item-hover-color);
   outline: none;
-  opacity: 0.6;
+  opacity: 0.5;
   transition: opacity 0.1s;
   /* border-radius: 5px; */
 }

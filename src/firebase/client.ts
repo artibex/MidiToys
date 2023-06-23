@@ -1,6 +1,5 @@
 import {initializeApp } from "firebase/app";
 import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-
 import { firebaseConfig } from '@env';
 
 export const app = initializeApp(firebaseConfig);

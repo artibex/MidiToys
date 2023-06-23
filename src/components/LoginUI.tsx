@@ -39,7 +39,9 @@ export default function SetupContainer() {
                     />
                     <br></br>
                 </div>
-                <ui.EmailForgotPasswordUIElement />
+                <ui.EmailForgotPasswordUIElement 
+                    onClick={() => setEmailSignUp(false)}
+                />
             </div>
         )
     }
@@ -90,14 +92,27 @@ export default function SetupContainer() {
     function RenderLoggedInUI() {
         return(
             <div class="channelContainer">
-                <h2 class="textAlignCenter">Hello {GetUser().displayName}</h2>
-                <h2 class="textAlignCenter">You can now browse or upload presets in your toys</h2>
-                <ui.ButtonIcon 
-                    label="Sign Out"
-                    iconFirst={true}
-                    icon="gg:log-out"
-                    onClick={SignOut}
-                />
+                <h2 class="textAlignCenter">Hello {GetUser().displayName},</h2>
+                <h3 class="textAlignCenter">You can now browse or upload presets in your toys </h3>
+                
+                <ui.UpdateUsernameUIElement />
+                <br></br>
+                {/* <ui.ButtonIcon
+                        label="Go back"
+                        icon="ep:back"
+                        class="iconButton"
+                        iconFirst={true}
+                        onClick={SetEmailSignUp(false)}
+                    /> */}
+                <div class="width50">
+                    <ui.ButtonIcon 
+                        label="Sign Out"
+                        iconFirst={true}
+                        class="iconButton"
+                        icon="gg:log-out"
+                        onClick={SignOut}
+                    />
+                </div>
             </div>
         )
     }

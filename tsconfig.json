@@ -24,7 +24,7 @@
       "@canvasmanager": ["src/js/CanvasManager.ts"],
       "@presetmanager": ["src/js/PresetManager.ts"],
 
-      "@env": ["src/env.ts"],
+      "@env": ["env.ts"],
       "@ui": ["src/components/UIElements.jsx"],
       "@utils": ["src/components/ComponentUtils.js"],
       "@interfaces": ["src/js/Interfaces.ts"],

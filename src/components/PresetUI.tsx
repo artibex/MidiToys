@@ -102,12 +102,14 @@ export default function SetupContainer( props: {channel: number}) {
           <div>
             {matchingItems().map((item) => (
                 <div class="flex">
-                        <ui.Button
-                            class="width70 thinButton"
-                            onClick={() => LoadPreset(item)}
-                            label={GetPresetName(item)}
-                        />
-                    <div class="flex justifySpace width30">
+                        <div class="width60 justifyStart marginRight20">
+                            <ui.Button
+                                class="thinButton"
+                                onClick={() => LoadPreset(item)}
+                                label={GetPresetName(item)}
+                            />
+                        </div>
+                    <div class="flex justifyEnd width20">
                         <ui.ButtonIcon
                             icon="material-symbols:download"
                             onClick={() => DownloadPreset(item)}

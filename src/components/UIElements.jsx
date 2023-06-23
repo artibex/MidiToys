@@ -388,8 +388,15 @@ export function EmailSignUpUIElement(props) {
         if(username().length >= 3) {
           // console.log("email: " + email() + " pw: " + password())
           var result = await firebaseManager.EmailSignUp(email(), password(), username());
-          if(result) setInfoText("Created account!");
+          if(result) {
+            setInfoText("Created account!");
+            if(props.onClick != undefined) {
+              props.onClick();
+            }        
+          }
+          
           else setInfoText("Something went wrong...");
+
         } else {
           setInfoText("Please choose a longer username")
         }
@@ -447,6 +454,38 @@ export function EmailSignUpUIElement(props) {
   )
 }
 
+export function UpdateUsernameUIElement(props) {
+  const [username, setUsername] = createSignal("");
+  const [infoText, setInfoText] = createSignal("");
+
+  function HandleSubmit() {
+    if(username().length > 3) {
+      firebaseManager.UpdateUsername(username());
+    } else setInfoText("Please choose a longer username");
+  }
+
+  return(
+    <div>
+        <h3 class="textAlignCenter">Change Username</h3>
+        <IconTextInputUIElement 
+            icon="mdi:account-outline"
+            placeholder="Username"
+            type="username"
+            onChange={(value) => setUsername(value)}
+        />
+        <div class="justifyEnd flex">
+          <div class="textAlignRight width40 marginAuto">
+            {infoText()}
+          </div>
+          <Button 
+              class="thinButton width50"
+              label="Submit"
+              onClick={HandleSubmit}
+          />
+        </div>
+    </div>
+  )
+}
 
 export function EmailForgotPasswordUIElement(props) {
   const [email, setEmail] = createSignal("");
@@ -455,14 +494,13 @@ export function EmailForgotPasswordUIElement(props) {
   async function HandleSubmit() {
     if(email().includes("@")) {
       var worked = await firebaseManager.SendPasswordResetEmail(email());
-      if(worked) {
+      if(worked == true) {
         setInfoText("Sent Recovery E-Mail");
       } else {
         setInfoText("Error: Please check your E-Mail");
       }
       
     } else {
-
       setInfoText("Please check your E-Mail");
     }
     if(props.onClick != undefined) {
