@@ -15,7 +15,10 @@ export default function SetupContainer() {
     const [userName, setUserName] = createSignal("Cool Username");
 
     function UpdateComponent() {
-        if(GetUser() != undefined) setUserLoggedIn(true);
+        if(GetUser() != undefined) {
+            setUserLoggedIn(true);
+            setUserName(GetUser().displayName);
+        }
     }
 
     function SetEmailSignUp(showSignUp: boolean) {
@@ -24,7 +27,6 @@ export default function SetupContainer() {
     function SetForgotPassword(showForgotPassword: boolean) {
         setForgotPassword(showForgotPassword);
     }
-
 
     function RenderForgotPasswordUI() {
         return(
@@ -76,9 +78,15 @@ export default function SetupContainer() {
                 <h3 class="textAlignCenter">Sign In with Account</h3>
                 <ui.ServiceLogin 
                     icon="uit:google"
+                    onClick={firebaseManager.SignUpWithGoogle}
                 />
                 <ui.ServiceLogin 
                     icon="codicon:github"
+                    onClick={firebaseManager.SignUpWithGitHub}
+                />
+                <ui.ServiceLogin 
+                    icon="mingcute:twitter-line"
+                    onClick={firebaseManager.SignUpWithTwitter}
                 />
                 <br></br>
                 <ui.EmailLoginUIElement
@@ -92,18 +100,11 @@ export default function SetupContainer() {
     function RenderLoggedInUI() {
         return(
             <div class="channelContainer">
-                <h2 class="textAlignCenter">Hello {GetUser().displayName},</h2>
+                <h2 class="textAlignCenter">Hello {userName()},</h2>
                 <h3 class="textAlignCenter">You can now browse or upload presets in your toys </h3>
                 
                 <ui.UpdateUsernameUIElement />
                 <br></br>
-                {/* <ui.ButtonIcon
-                        label="Go back"
-                        icon="ep:back"
-                        class="iconButton"
-                        iconFirst={true}
-                        onClick={SetEmailSignUp(false)}
-                    /> */}
                 <div class="width50">
                     <ui.ButtonIcon 
                         label="Sign Out"

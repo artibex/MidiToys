@@ -1,7 +1,7 @@
 import * as client from "./client";
-import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider } from 'firebase/auth';
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
-
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 export class FirebaseManager {
     static instance: FirebaseManager;
@@ -99,6 +99,69 @@ export class FirebaseManager {
       })
     }
     
+    async SignUpWithGoogle() {
+    // Function to handle Google sign-up
+    const provider = new GoogleAuthProvider();
+    return new Promise((resolve) => { 
+      signInWithPopup(client.auth, provider)
+        .then((userCredential) => {
+          // User sign-up successful, do something with userCredential.user
+          const user = userCredential.user;
+          client.SetUser(user);
+          // console.log("Signed up with Google:", user);
+          // Additional actions after sign-up
+          resolve(true);
+        })
+        .catch((error) => {
+          // Handle sign-up error
+          // console.error("Google sign-up error:", error);
+          resolve(false);
+        });
+      })
+    }
+  
+    async SignUpWithGitHub() {
+      // Function to handle Google sign-up
+      const provider = new GithubAuthProvider();
+      return new Promise((resolve) => { 
+        signInWithPopup(client.auth, provider)
+          .then((userCredential) => {
+            // User sign-up successful, do something with userCredential.user
+            const user = userCredential.user;
+            client.SetUser(user);
+            // console.log("Signed up with GitHub:", user);
+            // Additional actions after sign-up
+            resolve(true);
+          })
+          .catch((error) => {
+            // Handle sign-up error
+            // console.error("GitHub sign-up error:", error);
+            resolve(false);
+        });
+      })
+    }
+
+    async SignUpWithTwitter() {
+      // Function to handle Google sign-up
+      const provider = new TwitterAuthProvider();
+      return new Promise((resolve) => { 
+        signInWithPopup(client.auth, provider)
+          .then((userCredential) => {
+            // User sign-up successful, do something with userCredential.user
+            const user = userCredential.user;
+            client.SetUser(user);
+            // console.log("Signed up with Twitter", user);
+            // Additional actions after sign-up
+            resolve(true);
+          })
+          .catch((error) => {
+            // Handle sign-up error
+            // console.error("Twitter sign-up error:", error);
+            resolve(false);
+        });
+      })
+    }
+
     // Function to sign out the user
     SignOut() {
       client.auth.signOut()
