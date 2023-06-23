@@ -58,6 +58,8 @@ jobs:
           node-version: "16"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
+      - name: Create env.ts file
+        run: echo "export const FIREBASE_API = '${{ secrets.FIREBASE_API }}';" > ${{ env.BUILD_PATH }}/env.ts
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
