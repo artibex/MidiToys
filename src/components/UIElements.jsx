@@ -479,7 +479,7 @@ export function UpdateUsernameUIElement(props) {
           </div>
           <Button 
               class="thinButton width50"
-              label="Submit"
+              label="Change"
               onClick={HandleSubmit}
           />
         </div>
@@ -609,7 +609,7 @@ export function ServiceLogin(props) {
 
   function HandleClick() {
     // console.log("SERVICE LOGIN");
-    if(props.onChange != undefined) {
+    if(props.onClick != undefined) {
       props.onClick();
     } else console.log("NO SERVICE FUNCTION")
   };
