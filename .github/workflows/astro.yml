@@ -70,14 +70,19 @@ jobs:
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
-      - name: Create env.ts file
-        run: |
-          echo "export const FIREBASE_API = '${{ secrets.FIREBASE_API }}';" > env.ts
-        working-directory: ${{ env.BUILD_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: ${{ env.BUILD_PATH }}/dist
 
   deploy:
-    environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
