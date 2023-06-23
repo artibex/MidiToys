@@ -5,6 +5,6 @@ import solidJs from "@astrojs/solid-js";
 export default defineConfig({
   // distDir: "./public",
   // pages: {base: "/src"},
-  root: "./src",
-  integrations: [solidJs()]
+  // root: "./src",
+  integrations: [solidJs()],
 });

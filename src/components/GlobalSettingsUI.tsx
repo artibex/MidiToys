@@ -4,7 +4,6 @@ import { CanvasManager } from "@canvasmanager";
 import * as utils from "@utils";
 import * as ui from "@ui";
 
-
 export default function SetupContainer() {
     const [backGroundColor, setBackgroundColor] = createSignal<RGBA>({ r:0, g:0, b:0, a:0});
 
@@ -17,11 +16,11 @@ export default function SetupContainer() {
     }
 
     //Combines all settings
-    function RenderGlobalSettingsUI() {
+    function RenderUI() {
         return(
             <div class="channelContainer">
                 <div>
-                    <ui.MIDIDropdown />
+                    <ui.MIDIDropdownUIElement />
                     <ui.BPM />
                 </div>
                 <br></br>
@@ -111,5 +110,5 @@ export default function SetupContainer() {
     }
 
     GetBackgroundColor();
-    return RenderGlobalSettingsUI();
+    return RenderUI();
 }

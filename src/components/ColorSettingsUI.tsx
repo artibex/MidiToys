@@ -87,14 +87,16 @@ export default function SetupContainer( props: {channel: number}) {
                     <div class="width80">
                         <h3 class="textAlignCenter">{colorSelectionName()}</h3>
                     </div>
-                    <div class="flex  justifyCenter">
+                    <div class="flex justifyEnd">
                         <ui.ButtonIcon
                             icon="material-symbols:chevron-left"
+                            class="squareButton width20"
                             onClick={() => UpdateColorSelection(-1)}
                             width={30}
                         />
                         <ui.ButtonIcon
                             icon="material-symbols:chevron-right"
+                            class="squareButton width20"
                             onClick={() => UpdateColorSelection(1)}
                             width={30}
                         />
@@ -212,7 +214,7 @@ export default function SetupContainer( props: {channel: number}) {
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
         // <ui.DetailsFillerCenter("Color Settings", RenderColorSettings()) />
-        <ui.DetailsFillerCenter summeryName={"Color Settings"} content={RenderColorSettings} />
+        <ui.DetailsFillerCenter summeryName={"Colors"} content={RenderColorSettings} />
         )
 }
 

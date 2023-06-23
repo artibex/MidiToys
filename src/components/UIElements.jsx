@@ -4,11 +4,13 @@ import { InputManager } from "@inputmanager";
 import { CanvasManager} from "@canvasmanager"
 import { MIDIInputModule } from "@input/MIDIInputModule";
 import {ToyManager} from "@toymanager";
+import {FirebaseManager} from "@firebaseManager"
 
 const inputManager = new InputManager();
 const frameManager = new CanvasManager();
 const midiInputModule = new MIDIInputModule();
 const toyManager = new ToyManager();
+const firebaseManager = new FirebaseManager();
 
 export function DetailsFillerCenter(props) {
   if(props.summeryName == undefined) props.summeryName = "";
@@ -84,6 +86,46 @@ export function NumberInput(props) {
   );
 }
 
+export function TextInput(props) {
+  if(props.placeholder == undefined) props.placeholder = "Cool Placeholder";
+  if(props.id == undefined) props.id = "";
+  if(props.class == undefined) props.class = "textInput";
+  if(props.type == undefined) props.type = "";
+  if(props.required == undefined) props.required = false;
+  if(props.value == undefined) props.value = "";
+
+  function HandleOnChange(event) {
+    if (props.onChange !== undefined) {
+      props.onChange(event);
+    }
+  };
+
+  if(props.required) {
+    return(
+      <input 
+      type={props.type}
+      class={props.class}
+      id={props.id}
+      placeholder={props.placeholder}
+      value={props.value}
+      onChange={HandleOnChange}
+      required
+      />
+    )
+  } else {
+    return(
+      <input 
+      type={props.type}
+      class={props.class}
+      id={props.id}
+      placeholder={props.placeholder}
+      onChange={HandleOnChange}
+      value={props.value}
+      />
+    )
+  }
+}
+
 export function CheckboxInput(props) {
   const [checked, setChecked] = createSignal(props.checked);
 
@@ -116,44 +158,92 @@ export function Button(props) {
   };
 
   return (
-    <button
-      class={props.class}
-      id={props.id}
-      onClick={handleClick}
-    >
-      {props.label}
-    </button>
+    <div class={props.class}>
+      <button
+        class={props.class}
+        id={props.id}
+        onClick={handleClick}
+      >
+        {props.label}
+      </button>
+    </div>
   );
 }
 
 export function ButtonIcon(props) {
   if(props.class == undefined) props.class = "iconButton";
   if(props.label == undefined) props.label = "";
-
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
+  if(props.iconFirst == undefined) props.iconFirst = false;
   if(props.width == undefined) props.width = "20";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
-  const handleClick = () => {
-    props.onClick();
+  function HandleClick() {
+    if(props.onClick != undefined) {
+      props.onClick();
+    }
   };
 
-  return (
-    <button
-      class={props.class}
-      id={props.id}
-      onClick={handleClick}
-    >
-      {props.label}
-      <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
-    </button>
-  );
+  if(props.label == "") {
+    return (
+      <div class={props.class} >
+        <button
+          id={props.id}
+          onClick={HandleClick}
+        >
+          <div class="flexContainer justifyCenter">
+            <div class={props.class}>
+              {props.label}
+            </div>
+            <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+          </div>
+        </button>
+      </div>
+    );
+  } else {
+    if(props.iconFirst) { //Display icon before text
+      return (
+        <div class={props.class} >
+          <button
+            id={props.id}
+            onClick={HandleClick}
+          >
+            <div class="flex justifyCenter">
+              <div class="marginRight10">
+                <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+              </div>
+              <div class={props.class}>
+                {props.label}
+              </div>
+            </div>
+          </button>
+        </div>
+      );
+
+    } else { //Display Icon after text
+        return (
+          <div class={props.class} >
+            <button
+              id={props.id}
+              onClick={HandleClick}
+            >
+              <div class="flexContainer justifyCenter">
+                <div class={props.class}>
+                  <div class="marginRight10">{props.label}</div>
+                </div>
+                <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+              </div>
+            </button>
+          </div>
+        );
+    }
+  }
 }
 
-export function MIDIDeviceReloadUIElement(props) {
+export function MIDIDeviceReloadButton(props) {
   if(props.label == undefined) props.label = "";
   if(props.class == undefined) props.class = "iconButton";
   if(props.id == undefined) props.id = "";
@@ -169,18 +259,19 @@ export function MIDIDeviceReloadUIElement(props) {
   }
 
   return(
-    <ButtonIcon
-      id={props.id}
-      class={props.class}
-      icon="material-symbols:wifi-protected-setup"
-
-      onClick={() => handleClick}
-      label={props.label}
-
-      width={props.width}
-      hFlip={props.hFlip}
-      vFlip={props.vFlip}
-    />
+    <div class={props.class}>
+      <ButtonIcon
+        id={props.id}
+        icon="material-symbols:wifi-protected-setup"
+  
+        onClick={() => handleClick}
+        label={props.label}
+  
+        width={props.width}
+        hFlip={props.hFlip}
+        vFlip={props.vFlip}
+      />
+    </div>
   )
 }
 
@@ -203,6 +294,340 @@ export function AvailableMIDIDevicesUIElement(props) {
       <h3> MIDI Devices: {midiDevices} </h3>
     </div>
   )
+}
+
+export function EmailLoginUIElement(props) {
+  const [infoText, setInfoText] = createSignal("");
+  
+  if(props.class == undefined) props.class = "";
+  if(props.id == undefined) props.id = "emailLogin";
+
+  if(props.width == undefined) props.width = "30";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
+
+  const [email, setEmail] = createSignal("");
+  const [password, setPassword] = createSignal("");
+
+  function HandleLogin() {
+    console.log("HANDLE email login")
+
+    firebaseManager.EmailSignIn(email(), password());
+    if(props.onLogin != undefined) {
+      props.onLogin();
+    }
+  }
+
+  function HandleRegister() {
+    if(props.onRegister != undefined) {
+      props.onRegister();
+    }
+  }
+
+  function HandleForgotPassword() {
+    if(props.onPasswordForgot != undefined) {
+      props.onPasswordForgot();
+    }
+  }
+
+  function HandleEmailChange(event) {
+    setEmail(event.target.value);
+    // email = event.target.value;
+  }
+
+  function HandlePasswordChange(event) {
+    setPassword(event.target.value);
+    // password = event.target.value;
+  }
+
+  return(
+    <div id={props.id}>
+      <h3 class="textAlignCenter">Sign In with Email</h3>
+      <div>
+          <IconTextInputUIElement 
+            icon="fontisto:email"
+            required={true} 
+            type="email" 
+            placeholder="E-Mail"
+            onChange={HandleEmailChange(event)}
+          />
+        <IconTextInputUIElement 
+            icon="bi:key"
+            required={true} 
+            type="password" 
+            placeholder="Password"
+            onChange={HandlePasswordChange(event)}
+          />
+      </div>
+      <div class="marginTop10 width100 justifyEnd">
+        <div class="flex justifyEnd">
+          <ClickableText class=" textAlignRight justifyEnd paddingTop10 clickableText" onClick={HandleRegister} label="register" />
+          <Button class="width40 thinButton" label="Login" onClick={HandleLogin} />
+        </div>
+        <ClickableText class=" textAlignRight justifyEnd paddingTop10 clickableText" onClick={HandleForgotPassword} label="Forgot password?" />
+      </div>
+      <div class="textAlignCenter marginTop10"> {infoText()} </div>
+    </div>
+  )
+}
+
+export function EmailSignUpUIElement(props) {
+  const [infoText, setInfoText] = createSignal("");
+  const [email, setEmail] = createSignal("");
+  const [username, setUsername] = createSignal("");
+  const [password, setPassword] = createSignal("");
+  const [repeatPassword, setRepeatPassword] = createSignal("");
+
+  function SubmitCredentials() {
+    HandleEmailSignUp(email(), password(), repeatPassword(), setInfoText);
+  }
+
+  async function HandleEmailSignUp() {
+    if(password() == repeatPassword() && email().includes("@")) {
+      if(password().length >= 6) {
+        if(username().length >= 3) {
+          // console.log("email: " + email() + " pw: " + password())
+          var result = await firebaseManager.EmailSignUp(email(), password(), username());
+          if(result) {
+            setInfoText("Created account!");
+            if(props.onClick != undefined) {
+              props.onClick();
+            }        
+          }
+          
+          else setInfoText("Something went wrong...");
+
+        } else {
+          setInfoText("Please choose a longer username")
+        }
+
+      } else {
+        setInfoText("Password must be at least 6 characters long");
+      }
+
+    } else {
+      setInfoText("Please check your email and password");
+    }
+  }
+
+  return (
+    <div class="">
+        <h3 class="textAlignCenter">Create new Account</h3>
+        <IconTextInputUIElement 
+            icon="fontisto:email"
+            placeholder="E-Mail"
+            type="email"
+            onChange={(value) => setEmail(value)}
+        />
+        <IconTextInputUIElement 
+            icon="mdi:account-outline"
+            placeholder="Username"
+            type="username"
+            onChange={(value) => setUsername(value)}
+        />
+        <br></br>
+        <IconTextInputUIElement 
+            icon="bi:key-fill"
+            placeholder="Password"
+            type="password"
+            onChange={(value) => setPassword(value)}
+        />
+        <IconTextInputUIElement
+            icon="bi:key"
+            placeholder="Repeat Password"
+            type="password"
+            onChange={(value) => setRepeatPassword(value)}
+        />
+        <br></br>
+        <div class="textAlignRight">
+          {infoText()}
+        </div>
+        <br></br>
+        <div class="justifyEnd flex">
+          <Button 
+              class="thinButton width50"
+              label="Submit"
+              onClick={SubmitCredentials}
+          />
+        </div>
+    </div>
+  )
+}
+
+export function UpdateUsernameUIElement(props) {
+  const [username, setUsername] = createSignal("");
+  const [infoText, setInfoText] = createSignal("");
+
+  function HandleSubmit() {
+    if(username().length > 3) {
+      firebaseManager.UpdateUsername(username());
+    } else setInfoText("Please choose a longer username");
+  }
+
+  return(
+    <div>
+        <h3 class="textAlignCenter">Change Username</h3>
+        <IconTextInputUIElement 
+            icon="mdi:account-outline"
+            placeholder="Username"
+            type="username"
+            onChange={(value) => setUsername(value)}
+        />
+        <div class="justifyEnd flex">
+          <div class="textAlignRight width40 marginAuto">
+            {infoText()}
+          </div>
+          <Button 
+              class="thinButton width50"
+              label="Submit"
+              onClick={HandleSubmit}
+          />
+        </div>
+    </div>
+  )
+}
+
+export function EmailForgotPasswordUIElement(props) {
+  const [email, setEmail] = createSignal("");
+  const [infoText, setInfoText] = createSignal("");
+
+  async function HandleSubmit() {
+    if(email().includes("@")) {
+      var worked = await firebaseManager.SendPasswordResetEmail(email());
+      if(worked == true) {
+        setInfoText("Sent Recovery E-Mail");
+      } else {
+        setInfoText("Error: Please check your E-Mail");
+      }
+      
+    } else {
+      setInfoText("Please check your E-Mail");
+    }
+    if(props.onClick != undefined) {
+      props.onClick();
+    }
+  }
+
+  return(
+    <div>
+        <h3 class="textAlignCenter">Recover Account</h3>
+        <IconTextInputUIElement 
+            icon="fontisto:email"
+            placeholder="E-Mail"    
+            onChange={(event) => setEmail(event)}                
+        />
+        <br></br>
+        <div class="flex justifyEnd">
+          <Button 
+              class="thinButton width50"
+              label="Submit"
+              onClick={HandleSubmit}
+          />
+        </div>
+        <div class="textAlignRight">
+          {infoText()}
+        </div>
+    </div>
+  )
+}
+
+export function IconTextInputUIElement(props) {
+  if(props.class == undefined) props.class = "flex justifySpace";
+  if(props.id == undefined) props.id = "textInput";
+  
+  //Icon
+  if(props.icon == undefined) props.icon = "ep:warn-triangle-filled";
+  if(props.iconFirst == undefined) props.iconFirst = false;
+  if(props.width == undefined) props.width = "30";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
+
+  //Text input
+  if(props.required == undefined) props.required = false;
+  if(props.type == undefined) props.type = "";
+  if(props.placeholder == undefined) props.placeholder = "My cool Placeholder";
+  if(props.label == undefined) props.label = "";
+
+  function HandleValueChange(event) {
+    if(props.onChange != undefined) {
+      props.onChange(event.target.value);
+    }
+  }
+  
+  return(
+    <div class={props.class}>
+      <div class="marginAuto">
+        <Icon
+          icon={props.icon}
+          width={props.width}
+          hFlip={props.hFlip}
+          vFlip={props.vFlip}
+          />
+      </div>
+      <div class="marginAuto paddingLeftRight10">
+        {props.label}
+      </div>
+
+      <TextInput 
+        required={props.required} 
+        id={props.id}
+        type={props.type}
+        placeholder={props.placeholder}
+        onChange={HandleValueChange}
+      />
+    </div>
+  )
+}
+
+export function ClickableText(props) {
+  if(props.label == undefined) props.label="Click on me!"
+  if(props.href == undefined) props.href = "";
+  if(props.class == undefined) props.class = "clickableText textAlignCenter";
+
+  function HandleClick() {
+    if(props.onClick != undefined) {
+      props.onClick();
+    } else console.log("NO ON CLICK FUNCTION DEFINED");
+  }
+
+  return(
+    <div class={props.class} onClick={HandleClick}>
+      <a>{props.label}</a>
+    </div>
+  )
+}
+
+export function ServiceLogin(props) {
+  if(props.class == undefined) props.class = "iconButton justifyCenter";
+  if(props.label == undefined) props.label = "Sign in with";
+  if(props.id == undefined) props.id = "myCoolService";
+
+  if(props.icon == undefined) props.icon = "zondicons:key";
+  if(props.width == undefined) props.width = "30";
+  if(props.hFlip == undefined) props.hFlip = false;
+  if(props.vFlip == undefined) props.vFlip = false;
+
+  function HandleClick() {
+    // console.log("SERVICE LOGIN");
+    if(props.onChange != undefined) {
+      props.onClick();
+    } else console.log("NO SERVICE FUNCTION")
+  };
+
+  return(
+    <div id={props.id}>
+      <ButtonIcon 
+        class={props.class}
+        icon={props.icon}
+        width={props.width}
+        hFlip={props.hFlip}
+        vFlip={props.vFlip}
+        label={props.label}
+        onClick={HandleClick}
+      />
+    </div>
+  )
+
 }
 
 export function SelectedMIDIDeviceUIElement(props) {
@@ -285,7 +710,7 @@ export function NumberSliderUIElement(props) {
   if(props.vertical) {
     return(
       <div class="flexContainer">
-        <div class="justifyStart">{props.name}</div>
+        <div class="textAlignRight">{props.name}</div>
           <NumberSliderComboVertical 
             factor={props.factor}
             minMaxStep={props.minMaxStep}
@@ -347,7 +772,7 @@ export function JsonFileUploader(props) {
   );
 }
 
-export function MIDIDropdown(props) {
+export function MIDIDropdownUIElement(props) {
   if(props.class === undefined) props.class = "dropdown"
   if(props.label === undefined) props.label = "MIDI Devices";
 
@@ -393,16 +818,18 @@ export function MIDIDropdown(props) {
       <h2 class="textAlignCenter">
         {props.label}
       </h2>
-      <div class="flex width80 marginAuto justifyCenter">
-        <select 
-          class={props.class}
-          value={selectedOption()} 
-          onFocus={() => loadDevices()} 
-          onChange={(event) => UpdateDeviceSelection(event.target.value)}>
-          {options()}
-        </select>
-        <div class="marginAuto justifyCenter">
-          <MIDIDeviceReloadUIElement />
+      <div class="flex">
+        <div class="justifyStart marginAuto">
+          <select 
+            class={props.class}
+            value={selectedOption()} 
+            onFocus={() => loadDevices()} 
+            onChange={(event) => UpdateDeviceSelection(event.target.value)}>
+            {options()}
+          </select>
+        </div>
+        <div class="marginAuto justifyEnd">
+          <MIDIDeviceReloadButton />
         </div>
       </div>
     </div>
@@ -544,7 +971,7 @@ export function StartText(props) {
 
   frameManager.SubscribeOneFPS(TextSetter);
   return(
-    <h1 id={props.id}>
+    <h1 id={props.id} class="noSelect">
       {text()}
     </h1>
   )

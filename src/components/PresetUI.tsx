@@ -99,23 +99,22 @@ export default function SetupContainer( props: {channel: number}) {
 
     function RenderAvailablePresets() {            
         return (
-          <div class="">
+          <div>
             {matchingItems().map((item) => (
-                <div class="flexContainer">
-                        <ui.Button
-                            class="width80 thinButton"
-                            onClick={() => LoadPreset(item)}
-                            label={GetPresetName(item)}
-                        />
-                    <div class="width20"></div>
-                    <div class="flexContainer">
-                        <ui.ButtonIcon 
-                            class="squareButton"
+                <div class="flex">
+                        <div class="width60 justifyStart marginRight20">
+                            <ui.Button
+                                class="thinButton"
+                                onClick={() => LoadPreset(item)}
+                                label={GetPresetName(item)}
+                            />
+                        </div>
+                    <div class="flex justifyEnd width20">
+                        <ui.ButtonIcon
                             icon="material-symbols:download"
                             onClick={() => DownloadPreset(item)}
                         />
                         <ui.ButtonIcon
-                            class="squareButton"
                             icon="material-symbols:delete-outline"
                             onClick={() => DeletePreset(item)}
                         />
@@ -128,19 +127,21 @@ export default function SetupContainer( props: {channel: number}) {
     
     function RenderUI() {
         return (
-            <div class="">
+            <div>
                 <div class="flexContainer">
-                    <div class="flexList">
-                        <div class="marginBottom5">Save new preset</div>
-                        <input
-                            class="textInput"
-                            value={presetName()}
-                            onChange={(event) => setPresetName(event.target.value)}
-                        />
+                    <div class="width70">
+                        <div class="flexList">
+                            <div class="marginBottom5">Save new preset</div>
+                            <ui.TextInput
+                                // class="textInput"
+                                placeholder="Preset"
+                                value={presetName()}
+                                onChange={(event) => setPresetName(event.target.value)}
+                            />
                         </div>
-                        <div class="width20"></div>
+                    </div>
                         <ui.Button 
-                            class="marginAuto thinButton"
+                            class="thinButton width30"
                             onClick={() => SaveNewPreset()}
                             label="Save"
                         />
@@ -162,8 +163,7 @@ export default function SetupContainer( props: {channel: number}) {
 
     LoadToy();
     canvasManager.SubscribeOneFPS(UpdateComponent);
-    var sumName = "Load/Save Preset";
     return (
-        <ui.DetailsFillerCenter summeryName={"Load/Save Settings"} content={RenderUI()} />
+        <ui.DetailsFillerCenter summeryName={"Presets"} content={RenderUI()} />
     )
 }

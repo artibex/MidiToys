@@ -4,6 +4,8 @@
     "@types/paper": "^0.12.3",
     "@types/webmidi": "^2.0.7",
     "astro": "^2.2.3",
+    "dotenv": "^16.1.4",
+    "firebase": "^9.22.2",
     "paper": "^0.12.17",
     "raphael": "^2.3.0",
     "react": "^18.2.0",
@@ -14,6 +16,7 @@
     "build": "astro build"
   },
   "devDependencies": {
-    "@iconify-icon/solid": "^1.0.7"
+    "@iconify-icon/solid": "^1.0.7",
+    "@types/node": "^20.3.1"
   }
 }

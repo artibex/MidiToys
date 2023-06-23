@@ -11,19 +11,10 @@ export class MIDIInputModule {
     if (MIDIInputModule.instance) {
       return MIDIInputModule.instance
     }
-  MIDIInputModule.instance = this
+    MIDIInputModule.instance = this
   
     this.inputManager = new InputManager();
-    
     this.LoadMIDIDevices();
-    // this.LoadMIDIDevices().then(() => {
-    //     console.log("DONE loading MIDI devices");
-    //     if(this.midiInputs[0] != undefined) this.BindMIDIInput(this.midiInputs[0]);
-    // })
-
-    // this.GetMIDIDevices();
-
-    // console.log("CREATED new MIDIInputModule");
   }
 
   async LoadMIDIDevices() {
@@ -70,13 +61,6 @@ export class MIDIInputModule {
     else return undefined;
   }
 
-  // public SetInputDevice(device: WebMidi.MIDIInput): void {
-  //   //this.selectedInput = device;
-  //   this.BindMIDIInput(device);
-  //   console.log("Selected MIDI device:", device.name as string);
-  //   // Perform any necessary actions with the selected MIDI device
-  //   // ...
-  // }
   public SetTargetDevice(device: string) {
     this.midiInputs.forEach((element) => {
       if(element.name == device) {

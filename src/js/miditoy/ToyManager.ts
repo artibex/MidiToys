@@ -2,8 +2,9 @@ import { MIDIToy } from "@miditoy";
 import { EmptyToy } from "@miditoy/EmptyToy";
 import { GraviBoard } from "@miditoy/GraviBoard";
 import { PolyDrum } from "@miditoy/PolyDrum";
-import * as paper from "paper";
+import * as paper from 'paper';
 import { MIDIMatrix } from "./MIDIMatrix";
+import { FirebaseManager } from "@firebaseManager";
 
 export class ToyManager 
 {
@@ -11,11 +12,12 @@ export class ToyManager
     toys = []; //Array of toys
 
     targetCanvas: HTMLCanvasElement;
-
+    
     constructor() {
         if (ToyManager.instance) {
         return ToyManager.instance;
         }
+        var f = new FirebaseManager();
         ToyManager.instance = this;
         // console.log("CREATED ToyManager");
     }

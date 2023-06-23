@@ -93,7 +93,7 @@ export default function SetupContainer( props: {channel: number}) {
                     {RenderToySelection()}
                 </div>
             )
-        } 
+        }
         else {
             if(toyType() < 1) {
                 return(
