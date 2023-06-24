@@ -187,19 +187,15 @@ export function ButtonIcon(props) {
     }
   };
 
-  if(props.label == "") {
+  if(props.label == "") { //no label
     return (
-      <div class={props.class} >
+      <div >
         <button
           id={props.id}
           onClick={HandleClick}
+          class={props.class}
         >
-          <div class="flexContainer justifyCenter">
-            <div class={props.class}>
-              {props.label}
-            </div>
-            <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
-          </div>
+          <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
         </button>
       </div>
     );
@@ -212,11 +208,18 @@ export function ButtonIcon(props) {
             onClick={HandleClick}
           >
             <div class="flex justifyCenter">
-              <div class="marginRight10">
-                <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
-              </div>
               <div class={props.class}>
-                {props.label}
+                <div class="marginRight10">
+                  <Icon 
+                    icon={props.icon}
+                    width={props.width} 
+                    hFlip={props.hFlip} 
+                    vFlip={props.vFlip} 
+                  />
+                </div>
+                <div>
+                  {props.label}
+                </div>
               </div>
             </div>
           </button>
@@ -230,11 +233,11 @@ export function ButtonIcon(props) {
               id={props.id}
               onClick={HandleClick}
             >
-              <div class="flexContainer justifyCenter">
+              <div class="flex justifyCenter">
                 <div class={props.class}>
-                  <div class="marginRight10">{props.label}</div>
+                  <div class="marginRight20">{props.label}</div>
+                  <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
                 </div>
-                <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
               </div>
             </button>
           </div>

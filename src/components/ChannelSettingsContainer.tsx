@@ -20,8 +20,8 @@ export default function SetupContainer( props: {channel: number}) {
     const [useEffect, setUseEffect] = createSignal(true);
     
     //General Toy Settings
-    const [selectToy, setSelectToy] = createSignal(false);
     const [toyType, setToyType] = createSignal(0);
+    const [selectToy, setSelectToy] = createSignal(false);
     const [toyName, setToyName] = createSignal("EmptyToy");
 
     //Update UI data
@@ -151,28 +151,35 @@ export default function SetupContainer( props: {channel: number}) {
             return (
                 toys
             )
-        }
-        
+        }        
+    }
+
+    function RenderToyWrench() {
+        if(toyType() != 0) {
+            return( 
+                <div class="marginRight20">
+                    <ui.ButtonIcon 
+                        icon="material-symbols:build-outline-sharp"
+                        onClick={() => ToggleSelectToy()}
+                        width="25"
+                    />
+                </div>
+            )
+        } else return (
+            <></>
+        )
     }
 
     LoadToy();
     UpdateUIValues();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
-        <div class="channelContainer noSelect">
+        <div class="channelContainer">
             <div>
-                <div class="flexContainer">
-                    <div class="">
+                <div class="flex">
+                    {RenderToyWrench()}
+                    <div class="textAlignLeft">
                         <h2 class="marginAuto">{toyName()}</h2>
-                    </div>
-                    <div>
-                        <ui.ButtonIcon 
-                        icon="material-symbols:build-outline-sharp"
-                        onClick={() => ToggleSelectToy()}
-                        width="30"
-                        />
-                        {/* <button id="thinButton" onClick={() => ToggleSelectToy()}>Select</button> */}
-                        {/* <button id="thinButton" onClick={() => UpdateToyType(1)}>Next</button>                        */}
                     </div>
                 </div>
             </div>

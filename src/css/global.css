@@ -119,11 +119,13 @@ button:hover {
 
 .iconButton{
   display: flex;
-  padding: 1px;
+  padding: 5px;
   font-family: "SlimJoe", sans-serif;
-  word-break: break-word;
+  /* word-break: break-word; */
   text-align: center;
   justify-content: center;
+  margin: auto;
+  line-height: 1.5;
   /* margin: auto; */
 }
 
@@ -246,7 +248,7 @@ details[open] summary {
   margin-right: 10px;
 }
 .marginRight20{
-  margin-right: 60px;
+  margin-right: 20px;
 }
 
 .marginLeft20{
@@ -337,9 +339,9 @@ details[open] summary {
   display: grid;
 }
 .channelContainer {
+  user-select: none;
   overflow: auto;
   padding: 5px;
-  border-radius: 5px;
   height: 100%;
   width: 100%;
 }
@@ -396,6 +398,7 @@ details[open] summary {
 .justifyCenter{
   justify-content: center;
   vertical-align: auto;
+  text-align: center;
 }
 
 

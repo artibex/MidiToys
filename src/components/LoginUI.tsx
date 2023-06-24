@@ -31,11 +31,10 @@ export default function SetupContainer() {
     function RenderForgotPasswordUI() {
         return(
             <div class="channelContainer">
-                <div class="flex justifyStart">
+                <div class="flex">
                     <ui.ButtonIcon
                         label="Go back"
                         icon="ep:back"
-                        class="iconButton"
                         iconFirst={true}
                         onClick={SetForgotPassword(false)}
                     />
@@ -79,14 +78,17 @@ export default function SetupContainer() {
                 <ui.ServiceLogin 
                     icon="uit:google"
                     onClick={firebaseManager.SignUpWithGoogle}
+                    label="Login Google Account"
                 />
                 <ui.ServiceLogin 
                     icon="codicon:github"
                     onClick={firebaseManager.SignUpWithGitHub}
+                    label="Login GitHub Account"
                 />
                 <ui.ServiceLogin 
                     icon="mingcute:twitter-line"
                     onClick={firebaseManager.SignUpWithTwitter}
+                    label="Login Twitter Account"
                 />
                 <br></br>
                 <ui.EmailLoginUIElement
