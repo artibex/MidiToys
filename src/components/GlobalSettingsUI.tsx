@@ -1,8 +1,11 @@
+import * as ui from "@ui";
+import * as utils from "@utils";
 import { createSignal, createEffect } from "solid-js";
 import { RGBA } from "@interfaces";
 import { CanvasManager } from "@canvasmanager";
-import * as utils from "@utils";
-import * as ui from "@ui";
+import { PresetManager } from "@presetmanager";
+
+const presetManager = new PresetManager();
 
 export default function SetupContainer() {
     const [backGroundColor, setBackgroundColor] = createSignal<RGBA>({ r:0, g:0, b:0, a:0});
@@ -27,6 +30,8 @@ export default function SetupContainer() {
                 {RenderBgColorUI()}
                 <br></br>
                 {RenderSocialUI()}
+                
+                <ui.DetailsFillerCenter summeryName={"Danger Zone"} content={RenderDangerZoneUI()} />
             </div>
         )
     }
@@ -89,6 +94,18 @@ export default function SetupContainer() {
                 />
             </div>
         )
+    }
+
+    function RenderDangerZoneUI() {
+        return(
+            <div class="marginAuto width80">
+                <h2 class="textAlignCenter">Danger Zone</h2>
+                <ui.Button
+                    label="Delete ALL local Data"
+                    onClick={presetManager.DeleteAllPresets}
+                />
+            </div>
+        )   
     }
 
     //Background color functions

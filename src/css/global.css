@@ -260,6 +260,10 @@ details[open] summary {
 .marginTop10 {
   margin-top: 10px;
 }
+
+.marginRight5 {
+  margin-right: 5px;
+}
 .marginRight10{
   margin-right: 10px;
 }
@@ -267,6 +271,9 @@ details[open] summary {
   margin-right: 20px;
 }
 
+.marginLeft5{
+  margin-left: 5px;
+}
 .marginLeft20{
   margin-left: 20px; /* add margin to the right of the heading */
 }
