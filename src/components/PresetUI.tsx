@@ -3,6 +3,8 @@ import * as ui from "@ui"
 import * as utils from "@utils";
 import { PresetManager } from "@presetmanager";
 import { CanvasManager } from "@canvasmanager";
+import {GetUser} from "@firebaseClient";
+
 
 var presetManager = new PresetManager();
 const canvasManager = new CanvasManager();
@@ -11,9 +13,17 @@ export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     var toy;
 
-    const [useEffect, setUseEffect] = createSignal(true);
+    const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [presetName, setPresetName] = createSignal("");
     const [matchingItems, setMetchingItems] = createSignal([]);
+
+    const [useEffect, setUseEffect] = createSignal(true);
+    const [onlineFunctionSelection, setOnlineFunctionSelection] = createSignal(0);
+    const [channelButtonClass, setChannelButtonClass] = createSignal(
+        Array.from({ length: 3 }, () => "thinButton")
+    );
+
+
 
     function GetMatchingItems() {
         setMetchingItems(presetManager.FilterPresetsByType(toy.toyName));      
@@ -28,6 +38,10 @@ export default function SetupContainer( props: {channel: number}) {
 
     function UpdateComponent() {
         LoadToy();
+        if(GetUser() != undefined) {
+            setUserLoggedIn(true);
+        }
+
     }
 
     function LoadToy() {
@@ -57,22 +71,59 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
     
+    function SetOnlineFunctionSelection(number) {
+        setOnlineFunctionSelection(number);
+        var array = [...channelButtonClass()];
+
+        switch(onlineFunctionSelection()) {
+            case 0:
+                array[0] = "thinButtonActive";
+                array[1] = "thinButton";
+                array[2] = "thinButton";
+            break;
+            case 1:
+                array[0] = "thinButton";
+                array[1] = "thinButtonActive";
+                array[2] = "thinButton";
+            break;
+            case 2: 
+                array[0] = "thinButton";
+                array[1] = "thinButton";
+                array[2] = "thinButtonActive";
+            break;
+        }
+        setChannelButtonClass(array);
+    }
+
     function SaveNewPreset() {
         if(presetName() != "") presetManager.SaveNewPresetToy(presetName(), toy);
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
     }
 
+    function SaveNewPresetOnline() {
+
+    }
+
     function DeletePreset(item) {
         presetManager.DeletePreset(item)
         GetMatchingItems();
     }
+
+    function DeletePresetOnline(item) {
+
+    }
+
     //Upload a Preset from local system
     function UploadPreset(presetName, jsonObj) {
         // console.log("UPLOAD FILE");
         // console.log("name=" + presetName, " json=" + jsonObj);
         presetManager.SaveNewPresetUpload(presetName, jsonObj);
         UpdateUIValues();
+    }
+
+    function UploadPresetOnline(presetName, jsonObj) {
+
     }
 
     //Open system file explorer and give a JSON file to save
@@ -97,7 +148,7 @@ export default function SetupContainer( props: {channel: number}) {
         return split[0];
     }
 
-    function RenderAvailablePresets() {            
+    function RenderLocalPresets() {            
         return (
           <div>
             {matchingItems().map((item) => (
@@ -109,7 +160,7 @@ export default function SetupContainer( props: {channel: number}) {
                                 label={GetPresetName(item)}
                             />
                         </div>
-                    <div class="flex justifyEnd width20">
+                    <div class="flex justifyEnd width20 marginTopBottomAuto">
                         <ui.ButtonIcon
                             icon="material-symbols:download"
                             onClick={() => DownloadPreset(item)}
@@ -125,43 +176,121 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
     
-    function RenderUI() {
+    function RenderMyOnlinePresets() {
         return (
+            <></>
+        )
+    }
+
+    function RenderBrowseOnlinePresets() {
+        return(
+            <></>
+        )
+    }
+
+    function RenderNewOnlinePresets() {
+        return(
+            <></>
+        )
+    }
+
+    function RenderLocalPresetManagement() {
+        return(
             <div>
-                <div class="flexContainer">
-                    <div class="width70">
-                        <div class="flexList">
-                            <div class="marginBottom5">Save new preset</div>
-                            <ui.TextInput
-                                // class="textInput"
-                                placeholder="Preset"
-                                value={presetName()}
-                                onChange={(event) => setPresetName(event.target.value)}
-                            />
-                        </div>
-                    </div>
-                        <ui.Button 
-                            class="thinButton width30"
-                            onClick={() => SaveNewPreset()}
-                            label="Save"
+                <div class="flex">
+                <div class="width70">
+                    <div class="flexList">
+                        <div class="marginBottom5">Save new preset</div>
+                        <ui.TextInput
+                            // class="textInput"
+                            placeholder="Preset"
+                            value={presetName()}
+                            onChange={(event) => setPresetName(event.target.value)}
                         />
-                    {/* <button class="thinButton marginAuto" onClick={() => SaveNewPreset()} >
-                        Save
-                    </button> */}
-                </div>
-                <br></br>
-                {RenderAvailablePresets()}
-                <br></br>
-                <div class="flexList">
-                    <ui.JsonFileUploader 
-                    onFileUpload={UploadPreset}
+                    </div>
+            </div>
+                <ui.Button 
+                    class="thinButton width30"
+                    onClick={() => SaveNewPreset()}
+                    label="Save"
+                />
+            </div>
+
+            <br></br>
+            {RenderLocalPresets()}
+            
+            <br></br>
+            <div class="justifyCenter">
+                <ui.JsonFileUploader 
+                onFileUpload={UploadPreset}
+                />
+            </div>
+        </div>
+
+        )
+    }
+
+    function RenderOnlineFunctionSelection() {
+        switch(onlineFunctionSelection()) {
+            case 0: //My Presets
+                return(
+                    <div>
+                        ASS
+                    </div>
+                )
+            case 1: //Browse
+                return(
+                    <div>
+                        OTHER ASS
+                    </div>
+                )
+            case 2: //New
+                return(
+                    <div>
+                        THIRD ASS
+                    </div>
+                )
+        }
+    }
+
+    function RenderOnlinePresetManagement() {
+        return(
+            <div>
+                <div class="flex justifySpace marginAuto">
+                    <ui.Button 
+                        label="My Presets"
+                        class={channelButtonClass()[0]}
+                        divClass=""
+                        onClick={SetOnlineFunctionSelection(0)}
+                    />
+                    <ui.Button 
+                        label="Browse"
+                        class={channelButtonClass()[1]}
+                        divClass=""
+                        onClick={SetOnlineFunctionSelection(1)}
+                    />
+                    <ui.Button 
+                        label="New"
+                        class={channelButtonClass()[2]}
+                        divClass=""
+                        onClick={SetOnlineFunctionSelection(2)}
                     />
                 </div>
+                {RenderOnlineFunctionSelection()}
             </div>
         )
     }
 
+    function RenderUI() {
+        if(userLoggedIn()) {
+            return RenderOnlinePresetManagement();
+        } else {
+            return RenderLocalPresetManagement();
+        }
+    }
+
     LoadToy();
+    if(GetUser() != undefined) setUserLoggedIn(true);
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
         <ui.DetailsFillerCenter summeryName={"Presets"} content={RenderUI()} />

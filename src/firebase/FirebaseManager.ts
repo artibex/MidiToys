@@ -2,6 +2,7 @@ import * as client from "./client";
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider } from 'firebase/auth';
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { collection, getDocs, QuerySnapshot } from "firebase/firestore";
 
 export class FirebaseManager {
     static instance: FirebaseManager;
@@ -160,6 +161,21 @@ export class FirebaseManager {
             resolve(false);
         });
       })
+    }
+
+    async ReadCollectionData(collectionName: string): Promise<void> {
+      try {
+        const collectionRef = collection(client.db, collectionName);
+        const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
+        
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+        });
+    
+        console.log("Data read successfully.");
+      } catch (error) {
+        console.error("Error reading collection data:", error);
+      }
     }
 
     // Function to sign out the user

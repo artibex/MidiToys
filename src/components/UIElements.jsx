@@ -150,6 +150,7 @@ export function CheckboxInput(props) {
 
 export function Button(props) {
   if(props.class == undefined) props.class = "thinButton";
+  if(props.divClass == undefined) props.divClass = props.class;
   if(props.label == undefined) props.label = "Please Set Label";
   if(props.id == undefined) props.id = "";
 
@@ -158,7 +159,7 @@ export function Button(props) {
   };
 
   return (
-    <div class={props.class}>
+    <div class={props.divClass}>
       <button
         class={props.class}
         id={props.id}

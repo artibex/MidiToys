@@ -93,6 +93,17 @@ button:hover {
   font-family: "SlimJoe", sans-serif;
   word-break: break-word;
 }
+.thinButtonActive{
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: "BigJohn", sans-serif;
+  color: black;
+  background-color: var(--item-hover-color);
+  word-break: break-word;
+}
+
 .squareButton{
   padding: 3px;
   font-family: "SlimJoe", sans-serif;
@@ -212,6 +223,11 @@ details[open] summary {
 .marginAuto{
   margin: auto;
 }
+.marginTopBottomAuto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 
 .paddingTopBottom0{
   padding-top: 0px;

@@ -140,7 +140,10 @@ export default function SetupContainer() {
         }
     }
 
-    if(GetUser() != undefined) setUserLoggedIn(true);
+    if(GetUser() != undefined) {
+        setUserLoggedIn(true);
+        setUserName(GetUser().displayName);
+    }
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
         <>
