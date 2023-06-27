@@ -68,7 +68,6 @@ export default function SetupContainer( props: {channel: number}) {
     function LoadPreset(item) {
         if(toy != undefined) {
             toy.LoadJSON(JSON.parse(item.item));
-            // console.log(item.item);
             // console.log("DONE loading Preset with name = " + item.key);
         }
     }
@@ -98,9 +97,13 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function SaveNewPreset() {
-        if(presetName() != "") presetManager.SaveNewPresetToyLocal(presetName(), toy);
-        setPresetName(""); //Set it back to empty
-        UpdateUIValues();
+        if(presetName() != "" && toy != undefined) {
+            // console.log("presetName() = " + presetName());
+            presetManager.SaveNewPresetToyLocal(presetName(), toy);
+            setPresetName(""); //Set it back to empty
+            GetMatchingItems();
+            UpdateUIValues();
+        }
     }
 
     function SaveNewPresetOnline() {
@@ -155,75 +158,82 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function RenderLocalPresets() {            
-        if(userLoggedIn()) {
-            return (
-                <div>
-                  {matchingItems().map((item) => (
-                      <div class="flexContainer">
-                              <div class="width60 justifyStart marginRight20">
-                                  <ui.Button
-                                      class="thinButton"
-                                      onClick={() => LoadPreset(item)}
-                                      label={GetPresetName(item)}
-                                  />
-                              </div>
-                          <div class="flex justifyEnd width20 marginTopBottomAuto">
-                            <ui.ButtonIcon
-                                icon="material-symbols:download"
-                                class="iconButton"
-                                divClass="marginRight5"
-                                onClick={() => DownloadPreset(item)}
+        return (
+          <div>
+            {matchingItems().map((item) => (
+                <div class="flexContainer">
+                        <div class="width60 justifyStart marginRight20">
+                            <ui.Button
+                                class="thinButton"
+                                onClick={() => LoadPreset(item)}
+                                label={GetPresetName(item)}
                             />
+                        </div>
+                    <div class="flex justifyEnd width20 marginTopBottomAuto">
+                        <ui.ButtonIcon
+                            icon="material-symbols:download"
+                            class="iconButton"
+                            divClass="marginRight5"
+                            onClick={() => DownloadPreset(item)}
+                        />
+                        {userLoggedIn() && (
                             <ui.ButtonIcon
                                 icon="material-symbols:upload-sharp"
                                 class="iconButton"
                                 divClass="marginRight5"
-                                onClick={() => UploadPresetOnline(item)}                              
+                                onClick={() => UploadPresetOnline(item)}
                             />
-                            <ui.ButtonIcon
-                                icon="material-symbols:delete-outline"
-                                class="iconButton"
-                                divClass=""
-                                onClick={() => DeletePreset(item)}
-                            />
-                          </div>
-                      </div>
-                  ))}
-              </div>
-              )
+                        )}
+                        <ui.ButtonIcon
+                            icon="material-symbols:delete-outline"
+                            class="iconButton"
+                            divClass=""
+                            onClick={() => DeletePreset(item)}
+                        />
+                    </div>
+                </div>
+            ))}
+        </div>
+        )
+        if(userLoggedIn()) {
+            // return (
+            //     <div>
+            //       {matchingItems().map((item) => (
+            //           <div class="flexContainer">
+            //                   <div class="width60 justifyStart marginRight20">
+            //                       <ui.Button
+            //                           class="thinButton"
+            //                           onClick={() => LoadPreset(item)}
+            //                           label={GetPresetName(item)}
+            //                       />
+            //                   </div>
+            //               <div class="flex justifyEnd width20 marginTopBottomAuto">
+            //                 <ui.ButtonIcon
+            //                     icon="material-symbols:download"
+            //                     class="iconButton"
+            //                     divClass="marginRight5"
+            //                     onClick={() => DownloadPreset(item)}
+            //                 />
+            //                 <ui.ButtonIcon
+            //                     icon="material-symbols:upload-sharp"
+            //                     class="iconButton"
+            //                     divClass="marginRight5"
+            //                     onClick={() => UploadPresetOnline(item)}                              
+            //                 />
+            //                 <ui.ButtonIcon
+            //                     icon="material-symbols:delete-outline"
+            //                     class="iconButton"
+            //                     divClass=""
+            //                     onClick={() => DeletePreset(item)}
+            //                 />
+            //               </div>
+            //           </div>
+            //       ))}
+            //   </div>
+            //   )
               
         } else {
-            return (
-              <div>
-                {matchingItems().map((item) => (
-                    <div class="flexContainer">
-                            <div class="width60 justifyStart marginRight20">
-                                <ui.Button
-                                    class="thinButton"
-                                    onClick={() => LoadPreset(item)}
-                                    label={GetPresetName(item)}
-                                />
-                            </div>
-                        <div class="flex justifyEnd width20 marginTopBottomAuto">
-                            <ui.ButtonIcon
-                                icon="material-symbols:download"
-                                class="iconButton"
-                                divClass="marginRight5"
-                                onClick={() => DownloadPreset(item)}
-                            />
-                            <ui.ButtonIcon
-                                icon="material-symbols:delete-outline"
-                                class="iconButton"
-                                divClass=""
-                                onClick={() => DeletePreset(item)}
-                            />
-                        </div>
-                    </div>
-                ))}
-            </div>
-            )
         }
-        
     }
     
     function RenderMyOnlinePresets() {

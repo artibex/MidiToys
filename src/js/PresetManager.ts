@@ -20,7 +20,7 @@ export class PresetManager{
       var search = searchStr.toLowerCase().replace(/\s/g, '');
 
       for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i).toLowerCase().replace(/\s/g, '');;
+        const key = localStorage.key(i);
     
         if (key.includes(search)) {
           const item = localStorage.getItem(key);
@@ -47,9 +47,15 @@ export class PresetManager{
     if(toy != undefined && toy != null) {
       // const toyType = toy.toyName;
       const toyType = toy.toyName.toLowerCase().replace(/\s/g, '');
-      const jsonObj = toy.ToJSON();
+      const jsonObj = JSON.stringify(toy.ToJSON());
+      // presetName = presetName.toLowerCase().replace(/\s/g, '');
+      if(jsonObj == null || jsonObj == undefined) {
+        console.log("ERROR: JSON is null");
+        return;
+      }
+
       const saveName = presetName + "." + toyType;
-      localStorage.setItem(saveName, JSON.stringify(jsonObj));
+      localStorage.setItem(saveName, jsonObj);
       // console.log("SAVED to local storage new Preset:");
     }
   }
