@@ -150,6 +150,7 @@ export function CheckboxInput(props) {
 
 export function Button(props) {
   if(props.class == undefined) props.class = "thinButton";
+  if(props.divClass == undefined) props.divClass = props.class;
   if(props.label == undefined) props.label = "Please Set Label";
   if(props.id == undefined) props.id = "";
 
@@ -158,7 +159,7 @@ export function Button(props) {
   };
 
   return (
-    <div class={props.class}>
+    <div class={props.divClass}>
       <button
         class={props.class}
         id={props.id}
@@ -172,6 +173,7 @@ export function Button(props) {
 
 export function ButtonIcon(props) {
   if(props.class == undefined) props.class = "iconButton";
+  if(props.divClass == undefined) props.divClass = props.class;
   if(props.label == undefined) props.label = "";
   if(props.id == undefined) props.id = "";
 
@@ -189,7 +191,7 @@ export function ButtonIcon(props) {
 
   if(props.label == "") { //no label
     return (
-      <div >
+      <div class={props.divClass}>
         <button
           id={props.id}
           onClick={HandleClick}
@@ -202,9 +204,10 @@ export function ButtonIcon(props) {
   } else {
     if(props.iconFirst) { //Display icon before text
       return (
-        <div class={props.class} >
+        <div class={props.divClass} >
           <button
             id={props.id}
+            class={props.class}
             onClick={HandleClick}
           >
             <div class="flex justifyCenter">
@@ -228,9 +231,10 @@ export function ButtonIcon(props) {
 
     } else { //Display Icon after text
         return (
-          <div class={props.class} >
+          <div class={props.divClass} >
             <button
               id={props.id}
+              class={props.class}
               onClick={HandleClick}
             >
               <div class="flex justifyCenter">
