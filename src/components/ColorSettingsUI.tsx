@@ -83,20 +83,22 @@ export default function SetupContainer( props: {channel: number}) {
     function RenderColorSettings() {
         return (
             <>
-                <div class="flexContainer">
-                    <div class="width80">
+                <div class="flex">
+                    <div class="width70">
                         <h3 class="textAlignCenter">{colorSelectionName()}</h3>
                     </div>
-                    <div class="flex justifyEnd">
+                    <div class="flex justifyEnd marginAuto">
                         <ui.ButtonIcon
                             icon="material-symbols:chevron-left"
-                            class="squareButton width20"
+                            class="squareButton"
+                            divClass="marginRight5 marginAuto"
                             onClick={() => UpdateColorSelection(-1)}
                             width={30}
                         />
                         <ui.ButtonIcon
                             icon="material-symbols:chevron-right"
-                            class="squareButton width20"
+                            class="squareButton"
+                            divClass="marginAuto"
                             onClick={() => UpdateColorSelection(1)}
                             width={30}
                         />

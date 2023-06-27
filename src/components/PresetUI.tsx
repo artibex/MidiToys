@@ -347,7 +347,7 @@ export default function SetupContainer( props: {channel: number}) {
             case 2: //New
                 return(
                     <div>
-                        THIRD ASS
+                        <h2 class="textAlignCenter">Put new Presets here</h2>
                     </div>
                 )
         }

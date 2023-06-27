@@ -203,12 +203,12 @@ export default function SetupContainer() {
     function RenderHeadline() {
         if(selectedChannel() > 0) {
             return(
-                <h1 class="marginAuto">Channel {selectedChannel()} </h1>
+                <h1 class="marginAuto marginLeft5">Channel {selectedChannel()} </h1>
             )
         } else {
             switch(selectedChannel()) {
-                case 0: return <h1 class="marginAuto">Settings</h1>;
-                case -1: return <h1 class="marginAuto">Account</h1>;
+                case 0: return <h1 class="marginAuto marginLeft5">Settings</h1>;
+                case -1: return <h1 class="marginAuto marginLeft5">Account</h1>;
             }
         }
     }

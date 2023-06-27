@@ -178,7 +178,7 @@ export default function SetupContainer( props: {channel: number}) {
             <div>
                 <div class="flex">
                     {RenderToyWrench()}
-                    <div class="textAlignLeft">
+                    <div class="textAlignLeft paddingTop10 marginLeft5">
                         <h2 class="marginAuto">{toyName()}</h2>
                     </div>
                 </div>

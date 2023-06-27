@@ -16,7 +16,7 @@ export class FirebaseManager {
         // console.log(client.app);
         // console.log(client.auth);
         // console.log(client.auth);
-        console.log("CONNECTED to Firebase");
+        // console.log("CONNECTED to Firebase");
         // console.log(client.auth.currentUser);
         //this.SendSignInLinkToEmail("korbinian.maag@gmail.com");
         //this.AuthWithEmailLink();

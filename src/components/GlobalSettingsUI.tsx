@@ -96,10 +96,11 @@ export default function SetupContainer() {
         )
     }
 
+    //Risky settings go here
     function RenderDangerZoneUI() {
         return(
             <div class="marginAuto width80">
-                <h2 class="textAlignCenter">Danger Zone</h2>
+                {/* <h2 class="textAlignCenter">Danger Zone</h2> */}
                 <ui.Button
                     label="Delete ALL local Data"
                     onClick={presetManager.DeleteAllPresets}
@@ -122,7 +123,7 @@ export default function SetupContainer() {
             const color = utils.ExtractRGBAColor(bodyColor); // Extract the RGBA values from the computed color
             
             setBackgroundColor({ ...backGroundColor(), r: color.r, g: color.g ,b: color.b, a: color.a })
-            console.log(backGroundColor());
+            // console.log(backGroundColor());
         }
     }
 

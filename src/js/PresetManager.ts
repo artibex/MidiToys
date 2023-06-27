@@ -28,13 +28,13 @@ export class PresetManager{
         }
       }
     
-      console.log(matchingItems);
+      // console.log(matchingItems);
       return matchingItems;
   }
 
   DeletePreset(item) {
     const key = item.key;
-    console.log("DELETE " + key);
+    // console.log("DELETE " + key);
     localStorage.removeItem(key);
   }
 
@@ -44,13 +44,13 @@ export class PresetManager{
   }
 
   SaveNewPresetToyLocal(presetName: string, toy: any) {
-    if(toy != undefined) {
+    if(toy != undefined && toy != null) {
       // const toyType = toy.toyName;
       const toyType = toy.toyName.toLowerCase().replace(/\s/g, '');
       const jsonObj = toy.ToJSON();
       const saveName = presetName + "." + toyType;
       localStorage.setItem(saveName, JSON.stringify(jsonObj));
-      console.log("SAVED to local storage new Preset:");
+      // console.log("SAVED to local storage new Preset:");
     }
   }
 
