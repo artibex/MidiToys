@@ -97,9 +97,9 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function SaveNewPreset() {
-        if(presetName() != "" && toy != undefined) {
+        if(presetName() != "" && presetName().length > 4 && toy != undefined) {
             // console.log("presetName() = " + presetName());
-            presetManager.SaveNewPresetToyLocal(presetName(), toy);
+            presetManager.SaveNewPresetLocal(presetName(), toy);
             setPresetName(""); //Set it back to empty
             GetMatchingItems();
             UpdateUIValues();
@@ -107,7 +107,10 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function SaveNewPresetOnline() {
-        if(presetName() != "") presetManager.SaveNewPresetToyLocal(presetName(), toy);
+        if(presetName() != "" && presetName().length > 4 && toy != undefined) {
+            presetManager.SaveNewPresetLocal(presetName(), toy);
+            presetManager.SaveNewPresetOnline(presetName(), toy);
+        }
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
 
@@ -115,7 +118,7 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Gives item with key value
     function DeletePreset(item) {
-        presetManager.DeletePreset(item)
+        presetManager.DeletePresetLocal(item)
         GetMatchingItems();
     }
 
@@ -127,7 +130,7 @@ export default function SetupContainer( props: {channel: number}) {
     function UploadPreset(presetName, jsonObj) {
         // console.log("UPLOAD FILE");
         // console.log("name=" + presetName, " json=" + jsonObj);
-        presetManager.SaveNewPresetUpload(presetName, jsonObj);
+        presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
         UpdateUIValues();
     }
 
@@ -197,7 +200,7 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
     
-    function RenderMyOnlinePresets() {
+    function RenderOnlinePresets() {
         return (
             <div>
                 <div class="flex">
@@ -294,7 +297,7 @@ export default function SetupContainer( props: {channel: number}) {
             case 0: //My Presets
                 return(
                     <div>
-                        {RenderMyOnlinePresets()}
+                        {RenderOnlinePresets()}
                     </div>
                 )
             case 1: //Browse

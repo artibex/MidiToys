@@ -175,10 +175,12 @@ export class PolyDrum extends MIDIToy {
         this.paperLayer.addChild(poly);
         // this.paperGroup.addChild(poly);
 
-        if (this.paperLayer.children.length > this.shapeLimit) {
-            // console.log("REMOVE shape from layer, too many!");
-            // console.log("LAYER children count = " + this.paperLayer.children.length);
-            this.paperLayer.firstChild.remove();
+        if(this.paperLayer.child != undefined) {
+            if (this.paperLayer.children.length > this.shapeLimit) {
+                // console.log("REMOVE shape from layer, too many!");
+                // console.log("LAYER children count = " + this.paperLayer.children.length);
+                this.paperLayer.firstChild.remove();
+            }
         }
     }
 

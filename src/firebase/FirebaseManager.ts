@@ -1,9 +1,9 @@
 import * as client from "./client";
+import { v5 as uuidv5 } from 'uuid';
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider } from 'firebase/auth';
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { collection, getDocs, QuerySnapshot } from "firebase/firestore";
-import { v5 as uuidv5 } from 'uuid';
+import { collection, getDocs, QuerySnapshot, doc, setDoc } from "firebase/firestore";
 
 export class FirebaseManager {
     static instance: FirebaseManager;
@@ -165,10 +165,11 @@ export class FirebaseManager {
     }
 
     async UploadNewPreset(presetName: string, presetData: string, toyType: string,  publicPreset: boolean) {
-      if(presetName == undefined || presetName == "") return;
-      if(presetData == undefined || presetData == "") return;
-      if(toyType == undefined || toyType == "") return;
+      if(presetName == undefined || presetName == "") return false;
+      if(presetData == undefined || presetData == "") return false;
+      if(toyType == undefined || toyType == "") return false;
 
+      //remove spaces and make everything lowercase
       toyType = toyType.toLowerCase().replace(/\s/g, '');
 
       const data = {
@@ -182,11 +183,21 @@ export class FirebaseManager {
       const userID = client.GetUserID();
       if(userID == undefined) { //Check user ID
         console.log("ERROR: User-ID is undefined");
-        return;
+        return false;
       }
-      const presetID = this.GenerateUniquiePresetID(presetName, presetData, toyType);
+      const presetUUID = this.GenerateUniquiePresetID(presetName, presetData, toyType);
 
-      const collectionRef = collection(client.db, userID + "/" + toyType);
+      const collectionRef = collection(client.db, userID, toyType, presetUUID);
+      const documentRef = doc(collectionRef);
+    
+      try {
+        await setDoc(documentRef, data);
+        console.log("Preset uploaded successfully.");
+        return true;
+      } catch (error) {
+        console.log("Error uploading preset:", error);
+        return false;
+      }      
     }
 
     GenerateUniquiePresetID(presetName: string, presetData: string, toyType: string) {

@@ -32,18 +32,18 @@ export class PresetManager{
       return matchingItems;
   }
 
-  DeletePreset(item) {
+  DeletePresetLocal(item) {
     const key = item.key;
     // console.log("DELETE " + key);
     localStorage.removeItem(key);
   }
 
   //Delete EVERYTHING out of local storage
-  DeleteAllPresets() {
+  DeleteAllPresetsLocal() {
     localStorage.clear();
   }
 
-  SaveNewPresetToyLocal(presetName: string, toy: any) {
+  SaveNewPresetLocal(presetName: string, toy: any) {
     if(toy != undefined && toy != null) {
       // const toyType = toy.toyName;
       const toyType = toy.toyName.toLowerCase().replace(/\s/g, '');
@@ -60,15 +60,15 @@ export class PresetManager{
     }
   }
 
-  SaveNewPresetToyOnline(presetName: string, toy: any) {
-    if(toy != undefined) {
-      const toyType = toy.toyName.toLowerCase().replace(/\s/g, '');
-      const jsonObj = toy.ToJSON();
-
-    }
+  SaveNewPresetOnline(presetName: string, toy: any) {
+    if(toy == undefined) return;
+    const toyType = toy.toyName.toLowerCase().replace(/\s/g, '');
+    const jsonObj = toy.ToJSON();
+    
+    firebaseManager.UploadNewPreset(presetName, jsonObj, toyType, true)
   }
 
-  SaveNewPresetUpload(saveName: string, jsonObj: string) {
+  SaveNewPresetUploadLocal(saveName: string, jsonObj: string) {
     if(saveName && jsonObj != undefined) {
       const saveNameNoExtension = saveName.toLowerCase().replace(/\.json$/, "");
       localStorage.setItem(saveNameNoExtension, jsonObj);

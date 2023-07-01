@@ -103,7 +103,7 @@ export default function SetupContainer() {
                 {/* <h2 class="textAlignCenter">Danger Zone</h2> */}
                 <ui.Button
                     label="Delete ALL local Data"
-                    onClick={presetManager.DeleteAllPresets}
+                    onClick={presetManager.DeleteAllPresetsLocal}
                 />
             </div>
         )   
