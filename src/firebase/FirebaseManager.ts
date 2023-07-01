@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLin
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { collection, getDocs, QuerySnapshot } from "firebase/firestore";
+import { v5 as uuidv5 } from 'uuid';
 
 export class FirebaseManager {
     static instance: FirebaseManager;
@@ -163,10 +164,12 @@ export class FirebaseManager {
       })
     }
 
-    async UploadNewPreset(presetName: string, presetData: string, publicPreset: boolean) {
-      if(presetName == "") return;
-      if(presetData == "") return;
-      if(publicPreset == undefined) return;
+    async UploadNewPreset(presetName: string, presetData: string, toyType: string,  publicPreset: boolean) {
+      if(presetName == undefined || presetName == "") return;
+      if(presetData == undefined || presetData == "") return;
+      if(toyType == undefined || toyType == "") return;
+
+      toyType = toyType.toLowerCase().replace(/\s/g, '');
 
       const data = {
         presetName: presetName,
@@ -181,19 +184,24 @@ export class FirebaseManager {
         console.log("ERROR: User-ID is undefined");
         return;
       }
-      const presetID = this.GenerateUniquiePresetID(presetName, presetData);
+      const presetID = this.GenerateUniquiePresetID(presetName, presetData, toyType);
 
+      const collectionRef = collection(client.db, userID + "/" + toyType);
     }
 
-    GenerateUniquiePresetID(presetName, presetData) {
+    GenerateUniquiePresetID(presetName: string, presetData: string, toyType: string) {
       // Concatenate presetName, presetData, and userID
-      const user = client.GetUserID();
-      if(user == undefined) return undefined;
-      const combinedData = presetName + presetData + user;
+      const userID = client.GetUserID();
+
+      if(userID == undefined || userID == "") return undefined;
+      if(presetName == undefined || presetName == "") return undefined;
+      if(presetData == undefined || presetData == "") return undefined;
+      if(toyType == undefined || toyType == "") return undefined;
+
+      const combinedData = presetName + presetData + toyType + userID;
 
       // Generate a UUID based on the combined data
       const uniqueID = uuidv5(combinedData, uuidv5.URL);
-
       return uniqueID;
     }
 

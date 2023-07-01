@@ -195,45 +195,6 @@ export default function SetupContainer( props: {channel: number}) {
             ))}
         </div>
         )
-        if(userLoggedIn()) {
-            // return (
-            //     <div>
-            //       {matchingItems().map((item) => (
-            //           <div class="flexContainer">
-            //                   <div class="width60 justifyStart marginRight20">
-            //                       <ui.Button
-            //                           class="thinButton"
-            //                           onClick={() => LoadPreset(item)}
-            //                           label={GetPresetName(item)}
-            //                       />
-            //                   </div>
-            //               <div class="flex justifyEnd width20 marginTopBottomAuto">
-            //                 <ui.ButtonIcon
-            //                     icon="material-symbols:download"
-            //                     class="iconButton"
-            //                     divClass="marginRight5"
-            //                     onClick={() => DownloadPreset(item)}
-            //                 />
-            //                 <ui.ButtonIcon
-            //                     icon="material-symbols:upload-sharp"
-            //                     class="iconButton"
-            //                     divClass="marginRight5"
-            //                     onClick={() => UploadPresetOnline(item)}                              
-            //                 />
-            //                 <ui.ButtonIcon
-            //                     icon="material-symbols:delete-outline"
-            //                     class="iconButton"
-            //                     divClass=""
-            //                     onClick={() => DeletePreset(item)}
-            //                 />
-            //               </div>
-            //           </div>
-            //       ))}
-            //   </div>
-            //   )
-              
-        } else {
-        }
     }
     
     function RenderMyOnlinePresets() {
