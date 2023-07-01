@@ -163,6 +163,40 @@ export class FirebaseManager {
       })
     }
 
+    async UploadNewPreset(presetName: string, presetData: string, publicPreset: boolean) {
+      if(presetName == "") return;
+      if(presetData == "") return;
+      if(publicPreset == undefined) return;
+
+      const data = {
+        presetName: presetName,
+        presetData: presetData,
+        presetLikes: 0,
+        presetDownloads: 0,
+        publicPreset: publicPreset
+      }
+
+      const userID = client.GetUserID();
+      if(userID == undefined) { //Check user ID
+        console.log("ERROR: User-ID is undefined");
+        return;
+      }
+      const presetID = this.GenerateUniquiePresetID(presetName, presetData);
+
+    }
+
+    GenerateUniquiePresetID(presetName, presetData) {
+      // Concatenate presetName, presetData, and userID
+      const user = client.GetUserID();
+      if(user == undefined) return undefined;
+      const combinedData = presetName + presetData + user;
+
+      // Generate a UUID based on the combined data
+      const uniqueID = uuidv5(combinedData, uuidv5.URL);
+
+      return uniqueID;
+    }
+
     async ReadCollectionData(collectionName: string): Promise<void> {
       try {
         const collectionRef = collection(client.db, collectionName);
