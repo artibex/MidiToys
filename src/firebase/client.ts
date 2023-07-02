@@ -1,7 +1,7 @@
-import {initializeApp } from "firebase/app";
-import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getAuth, browserLocalPersistence } from 'firebase/auth';
 import { firebaseConfig } from '@env';
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, persistentLocalCache } from "firebase/firestore";
 
 export const app = initializeApp(firebaseConfig);
 export var auth = getAuth(app);
@@ -9,6 +9,11 @@ export const db = getFirestore();
 
 var user;
 var userID = undefined;
+
+function AutoLogin() {
+    SetUser(auth.currentUser);
+    // console.log("User = " +  auth.currentUser);
+}
 
 
 export function SetUser(u) {
@@ -26,3 +31,12 @@ export function GetUser() {
 export function GetUserID() {
     return userID;
 }
+
+export async function SetLocalPersistence() {
+   await auth.setPersistence(browserLocalPersistence)
+   .then((result) => {
+       AutoLogin();
+   })
+}
+
+SetLocalPersistence();

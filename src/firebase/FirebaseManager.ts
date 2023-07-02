@@ -1,9 +1,10 @@
 import * as client from "./client";
 import { v5 as uuidv5 } from 'uuid';
-import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider } from 'firebase/auth';
-import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider, onIdTokenChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, getIdToken } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, browserLocalPersistence, setPersistence } from "firebase/auth";
 import { collection, getDocs, QuerySnapshot, doc, setDoc } from "firebase/firestore";
+import { resolve } from "path";
 
 export class FirebaseManager {
     static instance: FirebaseManager;
@@ -13,7 +14,6 @@ export class FirebaseManager {
         return FirebaseManager.instance;
         }
         FirebaseManager.instance = this;
-
         // console.log(client.app);
         // console.log(client.auth);
         // console.log(client.auth);
@@ -33,25 +33,33 @@ export class FirebaseManager {
               client.SetUser(user);
               console.log('User sign-up successful:', user);
   
-              this.UpdateUsername(username);
-
-              // updateProfile(client.GetUser(), { displayName: username })
-              // .then(() => {
-              //   console.log("SET username to " + username)
-              // })
-              // .catch((error) => {
-              //   console.log("CAN'T update Username");
-              // });
-              
+              this.UpdateUsername(username);              
               resolve(true);
             })
             .catch((error) => {
               // Handle sign-up error
               // console.log('Sign-up error:', error);
               resolve(false);
-            }
-          )
+            })
       });
+    }
+    //Sign in with email and password
+    async EmailSignIn(email, password) {
+      return new Promise((resolve) => { 
+        signInWithEmailAndPassword(client.auth, email, password)
+          .then((userCredential) => {
+            // Login successful, do something with userCredential.user
+            const user = userCredential.user;
+            client.SetUser(user);
+            // console.log('Logged in user:', client.GetUser());
+            resolve(true);
+          })
+          .catch((error) => {
+            // Handle login error
+            console.log('Login error:', error);
+            resolve(false);
+          });
+      })
     }
 
     async UpdateUsername(username) {
@@ -81,25 +89,6 @@ export class FirebaseManager {
           });
       });
     }
-
-    //Sign in with email and password
-    async EmailSignIn(email, password) {
-      return new Promise((resolve) => { 
-        signInWithEmailAndPassword(client.auth, email, password)
-          .then((userCredential) => {
-            // Login successful, do something with userCredential.user
-            const user = userCredential.user;
-            client.SetUser(user);
-            // console.log('Logged in user:', client.GetUser());
-            resolve(true);
-          })
-          .catch((error) => {
-            // Handle login error
-            console.log('Login error:', error);
-            resolve(false);
-          });
-      })
-    }
     
     async SignUpWithGoogle() {
     // Function to handle Google sign-up
@@ -110,6 +99,7 @@ export class FirebaseManager {
           // User sign-up successful, do something with userCredential.user
           const user = userCredential.user;
           client.SetUser(user);
+
           // console.log("Signed up with Google:", user);
           // Additional actions after sign-up
           resolve(true);

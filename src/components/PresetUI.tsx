@@ -106,18 +106,17 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
 
-    function SaveNewPresetOnline() {
-        if(presetName() != "" && presetName().length > 4 && toy != undefined) {
-            presetManager.SaveNewPresetLocal(presetName(), toy);
-            presetManager.SaveNewPresetOnline(presetName(), toy);
+    function SaveNewPresetOnline(pName) {
+        if(pName != "" && pName.length > 4 && toy != undefined) {
+            presetManager.SaveNewPresetLocal(pName, toy);
+            presetManager.SaveNewPresetOnline(pName, toy);
         }
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
-
     }
 
     //Gives item with key value
-    function DeletePreset(item) {
+    function DeleteLocalPreset(item) {
         presetManager.DeletePresetLocal(item)
         GetMatchingItems();
     }
@@ -127,15 +126,19 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     //Upload a Preset from local system
-    function UploadPreset(presetName, jsonObj) {
+    function UploadPresetLocal(presetName, jsonObj) {
         // console.log("UPLOAD FILE");
         // console.log("name=" + presetName, " json=" + jsonObj);
         presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
         UpdateUIValues();
     }
 
-    function UploadPresetOnline(jsonObj) {
-
+    function UploadPresetOnline(item) {
+        console.log(item);
+        const fullPresetName = item.key;
+        const pName = GetPresetName(fullPresetName)
+        console.log("Preset Name =" + fullPresetName);
+        //SaveNewPresetOnline();
     }
 
     //Open system file explorer and give a JSON file to save
@@ -191,7 +194,7 @@ export default function SetupContainer( props: {channel: number}) {
                             icon="material-symbols:delete-outline"
                             class="iconButton"
                             divClass=""
-                            onClick={() => DeletePreset(item)}
+                            onClick={() => DeleteLocalPreset(item)}
                         />
                     </div>
                 </div>
@@ -217,7 +220,7 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
                 <ui.Button 
                     class="thinButton width30"
-                    onClick={() => SaveNewPresetOnline()}
+                    onClick={() => SaveNewPresetOnline(presetName())}
                     label="Save"
                 />
                 </div>
@@ -273,7 +276,7 @@ export default function SetupContainer( props: {channel: number}) {
             <br></br>
             <div class="justifyCenter">
                 <ui.JsonFileUploader 
-                    onFileUpload={UploadPreset}
+                    onFileUpload={UploadPresetLocal}
                 />
             </div>
         </div>

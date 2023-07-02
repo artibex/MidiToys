@@ -56,7 +56,6 @@ export abstract class MIDIToy {
         this.inputManager = new InputManager(); //The Input Manager
         this.toyManager = new ToyManager();
         this.paperLayer = new paper.Layer();
-        this.paperLayer.children = [];
         this.targetChannel = targetChannel; //The target channel
         this.canvas = this.toyManager.targetCanvas; //Canvas element to draw on
         
