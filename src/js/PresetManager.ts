@@ -45,8 +45,8 @@ export class PresetManager{
 
   SaveNewPresetLocal(presetName: string, toy: any) {
     if(toy != undefined && toy != null) {
-      // const toyType = toy.toyName;
-      const toyType = toy.toyName.toLowerCase().replace(/\s/g, '');
+      // const toyType = toy.toyType;
+      const toyType = toy.toyType.toLowerCase().replace(/\s/g, '');
       const jsonObj = JSON.stringify(toy.ToJSON());
       // presetName = presetName.toLowerCase().replace(/\s/g, '');
       if(jsonObj == null || jsonObj == undefined) {
@@ -62,10 +62,20 @@ export class PresetManager{
 
   SaveNewPresetOnline(presetName: string, toy: any) {
     if(toy == undefined) return;
-    const toyType = toy.toyName.toLowerCase().replace(/\s/g, '');
+    const toyType = toy.toyType.toLowerCase().replace(/\s/g, '');
     const jsonObj = toy.ToJSON();
     
     firebaseManager.UploadNewPreset(presetName, jsonObj, toyType, true)
+  }
+
+  SaveExistingPresetOnline(presetName: string, jsonObj) {
+    if(presetName.length < 3) return;
+    if(jsonObj == undefined || jsonObj == "") return;
+    var parsed = JSON.parse(jsonObj);
+
+    if(parsed == undefined) return;
+    if(parsed.toyType == undefined || parsed.toyType == "") return;
+    firebaseManager.UploadNewPreset(presetName, jsonObj, parsed.toyType, true);
   }
 
   SaveNewPresetUploadLocal(saveName: string, jsonObj: string) {

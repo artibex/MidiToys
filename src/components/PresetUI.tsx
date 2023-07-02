@@ -4,6 +4,7 @@ import * as utils from "@utils";
 import { PresetManager } from "@presetmanager";
 import { CanvasManager } from "@canvasmanager";
 import {GetUser} from "@firebaseClient";
+import { json } from "stream/consumers";
 
 
 var presetManager = new PresetManager();
@@ -28,7 +29,7 @@ export default function SetupContainer( props: {channel: number}) {
 
 
     function GetMatchingItems() {
-        setMetchingItems(presetManager.FilterPresetsByType(toy.toyName));      
+        setMetchingItems(presetManager.FilterPresetsByType(toy.toyType));      
     }
 
     //Special settings
@@ -115,6 +116,13 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
     }
 
+    function SaveExistingPresetOnline(pName: string, item) {
+        if(pName != "" && pName.length > 4 && toy != undefined) {
+            console.log("JSON = " + item.item);
+            presetManager.SaveExistingPresetOnline(pName, item.item);
+        }
+    }
+
     //Gives item with key value
     function DeleteLocalPreset(item) {
         presetManager.DeletePresetLocal(item)
@@ -133,12 +141,10 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
     }
 
-    function UploadPresetOnline(item) {
-        console.log(item);
-        const fullPresetName = item.key;
-        const pName = GetPresetName(fullPresetName)
-        console.log("Preset Name =" + fullPresetName);
-        //SaveNewPresetOnline();
+    function UploadExistingPresetOnline(item) {
+        // console.log("Short preset Name =" + pName);
+        const pName = GetPresetName(item)
+        SaveExistingPresetOnline(pName, item);
     }
 
     //Open system file explorer and give a JSON file to save
@@ -187,7 +193,7 @@ export default function SetupContainer( props: {channel: number}) {
                                 icon="material-symbols:upload-sharp"
                                 class="iconButton"
                                 divClass="marginRight5"
-                                onClick={() => UploadPresetOnline(item)}
+                                onClick={() => UploadExistingPresetOnline(item)}
                             />
                         )}
                         <ui.ButtonIcon
@@ -233,7 +239,7 @@ export default function SetupContainer( props: {channel: number}) {
                 <br></br>
                 <div class="justifyCenter">
                     <ui.JsonFileUploader 
-                        onFileUpload={UploadPresetOnline}
+                        onFileUpload={UploadExistingPresetOnline}
                     />
                 </div>
 

@@ -177,9 +177,9 @@ export class FirebaseManager {
       }
       const presetUUID = this.GenerateUniquiePresetID(presetName, presetData, toyType);
 
-      const collectionRef = collection(client.db, userID, toyType, presetUUID);
+      const collectionRef = collection(client.db, "/databases/" + "midi-toys/" + userID + "/" + toyType + "/" + presetUUID);
       const documentRef = doc(collectionRef);
-    
+
       try {
         await setDoc(documentRef, data);
         console.log("Preset uploaded successfully.");

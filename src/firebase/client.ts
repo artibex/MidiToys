@@ -15,7 +15,6 @@ function AutoLogin() {
     // console.log("User = " +  auth.currentUser);
 }
 
-
 export function SetUser(u) {
     // console.log("SET user " + u);
     user = u;

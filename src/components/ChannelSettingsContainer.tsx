@@ -22,7 +22,7 @@ export default function SetupContainer( props: {channel: number}) {
     //General Toy Settings
     const [toyType, setToyType] = createSignal(0);
     const [selectToy, setSelectToy] = createSignal(false);
-    const [toyName, setToyName] = createSignal("EmptyToy");
+    const [toyTypeName, setToyTypeName] = createSignal("EmptyToy");
 
     //Update UI data
     function UpdateUIValues() {
@@ -32,11 +32,11 @@ export default function SetupContainer( props: {channel: number}) {
             if(toy != undefined) {
                 setUseEffect(false);
                 
-                setToyName(toy.toyName);
+                setToyTypeName(toy.toyType);
 
                 setUseEffect(true);
             }
-        } else setToyName("Empty");
+        } else setToyTypeName("Empty");
     }
     //Update Toy data
 
@@ -61,7 +61,7 @@ export default function SetupContainer( props: {channel: number}) {
         var t = utils.InitToy(channel, toy, UpdateComponent);
         if(toy != t) {
             toy = t;
-            if(toy.toyName.includes("Empty")) {
+            if(toy.toyType.includes("Empty")) {
                 setSelectToy(true);
             } else {
                 var value = toyManager.GetToyType(channel);
@@ -179,7 +179,7 @@ export default function SetupContainer( props: {channel: number}) {
                 <div class="flex">
                     {RenderToyWrench()}
                     <div class="textAlignLeft paddingTop10 marginLeft5">
-                        <h2 class="marginAuto">{toyName()}</h2>
+                        <h2 class="marginAuto">{toyTypeName()}</h2>
                     </div>
                 </div>
             </div>

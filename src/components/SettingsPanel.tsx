@@ -92,7 +92,7 @@ export default function SetupContainer() {
 
         if(toys != undefined) {
             for(var i = 0; i <= toys.length -1; i++) {
-                if(toys[i].toyName.includes("Empty")){
+                if(toys[i].toyType.includes("Empty")){
                     array[i] = "channelButton";
                 } else {
                     array[i] = "channelButtonActiv";

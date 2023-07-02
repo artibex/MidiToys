@@ -12,7 +12,7 @@ export default function SetupContainer( props: {channel: number}) {
     var toy;
     const [useEffect, setUseEffect] = createSignal(true);
 
-    const [toyName, setToyName] = createSignal("ToyName");
+    const [toyTypeName, setToyTypeName] = createSignal("ToyType");
     //Special settings
     const [horizontalAlign, setHorizontalAlign] = createSignal(true);
     const [strokeWidth, setStrokeWidth] = createSignal(2);
@@ -54,7 +54,7 @@ export default function SetupContainer( props: {channel: number}) {
             if(toy != undefined) {
                 setUseEffect(false);
 
-                setToyName(toy.toyName);
+                setToyTypeName(toy.toyType);
                 setHorizontalAlign(toy.horizontalAlign);
                 setStrokeWidth(toy.strokeWidth);
                 setPolySides(toy.polySides);
@@ -183,6 +183,6 @@ export default function SetupContainer( props: {channel: number}) {
     LoadToy();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
-        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI()}  />
+        <ui.DetailsFillerCenter summeryName={toyTypeName() + " Settings"} content={RenderUI()}  />
     ) 
 }

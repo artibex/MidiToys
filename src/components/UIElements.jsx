@@ -902,7 +902,7 @@ export function OpenSettingsButton(props) {
     var allEmpty = true;
     if(toys != undefined) {
       toys.forEach((element) => {
-        if(!element.toyName.includes("Empty")){
+        if(!element.toyType.includes("Empty")){
           allEmpty = false;
           return;
         }
@@ -959,7 +959,7 @@ export function StartText(props) {
     var allEmpty = true;
     if(toys != undefined) {
       toys.forEach((element) => {
-        if(!element.toyName.includes("Empty")){
+        if(!element.toyType.includes("Empty")){
           allEmpty = false;
           return;
         }
