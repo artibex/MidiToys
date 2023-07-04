@@ -12,8 +12,10 @@ const canvasManager = new CanvasManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
+    
     var toy;
-
+    
+    const [fetchedOnlineData, setFetchedOnlineData] = createSignal([]); //online fetched data
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [presetName, setPresetName] = createSignal("");
     const [matchingItems, setMetchingItems] = createSignal([]);
@@ -26,10 +28,14 @@ export default function SetupContainer( props: {channel: number}) {
         Array.from({ length: 3 }, () => "thinButton")
     );
     
-
-
-    function GetMatchingItems() {
-        setMetchingItems(presetManager.FilterPresetsByType(toy.toyType));      
+    function GetMatchingPresetsLocal() {
+        setMetchingItems(presetManager.FilterPresetsLocal(toy.toyType));      
+    }
+    async function GetMatchingPresetsOnline() {
+        if(toy != undefined && presetManager != undefined) {
+            var data = await presetManager.FilterPresetsOnline(toy.toyType);
+            setFetchedOnlineData(data);
+        }
     }
 
     //Special settings
@@ -43,8 +49,11 @@ export default function SetupContainer( props: {channel: number}) {
         LoadToy();
         if(GetUser() != undefined) {
             setUserLoggedIn(true);
+            // if(lastFetchedData().length > 0) {
+            //     console.log(lastFetchedData()[0].data.presetData);  
+            //     console.log(lastFetchedData()[0].data.presetName);      
+            // }
         }
-
     }
 
     function LoadToy() {
@@ -61,7 +70,8 @@ export default function SetupContainer( props: {channel: number}) {
     if (typeof window !== 'undefined') {
             //Put values here
             if(toy != undefined) {
-                GetMatchingItems();
+                GetMatchingPresetsLocal();
+                if(userLoggedIn()) GetMatchingPresetsOnline();
             }
         }
     }
@@ -102,7 +112,7 @@ export default function SetupContainer( props: {channel: number}) {
             // console.log("presetName() = " + presetName());
             presetManager.SaveNewPresetLocal(presetName(), toy);
             setPresetName(""); //Set it back to empty
-            GetMatchingItems();
+            GetMatchingPresetsLocal();
             UpdateUIValues();
         }
     }
@@ -116,6 +126,11 @@ export default function SetupContainer( props: {channel: number}) {
         UpdateUIValues();
     }
 
+    //Returns whole HTML package
+    function SearchOnlinePresets() {
+        console.log("SEARCH presets online");
+    }
+
     function SaveExistingPresetOnline(pName: string, item) {
         if(pName != "" && pName.length > 4 && toy != undefined) {
             console.log("JSON = " + item.item);
@@ -126,7 +141,7 @@ export default function SetupContainer( props: {channel: number}) {
     //Gives item with key value
     function DeleteLocalPreset(item) {
         presetManager.DeletePresetLocal(item)
-        GetMatchingItems();
+        GetMatchingPresetsLocal();
     }
 
     function DeletePresetOnline(item) {
@@ -140,7 +155,6 @@ export default function SetupContainer( props: {channel: number}) {
         presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
         UpdateUIValues();
     }
-
     function UploadExistingPresetOnline(item) {
         // console.log("Short preset Name =" + pName);
         const pName = GetPresetName(item)
@@ -162,7 +176,6 @@ export default function SetupContainer( props: {channel: number}) {
         // Clean up the URL object
         URL.revokeObjectURL(url);
     }
-
     //Get the name of the preset for button display
     function GetPresetName(item) {
         const split = item.key.split(".");
@@ -209,6 +222,54 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
     
+    function RenderFetchedOnlinePresets() {
+        if(fetchedOnlineData().length > 0)
+        return (
+            <div>
+              {fetchedOnlineData()?.map((item) => (
+                  <div class="flexContainer">
+                          <div class="width60 justifyStart marginRight20">
+                              <ui.Button
+                                  class="thinButton"
+                                  onClick={() => LoadPreset(item.data.presetName)}
+                                  label={item.data.presetName}
+                              />
+                          </div>
+                      <div class="flex justifyEnd width20 marginTopBottomAuto">
+                          <ui.ButtonIcon
+                              icon="material-symbols:download"
+                              class="iconButton"
+                              divClass="marginRight5"
+                              onClick={() => DownloadPreset(item.data.presetData)}
+                          />
+                          {userLoggedIn() && (
+                              <ui.ButtonIcon
+                                  icon="material-symbols:upload-sharp"
+                                  class="iconButton"
+                                  divClass="marginRight5"
+                                  onClick={() => UploadExistingPresetOnline(item.data)}
+                              />
+                          )}
+                          <ui.ButtonIcon
+                              icon="material-symbols:delete-outline"
+                              class="iconButton"
+                              divClass=""
+                              onClick={() => DeleteLocalPreset(item)}
+                          />
+                      </div>
+                  </div>
+              ))}
+          </div>
+        )
+    
+        else {
+            return(
+                <></>
+            )
+        }
+  
+    }
+
     function RenderOnlinePresets() {
         return (
             <div>
@@ -232,7 +293,9 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
 
                 <h3 class="textAlignCenter"> Online Presets</h3>
+                {RenderFetchedOnlinePresets()}
 
+                ///////
                 <br></br>
                 <h3 class="textAlignCenter"> Local Presets</h3>
                 {RenderLocalPresets()}
@@ -288,11 +351,6 @@ export default function SetupContainer( props: {channel: number}) {
         </div>
 
         )
-    }
-
-    //Returns whole HTML package
-    function SearchOnlinePresets() {
-        console.log("SEARCH presets online");
     }
 
     function RenderOnlineSearch() {

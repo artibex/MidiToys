@@ -1,17 +1,21 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, browserLocalPersistence } from 'firebase/auth';
 import { firebaseConfig } from '@env';
-import { getFirestore, persistentLocalCache } from "firebase/firestore";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { FirebaseManager } from "./FirebaseManager";
+
 
 export const app = initializeApp(firebaseConfig);
 export var auth = getAuth(app);
-export const db = getFirestore();
+export var db = getFirestore(app);
 
 var user;
 var userID = undefined;
 
-function AutoLogin() {
+async function AutoLogin() {
     SetUser(auth.currentUser);
+    // FirebaseManager.instance.ReadCollectionData("users/" + GetUserID());
+    // uploadData();
     // console.log("User = " +  auth.currentUser);
 }
 
@@ -39,3 +43,21 @@ export async function SetLocalPersistence() {
 }
 
 SetLocalPersistence();
+
+async function uploadData() {
+    if(auth.currentUser == null || auth.currentUser == undefined) {
+        console.log("USER is UNDEFINED");
+        return;
+    } else console.log(auth.currentUser);
+    const data = {
+      name: "John Doe",
+      age: 25,
+    };
+  
+    try {
+      await setDoc(doc(db, "data", "one"), data);
+      console.log("Document written successfully");
+    } catch (error) {
+      console.log("Error writing document:", error);
+    }
+  }

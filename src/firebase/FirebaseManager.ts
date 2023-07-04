@@ -9,6 +9,8 @@ import { resolve } from "path";
 export class FirebaseManager {
     static instance: FirebaseManager;
 
+    fetchedData: any[] = [];
+
     constructor() {
         if (FirebaseManager.instance) {
         return FirebaseManager.instance;
@@ -19,9 +21,9 @@ export class FirebaseManager {
         // console.log(client.auth);
         // console.log("CONNECTED to Firebase");
         // console.log(client.auth.currentUser);
-        //this.SendSignInLinkToEmail("korbinian.maag@gmail.com");
-        //this.AuthWithEmailLink();
-    }
+        setTimeout(() => {
+          this.ReadCollectionData("users/" + client.GetUserID() + "/polydrum");
+        }, 3000);    }
 
     //Create new email acount
     async EmailSignUp(email, password, username) {
@@ -111,7 +113,6 @@ export class FirebaseManager {
         });
       })
     }
-  
     async SignUpWithGitHub() {
       // Function to handle Google sign-up
       const provider = new GithubAuthProvider();
@@ -132,7 +133,6 @@ export class FirebaseManager {
         });
       })
     }
-
     async SignUpWithTwitter() {
       // Function to handle Google sign-up
       const provider = new TwitterAuthProvider();
@@ -154,6 +154,7 @@ export class FirebaseManager {
       })
     }
 
+    //Use this to create a new preset in user account
     async UploadNewPreset(presetName: string, presetData: string, toyType: string,  publicPreset: boolean) {
       if(presetName == undefined || presetName == "") return false;
       if(presetData == undefined || presetData == "") return false;
@@ -162,7 +163,7 @@ export class FirebaseManager {
       //remove spaces and make everything lowercase
       toyType = toyType.toLowerCase().replace(/\s/g, '');
 
-      const data = {
+      const toyData = {
         presetName: presetName,
         presetData: presetData,
         presetLikes: 0,
@@ -177,19 +178,24 @@ export class FirebaseManager {
       }
       const presetUUID = this.GenerateUniquiePresetID(presetName, presetData, toyType);
 
-      const collectionRef = collection(client.db, "/databases/" + "midi-toys/" + userID + "/" + toyType + "/" + presetUUID);
-      const documentRef = doc(collectionRef);
+      const collectionRef = collection(client.db, "documents/users/" + userID);
+      const documentRef = doc(collectionRef, presetUUID);
 
-      try {
-        await setDoc(documentRef, data);
-        console.log("Preset uploaded successfully.");
-        return true;
-      } catch (error) {
-        console.log("Error uploading preset:", error);
-        return false;
-      }      
+      // console.log("User ID =" + userID);
+      // console.log("db ref =" + client.db);
+      await setDoc(doc(client.db, "users", userID, toyType, presetUUID), {
+        data: toyData
+      })
+      // .then(() => {
+      //   console.log("Document successfully written!");
+      // })
+      // .catch((error) => {
+      //     console.error("Error writing document: ", error);
+      // });
+
     }
 
+    //UUID of the preset to check for dublicates or something idk
     GenerateUniquiePresetID(presetName: string, presetData: string, toyType: string) {
       // Concatenate presetName, presetData, and userID
       const userID = client.GetUserID();
@@ -206,21 +212,25 @@ export class FirebaseManager {
       return uniqueID;
     }
 
-    async ReadCollectionData(collectionName: string): Promise<void> {
+    //Get some sweet ass data
+    async ReadCollectionData(collectionName: string): Promise<any[]> {
       try {
         const collectionRef = collection(client.db, collectionName);
         const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
-        
+        const data: any[] = [];
+    
         querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
+          data.push({ id: doc.id, ...doc.data() });
         });
     
-        console.log("Data read successfully.");
+        // console.log("Data read successfully.");
+        return data;
       } catch (error) {
         console.error("Error reading collection data:", error);
+        return [];
       }
     }
-
+    
     // Function to sign out the user
     SignOut() {
       client.auth.signOut()
@@ -234,6 +244,7 @@ export class FirebaseManager {
         });
     }
 
+    //Works
     SendSignInLinkToEmail(email) {
         if(typeof window == 'undefined') return;
         const actionCodeSettings = {
@@ -252,7 +263,7 @@ export class FirebaseManager {
           });
           window.localStorage.setItem('emailForSignIn', email);
     }
-     
+    //Kinda not works
     AuthWithEmailLink() {
         console.log("REAUTH with EmailLink");
         if(typeof window == "undefined") return;

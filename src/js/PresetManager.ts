@@ -15,21 +15,31 @@ export class PresetManager{
       PresetManager.instance = this;
   }
 
-  FilterPresetsByType(searchStr: string) {
-      const matchingItems = [];
-      var search = searchStr.toLowerCase().replace(/\s/g, '');
+  //Filter by toy type presets from the local storage
+  FilterPresetsLocal(toyType: string) {
+      const matchingItemsLocal = [];
+      var search = toyType.toLowerCase().replace(/\s/g, '');
 
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
     
         if (key.includes(search)) {
           const item = localStorage.getItem(key);
-          matchingItems.push({ key, item });
+          matchingItemsLocal.push({ key, item });
         }
       }
     
       // console.log(matchingItems);
-      return matchingItems;
+      return matchingItemsLocal;
+  }
+
+  //Filter by toy type presets online
+  async FilterPresetsOnline(toyType: string) {
+    toyType = toyType.toLowerCase().replace(/\s/g, '');
+
+    var search = "users/" + client.GetUserID() + "/" + toyType;
+    var data = await firebaseManager.ReadCollectionData(search);
+    return data;
   }
 
   DeletePresetLocal(item) {
