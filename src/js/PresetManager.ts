@@ -48,8 +48,34 @@ export class PresetManager{
     localStorage.removeItem(key);
   }
 
+  async DeletePresetOnline(item) {
+    console.log(item);
+    // console.log(item.data);
+    if(item == undefined) {
+      console.log("DELETE ABORTED, item is undefined");
+      return false;
+    }
+    var parsedJSON;
+    try {
+      parsedJSON = JSON.parse(item.data.presetData);
+    } catch {
+      parsedJSON = item.data.presetData;
+    }
+    
+    var toyType = parsedJSON.toyType.toLowerCase().replace(/\s/g, '');
+
+    const deleteStr = "users/" + client.GetUserID() + "/" + toyType + "/" + item.id
+    
+    //console.log(toyType);
+    // console.log(parsedJSON);
+    // console.log(deleteStr);
+
+    var b = await firebaseManager.RemoveDoc(deleteStr);
+    return b;
+  }
+
   //Delete EVERYTHING out of local storage
-  DeleteAllPresetsLocal() {
+  ClearLocalStorage() {
     localStorage.clear();
   }
 
@@ -78,14 +104,17 @@ export class PresetManager{
     firebaseManager.UploadNewPreset(presetName, jsonObj, toyType, true)
   }
 
-  SaveExistingPresetOnline(presetName: string, jsonObj) {
-    if(presetName.length < 3) return;
-    if(jsonObj == undefined || jsonObj == "") return;
+  async SaveExistingPresetOnline(presetName: string, jsonObj) {
+    if(presetName.length < 3) return false;
+    if(jsonObj == undefined || jsonObj == "") return false;
+    
     var parsed = JSON.parse(jsonObj);
-
-    if(parsed == undefined) return;
-    if(parsed.toyType == undefined || parsed.toyType == "") return;
-    firebaseManager.UploadNewPreset(presetName, jsonObj, parsed.toyType, true);
+    if(parsed == undefined) return false;
+    if(parsed.toyType == undefined || parsed.toyType == "") return false;
+    
+    var b = await firebaseManager.UploadNewPreset(presetName, jsonObj, parsed.toyType, true);
+    if(b) return true;
+    else return false;
   }
 
   SaveNewPresetUploadLocal(saveName: string, jsonObj: string) {

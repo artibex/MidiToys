@@ -206,6 +206,12 @@ export abstract class MIDIToy {
     }
     //Load base data from every toy class
     LoadBaseJSON(data: any) {
+        try {
+            data = JSON.parse(data);
+        } catch{
+            
+        }
+
         if(data.toyType != "" || data.toyType != undefined) this.toyType = data.toyType;
         this.numberOfKeys = data.numberOfKeys;
         this.startKey = data.startKey;

@@ -3,7 +3,7 @@ import { v5 as uuidv5 } from 'uuid';
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider, onIdTokenChanged } from 'firebase/auth';
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, getIdToken } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider, browserLocalPersistence, setPersistence } from "firebase/auth";
-import { collection, getDocs, QuerySnapshot, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { resolve } from "path";
 
 export class FirebaseManager {
@@ -186,13 +186,12 @@ export class FirebaseManager {
       await setDoc(doc(client.db, "users", userID, toyType, presetUUID), {
         data: toyData
       })
-      // .then(() => {
-      //   console.log("Document successfully written!");
-      // })
-      // .catch((error) => {
-      //     console.error("Error writing document: ", error);
-      // });
-
+      .then((event) => {
+        return true;
+      })
+      .catch((error) => {
+        return false;
+      })
     }
 
     //UUID of the preset to check for dublicates or something idk
@@ -231,6 +230,19 @@ export class FirebaseManager {
       }
     }
     
+    async RemoveDoc(documentPath: string) {
+      try {
+        const documentRef = doc(client.db, documentPath);
+        await deleteDoc(documentRef);
+        console.log("Document deleted successfully.");
+        return true;
+      } catch (error) {
+        console.error("Error deleting document:", error);
+        return false;
+      }
+
+    }
+
     // Function to sign out the user
     SignOut() {
       client.auth.signOut()

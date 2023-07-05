@@ -77,8 +77,14 @@ export default function SetupContainer( props: {channel: number}) {
     }
     
     function LoadPreset(item) {
+        console.log(item);
         if(toy != undefined) {
-            toy.LoadJSON(JSON.parse(item.item));
+            try{
+                toy.LoadJSON(item);
+            } catch {
+                toy.LoadJSON(JSON.parse(item));
+            }
+
             // console.log("DONE loading Preset with name = " + item.key);
         }
     }
@@ -144,8 +150,10 @@ export default function SetupContainer( props: {channel: number}) {
         GetMatchingPresetsLocal();
     }
 
-    function DeletePresetOnline(item) {
-
+    async function DeletePresetOnline(item) {
+        console.log("DELETE this preset online: " + item);
+        await presetManager.DeletePresetOnline(item);
+        GetMatchingPresetsOnline();
     }
 
     //Upload a Preset from local system
@@ -155,20 +163,26 @@ export default function SetupContainer( props: {channel: number}) {
         presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
         UpdateUIValues();
     }
-    function UploadExistingPresetOnline(item) {
+    async function UploadExistingPresetOnline(item) {
         // console.log("Short preset Name =" + pName);
         const pName = GetPresetName(item)
-        SaveExistingPresetOnline(pName, item);
+        await SaveExistingPresetOnline(pName, item);
+        UpdateUIValues();
     }
 
     //Open system file explorer and give a JSON file to save
-    function DownloadPreset(item) {
-        const blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
+    function DownloadPreset(name, jsonData) {
+        var blob;
+        blob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
+        // try {
+        //     blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
+        // }
+
         const url = URL.createObjectURL(blob);
 
         const link = document.createElement('a');
         link.href = url;
-        link.download = item.key + ".json";
+        link.download = name + ".json";
       
         // Trigger the click event to initiate the download
         link.click();
@@ -190,7 +204,7 @@ export default function SetupContainer( props: {channel: number}) {
                         <div class="width60 justifyStart marginRight20">
                             <ui.Button
                                 class="thinButton"
-                                onClick={() => LoadPreset(item)}
+                                onClick={() => LoadPreset(item.item)}
                                 label={GetPresetName(item)}
                             />
                         </div>
@@ -199,7 +213,7 @@ export default function SetupContainer( props: {channel: number}) {
                             icon="material-symbols:download"
                             class="iconButton"
                             divClass="marginRight5"
-                            onClick={() => DownloadPreset(item)}
+                            onClick={() => DownloadPreset(item.key, item.item)}
                         />
                         {userLoggedIn() && (
                             <ui.ButtonIcon
@@ -231,7 +245,7 @@ export default function SetupContainer( props: {channel: number}) {
                           <div class="width60 justifyStart marginRight20">
                               <ui.Button
                                   class="thinButton"
-                                  onClick={() => LoadPreset(item.data.presetName)}
+                                  onClick={() => LoadPreset(JSON.stringify(item.data.presetData))}
                                   label={item.data.presetName}
                               />
                           </div>
@@ -240,21 +254,13 @@ export default function SetupContainer( props: {channel: number}) {
                               icon="material-symbols:download"
                               class="iconButton"
                               divClass="marginRight5"
-                              onClick={() => DownloadPreset(item.data.presetData)}
+                              onClick={() => DownloadPreset(item.data.presetName, item.data.presetData)}
                           />
-                          {userLoggedIn() && (
-                              <ui.ButtonIcon
-                                  icon="material-symbols:upload-sharp"
-                                  class="iconButton"
-                                  divClass="marginRight5"
-                                  onClick={() => UploadExistingPresetOnline(item.data)}
-                              />
-                          )}
                           <ui.ButtonIcon
                               icon="material-symbols:delete-outline"
                               class="iconButton"
                               divClass=""
-                              onClick={() => DeleteLocalPreset(item)}
+                              onClick={() => DeletePresetOnline(item)}
                           />
                       </div>
                   </div>
@@ -295,7 +301,6 @@ export default function SetupContainer( props: {channel: number}) {
                 <h3 class="textAlignCenter"> Online Presets</h3>
                 {RenderFetchedOnlinePresets()}
 
-                ///////
                 <br></br>
                 <h3 class="textAlignCenter"> Local Presets</h3>
                 {RenderLocalPresets()}
