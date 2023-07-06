@@ -49,13 +49,13 @@ export class PresetManager{
   }
 
   async DeletePresetOnline(id: string, data) {
-    console.log("Full data = " + data);
+    // console.log("Full data = " + data);
     var jsonData = data;
 
-    console.log("JSON data =" + jsonData);
+    // console.log("JSON data =" + jsonData);
     
     if(jsonData == undefined) {
-      console.log("JSON is undefined");
+      // console.log("JSON is undefined");
       return;
     }
     var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, '');
@@ -72,7 +72,7 @@ export class PresetManager{
 
   //Returns a valid JSO object or undiefined
   GetValidJSON(data) {
-    console.log("not valid JSON = " + data);
+    // console.log("not valid JSON = " + data);
     
     try {
       const jsonObj = JSON.parse(data);
@@ -104,7 +104,7 @@ export class PresetManager{
       const jsonObj = JSON.stringify(toy.ToJSON());
       // presetName = presetName.toLowerCase().replace(/\s/g, '');
       if(jsonObj == null || jsonObj == undefined) {
-        console.log("ERROR: JSON is null");
+        // console.log("ERROR: JSON is null");
         return;
       }
 
