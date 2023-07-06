@@ -48,32 +48,50 @@ export class PresetManager{
     localStorage.removeItem(key);
   }
 
-  async DeletePresetOnline(item) {
-    console.log(item);
-    // console.log(item.data);
-    if(item == undefined) {
-      console.log("DELETE ABORTED, item is undefined");
-      return false;
-    }
-    var parsedJSON;
-    try {
-      parsedJSON = JSON.parse(item.data.presetData);
-    } catch {
-      parsedJSON = item.data.presetData;
-    }
-    
-    var toyType = parsedJSON.toyType.toLowerCase().replace(/\s/g, '');
+  async DeletePresetOnline(id: string, data) {
+    console.log("Full data = " + data);
+    var jsonData = data;
 
-    const deleteStr = "users/" + client.GetUserID() + "/" + toyType + "/" + item.id
+    console.log("JSON data =" + jsonData);
+    
+    if(jsonData == undefined) {
+      console.log("JSON is undefined");
+      return;
+    }
+    var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, '');
+
+
+    const deleteStr = "users/" + client.GetUserID() + "/" + toyType + "/" + id;
     
     //console.log(toyType);
-    // console.log(parsedJSON);
     // console.log(deleteStr);
 
     var b = await firebaseManager.RemoveDoc(deleteStr);
     return b;
   }
 
+  //Returns a valid JSO object or undiefined
+  GetValidJSON(data) {
+    console.log("not valid JSON = " + data);
+    
+    try {
+      const jsonObj = JSON.parse(data);
+      return jsonObj;
+    } catch (error) {
+      try {
+        const cleanedData = data.replace(/\\(.)/g, "$1"); // Remove backslashes
+        const jsonObj = JSON.parse(cleanedData);
+        return jsonObj;
+      } catch (error) {}
+      try {
+        const jsonObj = JSON.parse(data.data);
+        return jsonObj;
+      } catch {}
+    
+    return data;
+    }
+  }
+    
   //Delete EVERYTHING out of local storage
   ClearLocalStorage() {
     localStorage.clear();
@@ -104,15 +122,15 @@ export class PresetManager{
     firebaseManager.UploadNewPreset(presetName, jsonObj, toyType, true)
   }
 
-  async SaveExistingPresetOnline(presetName: string, jsonObj) {
+  async SaveExistingPresetOnline(presetName: string, presetData) {
     if(presetName.length < 3) return false;
-    if(jsonObj == undefined || jsonObj == "") return false;
+    if(presetData == undefined || presetData == "") return false;
     
-    var parsed = JSON.parse(jsonObj);
-    if(parsed == undefined) return false;
-    if(parsed.toyType == undefined || parsed.toyType == "") return false;
+    var jsonObj = this.GetValidJSON(presetData);
+    if(jsonObj == undefined) return false;
+    if(jsonObj.toyType == undefined || jsonObj.toyType == "") return false;
     
-    var b = await firebaseManager.UploadNewPreset(presetName, jsonObj, parsed.toyType, true);
+    var b = await firebaseManager.UploadNewPreset(presetName, presetData, jsonObj.toyType, true);
     if(b) return true;
     else return false;
   }

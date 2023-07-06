@@ -76,14 +76,17 @@ export default function SetupContainer( props: {channel: number}) {
         }
     }
     
-    function LoadPreset(item) {
-        console.log(item);
+    function LoadPreset(data) {
+        console.log("Loading Preset =" + data);
+        const jsonObj = presetManager.GetValidJSON(data);
+
         if(toy != undefined) {
-            try{
-                toy.LoadJSON(item);
-            } catch {
-                toy.LoadJSON(JSON.parse(item));
-            }
+            toy.LoadJSON(jsonObj);
+            // try{
+            //     toy.LoadJSON(jsonObj);
+            // } catch {
+            //     toy.LoadJSON(JSON.parse(item));
+            // }
 
             // console.log("DONE loading Preset with name = " + item.key);
         }
@@ -139,8 +142,9 @@ export default function SetupContainer( props: {channel: number}) {
 
     function SaveExistingPresetOnline(pName: string, item) {
         if(pName != "" && pName.length > 4 && toy != undefined) {
-            console.log("JSON = " + item.item);
-            presetManager.SaveExistingPresetOnline(pName, item.item);
+            // console.log("Upload existing Presets");
+            // console.log("JSON = " + JSON.parse(item.item));
+            presetManager.SaveExistingPresetOnline(pName, JSON.parse(item.item));
         }
     }
 
@@ -150,9 +154,10 @@ export default function SetupContainer( props: {channel: number}) {
         GetMatchingPresetsLocal();
     }
 
-    async function DeletePresetOnline(item) {
-        console.log("DELETE this preset online: " + item);
-        await presetManager.DeletePresetOnline(item);
+    async function DeletePresetOnline(id: string, presetData) {
+        // console.log("DELETE this preset online: " + presetData);
+        // console.log("ID = " + id);
+        await presetManager.DeletePresetOnline(id, presetData);
         GetMatchingPresetsOnline();
     }
 
@@ -245,7 +250,7 @@ export default function SetupContainer( props: {channel: number}) {
                           <div class="width60 justifyStart marginRight20">
                               <ui.Button
                                   class="thinButton"
-                                  onClick={() => LoadPreset(JSON.stringify(item.data.presetData))}
+                                  onClick={() => LoadPreset(item.data.presetData)}
                                   label={item.data.presetName}
                               />
                           </div>
@@ -260,7 +265,7 @@ export default function SetupContainer( props: {channel: number}) {
                               icon="material-symbols:delete-outline"
                               class="iconButton"
                               divClass=""
-                              onClick={() => DeletePresetOnline(item)}
+                              onClick={() => DeletePresetOnline(item.id, item.data.presetData)}
                           />
                       </div>
                   </div>

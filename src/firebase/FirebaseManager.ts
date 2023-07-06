@@ -219,7 +219,7 @@ export class FirebaseManager {
         const data: any[] = [];
     
         querySnapshot.forEach((doc) => {
-          data.push({ id: doc.id, ...doc.data() });
+          data.push({ id: doc.id, ...doc.data()});
         });
     
         // console.log("Data read successfully.");
