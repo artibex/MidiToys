@@ -13,7 +13,7 @@ export default function SetupContainer( props: {channel: number}) {
     var updateToy = false;
 
     const [useEffect, setUseEffect] = createSignal(true);
-    const [toyName, setToyName] = createSignal("ToyName");
+    const [toyTypeName, setToyTypeName] = createSignal("ToyType");
 
 
     //Special settings
@@ -69,7 +69,7 @@ export default function SetupContainer( props: {channel: number}) {
             if(toy != undefined) {
                 setUseEffect(false);
 
-                setToyName(toy.toyName);
+                setToyTypeName(toy.toyType);
                 setShapeLimit(toy.shapeLimit);
                 setPolySides(toy.polySides);
                 setStartSize(toy.startSize);
@@ -224,8 +224,8 @@ export default function SetupContainer( props: {channel: number}) {
 
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
-        // ui.DetailsFillerCenter(toy.toyName + " Settings", RenderUI());
-        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI()} />
+        // ui.DetailsFillerCenter(toy.toyType + " Settings", RenderUI());
+        <ui.DetailsFillerCenter summeryName={toyTypeName() + " Settings"} content={RenderUI()} />
     )
 
 }

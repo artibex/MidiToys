@@ -81,7 +81,7 @@ export class ToyManager
     GetToyType(channel: number) {
         var toy = this.GetToy(channel);
         if(toy != undefined) {
-            var name = toy.toyName;
+            var name = toy.toyType;
             switch(true) {
                 case name.includes("Empty"): return 0;
                 case name.includes("Gravi"): return 1;

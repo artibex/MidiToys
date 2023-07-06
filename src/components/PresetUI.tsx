@@ -4,6 +4,7 @@ import * as utils from "@utils";
 import { PresetManager } from "@presetmanager";
 import { CanvasManager } from "@canvasmanager";
 import {GetUser} from "@firebaseClient";
+import { json } from "stream/consumers";
 
 
 var presetManager = new PresetManager();
@@ -11,8 +12,10 @@ const canvasManager = new CanvasManager();
 
 export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
+    
     var toy;
-
+    
+    const [fetchedOnlineData, setFetchedOnlineData] = createSignal([]); //online fetched data
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [presetName, setPresetName] = createSignal("");
     const [matchingItems, setMetchingItems] = createSignal([]);
@@ -25,10 +28,14 @@ export default function SetupContainer( props: {channel: number}) {
         Array.from({ length: 3 }, () => "thinButton")
     );
     
-
-
-    function GetMatchingItems() {
-        setMetchingItems(presetManager.FilterPresetsByType(toy.toyName));      
+    function GetMatchingPresetsLocal() {
+        setMetchingItems(presetManager.FilterPresetsLocal(toy.toyType));      
+    }
+    async function GetMatchingPresetsOnline() {
+        if(toy != undefined && presetManager != undefined) {
+            var data = await presetManager.FilterPresetsOnline(toy.toyType);
+            setFetchedOnlineData(data);
+        }
     }
 
     //Special settings
@@ -42,8 +49,11 @@ export default function SetupContainer( props: {channel: number}) {
         LoadToy();
         if(GetUser() != undefined) {
             setUserLoggedIn(true);
+            // if(lastFetchedData().length > 0) {
+            //     console.log(lastFetchedData()[0].data.presetData);  
+            //     console.log(lastFetchedData()[0].data.presetName);      
+            // }
         }
-
     }
 
     function LoadToy() {
@@ -60,14 +70,24 @@ export default function SetupContainer( props: {channel: number}) {
     if (typeof window !== 'undefined') {
             //Put values here
             if(toy != undefined) {
-                GetMatchingItems();
+                GetMatchingPresetsLocal();
+                if(userLoggedIn()) GetMatchingPresetsOnline();
             }
         }
     }
     
-    function LoadPreset(item) {
+    function LoadPreset(data) {
+        console.log("Loading Preset =" + data);
+        const jsonObj = presetManager.GetValidJSON(data);
+
         if(toy != undefined) {
-            toy.LoadJSON(JSON.parse(item.item));
+            toy.LoadJSON(jsonObj);
+            // try{
+            //     toy.LoadJSON(jsonObj);
+            // } catch {
+            //     toy.LoadJSON(JSON.parse(item));
+            // }
+
             // console.log("DONE loading Preset with name = " + item.key);
         }
     }
@@ -97,52 +117,77 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     function SaveNewPreset() {
-        if(presetName() != "" && toy != undefined) {
+        if(presetName() != "" && presetName().length > 4 && toy != undefined) {
             // console.log("presetName() = " + presetName());
-            presetManager.SaveNewPresetToyLocal(presetName(), toy);
+            presetManager.SaveNewPresetLocal(presetName(), toy);
             setPresetName(""); //Set it back to empty
-            GetMatchingItems();
+            GetMatchingPresetsLocal();
             UpdateUIValues();
         }
     }
 
-    function SaveNewPresetOnline() {
-        if(presetName() != "") presetManager.SaveNewPresetToyLocal(presetName(), toy);
+    function SaveNewPresetOnline(pName) {
+        if(pName != "" && pName.length > 4 && toy != undefined) {
+            presetManager.SaveNewPresetLocal(pName, toy);
+            presetManager.SaveNewPresetOnline(pName, toy);
+        }
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
+    }
 
+    //Returns whole HTML package
+    function SearchOnlinePresets() {
+        console.log("SEARCH presets online");
+    }
+
+    function SaveExistingPresetOnline(pName: string, item) {
+        if(pName != "" && pName.length > 4 && toy != undefined) {
+            // console.log("Upload existing Presets");
+            // console.log("JSON = " + JSON.parse(item.item));
+            presetManager.SaveExistingPresetOnline(pName, JSON.parse(item.item));
+        }
     }
 
     //Gives item with key value
-    function DeletePreset(item) {
-        presetManager.DeletePreset(item)
-        GetMatchingItems();
+    function DeleteLocalPreset(item) {
+        presetManager.DeletePresetLocal(item)
+        GetMatchingPresetsLocal();
     }
 
-    function DeletePresetOnline(item) {
-
+    async function DeletePresetOnline(id: string, presetData) {
+        // console.log("DELETE this preset online: " + presetData);
+        // console.log("ID = " + id);
+        await presetManager.DeletePresetOnline(id, presetData);
+        GetMatchingPresetsOnline();
     }
 
     //Upload a Preset from local system
-    function UploadPreset(presetName, jsonObj) {
+    function UploadPresetLocal(presetName, jsonObj) {
         // console.log("UPLOAD FILE");
         // console.log("name=" + presetName, " json=" + jsonObj);
-        presetManager.SaveNewPresetUpload(presetName, jsonObj);
+        presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
+        UpdateUIValues();
+    }
+    async function UploadExistingPresetOnline(item) {
+        // console.log("Short preset Name =" + pName);
+        const pName = GetPresetName(item)
+        await SaveExistingPresetOnline(pName, item);
         UpdateUIValues();
     }
 
-    function UploadPresetOnline(jsonObj) {
-
-    }
-
     //Open system file explorer and give a JSON file to save
-    function DownloadPreset(item) {
-        const blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
+    function DownloadPreset(name, jsonData) {
+        var blob;
+        blob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
+        // try {
+        //     blob = new Blob([JSON.stringify(item.item)], { type: 'application/json' });
+        // }
+
         const url = URL.createObjectURL(blob);
 
         const link = document.createElement('a');
         link.href = url;
-        link.download = item.key + ".json";
+        link.download = name + ".json";
       
         // Trigger the click event to initiate the download
         link.click();
@@ -150,7 +195,6 @@ export default function SetupContainer( props: {channel: number}) {
         // Clean up the URL object
         URL.revokeObjectURL(url);
     }
-
     //Get the name of the preset for button display
     function GetPresetName(item) {
         const split = item.key.split(".");
@@ -165,7 +209,7 @@ export default function SetupContainer( props: {channel: number}) {
                         <div class="width60 justifyStart marginRight20">
                             <ui.Button
                                 class="thinButton"
-                                onClick={() => LoadPreset(item)}
+                                onClick={() => LoadPreset(item.item)}
                                 label={GetPresetName(item)}
                             />
                         </div>
@@ -174,69 +218,70 @@ export default function SetupContainer( props: {channel: number}) {
                             icon="material-symbols:download"
                             class="iconButton"
                             divClass="marginRight5"
-                            onClick={() => DownloadPreset(item)}
+                            onClick={() => DownloadPreset(item.key, item.item)}
                         />
                         {userLoggedIn() && (
                             <ui.ButtonIcon
                                 icon="material-symbols:upload-sharp"
                                 class="iconButton"
                                 divClass="marginRight5"
-                                onClick={() => UploadPresetOnline(item)}
+                                onClick={() => UploadExistingPresetOnline(item)}
                             />
                         )}
                         <ui.ButtonIcon
                             icon="material-symbols:delete-outline"
                             class="iconButton"
                             divClass=""
-                            onClick={() => DeletePreset(item)}
+                            onClick={() => DeleteLocalPreset(item)}
                         />
                     </div>
                 </div>
             ))}
         </div>
         )
-        if(userLoggedIn()) {
-            // return (
-            //     <div>
-            //       {matchingItems().map((item) => (
-            //           <div class="flexContainer">
-            //                   <div class="width60 justifyStart marginRight20">
-            //                       <ui.Button
-            //                           class="thinButton"
-            //                           onClick={() => LoadPreset(item)}
-            //                           label={GetPresetName(item)}
-            //                       />
-            //                   </div>
-            //               <div class="flex justifyEnd width20 marginTopBottomAuto">
-            //                 <ui.ButtonIcon
-            //                     icon="material-symbols:download"
-            //                     class="iconButton"
-            //                     divClass="marginRight5"
-            //                     onClick={() => DownloadPreset(item)}
-            //                 />
-            //                 <ui.ButtonIcon
-            //                     icon="material-symbols:upload-sharp"
-            //                     class="iconButton"
-            //                     divClass="marginRight5"
-            //                     onClick={() => UploadPresetOnline(item)}                              
-            //                 />
-            //                 <ui.ButtonIcon
-            //                     icon="material-symbols:delete-outline"
-            //                     class="iconButton"
-            //                     divClass=""
-            //                     onClick={() => DeletePreset(item)}
-            //                 />
-            //               </div>
-            //           </div>
-            //       ))}
-            //   </div>
-            //   )
-              
-        } else {
-        }
     }
     
-    function RenderMyOnlinePresets() {
+    function RenderFetchedOnlinePresets() {
+        if(fetchedOnlineData().length > 0)
+        return (
+            <div>
+              {fetchedOnlineData()?.map((item) => (
+                  <div class="flexContainer">
+                          <div class="width60 justifyStart marginRight20">
+                              <ui.Button
+                                  class="thinButton"
+                                  onClick={() => LoadPreset(item.data.presetData)}
+                                  label={item.data.presetName}
+                              />
+                          </div>
+                      <div class="flex justifyEnd width20 marginTopBottomAuto">
+                          <ui.ButtonIcon
+                              icon="material-symbols:download"
+                              class="iconButton"
+                              divClass="marginRight5"
+                              onClick={() => DownloadPreset(item.data.presetName, item.data.presetData)}
+                          />
+                          <ui.ButtonIcon
+                              icon="material-symbols:delete-outline"
+                              class="iconButton"
+                              divClass=""
+                              onClick={() => DeletePresetOnline(item.id, item.data.presetData)}
+                          />
+                      </div>
+                  </div>
+              ))}
+          </div>
+        )
+    
+        else {
+            return(
+                <></>
+            )
+        }
+  
+    }
+
+    function RenderOnlinePresets() {
         return (
             <div>
                 <div class="flex">
@@ -253,12 +298,13 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
                 <ui.Button 
                     class="thinButton width30"
-                    onClick={() => SaveNewPresetOnline()}
+                    onClick={() => SaveNewPresetOnline(presetName())}
                     label="Save"
                 />
                 </div>
 
                 <h3 class="textAlignCenter"> Online Presets</h3>
+                {RenderFetchedOnlinePresets()}
 
                 <br></br>
                 <h3 class="textAlignCenter"> Local Presets</h3>
@@ -266,7 +312,7 @@ export default function SetupContainer( props: {channel: number}) {
                 <br></br>
                 <div class="justifyCenter">
                     <ui.JsonFileUploader 
-                        onFileUpload={UploadPresetOnline}
+                        onFileUpload={UploadExistingPresetOnline}
                     />
                 </div>
 
@@ -309,17 +355,12 @@ export default function SetupContainer( props: {channel: number}) {
             <br></br>
             <div class="justifyCenter">
                 <ui.JsonFileUploader 
-                    onFileUpload={UploadPreset}
+                    onFileUpload={UploadPresetLocal}
                 />
             </div>
         </div>
 
         )
-    }
-
-    //Returns whole HTML package
-    function SearchOnlinePresets() {
-        console.log("SEARCH presets online");
     }
 
     function RenderOnlineSearch() {
@@ -333,7 +374,7 @@ export default function SetupContainer( props: {channel: number}) {
             case 0: //My Presets
                 return(
                     <div>
-                        {RenderMyOnlinePresets()}
+                        {RenderOnlinePresets()}
                     </div>
                 )
             case 1: //Browse

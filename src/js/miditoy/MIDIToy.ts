@@ -10,11 +10,10 @@ export abstract class MIDIToy {
     //Basic information
     private toyChangedEventListeners: (() => void)[] = [];
 
-    toyName: string; //Name of the toy in the UI
+    toyType: string; //Name of the toy in the UI
     inputManager: InputManager; //InputManager reference
     toyManager: ToyManager; //ToyManager reference
     paperLayer; //The paper layer on whith to draw on
-    // toyName: string; //Name of the toy
     targetChannel: number; //The target MIDi channel of the toy
     bpm: number = 0; //The bpm value to calculate stuff
     
@@ -51,8 +50,8 @@ export abstract class MIDIToy {
 
 
     //Construct everything basic that is needed for a MIDIKeyboard
-    constructor(toyName: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
-        this.toyName = toyName;
+    constructor(toyType: string, targetChannel: number, numberOfKeys: number, startKey: number, useRegExp: boolean) {
+        this.toyType = toyType;
         this.inputManager = new InputManager(); //The Input Manager
         this.toyManager = new ToyManager();
         this.paperLayer = new paper.Layer();
@@ -179,7 +178,7 @@ export abstract class MIDIToy {
     //Base JSON data that this class uses
     GetBaseJSON() {
         return {
-            toyName: this.toyName,
+            toyType: this.toyType,
             numberOfKeys: this.numberOfKeys,
             startKey: this.startKey,
             useRegExp: this.useRegExp,
@@ -207,7 +206,13 @@ export abstract class MIDIToy {
     }
     //Load base data from every toy class
     LoadBaseJSON(data: any) {
-        if(data.toyName != "" || data.toyName != undefined) this.toyName = data.toyName;
+        try {
+            data = JSON.parse(data);
+        } catch{
+            
+        }
+
+        if(data.toyType != "" || data.toyType != undefined) this.toyType = data.toyType;
         this.numberOfKeys = data.numberOfKeys;
         this.startKey = data.startKey;
         this.useRegExp = data.useRegExp;

@@ -14,7 +14,7 @@ export default function SetupContainer( props: {channel: number}) {
     var channel = props.channel;
     const [useEffect, setUseEffect] = createSignal(true);
 
-    const [toyName, setToyName] = createSignal("ToyName");
+    const [toyTypeName, setToyTypeName] = createSignal("ToyType");
     //Special settings
 
     createEffect(() => {
@@ -76,6 +76,6 @@ export default function SetupContainer( props: {channel: number}) {
     LoadToy();
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
-        <ui.DetailsFillerCenter summeryName={toyName() + " Settings"} content={RenderUI()}  />
+        <ui.DetailsFillerCenter summeryName={toyTypeName() + " Settings"} content={RenderUI()}  />
     )
 }

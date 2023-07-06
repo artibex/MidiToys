@@ -40,7 +40,6 @@ export default function SetupContainer( props: {channel: number}) {
                 setUseEffect(true);
             }
         }
-        // else setToyName("Empty");
     }
     //Update Toy data
     function UpdateToyValues() {
