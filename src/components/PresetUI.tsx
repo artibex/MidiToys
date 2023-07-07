@@ -15,7 +15,10 @@ export default function SetupContainer( props: {channel: number}) {
     
     var toy;
     
-    const [fetchedOnlineData, setFetchedOnlineData] = createSignal([]); //online fetched data
+    const [myOnlinePresets, setMyOnlinePresets] = createSignal([]); //My Presets tab
+    const [searchResult, setSearchResult] = createSignal([]); //Search tab
+    const [newestPresets, setNewesPresets] = createSignal([]); //Search tab
+
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [presetName, setPresetName] = createSignal("");
     const [matchingItems, setMetchingItems] = createSignal([]);
@@ -31,10 +34,18 @@ export default function SetupContainer( props: {channel: number}) {
     function GetMatchingPresetsLocal() {
         setMetchingItems(presetManager.FilterPresetsLocal(toy.toyType));      
     }
-    async function GetMatchingPresetsOnline() {
+    async function GetMyPresetsOnline() {
         if(toy != undefined && presetManager != undefined) {
-            var data = await presetManager.FilterPresetsOnline(toy.toyType);
-            setFetchedOnlineData(data);
+            var data = await presetManager.FilterMyPresetsOnline(toy.toyType);
+            setMyOnlinePresets(data);
+        }
+    }
+    async function GetSearchResult(searchStr: string) {
+        if(toy != undefined && presetManager != undefined) {
+            console.log("SEARCH = " + searchStr);
+
+            var data = await presetManager.SearchPresetsOnline(toy.toyType, searchStr);
+            setSearchResult(data);
         }
     }
 
@@ -71,7 +82,7 @@ export default function SetupContainer( props: {channel: number}) {
             //Put values here
             if(toy != undefined) {
                 GetMatchingPresetsLocal();
-                if(userLoggedIn()) GetMatchingPresetsOnline();
+                if(userLoggedIn()) GetMyPresetsOnline();
             }
         }
     }
@@ -116,6 +127,7 @@ export default function SetupContainer( props: {channel: number}) {
         setChannelButtonClass(array);
     }
 
+    //Preset saving
     function SaveNewPreset() {
         if(presetName() != "" && presetName().length > 4 && toy != undefined) {
             // console.log("presetName() = " + presetName());
@@ -125,7 +137,6 @@ export default function SetupContainer( props: {channel: number}) {
             UpdateUIValues();
         }
     }
-
     function SaveNewPresetOnline(pName) {
         if(pName != "" && pName.length > 4 && toy != undefined) {
             presetManager.SaveNewPresetLocal(pName, toy);
@@ -133,11 +144,6 @@ export default function SetupContainer( props: {channel: number}) {
         }
         setPresetName(""); //Set it back to empty
         UpdateUIValues();
-    }
-
-    //Returns whole HTML package
-    function SearchOnlinePresets() {
-        console.log("SEARCH presets online");
     }
 
     function SaveExistingPresetOnline(pName: string, item) {
@@ -153,12 +159,11 @@ export default function SetupContainer( props: {channel: number}) {
         presetManager.DeletePresetLocal(item)
         GetMatchingPresetsLocal();
     }
-
     async function DeletePresetOnline(id: string, presetData) {
         // console.log("DELETE this preset online: " + presetData);
         // console.log("ID = " + id);
         await presetManager.DeletePresetOnline(id, presetData);
-        GetMatchingPresetsOnline();
+        GetMyPresetsOnline();
     }
 
     //Upload a Preset from local system
@@ -170,7 +175,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
     async function UploadExistingPresetOnline(item) {
         // console.log("Short preset Name =" + pName);
-        const pName = GetPresetName(item)
+        const pName = GetLocalPresetName(item)
         await SaveExistingPresetOnline(pName, item);
         UpdateUIValues();
     }
@@ -196,7 +201,7 @@ export default function SetupContainer( props: {channel: number}) {
         URL.revokeObjectURL(url);
     }
     //Get the name of the preset for button display
-    function GetPresetName(item) {
+    function GetLocalPresetName(item) {
         const split = item.key.split(".");
         return split[0];
     }
@@ -210,7 +215,7 @@ export default function SetupContainer( props: {channel: number}) {
                             <ui.Button
                                 class="thinButton"
                                 onClick={() => LoadPreset(item.item)}
-                                label={GetPresetName(item)}
+                                label={GetLocalPresetName(item)}
                             />
                         </div>
                     <div class="flex justifyEnd width20 marginTopBottomAuto">
@@ -240,12 +245,11 @@ export default function SetupContainer( props: {channel: number}) {
         </div>
         )
     }
-    
-    function RenderFetchedOnlinePresets() {
-        if(fetchedOnlineData().length > 0)
+    function RenderMyOnlinePresetsData() {
+        if(myOnlinePresets().length > 0)
         return (
             <div>
-              {fetchedOnlineData()?.map((item) => (
+              {myOnlinePresets()?.map((item) => (
                   <div class="flexContainer">
                           <div class="width60 justifyStart marginRight20">
                               <ui.Button
@@ -281,7 +285,7 @@ export default function SetupContainer( props: {channel: number}) {
   
     }
 
-    function RenderOnlinePresets() {
+    function RenderMyOnlinePresets() {
         return (
             <div>
                 <div class="flex">
@@ -292,7 +296,7 @@ export default function SetupContainer( props: {channel: number}) {
                             // class="textInput"
                             placeholder="Preset"
                             value={presetName()}
-                            onChange={(event) => setPresetName(event.target.value)}
+                            onChange={(event) => setPresetName(event)}
                         />
                     </div>
                 </div>
@@ -304,7 +308,7 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
 
                 <h3 class="textAlignCenter"> Online Presets</h3>
-                {RenderFetchedOnlinePresets()}
+                {RenderMyOnlinePresetsData()}
 
                 <br></br>
                 <h3 class="textAlignCenter"> Local Presets</h3>
@@ -338,7 +342,7 @@ export default function SetupContainer( props: {channel: number}) {
                             // class="textInput"
                             placeholder="Preset"
                             value={presetName()}
-                            onChange={(event) => setPresetName(event.target.value)}
+                            onChange={(event) => setPresetName(event)}
                         />
                     </div>
                 </div>
@@ -363,7 +367,7 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
 
-    function RenderOnlineSearch() {
+    function RenderOnlineSearchData() {
         return(
             <></>
         )
@@ -374,25 +378,25 @@ export default function SetupContainer( props: {channel: number}) {
             case 0: //My Presets
                 return(
                     <div>
-                        {RenderOnlinePresets()}
+                        {RenderMyOnlinePresets()}
                     </div>
                 )
-            case 1: //Browse
+            case 1: //Browse for presets
                 return(
                     <div>
                         <div class="flex justifySpace marginAuto">
                             <ui.TextInput
                                 type="searchInput" 
-                                placeholder="Preset Name, User, or User ID"
-                                onChange={setPresetSearchString()}
+                                placeholder="Preset Name"
+                                onChange={(event) => setPresetSearchString(event)}
                             />
                             <ui.ButtonIcon
                                 icon="mdi:search"
                                 divClass=""
-                                onClick={SearchOnlinePresets}
+                                onClick={() => GetSearchResult(presetSearchString())}
                             />
                         </div>
-                        {RenderOnlineSearch()}
+                        {RenderOnlineSearchData()}
                     </div>
                 )
             case 2: //New

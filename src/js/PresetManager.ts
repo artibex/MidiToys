@@ -34,12 +34,26 @@ export class PresetManager{
   }
 
   //Filter by toy type presets online
-  async FilterPresetsOnline(toyType: string) {
+  async FilterMyPresetsOnline(toyType: string) {
     toyType = toyType.toLowerCase().replace(/\s/g, '');
 
-    var search = "users/" + client.GetUserID() + "/" + toyType;
+    var search = "toys/" + toyType + "/" + client.GetUserID();
     var data = await firebaseManager.ReadCollectionData(search);
     return data;
+  }
+
+  async SearchPresetsOnline(toyType: string, searchStr: string) {
+    toyType = toyType.toLowerCase().replace(/\s/g, '');
+    console.log("SearchPresetsOnline");
+    var data = await firebaseManager.SearchPresetsByPresetName(toyType, searchStr);
+    var filteredData = [];
+
+    data.forEach((result) => {
+      if(result.data.presetData.toyType == toyType) {
+        filteredData.push(result);
+      }
+    })
+    return filteredData;
   }
 
   DeletePresetLocal(item) {

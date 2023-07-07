@@ -3,7 +3,7 @@ import { v5 as uuidv5 } from 'uuid';
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider, onIdTokenChanged } from 'firebase/auth';
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, getIdToken } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider, browserLocalPersistence, setPersistence } from "firebase/auth";
-import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc, DocumentData, query, where } from "firebase/firestore";
 import { resolve } from "path";
 
 export class FirebaseManager {
@@ -21,9 +21,10 @@ export class FirebaseManager {
         // console.log(client.auth);
         // console.log("CONNECTED to Firebase");
         // console.log(client.auth.currentUser);
-        setTimeout(() => {
-          this.ReadCollectionData("users/" + client.GetUserID() + "/polydrum");
-        }, 3000);    }
+        // setTimeout(() => {
+        //   this.ReadCollectionData("users/" + client.GetUserID() + "/polydrum");
+        // }, 3000);    
+      }
 
     //Create new email acount
     async EmailSignUp(email, password, username) {
@@ -176,12 +177,14 @@ export class FirebaseManager {
       }
       const presetUUID = this.GenerateUniquiePresetID(presetName, presetData, toyType);
 
-      const collectionRef = collection(client.db, "documents/users/" + userID);
-      const documentRef = doc(collectionRef, presetUUID);
+      // const collectionRef = collection(client.db, "documents/toys/" + toyType + "/" + userID);
+      // const documentRef = doc(collectionRef, presetUUID);
 
+      var collection = "toys" + "/" + toyType + "/" + userID + "/" + presetUUID;
+      console.log("UPLOAD doc in: " + collection);
       // console.log("User ID =" + userID);
       // console.log("db ref =" + client.db);
-      await setDoc(doc(client.db, "users", userID, toyType, presetUUID), {
+      await setDoc(doc(client.db, collection), {
         data: toyData
       })
       .then((event) => {
@@ -192,25 +195,9 @@ export class FirebaseManager {
       })
     }
 
-    //UUID of the preset to check for dublicates or something idk
-    GenerateUniquiePresetID(presetName: string, presetData: string, toyType: string) {
-      // Concatenate presetName, presetData, and userID
-      const userID = client.GetUserID();
-
-      if(userID == undefined || userID == "") return undefined;
-      if(presetName == undefined || presetName == "") return undefined;
-      if(presetData == undefined || presetData == "") return undefined;
-      if(toyType == undefined || toyType == "") return undefined;
-
-      const combinedData = presetName + presetData + toyType + userID;
-
-      // Generate a UUID based on the combined data
-      const uniqueID = uuidv5(combinedData, uuidv5.URL);
-      return uniqueID;
-    }
-
     //Get some sweet ass data
     async ReadCollectionData(collectionName: string): Promise<any[]> {
+      console.log("SEARCH docs in: " + collectionName);
       try {
         const collectionRef = collection(client.db, collectionName);
         const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
@@ -228,6 +215,40 @@ export class FirebaseManager {
       }
     }
     
+    //Filter some sweet as data
+    async SearchPresetsByPresetName(toyType: string, presetNameSearch: string) {
+      if(presetNameSearch == undefined) return;
+      // const collectionRef = collection(client.db, "/documents/toys");
+      // const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
+
+      try {
+        const querySnapshot: QuerySnapshot = await getDocs(
+          query(
+            collection(client.db, "documents/toys/" + toyType),
+              where("presetName", ">=", presetNameSearch),
+              where("presetName", "<=", presetNameSearch + "\uf8ff")
+        )
+        );
+        // const querySnapshot = await getDocs(
+        //   query(
+        //     collection(), // Replace with the actual collection name in your Firestore
+        //     // where("presetName", ">=", presetNameSearch),
+        //     // where("presetName", "<=", presetNameSearch + "\uf8ff")
+        //   )
+        // );
+    
+        const matchingPresets: DocumentData[] = [];
+        querySnapshot.forEach((doc) => {
+          matchingPresets.push({ id: doc.id, ...doc.data()});
+        });
+
+        return matchingPresets;
+      } catch (error) {
+        console.error("Error searching presets:", error);
+        throw error;
+      }
+    }
+
     async RemoveDoc(documentPath: string) {
       try {
         const documentRef = doc(client.db, documentPath);
@@ -254,6 +275,23 @@ export class FirebaseManager {
         });
     }
 
+    //UUID of the preset to check for dublicates or something idk
+    GenerateUniquiePresetID(presetName: string, presetData: string, toyType: string) {
+      // Concatenate presetName, presetData, and userID
+      const userID = client.GetUserID();
+
+      if(userID == undefined || userID == "") return undefined;
+      if(presetName == undefined || presetName == "") return undefined;
+      if(presetData == undefined || presetData == "") return undefined;
+      if(toyType == undefined || toyType == "") return undefined;
+
+      const combinedData = presetName + presetData + toyType + userID;
+
+      // Generate a UUID based on the combined data
+      const uniqueID = uuidv5(combinedData, uuidv5.URL);
+      return uniqueID;
+    }
+    
     //Works
     SendSignInLinkToEmail(email) {
         if(typeof window == 'undefined') return;

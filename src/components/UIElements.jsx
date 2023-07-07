@@ -96,7 +96,8 @@ export function TextInput(props) {
 
   function HandleOnChange(event) {
     if (props.onChange !== undefined) {
-      props.onChange(event);
+      // console.log(event.target.value);
+      props.onChange(event.target.value);
     }
   };
 
