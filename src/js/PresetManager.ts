@@ -75,7 +75,7 @@ export class PresetManager{
     var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, '');
 
 
-    const deleteStr = "users/" + client.GetUserID() + "/" + toyType + "/" + id;
+    const deleteStr = "toys/" + toyType + "/" + client.GetUserID() + "/" + id;
     
     //console.log(toyType);
     // console.log(deleteStr);

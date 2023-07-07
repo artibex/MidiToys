@@ -224,11 +224,11 @@ export class FirebaseManager {
       try {
         const querySnapshot: QuerySnapshot = await getDocs(
           query(
-            collection(client.db, "documents/toys/" + toyType),
-              where("presetName", ">=", presetNameSearch),
-              where("presetName", "<=", presetNameSearch + "\uf8ff")
-        )
-        );
+            collection(client.db, "toys"),
+            // where("toyType", "==", toyType),
+            where("presetName", ">=", presetNameSearch),
+            where("presetName", "<=", presetNameSearch + "\uf8ff")
+        ));
         // const querySnapshot = await getDocs(
         //   query(
         //     collection(), // Replace with the actual collection name in your Firestore
@@ -239,9 +239,12 @@ export class FirebaseManager {
     
         const matchingPresets: DocumentData[] = [];
         querySnapshot.forEach((doc) => {
-          matchingPresets.push({ id: doc.id, ...doc.data()});
+          if(doc.data().presetData.toyType == toyType) {
+            matchingPresets.push({ id: doc.id, ...doc.data()});
+          }
         });
 
+        console.log(matchingPresets);
         return matchingPresets;
       } catch (error) {
         console.error("Error searching presets:", error);
@@ -250,6 +253,7 @@ export class FirebaseManager {
     }
 
     async RemoveDoc(documentPath: string) {
+      console.log("PATH = " + documentPath);
       try {
         const documentRef = doc(client.db, documentPath);
         await deleteDoc(documentRef);
