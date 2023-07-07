@@ -235,23 +235,21 @@ export class FirebaseManager {
       try {
         const querySnapshot: QuerySnapshot = await getDocs(
           query(
-            collection(client.db, "toys"),
-            // where("toyType", "==", toyType),
-            where("presetName", ">=", presetNameSearch),
-            where("presetName", "<=", presetNameSearch + "\uf8ff")
+            collection(client.db, "toys/"),
+            where("__name__", "==", toyType),
         ));
-        console.log("Snapshot = " + querySnapshot);
+        console.log(querySnapshot);
 
         const matchingPresets: DocumentData[] = [];
         querySnapshot.forEach((doc) => {
-          console.log(doc);
-          console.log(doc.data().presetData.toyType);
-          if(doc.data().presetData.toyType == toyType) {
-            matchingPresets.push({ id: doc.id, ...doc.data()});
-          }
+          console.log(doc.data().presetName);
+          matchingPresets.push({ id: doc.id, ...doc.data()});
+          // if(doc.data().presetData.toyType == toyType) {
+          //   matchingPresets.push({ id: doc.id, ...doc.data()});
+          // }re
         });
 
-        console.log(matchingPresets);
+        console.log(matchingPresets[0]);
         return matchingPresets;
       } catch (error) {
         console.error("Error searching presets:", error);
