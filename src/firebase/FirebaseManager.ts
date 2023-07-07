@@ -166,8 +166,6 @@ export class FirebaseManager {
       const toyData = {
         presetName: presetName,
         presetData: presetData,
-        presetLikes: 0,
-        presetDownloads: 0,
         publicPreset: publicPreset
       }
 
