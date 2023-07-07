@@ -129,26 +129,18 @@ export default function SetupContainer( props: {channel: number}) {
 
     //Preset saving
     function SaveNewPreset() {
-        if(presetName() != "" && presetName().length > 4 && toy != undefined) {
+        if(presetName() != "" && presetName().length > 3 && toy != undefined) {
             // console.log("presetName() = " + presetName());
             presetManager.SaveNewPresetLocal(presetName(), toy);
             if(userLoggedIn() == true) {
                 presetManager.SaveNewPresetOnline(presetName(), toy);
             }
             
-            setPresetName(""); //Set it back to empty
             GetMatchingPresetsLocal();
             UpdateUIValues();
+            setPresetName(""); //Set it back to empty
         } else console.log("Preset Name is null");
     }
-    // function SaveNewPresetOnline(pName) {
-    //     if(pName != "" && pName.length > 4 && toy != undefined) {
-    //         presetManager.SaveNewPresetLocal(pName, toy);
-    //         presetManager.SaveNewPresetOnline(pName, toy);
-    //     }
-    //     setPresetName(""); //Set it back to empty
-    //     UpdateUIValues();
-    // }
 
     function SaveExistingPresetOnline(pName: string, item) {
         if(pName != "" && pName.length > 4 && toy != undefined) {
