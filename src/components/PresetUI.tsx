@@ -132,19 +132,23 @@ export default function SetupContainer( props: {channel: number}) {
         if(presetName() != "" && presetName().length > 4 && toy != undefined) {
             // console.log("presetName() = " + presetName());
             presetManager.SaveNewPresetLocal(presetName(), toy);
+            if(userLoggedIn() == true) {
+                presetManager.SaveNewPresetOnline(presetName(), toy);
+            }
+            
             setPresetName(""); //Set it back to empty
             GetMatchingPresetsLocal();
             UpdateUIValues();
-        }
+        } else console.log("Preset Name is null");
     }
-    function SaveNewPresetOnline(pName) {
-        if(pName != "" && pName.length > 4 && toy != undefined) {
-            presetManager.SaveNewPresetLocal(pName, toy);
-            presetManager.SaveNewPresetOnline(pName, toy);
-        }
-        setPresetName(""); //Set it back to empty
-        UpdateUIValues();
-    }
+    // function SaveNewPresetOnline(pName) {
+    //     if(pName != "" && pName.length > 4 && toy != undefined) {
+    //         presetManager.SaveNewPresetLocal(pName, toy);
+    //         presetManager.SaveNewPresetOnline(pName, toy);
+    //     }
+    //     setPresetName(""); //Set it back to empty
+    //     UpdateUIValues();
+    // }
 
     function SaveExistingPresetOnline(pName: string, item) {
         if(pName != "" && pName.length > 4 && toy != undefined) {
@@ -302,7 +306,8 @@ export default function SetupContainer( props: {channel: number}) {
                 </div>
                 <ui.Button 
                     class="thinButton width30"
-                    onClick={() => SaveNewPresetOnline(presetName())}
+                    id="SaveOnline"
+                    onClick={() => SaveNewPreset()}
                     label="Save"
                 />
                 </div>
@@ -350,6 +355,7 @@ export default function SetupContainer( props: {channel: number}) {
                     class="thinButton width30"
                     onClick={() => SaveNewPreset()}
                     label="Save"
+                    id="Save Local"
                 />
                 </div>
 
