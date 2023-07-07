@@ -157,10 +157,20 @@ export class FirebaseManager {
 
     //Use this to create a new preset in user account
     async UploadNewPreset(presetName: string, presetData: string, toyType: string,  publicPreset: boolean) {
-      if(presetName == undefined || presetName == "") return false;
-      if(presetData == undefined || presetData == "") return false;
-      if(toyType == undefined || toyType == "") return false;
+      if(presetName == undefined || presetName == "") {
+        console.log("presetName is null")
+        return false;
+      } 
+      if(presetData == undefined || presetData == "") {
+        console.log("presetData is null")
+        return false;
+      }
+      if(toyType == undefined || toyType == "") {
+        console.log("toyType is null")
+        return false;
+      }
 
+      console.log("UPLOAD preset");
       //remove spaces and make everything lowercase
       toyType = toyType.toLowerCase().replace(/\s/g, '');
 
@@ -217,6 +227,7 @@ export class FirebaseManager {
     
     //Filter some sweet as data
     async SearchPresetsByPresetName(toyType: string, presetNameSearch: string) {
+      console.log("FILTER online presets. toyType = "+ toyType + " search = " + presetNameSearch);
       if(presetNameSearch == undefined) return;
       // const collectionRef = collection(client.db, "/documents/toys");
       // const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
@@ -229,16 +240,12 @@ export class FirebaseManager {
             where("presetName", ">=", presetNameSearch),
             where("presetName", "<=", presetNameSearch + "\uf8ff")
         ));
-        // const querySnapshot = await getDocs(
-        //   query(
-        //     collection(), // Replace with the actual collection name in your Firestore
-        //     // where("presetName", ">=", presetNameSearch),
-        //     // where("presetName", "<=", presetNameSearch + "\uf8ff")
-        //   )
-        // );
-    
+        console.log("Snapshot = " + querySnapshot);
+
         const matchingPresets: DocumentData[] = [];
         querySnapshot.forEach((doc) => {
+          console.log(doc);
+          console.log(doc.data().presetData.toyType);
           if(doc.data().presetData.toyType == toyType) {
             matchingPresets.push({ id: doc.id, ...doc.data()});
           }

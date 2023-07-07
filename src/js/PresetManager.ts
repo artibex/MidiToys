@@ -74,7 +74,6 @@ export class PresetManager{
     }
     var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, '');
 
-
     const deleteStr = "toys/" + toyType + "/" + client.GetUserID() + "/" + id;
     
     //console.log(toyType);
@@ -129,7 +128,11 @@ export class PresetManager{
   }
 
   SaveNewPresetOnline(presetName: string, toy: any) {
-    if(toy == undefined) return;
+    console.log("SaveNewPresetOnline");
+    if(toy == undefined) {
+      console.log("toy is undefined");
+      return;
+    }
     const toyType = toy.toyType.toLowerCase().replace(/\s/g, '');
     const jsonObj = toy.ToJSON();
     
