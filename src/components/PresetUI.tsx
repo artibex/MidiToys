@@ -250,8 +250,8 @@ export default function SetupContainer( props: {channel: number}) {
                           <div class="width60 justifyStart marginRight20">
                               <ui.Button
                                   class="thinButton"
-                                  onClick={() => LoadPreset(item.data.presetData)}
-                                  label={item.data.presetName}
+                                  onClick={() => LoadPreset(item.presetData)}
+                                  label={item.presetName}
                               />
                           </div>
                       <div class="flex justifyEnd width20 marginTopBottomAuto">
@@ -259,13 +259,13 @@ export default function SetupContainer( props: {channel: number}) {
                               icon="material-symbols:download"
                               class="iconButton"
                               divClass="marginRight5"
-                              onClick={() => DownloadPreset(item.data.presetName, item.data.presetData)}
+                              onClick={() => DownloadPreset(item.presetName, item.presetData)}
                           />
                           <ui.ButtonIcon
                               icon="material-symbols:delete-outline"
                               class="iconButton"
                               divClass=""
-                              onClick={() => DeletePresetOnline(item.id, item.data.presetData)}
+                              onClick={() => DeletePresetOnline(item.id, item.presetData)}
                           />
                       </div>
                   </div>

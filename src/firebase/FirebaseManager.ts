@@ -3,7 +3,7 @@ import { v5 as uuidv5 } from 'uuid';
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider, onIdTokenChanged } from 'firebase/auth';
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, getIdToken } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider, browserLocalPersistence, setPersistence } from "firebase/auth";
-import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc, DocumentData, query, where } from "firebase/firestore";
+import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc, DocumentData, query, where, collectionGroup, orderBy } from "firebase/firestore";
 import { resolve } from "path";
 
 export class FirebaseManager {
@@ -174,28 +174,35 @@ export class FirebaseManager {
       //remove spaces and make everything lowercase
       toyType = toyType.toLowerCase().replace(/\s/g, '');
 
-      const toyData = {
-        presetName: presetName,
-        presetData: presetData,
-        publicPreset: publicPreset
-      }
-
       const userID = client.GetUserID();
+
+      // const toyData = {
+      //   userID: userID,
+      //   presetName: presetName,
+      //   presetData: presetData,
+      //   publicPreset: publicPreset
+      // }
+
       if(userID == undefined) { //Check user ID
         console.log("ERROR: User-ID is undefined");
         return false;
       }
-      const presetUUID = this.GenerateUniquiePresetID(presetName, presetData, toyType);
+      const presetUUID = this.GenerateUniquiePresetID(presetName, presetData, userID);
 
       // const collectionRef = collection(client.db, "documents/toys/" + toyType + "/" + userID);
       // const documentRef = doc(collectionRef, presetUUID);
 
-      var collection = "toys" + "/" + toyType + "/" + userID + "/" + presetUUID;
+      // var collection = "toys" + "/" + toyType + "/" + userID + "/" + presetUUID;
+      const collection = toyType + "/" + presetUUID;
+
       console.log("UPLOAD doc in: " + collection);
       // console.log("User ID =" + userID);
       // console.log("db ref =" + client.db);
       await setDoc(doc(client.db, collection), {
-        data: toyData
+        userID: userID,
+        presetName: presetName,
+        presetData: presetData,
+        publicPreset: publicPreset
       })
       .then((event) => {
         return true;
@@ -206,11 +213,14 @@ export class FirebaseManager {
     }
 
     //Get some sweet ass data
-    async ReadCollectionData(collectionName: string): Promise<any[]> {
-      console.log("SEARCH docs in: " + collectionName);
+    async ReadMyPresets(toyType: string): Promise<any[]> {
+      console.log("GET MyCollection: " + toyType);
       try {
-        const collectionRef = collection(client.db, collectionName);
-        const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
+        const q = query(
+          collection(client.db, toyType),
+          where("userID", "==", client.GetUserID()),
+        );
+        const querySnapshot: QuerySnapshot = await getDocs(q);
         const data: any[] = [];
     
         querySnapshot.forEach((doc) => {
@@ -218,6 +228,7 @@ export class FirebaseManager {
         });
     
         // console.log("Data read successfully.");
+        console.log(data[0]);
         return data;
       } catch (error) {
         console.error("Error reading collection data:", error);
@@ -232,21 +243,25 @@ export class FirebaseManager {
       // const collectionRef = collection(client.db, "/documents/toys");
       // const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
 
+
+      const q = query(collectionGroup(client.db, toyType));
+      const q2 = query(
+        collection(client.db, "toys"),
+        orderBy("presetName"), // Sort by presetName
+        where("presetName", ">=", presetNameSearch),
+        where("presetName", "<=", presetNameSearch + "\uf8ff")
+      );
+
       try {
-        const querySnapshot: QuerySnapshot = await getDocs(
-          query(
-            collection(client.db, "toys/"),
-            where("__name__", "==", toyType),
-        ));
+        const querySnapshot: QuerySnapshot = await getDocs(q2);
         console.log(querySnapshot);
 
         const matchingPresets: DocumentData[] = [];
         querySnapshot.forEach((doc) => {
-          console.log(doc.data().presetName);
-          matchingPresets.push({ id: doc.id, ...doc.data()});
-          // if(doc.data().presetData.toyType == toyType) {
-          //   matchingPresets.push({ id: doc.id, ...doc.data()});
-          // }re
+          console.log(doc);
+          // const userId = doc.ref.parent.parent.id;
+          // console.log("User-ID = " + userId);
+          // matchingPresets.push({ userId, presetId: doc.id, ...doc.data() });
         });
 
         console.log(matchingPresets[0]);

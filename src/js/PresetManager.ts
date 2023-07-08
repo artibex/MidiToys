@@ -37,8 +37,9 @@ export class PresetManager{
   async FilterMyPresetsOnline(toyType: string) {
     toyType = toyType.toLowerCase().replace(/\s/g, '');
 
+    // var search = "toys/" + toyType + "/" + client.GetUserID();
     var search = "toys/" + toyType + "/" + client.GetUserID();
-    var data = await firebaseManager.ReadCollectionData(search);
+    var data = await firebaseManager.ReadMyPresets(toyType);
     return data;
   }
 
@@ -74,7 +75,7 @@ export class PresetManager{
     }
     var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, '');
 
-    const deleteStr = "toys/" + toyType + "/" + client.GetUserID() + "/" + id;
+    const deleteStr = toyType + "/" + id;
     
     //console.log(toyType);
     // console.log(deleteStr);
