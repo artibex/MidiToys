@@ -34,11 +34,26 @@ export class PresetManager{
   }
 
   //Filter by toy type presets online
-  async FilterPresetsOnline(toyType: string) {
+  async FilterMyPresetsOnline(toyType: string) {
     toyType = toyType.toLowerCase().replace(/\s/g, '');
 
-    var search = "users/" + client.GetUserID() + "/" + toyType;
-    var data = await firebaseManager.ReadCollectionData(search);
+    // var search = "toys/" + toyType + "/" + client.GetUserID();
+    // var search = "toys/" + toyType + "/" + client.GetUserID();
+    var data = await firebaseManager.ReadMyPresets(toyType);
+    return data;
+  }
+
+  async SearchPresetsOnline(toyType: string, searchStr: string) {
+    toyType = toyType.toLowerCase().replace(/\s/g, '');
+    console.log("SearchPresetsOnline");
+    var data = await firebaseManager.SearchPresetsByPresetName(toyType, searchStr);
+    // var filteredData = [];
+
+    // data.forEach((result) => {
+    //   if(result.presetData.toyType == toyType) {
+    //     filteredData.push(result);
+    //   }
+    // })
     return data;
   }
 
@@ -60,8 +75,7 @@ export class PresetManager{
     }
     var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, '');
 
-
-    const deleteStr = "users/" + client.GetUserID() + "/" + toyType + "/" + id;
+    const deleteStr = toyType + "/" + id;
     
     //console.log(toyType);
     // console.log(deleteStr);
@@ -115,7 +129,11 @@ export class PresetManager{
   }
 
   SaveNewPresetOnline(presetName: string, toy: any) {
-    if(toy == undefined) return;
+    console.log("SaveNewPresetOnline");
+    if(toy == undefined) {
+      console.log("toy is undefined");
+      return;
+    }
     const toyType = toy.toyType.toLowerCase().replace(/\s/g, '');
     const jsonObj = toy.ToJSON();
     

@@ -15,7 +15,10 @@ export default function SetupContainer( props: {channel: number}) {
     
     var toy;
     
-    const [fetchedOnlineData, setFetchedOnlineData] = createSignal([]); //online fetched data
+    const [myOnlinePresets, setMyOnlinePresets] = createSignal([]); //My Presets tab
+    const [searchResult, setSearchResult] = createSignal([]); //Search tab
+    const [newestPresets, setNewesPresets] = createSignal([]); //Search tab
+
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [presetName, setPresetName] = createSignal("");
     const [matchingItems, setMetchingItems] = createSignal([]);
@@ -28,13 +31,23 @@ export default function SetupContainer( props: {channel: number}) {
         Array.from({ length: 3 }, () => "thinButton")
     );
     
+    //Preset Data loading
     function GetMatchingPresetsLocal() {
         setMetchingItems(presetManager.FilterPresetsLocal(toy.toyType));      
     }
-    async function GetMatchingPresetsOnline() {
+    async function GetMyPresetsOnline() {
         if(toy != undefined && presetManager != undefined) {
-            var data = await presetManager.FilterPresetsOnline(toy.toyType);
-            setFetchedOnlineData(data);
+            var data = await presetManager.FilterMyPresetsOnline(toy.toyType);
+            setMyOnlinePresets(data);
+        }
+    }
+    async function GetSearchResult(searchStr: string) {
+        if(toy != undefined && presetManager != undefined) {
+            // console.log("SEARCH = " + searchStr);
+
+            var data = await presetManager.SearchPresetsOnline(toy.toyType, searchStr);
+            setSearchResult(data);
+            // console.log(data);
         }
     }
 
@@ -71,13 +84,13 @@ export default function SetupContainer( props: {channel: number}) {
             //Put values here
             if(toy != undefined) {
                 GetMatchingPresetsLocal();
-                if(userLoggedIn()) GetMatchingPresetsOnline();
+                // if(userLoggedIn()) GetMyPresetsOnline();
             }
         }
     }
     
     function LoadPreset(data) {
-        console.log("Loading Preset =" + data);
+        // console.log("Loading Preset =" + data);
         const jsonObj = presetManager.GetValidJSON(data);
 
         if(toy != undefined) {
@@ -116,51 +129,32 @@ export default function SetupContainer( props: {channel: number}) {
         setChannelButtonClass(array);
     }
 
+    //Preset saving
     function SaveNewPreset() {
-        if(presetName() != "" && presetName().length > 4 && toy != undefined) {
+        if(presetName() != "" && presetName().length > 2 && toy != undefined) {
             // console.log("presetName() = " + presetName());
             presetManager.SaveNewPresetLocal(presetName(), toy);
-            setPresetName(""); //Set it back to empty
+            if(userLoggedIn() == true) {
+                presetManager.SaveNewPresetOnline(presetName(), toy);
+            }
+            
             GetMatchingPresetsLocal();
             UpdateUIValues();
-        }
-    }
+            GetMyPresetsOnline();
 
-    function SaveNewPresetOnline(pName) {
-        if(pName != "" && pName.length > 4 && toy != undefined) {
-            presetManager.SaveNewPresetLocal(pName, toy);
-            presetManager.SaveNewPresetOnline(pName, toy);
-        }
-        setPresetName(""); //Set it back to empty
-        UpdateUIValues();
+            setPresetName(""); //Set it back to empty
+        } else console.log("Preset Name is null");
     }
-
-    //Returns whole HTML package
-    function SearchOnlinePresets() {
-        console.log("SEARCH presets online");
-    }
-
-    function SaveExistingPresetOnline(pName: string, item) {
-        if(pName != "" && pName.length > 4 && toy != undefined) {
-            // console.log("Upload existing Presets");
-            // console.log("JSON = " + JSON.parse(item.item));
+    async function UploadExistingPresetOnline(item) {
+        const pName = GetLocalPresetName(item)
+        if(pName != "" && pName.length > 2 && toy != undefined) {
             presetManager.SaveExistingPresetOnline(pName, JSON.parse(item.item));
-        }
+        } else console.log("pName is null, can't upload preset");
+        // console.log("Short preset Name =" + pName);
+        // await SaveExistingPresetOnline(pName, item);
+        UpdateUIValues();
+        GetMyPresetsOnline();
     }
-
-    //Gives item with key value
-    function DeleteLocalPreset(item) {
-        presetManager.DeletePresetLocal(item)
-        GetMatchingPresetsLocal();
-    }
-
-    async function DeletePresetOnline(id: string, presetData) {
-        // console.log("DELETE this preset online: " + presetData);
-        // console.log("ID = " + id);
-        await presetManager.DeletePresetOnline(id, presetData);
-        GetMatchingPresetsOnline();
-    }
-
     //Upload a Preset from local system
     function UploadPresetLocal(presetName, jsonObj) {
         // console.log("UPLOAD FILE");
@@ -168,10 +162,16 @@ export default function SetupContainer( props: {channel: number}) {
         presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
         UpdateUIValues();
     }
-    async function UploadExistingPresetOnline(item) {
-        // console.log("Short preset Name =" + pName);
-        const pName = GetPresetName(item)
-        await SaveExistingPresetOnline(pName, item);
+
+    function DeleteLocalPreset(item) {
+        presetManager.DeletePresetLocal(item)
+        GetMatchingPresetsLocal();
+    }
+    async function DeletePresetOnline(id: string, presetData) {
+        // console.log("DELETE this preset online: " + presetData);
+        // console.log("ID = " + id);
+        await presetManager.DeletePresetOnline(id, presetData);
+        GetMyPresetsOnline();
         UpdateUIValues();
     }
 
@@ -196,11 +196,12 @@ export default function SetupContainer( props: {channel: number}) {
         URL.revokeObjectURL(url);
     }
     //Get the name of the preset for button display
-    function GetPresetName(item) {
+    function GetLocalPresetName(item) {
         const split = item.key.split(".");
         return split[0];
     }
 
+    //Preset rendering
     function RenderLocalPresets() {            
         return (
           <div>
@@ -210,7 +211,7 @@ export default function SetupContainer( props: {channel: number}) {
                             <ui.Button
                                 class="thinButton"
                                 onClick={() => LoadPreset(item.item)}
-                                label={GetPresetName(item)}
+                                label={GetLocalPresetName(item)}
                             />
                         </div>
                     <div class="flex justifyEnd width20 marginTopBottomAuto">
@@ -240,18 +241,17 @@ export default function SetupContainer( props: {channel: number}) {
         </div>
         )
     }
-    
-    function RenderFetchedOnlinePresets() {
-        if(fetchedOnlineData().length > 0)
+    function RenderMyOnlinePresetsData() {
+        if(myOnlinePresets().length > 0)
         return (
             <div>
-              {fetchedOnlineData()?.map((item) => (
+              {myOnlinePresets()?.map((item) => (
                   <div class="flexContainer">
                           <div class="width60 justifyStart marginRight20">
                               <ui.Button
                                   class="thinButton"
-                                  onClick={() => LoadPreset(item.data.presetData)}
-                                  label={item.data.presetName}
+                                  onClick={() => LoadPreset(item.presetData)}
+                                  label={item.presetName}
                               />
                           </div>
                       <div class="flex justifyEnd width20 marginTopBottomAuto">
@@ -259,13 +259,13 @@ export default function SetupContainer( props: {channel: number}) {
                               icon="material-symbols:download"
                               class="iconButton"
                               divClass="marginRight5"
-                              onClick={() => DownloadPreset(item.data.presetName, item.data.presetData)}
+                              onClick={() => DownloadPreset(item.presetName, item.presetData)}
                           />
                           <ui.ButtonIcon
                               icon="material-symbols:delete-outline"
                               class="iconButton"
                               divClass=""
-                              onClick={() => DeletePresetOnline(item.id, item.data.presetData)}
+                              onClick={() => DeletePresetOnline(item.id, item.presetData)}
                           />
                       </div>
                   </div>
@@ -278,10 +278,47 @@ export default function SetupContainer( props: {channel: number}) {
                 <></>
             )
         }
-  
+    }
+    function RenderOnlineSearchData() {
+        if(searchResult().length > 0)
+        return (
+            <div>
+              {searchResult()?.map((item) => (
+                  <div class="flexContainer">
+                          <div class="width800 justifyStart marginRight20">
+                              <ui.Button
+                                  class="thinButton"
+                                  onClick={() => LoadPreset(item.presetData)}
+                                  label={item.presetName}
+                              />
+                          </div>
+                      <div class="flex justifyEnd width10 marginTopBottomAuto">
+                          <ui.ButtonIcon
+                              icon="material-symbols:download"
+                              class="iconButton"
+                              divClass="marginRight5"
+                              onClick={() => DownloadPreset(item.presetName, item.presetData)}
+                          />
+                          {/* <ui.ButtonIcon
+                              icon="material-symbols:delete-outline"
+                              class="iconButton"
+                              divClass=""
+                              onClick={() => DeletePresetOnline(item.id, item.presetData)}
+                          /> */}
+                      </div>
+                  </div>
+              ))}
+          </div>
+        )
+    
+        else {
+            return(
+                <></>
+            )
+        }
     }
 
-    function RenderOnlinePresets() {
+    function RenderMyOnlinePresetsTab() {
         return (
             <div>
                 <div class="flex">
@@ -292,19 +329,20 @@ export default function SetupContainer( props: {channel: number}) {
                             // class="textInput"
                             placeholder="Preset"
                             value={presetName()}
-                            onChange={(event) => setPresetName(event.target.value)}
+                            onChange={(event) => setPresetName(event)}
                         />
                     </div>
                 </div>
                 <ui.Button 
                     class="thinButton width30"
-                    onClick={() => SaveNewPresetOnline(presetName())}
+                    id="SaveOnline"
+                    onClick={() => SaveNewPreset()}
                     label="Save"
                 />
                 </div>
 
                 <h3 class="textAlignCenter"> Online Presets</h3>
-                {RenderFetchedOnlinePresets()}
+                {RenderMyOnlinePresetsData()}
 
                 <br></br>
                 <h3 class="textAlignCenter"> Local Presets</h3>
@@ -316,6 +354,25 @@ export default function SetupContainer( props: {channel: number}) {
                     />
                 </div>
 
+            </div>
+        )
+    }
+    function RenderSearchPresetsTab() {
+        return(
+            <div>
+                <div class="flex justifySpace marginAuto">
+                    <ui.TextInput
+                        type="searchInput" 
+                        placeholder="Preset Name"
+                        onChange={(event) => setPresetSearchString(event)}
+                    />
+                    <ui.ButtonIcon
+                        icon="mdi:search"
+                        divClass=""
+                        onClick={() => GetSearchResult(presetSearchString())}
+                    />
+                </div>
+                {RenderOnlineSearchData()}
             </div>
         )
     }
@@ -338,7 +395,7 @@ export default function SetupContainer( props: {channel: number}) {
                             // class="textInput"
                             placeholder="Preset"
                             value={presetName()}
-                            onChange={(event) => setPresetName(event.target.value)}
+                            onChange={(event) => setPresetName(event)}
                         />
                     </div>
                 </div>
@@ -346,6 +403,7 @@ export default function SetupContainer( props: {channel: number}) {
                     class="thinButton width30"
                     onClick={() => SaveNewPreset()}
                     label="Save"
+                    id="Save Local"
                 />
                 </div>
 
@@ -363,36 +421,18 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
 
-    function RenderOnlineSearch() {
-        return(
-            <></>
-        )
-    }
-
     function RenderOnlineFunctionSelection() {
         switch(onlineFunctionSelection()) {
             case 0: //My Presets
                 return(
                     <div>
-                        {RenderOnlinePresets()}
+                        {RenderMyOnlinePresetsTab()}
                     </div>
                 )
-            case 1: //Browse
+            case 1: //Browse for presets
                 return(
                     <div>
-                        <div class="flex justifySpace marginAuto">
-                            <ui.TextInput
-                                type="searchInput" 
-                                placeholder="Preset Name, User, or User ID"
-                                onChange={setPresetSearchString()}
-                            />
-                            <ui.ButtonIcon
-                                icon="mdi:search"
-                                divClass=""
-                                onClick={SearchOnlinePresets}
-                            />
-                        </div>
-                        {RenderOnlineSearch()}
+                        {RenderSearchPresetsTab()}
                     </div>
                 )
             case 2: //New
@@ -442,7 +482,13 @@ export default function SetupContainer( props: {channel: number}) {
     }
 
     LoadToy();
-    if(GetUser() != undefined) setUserLoggedIn(true);
+    if(GetUser() != undefined) {
+        setUserLoggedIn(true);
+
+        setTimeout(() => {
+            GetMyPresetsOnline();
+        }, 1500);    
+    }
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (
         <ui.DetailsFillerCenter summeryName={"Presets"} content={RenderUI()} />
