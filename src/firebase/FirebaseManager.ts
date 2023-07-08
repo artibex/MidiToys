@@ -176,23 +176,12 @@ export class FirebaseManager {
 
       const userID = client.GetUserID();
 
-      // const toyData = {
-      //   userID: userID,
-      //   presetName: presetName,
-      //   presetData: presetData,
-      //   publicPreset: publicPreset
-      // }
-
       if(userID == undefined) { //Check user ID
         console.log("ERROR: User-ID is undefined");
         return false;
       }
       const presetUUID = this.GenerateUniquiePresetID(presetName, presetData, userID);
 
-      // const collectionRef = collection(client.db, "documents/toys/" + toyType + "/" + userID);
-      // const documentRef = doc(collectionRef, presetUUID);
-
-      // var collection = "toys" + "/" + toyType + "/" + userID + "/" + presetUUID;
       const collection = toyType + "/" + presetUUID;
 
       console.log("UPLOAD doc in: " + collection);
@@ -200,7 +189,7 @@ export class FirebaseManager {
       // console.log("db ref =" + client.db);
       await setDoc(doc(client.db, collection), {
         userID: userID,
-        presetName: presetName,
+        presetName: presetName.toLowerCase(),
         presetData: presetData,
         publicPreset: publicPreset
       })
@@ -214,7 +203,7 @@ export class FirebaseManager {
 
     //Get some sweet ass data
     async ReadMyPresets(toyType: string): Promise<any[]> {
-      console.log("GET MyCollection: " + toyType);
+      // console.log("GET MyCollection: " + toyType);
       try {
         const q = query(
           collection(client.db, toyType),
@@ -228,7 +217,7 @@ export class FirebaseManager {
         });
     
         // console.log("Data read successfully.");
-        console.log(data[0]);
+        // console.log(data[0]);
         return data;
       } catch (error) {
         console.error("Error reading collection data:", error);
@@ -238,34 +227,23 @@ export class FirebaseManager {
     
     //Filter some sweet as data
     async SearchPresetsByPresetName(toyType: string, searchString: string) {
-      console.log("FILTER online presets. toyType = "+ toyType + " search = " + searchString);
+      // console.log("FILTER online presets. toyType = "+ toyType + " search = " + searchString);
       // if(searchString == undefined) return;
-      // const collectionRef = collection(client.db, "/documents/toys");
-      // const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
       const q = query(
         collection(client.db, toyType),
-        where("presetName", ">=", searchString),
-        where("presetName", "<=", searchString + "\uf8ff")
+        where("presetName", ">=", searchString.toLowerCase()),
+        where("presetName", "<=", searchString.toLowerCase() + "\uf8ff")
       );
-      // const querySnapshot: QuerySnapshot = await getDocs(q);
-
-      // const q = query(collectionGroup(client.db, toyType));
-      // const q2 = query(
-      //   collection(client.db, "toys"),
-      //   orderBy("presetName"), // Sort by presetName
-      //   where("presetName", ">=", searchString),
-      //   where("presetName", "<=", searchString + "\uf8ff")
-      // );
 
       try {
         const querySnapshot: QuerySnapshot = await getDocs(q);
-        console.log(querySnapshot);
+        // console.log(querySnapshot);
 
         const data: any[] = [];
         querySnapshot.forEach((doc) => {
           data.push({ id: doc.id, ...doc.data()});
-          console.log(doc.id);
-          console.log(doc.data().presetName);
+          // console.log(doc.id);
+          // console.log(doc.data().presetName);
         });
 
         return data;
@@ -276,7 +254,7 @@ export class FirebaseManager {
     }
 
     async RemoveDoc(documentPath: string) {
-      console.log("PATH = " + documentPath);
+      // console.log("PATH = " + documentPath);
       try {
         const documentRef = doc(client.db, documentPath);
         await deleteDoc(documentRef);
