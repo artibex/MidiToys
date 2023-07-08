@@ -38,7 +38,7 @@ export class PresetManager{
     toyType = toyType.toLowerCase().replace(/\s/g, '');
 
     // var search = "toys/" + toyType + "/" + client.GetUserID();
-    var search = "toys/" + toyType + "/" + client.GetUserID();
+    // var search = "toys/" + toyType + "/" + client.GetUserID();
     var data = await firebaseManager.ReadMyPresets(toyType);
     return data;
   }
@@ -47,14 +47,14 @@ export class PresetManager{
     toyType = toyType.toLowerCase().replace(/\s/g, '');
     console.log("SearchPresetsOnline");
     var data = await firebaseManager.SearchPresetsByPresetName(toyType, searchStr);
-    var filteredData = [];
+    // var filteredData = [];
 
-    data.forEach((result) => {
-      if(result.data.presetData.toyType == toyType) {
-        filteredData.push(result);
-      }
-    })
-    return filteredData;
+    // data.forEach((result) => {
+    //   if(result.presetData.toyType == toyType) {
+    //     filteredData.push(result);
+    //   }
+    // })
+    return data;
   }
 
   DeletePresetLocal(item) {

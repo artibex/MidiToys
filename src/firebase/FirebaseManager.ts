@@ -221,8 +221,8 @@ export class FirebaseManager {
           where("userID", "==", client.GetUserID()),
         );
         const querySnapshot: QuerySnapshot = await getDocs(q);
+
         const data: any[] = [];
-    
         querySnapshot.forEach((doc) => {
           data.push({ id: doc.id, ...doc.data()});
         });
@@ -237,35 +237,38 @@ export class FirebaseManager {
     }
     
     //Filter some sweet as data
-    async SearchPresetsByPresetName(toyType: string, presetNameSearch: string) {
-      console.log("FILTER online presets. toyType = "+ toyType + " search = " + presetNameSearch);
-      if(presetNameSearch == undefined) return;
+    async SearchPresetsByPresetName(toyType: string, searchString: string) {
+      console.log("FILTER online presets. toyType = "+ toyType + " search = " + searchString);
+      // if(searchString == undefined) return;
       // const collectionRef = collection(client.db, "/documents/toys");
       // const querySnapshot: QuerySnapshot = await getDocs(collectionRef);
-
-
-      const q = query(collectionGroup(client.db, toyType));
-      const q2 = query(
-        collection(client.db, "toys"),
-        orderBy("presetName"), // Sort by presetName
-        where("presetName", ">=", presetNameSearch),
-        where("presetName", "<=", presetNameSearch + "\uf8ff")
+      const q = query(
+        collection(client.db, toyType),
+        where("presetName", ">=", searchString),
+        where("presetName", "<=", searchString + "\uf8ff")
       );
+      // const querySnapshot: QuerySnapshot = await getDocs(q);
+
+      // const q = query(collectionGroup(client.db, toyType));
+      // const q2 = query(
+      //   collection(client.db, "toys"),
+      //   orderBy("presetName"), // Sort by presetName
+      //   where("presetName", ">=", searchString),
+      //   where("presetName", "<=", searchString + "\uf8ff")
+      // );
 
       try {
-        const querySnapshot: QuerySnapshot = await getDocs(q2);
+        const querySnapshot: QuerySnapshot = await getDocs(q);
         console.log(querySnapshot);
 
-        const matchingPresets: DocumentData[] = [];
+        const data: any[] = [];
         querySnapshot.forEach((doc) => {
-          console.log(doc);
-          // const userId = doc.ref.parent.parent.id;
-          // console.log("User-ID = " + userId);
-          // matchingPresets.push({ userId, presetId: doc.id, ...doc.data() });
+          data.push({ id: doc.id, ...doc.data()});
+          console.log(doc.id);
+          console.log(doc.data().presetName);
         });
 
-        console.log(matchingPresets[0]);
-        return matchingPresets;
+        return data;
       } catch (error) {
         console.error("Error searching presets:", error);
         throw error;

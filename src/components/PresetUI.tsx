@@ -31,6 +31,7 @@ export default function SetupContainer( props: {channel: number}) {
         Array.from({ length: 3 }, () => "thinButton")
     );
     
+    //Preset Data loading
     function GetMatchingPresetsLocal() {
         setMetchingItems(presetManager.FilterPresetsLocal(toy.toyType));      
     }
@@ -46,6 +47,7 @@ export default function SetupContainer( props: {channel: number}) {
 
             var data = await presetManager.SearchPresetsOnline(toy.toyType, searchStr);
             setSearchResult(data);
+            console.log(data);
         }
     }
 
@@ -82,7 +84,7 @@ export default function SetupContainer( props: {channel: number}) {
             //Put values here
             if(toy != undefined) {
                 GetMatchingPresetsLocal();
-                if(userLoggedIn()) GetMyPresetsOnline();
+                // if(userLoggedIn()) GetMyPresetsOnline();
             }
         }
     }
@@ -138,19 +140,39 @@ export default function SetupContainer( props: {channel: number}) {
             
             GetMatchingPresetsLocal();
             UpdateUIValues();
+            GetMyPresetsOnline();
+
             setPresetName(""); //Set it back to empty
         } else console.log("Preset Name is null");
     }
-
-    function SaveExistingPresetOnline(pName: string, item) {
+    async function UploadExistingPresetOnline(item) {
+        const pName = GetLocalPresetName(item)
         if(pName != "" && pName.length > 4 && toy != undefined) {
-            // console.log("Upload existing Presets");
-            // console.log("JSON = " + JSON.parse(item.item));
             presetManager.SaveExistingPresetOnline(pName, JSON.parse(item.item));
-        }
+        } else console.log("pName is null, can't upload preset");
+        // console.log("Short preset Name =" + pName);
+        // await SaveExistingPresetOnline(pName, item);
+        UpdateUIValues();
+        GetMyPresetsOnline();
     }
+    //Upload a Preset from local system
+    function UploadPresetLocal(presetName, jsonObj) {
+        // console.log("UPLOAD FILE");
+        // console.log("name=" + presetName, " json=" + jsonObj);
+        presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
+        UpdateUIValues();
+    }
+    // function SaveExistingPresetOnline(pName: string, item) {
+    //     if(pName != "" && pName.length > 4 && toy != undefined) {
+    //         // console.log("Upload existing Presets");
+    //         // console.log("JSON = " + JSON.parse(item.item));
+    //         presetManager.SaveExistingPresetOnline(pName, JSON.parse(item.item));
+    //     }
+    // }
+
 
     //Gives item with key value
+    
     function DeleteLocalPreset(item) {
         presetManager.DeletePresetLocal(item)
         GetMatchingPresetsLocal();
@@ -160,19 +182,6 @@ export default function SetupContainer( props: {channel: number}) {
         // console.log("ID = " + id);
         await presetManager.DeletePresetOnline(id, presetData);
         GetMyPresetsOnline();
-    }
-
-    //Upload a Preset from local system
-    function UploadPresetLocal(presetName, jsonObj) {
-        // console.log("UPLOAD FILE");
-        // console.log("name=" + presetName, " json=" + jsonObj);
-        presetManager.SaveNewPresetUploadLocal(presetName, jsonObj);
-        UpdateUIValues();
-    }
-    async function UploadExistingPresetOnline(item) {
-        // console.log("Short preset Name =" + pName);
-        const pName = GetLocalPresetName(item)
-        await SaveExistingPresetOnline(pName, item);
         UpdateUIValues();
     }
 
@@ -202,6 +211,7 @@ export default function SetupContainer( props: {channel: number}) {
         return split[0];
     }
 
+    //Preset rendering
     function RenderLocalPresets() {            
         return (
           <div>
@@ -278,10 +288,47 @@ export default function SetupContainer( props: {channel: number}) {
                 <></>
             )
         }
-  
+    }
+    function RenderOnlineSearchData() {
+        if(searchResult().length > 0)
+        return (
+            <div>
+              {searchResult()?.map((item) => (
+                  <div class="flexContainer">
+                          <div class="width800 justifyStart marginRight20">
+                              <ui.Button
+                                  class="thinButton"
+                                  onClick={() => LoadPreset(item.presetData)}
+                                  label={item.presetName}
+                              />
+                          </div>
+                      <div class="flex justifyEnd width10 marginTopBottomAuto">
+                          <ui.ButtonIcon
+                              icon="material-symbols:download"
+                              class="iconButton"
+                              divClass="marginRight5"
+                              onClick={() => DownloadPreset(item.presetName, item.presetData)}
+                          />
+                          {/* <ui.ButtonIcon
+                              icon="material-symbols:delete-outline"
+                              class="iconButton"
+                              divClass=""
+                              onClick={() => DeletePresetOnline(item.id, item.presetData)}
+                          /> */}
+                      </div>
+                  </div>
+              ))}
+          </div>
+        )
+    
+        else {
+            return(
+                <></>
+            )
+        }
     }
 
-    function RenderMyOnlinePresets() {
+    function RenderMyOnlinePresetsTab() {
         return (
             <div>
                 <div class="flex">
@@ -365,18 +412,12 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
 
-    function RenderOnlineSearchData() {
-        return(
-            <></>
-        )
-    }
-
     function RenderOnlineFunctionSelection() {
         switch(onlineFunctionSelection()) {
             case 0: //My Presets
                 return(
                     <div>
-                        {RenderMyOnlinePresets()}
+                        {RenderMyOnlinePresetsTab()}
                     </div>
                 )
             case 1: //Browse for presets
