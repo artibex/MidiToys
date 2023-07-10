@@ -122,7 +122,7 @@ export default function SetupContainer() {
             const bodyColor = window.getComputedStyle(document.body).backgroundColor;
             const color = utils.ExtractRGBAColor(bodyColor); // Extract the RGBA values from the computed color
             
-            setBackgroundColor({ ...backGroundColor(), r: color.r, g: color.g ,b: color.b, a: color.a })
+            setBackgroundColor({r: color.r, g: color.g ,b: color.b, a: color.a})
             // console.log(backGroundColor());
         }
     }
