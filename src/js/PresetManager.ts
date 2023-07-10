@@ -36,9 +36,6 @@ export class PresetManager{
   //Filter by toy type presets online
   async FilterMyPresetsOnline(toyType: string) {
     toyType = toyType.toLowerCase().replace(/\s/g, '');
-
-    // var search = "toys/" + toyType + "/" + client.GetUserID();
-    // var search = "toys/" + toyType + "/" + client.GetUserID();
     var data = await firebaseManager.ReadMyPresets(toyType);
     return data;
   }
@@ -47,13 +44,12 @@ export class PresetManager{
     toyType = toyType.toLowerCase().replace(/\s/g, '');
     console.log("SearchPresetsOnline");
     var data = await firebaseManager.SearchPresetsByPresetName(toyType, searchStr);
-    // var filteredData = [];
+    return data;
+  }
 
-    // data.forEach((result) => {
-    //   if(result.presetData.toyType == toyType) {
-    //     filteredData.push(result);
-    //   }
-    // })
+  async GetNewesPresets(toyType: string) {
+    toyType = toyType.toLowerCase().replace(/\s/g, '');
+    var data = await firebaseManager.GetNewesPresets(toyType);
     return data;
   }
 
