@@ -15,10 +15,12 @@ const firebaseManager = new FirebaseManager();
 export function DetailsFillerCenter(props) {
   if(props.summeryName == undefined) props.summeryName = "";
   if(props.content == undefined) props.content = <></>;  
-  
+  if(props.detailClass == undefined) props.detailClass = "marginAuto width95";
+  if(props.summeryClass == undefined) props.summeryClass = "textAlignCenter marginAuto";
+
   return (
-      <details class="marginAuto width95">
-        <summary class="textAlignCenter marginAuto">
+      <details class={props.detailClass}>
+        <summary class={props.summeryClass}>
           {props.summeryName}
         </summary>
         <br />
@@ -198,7 +200,9 @@ export function ButtonIcon(props) {
           onClick={HandleClick}
           class={props.class}
         >
-          <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+          <div class="">
+            <Icon icon={props.icon} class="marginAuto" width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+          </div>
         </button>
       </div>
     );

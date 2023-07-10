@@ -17,7 +17,7 @@ export default function SetupContainer( props: {channel: number}) {
     
     const [myOnlinePresets, setMyOnlinePresets] = createSignal([]); //My Presets tab
     const [searchResult, setSearchResult] = createSignal([]); //Search tab
-    const [newestPresets, setNewesPresets] = createSignal([]); //Search tab
+    const [newestPresets, setNewestPresets] = createSignal([]); //Search tab
 
     const [userLoggedIn, setUserLoggedIn] = createSignal(false);
     const [presetName, setPresetName] = createSignal("");
@@ -48,6 +48,13 @@ export default function SetupContainer( props: {channel: number}) {
             var data = await presetManager.SearchPresetsOnline(toy.toyType, searchStr);
             setSearchResult(data);
             // console.log(data);
+        }
+    }
+    async function GetNewestPresets() {
+        if(toy != undefined && presetManager != undefined) {
+            console.log("GET newes presets");
+            var data = await presetManager.GetNewesPresets(toy.toyType);
+            setNewestPresets(data)
         }
     }
 
@@ -310,7 +317,43 @@ export default function SetupContainer( props: {channel: number}) {
               ))}
           </div>
         )
-    
+        else {
+            return(
+                <></>
+            )
+        }
+    }
+    function RenderNewestPresets() {
+        if(newestPresets().length > 0)
+        return (
+            <div>
+              {newestPresets()?.map((item) => (
+                  <div class="flexContainer">
+                          <div class="width800 justifyStart marginRight20">
+                              <ui.Button
+                                  class="thinButton"
+                                  onClick={() => LoadPreset(item.presetData)}
+                                  label={item.presetName}
+                              />
+                          </div>
+                      <div class="flex justifyEnd width10 marginTopBottomAuto">
+                          <ui.ButtonIcon
+                              icon="material-symbols:download"
+                              class="iconButton"
+                              divClass="marginRight5"
+                              onClick={() => DownloadPreset(item.presetName, item.presetData)}
+                          />
+                          {/* <ui.ButtonIcon
+                              icon="material-symbols:delete-outline"
+                              class="iconButton"
+                              divClass=""
+                              onClick={() => DeletePresetOnline(item.id, item.presetData)}
+                          /> */}
+                      </div>
+                  </div>
+              ))}
+          </div>
+        )
         else {
             return(
                 <></>
@@ -320,7 +363,7 @@ export default function SetupContainer( props: {channel: number}) {
 
     function RenderMyOnlinePresetsTab() {
         return (
-            <div>
+            <div>                
                 <div class="flex">
                 <div class="width70">
                     <div class="flexList">
@@ -341,12 +384,18 @@ export default function SetupContainer( props: {channel: number}) {
                 />
                 </div>
 
-                <h3 class="textAlignCenter"> Online Presets</h3>
+                <h3 class="textAlignCenter">Online Presets</h3>
                 {RenderMyOnlinePresetsData()}
 
                 <br></br>
-                <h3 class="textAlignCenter"> Local Presets</h3>
-                {RenderLocalPresets()}
+                <ui.DetailsFillerCenter 
+                    summeryName={"Local Presets"} 
+                    content={RenderLocalPresets()}
+                    summeryClass="summeryMinimal textAlignCenter marginAuto"
+                    detailClass="detailsMinimal marginAuto"
+                />
+                {/* <h3 class="textAlignCenter">Local Presets</h3>
+                {RenderLocalPresets()} */}
                 <br></br>
                 <div class="justifyCenter">
                     <ui.JsonFileUploader 
@@ -376,14 +425,25 @@ export default function SetupContainer( props: {channel: number}) {
             </div>
         )
     }
-
-    function RenderNewOnlinePresets() {
-        //Show all newly created presets
+    function RenderNewestPresetsTab() {
         return(
-            <></>
+            <div>
+                <div class="flex justifyCenter">
+                    <h3 class="marginTopBottomAuto">Get the newest created Presets</h3>
+                    <div class="width40">
+                        <ui.ButtonIcon
+                            label="Reload"
+                            icon="mdi:reload"
+                            onClick={() => GetNewestPresets()}
+                        />
+                    </div>
+                </div>
+                {RenderNewestPresets()}
+            </div>
         )
     }
 
+    //Local version of preset managment
     function RenderLocalPresetManagement() {
         return(
             <div>
@@ -420,7 +480,7 @@ export default function SetupContainer( props: {channel: number}) {
 
         )
     }
-
+    //The function the user wanted to interact with
     function RenderOnlineFunctionSelection() {
         switch(onlineFunctionSelection()) {
             case 0: //My Presets
@@ -438,16 +498,18 @@ export default function SetupContainer( props: {channel: number}) {
             case 2: //New
                 return(
                     <div>
-                        <h2 class="textAlignCenter">Put new Presets here</h2>
+                        {RenderNewestPresetsTab()}
+                        {/* <h2 class="textAlignCenter">Put new Presets here</h2> */}
                     </div>
                 )
         }
     }
 
+    //Collects all other functions of online preset management here
     function RenderOnlinePresetManagement() {
         return(
             <div>
-                <div class="flex justifyCenter marginAuto">
+                <div class="flex justifyCenter">
                     <ui.Button 
                         label="My Presets"
                         class={channelButtonClass()[0]}
@@ -487,7 +549,8 @@ export default function SetupContainer( props: {channel: number}) {
 
         setTimeout(() => {
             GetMyPresetsOnline();
-        }, 1500);    
+            GetNewestPresets();
+        }, 1000);
     }
     canvasManager.SubscribeOneFPS(UpdateComponent);
     return (

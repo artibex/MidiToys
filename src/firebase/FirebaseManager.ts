@@ -3,7 +3,7 @@ import { v5 as uuidv5 } from 'uuid';
 import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider, onIdTokenChanged } from 'firebase/auth';
 import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, getIdToken } from 'firebase/auth';
 import { signInWithPopup, GoogleAuthProvider, browserLocalPersistence, setPersistence } from "firebase/auth";
-import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc, DocumentData, query, where, collectionGroup, orderBy } from "firebase/firestore";
+import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc, DocumentData, serverTimestamp, query, where, collectionGroup, orderBy } from "firebase/firestore";
 import { resolve } from "path";
 
 export class FirebaseManager {
@@ -191,7 +191,8 @@ export class FirebaseManager {
         userID: userID,
         presetName: presetName.toLowerCase(),
         presetData: presetData,
-        publicPreset: publicPreset
+        publicPreset: publicPreset,
+        uploadDate: serverTimestamp()
       })
       .then((event) => {
         return true;
@@ -242,6 +243,35 @@ export class FirebaseManager {
         const data: any[] = [];
         querySnapshot.forEach((doc) => {
           data.push({ id: doc.id, ...doc.data()});
+          // console.log(doc.id);
+          // console.log(doc.data().presetName);
+        });
+
+        return data;
+      } catch (error) {
+        console.error("Error searching presets:", error);
+        throw error;
+      }
+    }
+
+    async GetNewesPresets(toyType: string) {
+      // console.log("FILTER online presets. toyType = "+ toyType + " search = " + searchString);
+      // if(searchString == undefined) return;
+      const q = query(
+        collection(client.db, toyType),
+        orderBy("uploadDate")
+      );
+
+      try {
+        const querySnapshot: QuerySnapshot = await getDocs(q);
+        const reversedSnapshot = querySnapshot.docs.reverse();
+        // console.log(querySnapshot);
+
+        const data: any[] = [];
+        reversedSnapshot.forEach((doc) => {
+          if(doc.data().userID != client.GetUserID()) {
+            data.push({ id: doc.id, ...doc.data()});
+          }
           // console.log(doc.id);
           // console.log(doc.data().presetName);
         });
