@@ -179,7 +179,7 @@ export default function SetupContainer( props: {channel: number}) {
             )
         } else {
             return(
-                <div class="textAlignLeft paddingTop10 marginLeft5">
+                <div class="textAlignLeft paddingTop10">
                     <h2 class="marginAuto">{toyTypeName()}</h2>
                 </div>
             )
