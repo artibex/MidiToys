@@ -104,15 +104,15 @@ export default function SetupContainer() {
 
     function RenderSidebarButtons() {
         return(
-            <div class="flexList width10">
-                <ui.ButtonIcon 
+            <div class="flexList">
+                <ui.ButtonIcon
                     icon="mdi:account-outline"
-                    width={40}
+                    width={35}
                     onClick={() => setSelectedChannel(-1)}
                 />
-                <ui.ButtonIcon 
+                <ui.ButtonIcon
                     icon="mdi:cog-outline"
-                    width={40}
+                    width={35}
                     onClick={() => setSelectedChannel(0)}
                 />
                 <br></br>
@@ -220,7 +220,7 @@ export default function SetupContainer() {
                 <div class="justifyStart textAlignLeft">
                     {RenderHeadline()}
                 </div>
-                <div class="alignFlexEnd">
+                <div class="justifyEnd">
                     {RenderCloseButton()}
                 </div>
             </div>
@@ -230,10 +230,10 @@ export default function SetupContainer() {
 
     function RenderUI() {
         return(
-            <div id="settingsPanel" class="noSelect width100 height90">
-                <div class="flexContainer justifyStart">
-                    {RenderSidebarButtons()}
-                    <div class="flexList marginLeft20 width100">
+            <div id="settingsPanel" class="noSelect overflowAuto">
+                <div class="flex justifyStart">
+                        {RenderSidebarButtons()}
+                    <div class="flexList marginLeft5 width100">
                         {RenderUIHeadline()}           
                         {RenderContainer()}
                     </div>   
