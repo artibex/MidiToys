@@ -170,6 +170,22 @@ export default function SetupContainer( props: {channel: number}) {
         )
     }
 
+    function RenderToyName() {
+        if(toyType() == 0) {
+            return(
+                <div class="textAlignLeft paddingTop10">
+                    <h2 class="marginAuto">{toyTypeName()}</h2>
+                </div>
+            )
+        } else {
+            return(
+                <div class="textAlignLeft paddingTop10 marginLeft5">
+                    <h2 class="marginAuto">{toyTypeName()}</h2>
+                </div>
+            )
+        }
+    }
+
     LoadToy();
     UpdateUIValues();
     canvasManager.SubscribeOneFPS(UpdateComponent);
@@ -178,9 +194,10 @@ export default function SetupContainer( props: {channel: number}) {
             <div>
                 <div class="flex">
                     {RenderToyWrench()}
-                    <div class="textAlignLeft paddingTop10 marginLeft5">
+                    {RenderToyName()}
+                    {/* <div class="textAlignLeft paddingTop10 marginLeft5">
                         <h2 class="marginAuto">{toyTypeName()}</h2>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <br></br>

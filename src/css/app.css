@@ -124,7 +124,7 @@ button:hover {
   padding-bottom: 3px;
   text-align: center;
   margin: auto;
-  
+
   color: black;
   background-color: var(--item-hover-color)
 }
@@ -590,7 +590,7 @@ details[open] summary {
   top: 0px;
   left: 0px;
   width: 30%;
-  padding-right: 20px;
+  padding-right: 10px;
   height: 100%;
   background-color: var(--item-background-color);
   border-radius: 5px;
