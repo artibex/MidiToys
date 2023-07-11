@@ -52,7 +52,7 @@ export default function SetupContainer( props: {channel: number}) {
     }
     async function GetNewestPresets() {
         if(toy != undefined && presetManager != undefined) {
-            console.log("GET newes presets");
+            // console.log("GET newes presets");
             var data = await presetManager.GetNewesPresets(toy.toyType);
             setNewestPresets(data)
         }
