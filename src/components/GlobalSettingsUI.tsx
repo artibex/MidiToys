@@ -32,6 +32,11 @@ export default function SetupContainer() {
                 {RenderSocialUI()}
                 
                 <ui.DetailsFillerCenter summeryName={"Danger Zone"} content={RenderDangerZoneUI()} />
+                
+                <br></br>
+                <br></br>
+                <div class="textAlignCenter">A tool created by</div>
+                <h2 class="textAlignCenter">Korbinian Maag</h2>
             </div>
         )
     }
