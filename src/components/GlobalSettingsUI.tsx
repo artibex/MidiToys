@@ -18,14 +18,20 @@ export default function SetupContainer() {
         window.open(link, '_blank');
     }
 
+    function RenderMIDISettings() {
+        return( 
+            <div class="marginAuto width80">
+                <ui.BPM />
+                <ui.MIDIDropdownUIElement />
+            </div>
+        )
+    }
+
     //Combines all settings
     function RenderUI() {
         return(
             <div class="channelContainer">
-                <div>
-                    <ui.MIDIDropdownUIElement />
-                    <ui.BPM />
-                </div>
+                {RenderMIDISettings()}
                 <br></br>
                 {RenderBgColorUI()}
                 <br></br>

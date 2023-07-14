@@ -256,9 +256,9 @@ export function ButtonIcon(props) {
 }
 
 export function MIDIDeviceReloadButton(props) {
-  if(props.label == undefined) props.label = "";
-  if(props.class == undefined) props.class = "iconButton";
-  if(props.id == undefined) props.id = "";
+  if(props.label == undefined) props.label = "Reload";
+  if(props.class == undefined) props.class = "";
+  if(props.id == undefined) props.id = "midiReloadBtn";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
   if(props.width == undefined) props.width = "30";
@@ -271,10 +271,11 @@ export function MIDIDeviceReloadButton(props) {
   }
 
   return(
-    <div class={props.class}>
+    <div class="marginAuto">
       <ButtonIcon
         id={props.id}
         icon="material-symbols:wifi-protected-setup"
+        // class="iconButton marginAuto"
   
         onClick={() => handleClick}
         label={props.label}
@@ -785,6 +786,7 @@ export function JsonFileUploader(props) {
 }
 
 export function MIDIDropdownUIElement(props) {
+  if(props.divClass == undefined) props.divClass = "flex";
   if(props.class === undefined) props.class = "dropdown"
   if(props.label === undefined) props.label = "MIDI Devices";
 
@@ -826,26 +828,21 @@ export function MIDIDropdownUIElement(props) {
 
   //Display one empty option
   return (
-    <div>
-      <h2 class="textAlignCenter">
-        {props.label}
-      </h2>
-      <div class="flex">
-        <div class="justifyStart marginAuto">
-          <select 
-            class={props.class}
-            value={selectedOption()} 
-            onFocus={() => loadDevices()} 
-            onChange={(event) => UpdateDeviceSelection(event.target.value)}>
-            {options()}
-          </select>
-        </div>
-        <div class="marginAuto justifyEnd">
+    <div class={props.divClass}>
+        <div>
+          <h3 class="textAlignCenter">{props.label}</h3>
           <MIDIDeviceReloadButton />
         </div>
-      </div>
+          <select
+            class="dropdown"
+            value={selectedOption()} 
+            onFocus={() => loadDevices()} 
+            onChange={(event) => UpdateDeviceSelection(event.target.value)}
+          >
+            {options()}
+          </select>
     </div>
-  );
+  )
 }
 
 export function BPM(props) {
