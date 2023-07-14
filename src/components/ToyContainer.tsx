@@ -13,7 +13,7 @@ import { ToyManager } from "@miditoy/ToyManager";
 const canvasManager = new CanvasManager;
 const toyManager = new ToyManager();
 
-export default function SetupContainer( props: {channel: number}) {
+export default function SetupContainer(props: {channel: number}) {
     var toy;
     var channel = props.channel;
     var prevToyType: number = -1;
