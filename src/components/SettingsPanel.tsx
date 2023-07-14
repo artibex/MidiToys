@@ -1,5 +1,5 @@
 import { createSignal, createEffect } from "solid-js";
-import ChannelSettingsContainer from "@components/ChannelSettingsContainer";
+import ToyContainer from "@components/ToyContainer";
 import * as utils from "@utils";
 import * as ui from "@ui";
 import { RGBA } from "@interfaces";
@@ -56,22 +56,22 @@ export default function SetupContainer() {
             switch(selectedChannel()) {
                 case -1: return <LoginUI />;
                 case 0: return <GlobalSettings />;
-                case 1: return <ChannelSettingsContainer channel={1} />;
-                case 2: return <ChannelSettingsContainer channel={2} />;
-                case 3: return <ChannelSettingsContainer channel={3} />;
-                case 4: return <ChannelSettingsContainer channel={4} />;
-                case 5: return <ChannelSettingsContainer channel={5} />;
-                case 6: return <ChannelSettingsContainer channel={6} />;
-                case 7: return <ChannelSettingsContainer channel={7} />;
-                case 8: return <ChannelSettingsContainer channel={8} />;
-                case 9: return <ChannelSettingsContainer channel={9} />;
-                case 10: return <ChannelSettingsContainer channel={10} />;
-                case 11: return <ChannelSettingsContainer channel={11} />;
-                case 12: return <ChannelSettingsContainer channel={12} />;
-                case 13: return <ChannelSettingsContainer channel={13} />;
-                case 14: return <ChannelSettingsContainer channel={14} />;
-                case 15: return <ChannelSettingsContainer channel={15} />;
-                case 16: return <ChannelSettingsContainer channel={16} />;
+                case 1: return <ToyContainer channel={1} />;
+                case 2: return <ToyContainer channel={2} />;
+                case 3: return <ToyContainer channel={3} />;
+                case 4: return <ToyContainer channel={4} />;
+                case 5: return <ToyContainer channel={5} />;
+                case 6: return <ToyContainer channel={6} />;
+                case 7: return <ToyContainer channel={7} />;
+                case 8: return <ToyContainer channel={8} />;
+                case 9: return <ToyContainer channel={9} />;
+                case 10: return <ToyContainer channel={10} />;
+                case 11: return <ToyContainer channel={11} />;
+                case 12: return <ToyContainer channel={12} />;
+                case 13: return <ToyContainer channel={13} />;
+                case 14: return <ToyContainer channel={14} />;
+                case 15: return <ToyContainer channel={15} />;
+                case 16: return <ToyContainer channel={16} />;
             }
     }
 
