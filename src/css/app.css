@@ -135,18 +135,20 @@ button:hover {
   font-family: "SlimJoe", sans-serif;
   /* word-break: break-word; */
   text-align: center;
-  justify-content: center;
+  /* justify-content: center; */
   margin: auto;
-  line-height: 1.0;
-  /* margin: auto; */
+  line-height: 1.5;
 }
 
 .dropdown {
-  background-color: var(--item-background-color);
-  text-align: center;
-  border: 1px var(--border-color) dashed;
   margin: auto;
-  padding: 10px;
+  text-align: center;
+  background-color: var(--item-background-color);
+  border: 1px var(--border-color) dashed;
+  /* padding-top: 5px;
+  padding-bottom: 5px; */
+  padding: 10px;  
+  justify-content: space-around;
 }
 
 .dropdown:hover {
@@ -163,7 +165,9 @@ button:hover {
 summary {
   margin: 2px;
   list-style: none; /* remove the default list-style */
-
+  line-height: 1.2;
+  justify-content: center;
+  text-align: center;
   font-family: "SlimJoe", sans-serif;
   font-size: 13pt;
 
@@ -183,25 +187,6 @@ summary:hover {
 }
 summary::marker {
   content: ""; /* hide the marker */
-}
-
-.summeryMinimal {
-  margin: 2px;
-  list-style: none; /* remove the default list-style */
-
-  font-family: "SlimJoe", sans-serif;
-  font-size: 10pt;
-
-  /* border-radius: 5px; */
-  /* border: 1px solid var(--border-color); */
-  background-color: var(--item-background-color);
-  /* color: var(--text-color); */
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-
-  transition: border-color 0.2s ease-in-out;
 }
 
 details[open] summary {
