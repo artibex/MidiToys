@@ -2,10 +2,8 @@
 import * as ui from "@ui"
 import "../css/app.css";
 import SettingsPanel from "@components/SettingsPanel";
-import * as utils from "@utils";
 
-const mode = import.meta.env.MODE;
-console.log(mode);
+import * as utils from "@utils";
 var publicRef = utils.GetPublicRef(); //public folder reference depends on mode
 var title = utils.GetPageTitle();
 ---

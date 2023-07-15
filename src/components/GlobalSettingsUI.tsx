@@ -6,6 +6,8 @@ import { CanvasManager } from "@canvasmanager";
 import { PresetManager } from "@presetmanager";
 
 const presetManager = new PresetManager();
+const publicRef = utils.GetPublicRef(); //public folder reference depends on mode
+
 
 export default function SetupContainer() {
     const [backGroundColor, setBackgroundColor] = createSignal<RGBA>({ r:0, g:0, b:0, a:0});
@@ -27,6 +29,25 @@ export default function SetupContainer() {
         )
     }
 
+    function RenderCredits() {
+        return(
+            <div>
+                <h2 class="textAlignCenter">Credits</h2>
+                <div class="flex width70 marginAuto">
+                    <img
+                        class="width20 marginAuto"
+                        src={`${publicRef}/logo.png`}
+                        alt="MIDI Toys Logo"
+                    />
+                    <div class="marginAuto">
+                        <div class="textAlignCenter paddingTop20">MIDI Toys created by</div>
+                        <h3 class="textAlignCenter">Korbinian Maag</h3>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     //Combines all settings
     function RenderUI() {
         return(
@@ -36,13 +57,10 @@ export default function SetupContainer() {
                 {RenderBgColorUI()}
                 <br></br>
                 {RenderSocialUI()}
-                
+                <br></br>
+                {RenderCredits()}
+                <br></br>
                 <ui.DetailsFillerCenter summeryName={"Danger Zone"} content={RenderDangerZoneUI()} />
-                
-                <br></br>
-                <br></br>
-                <div class="textAlignCenter">A tool created by</div>
-                <h2 class="textAlignCenter">Korbinian Maag</h2>
             </div>
         )
     }
