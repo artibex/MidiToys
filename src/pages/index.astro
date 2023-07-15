@@ -3,23 +3,30 @@ import * as ui from "@ui"
 import "../css/app.css";
 import SettingsPanel from "@components/SettingsPanel";
 
+const mode = import.meta.env.MODE;
+console.log(mode);
+var publicRef = "";
+var title = "";
+switch (mode) {
+    case "development":
+        title = "MIDI Toys - Development";
+        break;
+    case "production":
+        title = "MIDI Toys";
+        publicRef = "/artibex";
+    break;
+    default:
+        break;
+}
 ---
 
 
 <!DOCTYPE html>
 <html lang="de">
-    <astro>
-        <script>
-          console.log(import.meta.env.MODE);
-        </script>
-        
-        <!-- Rest of your Astro code -->
-      </astro>
-
     <head>
-        <link rel="icon" href="/logo.ico" type="image/x-icon">
+        <link rel="icon" href={`${publicRef}/logo.ico`} type="image/x-icon">
         <meta charset="UTF-8">  
-        <title>MIDI Toys</title>
+        <title>{title}</title>
     </head>
     <body>
 
