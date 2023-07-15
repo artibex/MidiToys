@@ -2,13 +2,23 @@
 import * as ui from "@ui"
 import "../css/app.css";
 import SettingsPanel from "@components/SettingsPanel";
+
 ---
+
 
 <!DOCTYPE html>
 <html lang="de">
+    <astro>
+        <script>
+          console.log(import.meta.env.MODE);
+        </script>
+        
+        <!-- Rest of your Astro code -->
+      </astro>
+
     <head>
         <link rel="icon" href="/logo.ico" type="image/x-icon">
-        <meta charset="UTF-8">
+        <meta charset="UTF-8">  
         <title>MIDI Toys</title>
     </head>
     <body>
