@@ -55,7 +55,7 @@ export default function SetupContainer() {
                     <ui.ButtonIcon
                         label="Go back"
                         icon="ep:back"
-                        class="iconButton"
+                        // class="iconButton"
                         iconFirst={true}
                         onClick={SetEmailSignUp(false)}
                     />
