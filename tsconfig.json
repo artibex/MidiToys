@@ -26,7 +26,7 @@
 
       "@env": ["env.ts"],
       "@ui": ["src/components/UIElements.jsx"],
-      "@utils": ["src/components/ComponentUtils.js"],
+      "@utils": ["src/js/utils.js"],
       "@interfaces": ["src/js/Interfaces.ts"],
       "@mididata": ["src/js/MIDIDataTable.ts"]
     }
