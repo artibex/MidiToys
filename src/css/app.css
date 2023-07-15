@@ -76,7 +76,7 @@ button {
   padding-left: 20px;
   padding-right: 20px;
   cursor: pointer;
-
+  vertical-align: middle;
   border-radius: 5px;
   background-color: var(--item-background-color);
   color: var(--text-color);
@@ -135,9 +135,11 @@ button:hover {
   font-family: "SlimJoe", sans-serif;
   /* word-break: break-word; */
   text-align: center;
+  vertical-align: middle;
+  justify-content: center;
   /* justify-content: center; */
   margin: auto;
-  line-height: 1.5;
+  line-height: 1;
 }
 
 .dropdown {
@@ -158,15 +160,17 @@ button:hover {
 
 .flexList button {
   width: 100%;
-  display: block;
   margin-bottom: 10px;
+  vertical-align: middle;
+  display: block;
 }
 
 summary {
   margin: 2px;
   list-style: none; /* remove the default list-style */
-  line-height: 1.2;
+  line-height: 1;
   justify-content: center;
+  vertical-align: middle;
   text-align: center;
   font-family: "SlimJoe", sans-serif;
   font-size: 13pt;
@@ -563,6 +567,7 @@ details[open] summary {
   font-family: "BigJohn", sans-serif;
   font-size: 16pt;
   position: fixed;
+  vertical-align: middle;
   top: 0px;
   left: 0px;
   display: block;

@@ -181,7 +181,7 @@ export function ButtonIcon(props) {
   if(props.id == undefined) props.id = "";
 
   if(props.icon == undefined) props.icon = "mdi-light:alert";
-  if(props.iconFirst == undefined) props.iconFirst = false;
+  if(props.iconFirst == undefined) props.iconFirst = true;
   if(props.width == undefined) props.width = "20";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
@@ -200,7 +200,7 @@ export function ButtonIcon(props) {
           onClick={HandleClick}
           class={props.class}
         >
-          <div class="">
+          <div>
             <Icon icon={props.icon} class="marginAuto" width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
           </div>
         </button>
@@ -237,19 +237,28 @@ export function ButtonIcon(props) {
     } else { //Display Icon after text
         return (
           <div class={props.divClass} >
-            <button
-              id={props.id}
-              class={props.class}
-              onClick={HandleClick}
-            >
-              <div class="flex justifyCenter">
-                <div class={props.class}>
-                  <div class="marginRight20">{props.label}</div>
-                  <Icon icon={props.icon} width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+          <button
+            id={props.id}
+            class={props.class}
+            onClick={HandleClick}
+          >
+            <div class="flex">
+              <div class={props.class}>
+                  <div class="marginRight10">
+                    {props.label}
+                  </div>
+                <div>
+                  <Icon 
+                    icon={props.icon}
+                    width={props.width} 
+                    hFlip={props.hFlip} 
+                    vFlip={props.vFlip} 
+                  />
                 </div>
               </div>
-            </button>
-          </div>
+            </div>
+          </button>
+        </div>
         );
     }
   }
@@ -260,8 +269,8 @@ export function MIDIDeviceReloadButton(props) {
   if(props.class == undefined) props.class = "";
   if(props.id == undefined) props.id = "midiReloadBtn";
 
-  if(props.icon == undefined) props.icon = "mdi-light:alert";
-  if(props.width == undefined) props.width = "30";
+  // if(props.icon == undefined) props.icon = "mdi-light:alert";
+  if(props.width == undefined) props.width = "20";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
@@ -271,20 +280,20 @@ export function MIDIDeviceReloadButton(props) {
   }
 
   return(
-    <div class="marginAuto">
       <ButtonIcon
-        id={props.id}
-        icon="material-symbols:wifi-protected-setup"
+        // id={props.id}
         // class="iconButton marginAuto"
-  
-        onClick={() => handleClick}
+        
+        icon="mdi:reload"
         label={props.label}
+        onClick={() => handleClick}
   
         width={props.width}
         hFlip={props.hFlip}
         vFlip={props.vFlip}
       />
-    </div>
+    // <div class="marginAuto">
+    // </div>
   )
 }
 
