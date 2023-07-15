@@ -5,7 +5,7 @@ import SettingsPanel from "@components/SettingsPanel";
 
 const mode = import.meta.env.MODE;
 console.log(mode);
-var publicRef = "";
+var publicRef = ""; //public folder reference depends on mode
 var title = "";
 switch (mode) {
     case "development":
@@ -16,6 +16,7 @@ switch (mode) {
         publicRef = "/MidiToys";
     break;
     default:
+        title = "What is this Env??";
         break;
 }
 ---
