@@ -1,26 +1,25 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, browserLocalPersistence } from 'firebase/auth';
 import { firebaseConfig } from '@env';
-import { getFirestore, setDoc, doc } from "firebase/firestore";
-import { FirebaseManager } from "./FirebaseManager";
+import { browserLocalPersistence, getAuth } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+export let app;
+export let auth = getAuth(app);
+export let db = getFirestore(app);
 
-export const app = initializeApp(firebaseConfig);
-export var auth = getAuth(app);
-export var db = getFirestore(app);
-
-var user;
-var userID = undefined;
+let user;
+let userID = undefined;
 
 async function AutoLogin() {
     SetUser(auth.currentUser);
-    // FirebaseManager.instance.ReadCollectionData("users/" + GetUserID());
-    // uploadData();
-    // console.log("User = " +  auth.currentUser);
 }
 
 export function SetUser(u) {
-    // console.log("SET user " + u);
     user = u;
 
     //If logout event, set userID to undefined
