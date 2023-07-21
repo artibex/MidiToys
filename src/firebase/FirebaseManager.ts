@@ -1,10 +1,7 @@
 import * as client from "./client";
 import { v5 as uuidv5 } from 'uuid';
-import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, OAuthProvider, GithubAuthProvider, TwitterAuthProvider, onIdTokenChanged } from 'firebase/auth';
-import { createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, getIdToken } from 'firebase/auth';
-import { signInWithPopup, GoogleAuthProvider, browserLocalPersistence, setPersistence } from "firebase/auth";
+import { signInWithEmailAndPassword, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, GithubAuthProvider, TwitterAuthProvider, onIdTokenChanged, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, getDocs, QuerySnapshot, doc, setDoc, deleteDoc, DocumentData, serverTimestamp, query, where, collectionGroup, orderBy } from "firebase/firestore";
-import { resolve } from "path";
 
 export class FirebaseManager {
     static instance: FirebaseManager;
@@ -16,14 +13,6 @@ export class FirebaseManager {
         return FirebaseManager.instance;
         }
         FirebaseManager.instance = this;
-        // console.log(client.app);
-        // console.log(client.auth);
-        // console.log(client.auth);
-        // console.log("CONNECTED to Firebase");
-        // console.log(client.auth.currentUser);
-        // setTimeout(() => {
-        //   this.ReadCollectionData("users/" + client.GetUserID() + "/polydrum");
-        // }, 3000);    
       }
 
     //Create new email acount
