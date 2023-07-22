@@ -1,4 +1,3 @@
-import { MIDIReceiver } from "@midireceiver";
 import { MIDIToy } from "@miditoy";
 import * as paper from 'paper';
 
@@ -35,8 +34,6 @@ export class PolyDrum extends MIDIToy {
 
     constructor(targetChannel: number) {
         super("PolyDrum", targetChannel, 24, 12, true);
-        // console.log("CREATED PolyDrum");
-        // console.log(this.receiver.length);
         this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
         this.LoadDefaultColors();
         this.SetupKeyboard();
@@ -50,7 +47,7 @@ export class PolyDrum extends MIDIToy {
 
     ApplyColors() {
         this.paperLayer.children.forEach(element => {
-            var s = element as paper.Path.RegularPolygon;
+            let s = element as paper.Path.RegularPolygon;
 
             s.fillColor = this.fillColor;
             s.strokeColor = this.strokeColor;
@@ -58,7 +55,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     ApplySettings() {
-        
+        //Something
     }
 
     ToJSON() {
@@ -109,15 +106,12 @@ export class PolyDrum extends MIDIToy {
         this.ySizeChange = data.ySizeChange;
 
         this.LoadBaseJSON(data);
-        // this.SetupKeyboard();
-        // this.TriggerToyChangedEvent();
     }
 
     SetupKeyboard() {
         this.RemoveChildrenFromLayer();
         this.SpawnShape(120);
         this.SetupMIDIReceiver(this.numberOfKeys, this.useRegExp);
-        // this.paperLayer.addChild(this.paperGroup);
     }
 
     frameCount: number = 0;
@@ -126,7 +120,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     ChangePolySideCount() {
-        var rand = Math.random();
+        let rand = Math.random();
 
         if(rand > 0.5) {
             if(this.polySides < 10) this.polySides += 1;
@@ -148,54 +142,45 @@ export class PolyDrum extends MIDIToy {
         this.bpm = this.inputManager.GetBPM();
 
         this.receiver.forEach(element => {
-            var r = element as MIDIReceiver;
+            let r = element;
             if(r.GetMIDIInput(holdingKeys, velocities)) {
-                // console.log("FOUND key, spawn square");
                 this.SpawnShape(r.GetVelocity());
             }
         })
-
-        // if(holdingKeys.length > 0) {
-        //     this.SpawnSquare();
-        // }
     }
 
     SpawnShape(velocity: number) {
-        // console.log("DRAW shape");
-        var xSpawn = this.xSpawnPos * this.xSpawnOffset;
-        var ySpawn = this.ySpawnPos * this.ySpawnOffset;
+        let xSpawn = this.xSpawnPos * this.xSpawnOffset;
+        let ySpawn = this.ySpawnPos * this.ySpawnOffset;
 
-        var point = new paper.Point(xSpawn, ySpawn);
-        var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
+        let point = new paper.Point(xSpawn, ySpawn);
+        let poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
         poly.fillColor = new paper.Color(this.fillColor);
         poly.strokeColor = new paper.Color(this.strokeColor);
         poly.strokeWidth = this.strokeWidth + velocity/10;
         poly.scale([this.xSpawnScale, this.ySpawnScale]);
 
         this.paperLayer.addChild(poly);
-        // this.paperGroup.addChild(poly);
 
         if(this.paperLayer.child != undefined) {
             if (this.paperLayer.children.length > this.shapeLimit) {
-                // console.log("REMOVE shape from layer, too many!");
-                // console.log("LAYER children count = " + this.paperLayer.children.length);
                 this.paperLayer.firstChild.remove();
             }
         }
     }
 
     UpdateShapes() {
-        var alphaDecrease = this.alphaDecrease;
-        var strokeWidthDecrease = this.strokeWidthDecrease;
-        var rotationSpeed = this.rotationSpeed;
+        let alphaDecrease = this.alphaDecrease;
+        let strokeWidthDecrease = this.strokeWidthDecrease;
+        let rotationSpeed = this.rotationSpeed;
 
         let indexValue: number = 0;
         
         this.paperLayer.children.forEach(element => {
-            var poly = element as paper.Path.RegularPolygon;
+            let poly = element as paper.Path.RegularPolygon;
 
-            var newStrokeColor = poly.strokeColor.clone();
-            var newFillColor = poly.fillColor.clone();
+            let newStrokeColor = poly.strokeColor.clone();
+            let newFillColor = poly.fillColor.clone();
             newStrokeColor.alpha -= alphaDecrease;
             newFillColor.alpha -= alphaDecrease;
 
@@ -206,18 +191,14 @@ export class PolyDrum extends MIDIToy {
                 fillColor: newFillColor
             });
             
-            var center = poly.bounds.center;
+            let center = poly.bounds.center;
             poly.rotate(rotationSpeed, center);
 
-            // if(poly.strokeColor.alpha <= 0 && poly.fillColor.alpha <= 0) {
-            //     this.RemoveShape(poly);
-            // }
             indexValue++;
         })
     }
 
     RemoveShape(shape) {
-        // console.log("REMOVING shape from layer");
         this.paperLayer.remove(shape);
     }
 }

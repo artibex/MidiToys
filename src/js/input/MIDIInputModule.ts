@@ -8,7 +8,7 @@ export class MIDIInputModule {
   private inputManager: InputManager;
 
   constructor() {
-    if (MIDIInputModule.instance) {
+    if (MIDIInputModule.instance != undefined) {
       return MIDIInputModule.instance
     }
     MIDIInputModule.instance = this
@@ -38,8 +38,8 @@ export class MIDIInputModule {
   public BindMIDIInput(input : WebMidi.MIDIInput) {
     if(this.targetInput != undefined) this.UnbindMIDIInput(this.targetInput);
     // console.log("BIND MIDI Device = " + input.name as string);
-    input.onmidimessage = this.HandleMIDIMessage.bind(this);
     this.targetInput = input;
+    input.onmidimessage = this.HandleMIDIMessage.bind(this);
   }
 
   public UnbindMIDIInput(input: WebMidi.MIDIInput) {
@@ -48,6 +48,9 @@ export class MIDIInputModule {
   }
 
   private HandleMIDIMessage(message: WebMidi.MIDIMessageEvent): void {
+    if(message.data[0] != 248) {
+      console.log(message.data);
+    }
     this.inputManager.GetMIDIInput(message);
   }
 
