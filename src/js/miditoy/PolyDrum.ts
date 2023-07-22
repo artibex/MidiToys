@@ -58,7 +58,7 @@ export class PolyDrum extends MIDIToy {
     }
 
     ApplySettings() {
-        
+        //Sorry, nothing
     }
 
     ToJSON() {
@@ -148,7 +148,7 @@ export class PolyDrum extends MIDIToy {
         this.bpm = this.inputManager.GetBPM();
 
         this.receiver.forEach(element => {
-            var r = element as MIDIReceiver;
+            let r = element;
             if(r.GetMIDIInput(holdingKeys, velocities)) {
                 // console.log("FOUND key, spawn square");
                 this.SpawnShape(r.GetVelocity());
@@ -162,11 +162,11 @@ export class PolyDrum extends MIDIToy {
 
     SpawnShape(velocity: number) {
         // console.log("DRAW shape");
-        var xSpawn = this.xSpawnPos * this.xSpawnOffset;
-        var ySpawn = this.ySpawnPos * this.ySpawnOffset;
+        let xSpawn = this.xSpawnPos * this.xSpawnOffset;
+        let ySpawn = this.ySpawnPos * this.ySpawnOffset;
 
-        var point = new paper.Point(xSpawn, ySpawn);
-        var poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
+        let point = new paper.Point(xSpawn, ySpawn);
+        let poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
         poly.fillColor = new paper.Color(this.fillColor);
         poly.strokeColor = new paper.Color(this.strokeColor);
         poly.strokeWidth = this.strokeWidth + velocity/10;
@@ -175,12 +175,15 @@ export class PolyDrum extends MIDIToy {
         this.paperLayer.addChild(poly);
         // this.paperGroup.addChild(poly);
 
-        if(this.paperLayer.child != undefined) {
+        if(this.paperLayer != undefined) {
             if (this.paperLayer.children.length > this.shapeLimit) {
                 // console.log("REMOVE shape from layer, too many!");
-                // console.log("LAYER children count = " + this.paperLayer.children.length);
+                // console.log("LAYER children  count = " + this.paperLayer.children.length);
                 this.paperLayer.firstChild.remove();
-            }
+            } 
+            // else {
+            //     console.log("Paper layer not full yet. Chilren = " + this.paperLayer.children.length);
+            // }
         }
     }
 
