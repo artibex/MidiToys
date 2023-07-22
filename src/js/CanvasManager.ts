@@ -73,15 +73,14 @@ export class CanvasManager {
     frameCountOneFPS: number = 0;
     private OnFrame = () => {
         if(this.targetCanvas != null) {
-            this.toyManager.UpdateToys(); // Update all keyboards, 60 times a second
-            
             // Call registered frame event handlers
-            this.fullFramerate.forEach((handler) => handler());
-           
+            // this.fullFramerate.forEach((handler) => handler());
+            
             //30FPS update and 1 FPS update
             if(this.frameCountHalf > 1) {
                 this.frameCountHalf = 0
                 this.halfFramerate.forEach((handler) => handler());
+                this.toyManager.UpdateToys(); // Update all keyboards, 60 times a second
             }
             if(this.frameCountOneFPS > 60) {
                 this.frameCountOneFPS = 0;
