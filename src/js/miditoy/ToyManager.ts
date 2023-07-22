@@ -37,19 +37,13 @@ export class ToyManager
         return array;
     }
 
-    //Loop for updating all toys
+    //Loop for updating toys that are not Empty
     UpdateToys() {
         let array = this.GetToysToUpdate();
         if(this.targetCanvas != null) {
             array.forEach(element => {
                 element.UpdateKeyboard();
             });
-            // for (let i = 0; i <= 15; i++) 
-            // {
-            //     if (this.toys[i] !== undefined) {
-            //         this.toys[i].UpdateKeyboard();
-            //     }
-            // }
         }
     }
 
