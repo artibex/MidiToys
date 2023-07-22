@@ -17,7 +17,7 @@ export class ToyManager
         if (ToyManager.instance) {
         return ToyManager.instance;
         }
-        var f = new FirebaseManager();
+        // let f = new FirebaseManager();
         ToyManager.instance = this;
         // console.log("CREATED ToyManager");
     }
@@ -27,22 +27,29 @@ export class ToyManager
         this.targetCanvas = canvas;
     }
 
-    //Loop for updating all toys
-    UpdateToys() {
-        if(this.targetCanvas != null) {
-            for (let i = 0; i <= 15; i++) 
-            {
-                if (this.toys[i] !== undefined) {
-                    this.toys[i].UpdateKeyboard();
-                }
+    GetToysToUpdate() {
+        let array = [];
+        for (let i = 0; i <= 15; i++) {
+            if(!this.toys[i].toyType.includes("Empty")) {
+                array.push(this.toys[i]);
             }
-            paper.view.update();
+        }
+        return array;
+    }
+
+    //Loop for updating toys that are not Empty
+    UpdateToys() {
+        let array = this.GetToysToUpdate();
+        if(this.targetCanvas != null) {
+            array.forEach(element => {
+                element.UpdateKeyboard();
+            });
         }
     }
 
     //Creates 16 placeholder toys
     CreateEmptyToys() {
-        for(var i = 0; i < 16; i++) {
+        for(let i = 0; i < 16; i++) {
             this.toys[i] = new EmptyToy(i + 1);
         }
     }
@@ -59,7 +66,6 @@ export class ToyManager
     }
     CreatePolyDrum(channel: number) {
         this.RemovePaperLayer(channel);
-        // console.log("CREATE PolyDrum on channel " + channel);
         this.toys[channel - 1] = new PolyDrum(channel);
     }
     CreateMIDIMatrix(channel: number) {
@@ -79,9 +85,9 @@ export class ToyManager
     }
 
     GetToyType(channel: number) {
-        var toy = this.GetToy(channel);
+        let toy = this.GetToy(channel);
         if(toy != undefined) {
-            var name = toy.toyType;
+            let name = toy.toyType;
             switch(true) {
                 case name.includes("Empty"): return 0;
                 case name.includes("Gravi"): return 1;
@@ -108,11 +114,10 @@ export class ToyManager
 
     //Clears the complete canvas with all elements on it
     ClearCanvas() {
-        // console.log("CLEAR paper canvas");
         paper.project.clear();
     }
     RemovePaperLayer(channel: number) {
-        var toy = this.GetToy(channel);
+        let toy = this.GetToy(channel);
         if(toy != undefined) {
             toy.paperLayer.remove();
         }
