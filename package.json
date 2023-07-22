@@ -9,7 +9,7 @@
     "firebase-auth": "^0.1.2",
     "idb": "^7.1.1",
     "paper": "^0.12.17",
-    "protobufjs": "^7.2.4",
+    "protobufjs": ">=7.2.4",
     "raphael": "^2.3.0",
     "react": "^18.2.0",
     "solid-js": "^1.7.4",
