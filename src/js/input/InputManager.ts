@@ -117,7 +117,7 @@ export class InputManager {
     GetMIDIInput(message) {
         let [command, note, velocity] = message.data;
         let stringCommand = MIDIDataTable.MIDICommandToString(command);
-        //console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
+        // console.log("command: " + stringCommand, " note: " + note + " velocity: " + velocity);
         
         if (stringCommand.includes("NoteOn") || stringCommand.includes("NoteOff")) {
             let ch = Number(stringCommand.replace(/\D+/g, ""));
@@ -197,11 +197,11 @@ export class InputManager {
 
     GetMIDIDevices(): string[]{
         if(this.midiReader != undefined) {
-            let str: string [] = [];
-            let devices = this.midiReader.GetMIDIDevices();
+            var str: string [] = [];
+            var devices = this.midiReader.GetMIDIDevices();
             if(devices.length > 0) {
                 devices.forEach((device) => {
-                    let d = device;
+                    var d = device as WebMidi.MIDIInput;
                     str.push(d.name);
                 })
             } else str.push("Please Plug In a MIDI Decice");
@@ -213,7 +213,7 @@ export class InputManager {
 
     GetSelectedMIDIDevice(): string {
         if(this.midiReader != undefined) {
-            var targetDevice = this.midiReader.GetSelectedDevice();
+            var targetDevice = this.midiReader.GetSelectedDevice() as WebMidi.MIDIInput;
             if(targetDevice != undefined) return targetDevice.name;
             else return "[Selected Device is undefined]";
         } else return "MIDI Reader not found";

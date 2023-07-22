@@ -7,8 +7,7 @@
     "baseUrl": ".",
     "module": "esnext",
     "lib": ["DOM", "ESNext"],
-    "downlevelIteration": true,
-    
+
     "paths": {
       "@miditoy/*": ["src/js/miditoy/*"],
       "@input/*": ["src/js/input/*"],
