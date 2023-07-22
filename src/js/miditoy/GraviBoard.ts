@@ -149,14 +149,14 @@ export class GraviBoard extends MIDIToy {
 
     UpdateKeyboard() {
         let indexValue = 0;
-        let yGravity = this.yGravity;
-        let xGravity = this.xGravity;
-        let yFriction = this.yFriction;
-        let xFriction = this.xFriction;
+        var yGravity = this.yGravity;
+        var xGravity = this.xGravity;
+        var yFriction = this.yFriction;
+        var xFriction = this.xFriction;
 
         this.paperLayer.children.forEach(element => {
-            let s = element as paper.Path.RegularPolygon;
-            let vel = this.velocity[indexValue];
+            var s = element as paper.Path.RegularPolygon;
+            var vel = this.velocity[indexValue];
             if(vel == undefined) return;
 
             //No Gravity Y
@@ -231,7 +231,7 @@ export class GraviBoard extends MIDIToy {
     }
 
     Impuls(indexValue: number, yForce: number, xForce: number) {
-        let vel = this.velocity[indexValue];
+        var vel = this.velocity[indexValue];
         
         // var rand = Math.random();
         // if(rand <= 0.5) vel.x += xForce * 1;

@@ -31,7 +31,7 @@ export class MIDIDataTable {
       
     //Takes a note converted into string and returns the correct RegEx
     static MIDIStringNoteToRegExp(stringNote: string): RegExp {
-      const rawNote = stringNote.replace(/d/g, '').toUpperCase();
+      const rawNote = stringNote.replace(/[0-9]/g, '').toUpperCase();
       switch (rawNote) {
           case 'C': return /C(?!#)/i;
           case 'C#': return /C#/i;
