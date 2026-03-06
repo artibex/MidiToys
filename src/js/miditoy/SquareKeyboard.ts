@@ -1,6 +1,6 @@
 import { MIDIReceiver } from "./MIDIReceiver";
 import { MIDIToy } from "./MIDIToy";
-import * as paper from "paper";
+import paper from "paper";
 
 //WARNING: THIS ONE IS BROKEN AND SUCKS!
 

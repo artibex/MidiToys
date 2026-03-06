@@ -137,19 +137,19 @@ export default function SetupContainer(props: { channel: number }) {
 
   function RenderToySelection() {
     var emptyToy = (
-      <button id="thinButton" onClick={() => SetToyType(0, true)}>
+      <button class="thinButton" onClick={() => SetToyType(0, true)}>
         X
       </button>
     );
     var toys = (
       <>
-        <button id="thinButton" onClick={() => SetToyType(1, true)}>
+        <button class="thinButton" onClick={() => SetToyType(1, true)}>
           Gravi Board
         </button>
-        <button id="thinButton" onClick={() => SetToyType(2, true)}>
+        <button class="thinButton" onClick={() => SetToyType(2, true)}>
           Poly Drum
         </button>
-        <button id="thinButton" onClick={() => SetToyType(3, true)}>
+        <button class="thinButton" onClick={() => SetToyType(3, true)}>
           MIDI Matrix
         </button>
       </>

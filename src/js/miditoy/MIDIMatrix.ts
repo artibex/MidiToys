@@ -1,7 +1,7 @@
 import { MIDIDataTable } from "@mididata";
 import { InputManager } from "@inputmanager";
 import { MIDIToy } from "@miditoy";
-import * as paper from "paper";
+import paper from "paper";
 
 export class MIDIMatrix extends MIDIToy {
   gridCells: paper.Path[][];

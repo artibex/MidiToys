@@ -2,7 +2,7 @@ import { MIDIToy } from "@miditoy";
 import { EmptyToy } from "@miditoy/EmptyToy";
 import { GraviBoard } from "@miditoy/GraviBoard";
 import { PolyDrum } from "@miditoy/PolyDrum";
-import * as paper from "paper";
+import paper from "paper";
 import { MIDIMatrix } from "./MIDIMatrix";
 import { FirebaseManager } from "@firebaseManager";
 
@@ -29,7 +29,7 @@ export class ToyManager {
   GetToysToUpdate() {
     let array = [];
     for (let i = 0; i <= 15; i++) {
-      if (!this.toys[i].toyType.includes("Empty")) {
+      if (this.toys[i] != undefined && !this.toys[i].toyType.includes("Empty")) {
         array.push(this.toys[i]);
       }
     }
