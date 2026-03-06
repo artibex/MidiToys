@@ -3,8 +3,100 @@ name: Deploy Astro site to Pages
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  BUILD_PATH: "."
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Detect package manager
+        id: detect-package-manager
+        run: |
+          if [ -f "${{ github.workspace }}/yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_OUTPUT
+            echo "command=install" >> $GITHUB_OUTPUT
+            echo "runner=yarn" >> $GITHUB_OUTPUT
+            exit 0
+          elif [ -f "${{ github.workspace }}/package.json" ]; then
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "command=ci" >> $GITHUB_OUTPUT
+            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "Unable to determine package manager"
+            exit 1
+          fi
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: ${{ steps.detect-package-manager.outputs.manager }}
+          cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
+      - name: Create env.ts file
+        run: |
+          echo "export const firebaseConfig = {" > env.ts
+          echo "  apiKey: '${{ secrets.FIREBASE_API_KEY }}'," >> env.ts
+          echo "  authDomain: '${{ secrets.FIREBASE_AUTH_DOMAIN }}'," >> env.ts
+          echo "  databaseURL: '${{ secrets.FIREBASE_DATABASE_URL }}'," >> env.ts
+          echo "  projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'," >> env.ts
+          echo "  storageBucket: '${{ secrets.FIREBASE_STORAGE_BUCKET }}'," >> env.ts
+          echo "  messagingSenderId: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}'," >> env.ts
+          echo "  appId: '${{ secrets.FIREBASE_APP_ID }}'" >> env.ts
+          echo "};" >> env.ts
+      # - name: Display env.ts content
+      #   run: cat env.ts
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+        if: github.event_name != 'pull_request'
+      - name: Install dependencies
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        working-directory: ${{ env.BUILD_PATH }}
+      - name: Copy public folder
+        run: cp -R ./public ${{ env.BUILD_PATH }}/dist
+      - name: Build with Astro
+        run: |
+          ${{ steps.detect-package-manager.outputs.runner }} astro build \
+            --site "${{ steps.pages.outputs.origin }}" \
+            --base "${{ steps.pages.outputs.base_path }}"
+        working-directory: ${{ env.BUILD_PATH }}
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        if: github.event_name != 'pull_request'
+        with:
+          path: ${{ env.BUILD_PATH }}/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
 
 permissions:
   contents: read
