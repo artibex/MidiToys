@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 import { createSignal, createEffect } from 'solid-js';
 import { Icon } from '@iconify-icon/solid';
+=======
+import { createSignal, createEffect, mergeProps } from "solid-js";
+import { Icon } from "@iconify-icon/solid";
+>>>>>>> Stashed changes
 import { InputManager } from "@inputmanager";
 import { CanvasManager} from "@canvasmanager"
 import { MIDIInputModule } from "@input/MIDIInputModule";
@@ -12,11 +17,24 @@ const midiInputModule = new MIDIInputModule();
 const toyManager = new ToyManager();
 const firebaseManager = new FirebaseManager();
 
+<<<<<<< Updated upstream
 export function DetailsFillerCenter(props) {
   if(props.summeryName == undefined) props.summeryName = "";
   if(props.content == undefined) props.content = <></>;  
   if(props.detailClass == undefined) props.detailClass = "marginAuto width95";
   if(props.summeryClass == undefined) props.summeryClass = "textAlignCenter marginAuto";
+=======
+export function DetailsFillerCenter(rawProps) {
+  const props = mergeProps(
+    {
+      summeryName: "",
+      content: <></>,
+      detailClass: "marginAuto width95",
+      summeryClass: "textAlignCenter marginAuto",
+    },
+    rawProps,
+  );
+>>>>>>> Stashed changes
 
   return (
       <details class={props.detailClass}>
@@ -29,9 +47,13 @@ export function DetailsFillerCenter(props) {
     );
 }
 
-export function SliderInput(props) {
+export function SliderInput(rawProps) {
+  const props = mergeProps({ class: "sliderInput " }, rawProps);
   const [value, setValue] = createSignal(props.value);
+<<<<<<< Updated upstream
   if(props.class == undefined) props.class = "sliderInput ";
+=======
+>>>>>>> Stashed changes
   var factor = props.factor;
   if(factor == undefined) factor = 1;
 
@@ -59,9 +81,13 @@ export function SliderInput(props) {
   );
 }
 
-export function NumberInput(props) {
+export function NumberInput(rawProps) {
+  const props = mergeProps({ class: "numberInput" }, rawProps);
   const [value, setValue] = createSignal(props.value);
+<<<<<<< Updated upstream
   if(props.class == undefined) props.class = "numberInput";
+=======
+>>>>>>> Stashed changes
   var factor = props.factor;
   if(factor == undefined) factor = 1;
 
@@ -88,6 +114,7 @@ export function NumberInput(props) {
   );
 }
 
+<<<<<<< Updated upstream
 export function TextInput(props) {
   if(props.placeholder == undefined) props.placeholder = "Cool Placeholder";
   if(props.id == undefined) props.id = "";
@@ -95,6 +122,20 @@ export function TextInput(props) {
   if(props.type == undefined) props.type = "";
   if(props.required == undefined) props.required = false;
   if(props.value == undefined) props.value = "";
+=======
+export function TextInput(rawProps) {
+  const props = mergeProps(
+    {
+      placeholder: "Cool Placeholder",
+      id: "",
+      class: "textInput",
+      type: "",
+      required: false,
+      value: "",
+    },
+    rawProps,
+  );
+>>>>>>> Stashed changes
 
   function HandleOnChange(event) {
     if (props.onChange !== undefined) {
@@ -151,29 +192,44 @@ export function CheckboxInput(props) {
   );
 }
 
+<<<<<<< Updated upstream
 export function Button(props) {
   if(props.class == undefined) props.class = "thinButton";
   if(props.divClass == undefined) props.divClass = props.class;
   if(props.label == undefined) props.label = "Please Set Label";
   if(props.id == undefined) props.id = "";
+=======
+export function Button(rawProps) {
+  const props = mergeProps(
+    { class: "thinButton", label: "Please Set Label", id: "" },
+    rawProps,
+  );
+  const divClass = () => props.divClass ?? props.class;
+>>>>>>> Stashed changes
 
   const handleClick = () => {
     props.onClick();
   };
 
   return (
+<<<<<<< Updated upstream
     <div class={props.divClass}>
       <button
         class={props.class}
         id={props.id}
         onClick={handleClick}
       >
+=======
+    <div class={divClass()}>
+      <button class={props.class} id={props.id} onClick={handleClick}>
+>>>>>>> Stashed changes
         {props.label}
       </button>
     </div>
   );
 }
 
+<<<<<<< Updated upstream
 export function ButtonIcon(props) {
   if(props.class == undefined) props.class = "iconButton";
   if(props.divClass == undefined) props.divClass = props.class;
@@ -185,6 +241,23 @@ export function ButtonIcon(props) {
   if(props.width == undefined) props.width = "20";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
+=======
+export function ButtonIcon(rawProps) {
+  const props = mergeProps(
+    {
+      class: "iconButton",
+      label: "",
+      id: "",
+      icon: "mdi-light:alert",
+      iconFirst: true,
+      width: "20",
+      hFlip: false,
+      vFlip: false,
+    },
+    rawProps,
+  );
+  const divClass = () => props.divClass ?? props.class;
+>>>>>>> Stashed changes
 
   function HandleClick() {
     if(props.onClick != undefined) {
@@ -194,12 +267,17 @@ export function ButtonIcon(props) {
 
   if(props.label == "") { //no label
     return (
+<<<<<<< Updated upstream
       <div class={props.divClass}>
         <button
           id={props.id}
           onClick={HandleClick}
           class={props.class}
         >
+=======
+      <div class={divClass()}>
+        <button id={props.id} onClick={HandleClick} class={props.class}>
+>>>>>>> Stashed changes
           <div>
             <Icon icon={props.icon} class="marginAuto" width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
           </div>
@@ -209,12 +287,17 @@ export function ButtonIcon(props) {
   } else {
     if(props.iconFirst) { //Display icon before text
       return (
+<<<<<<< Updated upstream
         <div class={props.divClass} >
           <button
             id={props.id}
             class={props.class}
             onClick={HandleClick}
           >
+=======
+        <div class={divClass()}>
+          <button id={props.id} class={props.class} onClick={HandleClick}>
+>>>>>>> Stashed changes
             <div class="flex justifyCenter">
               <div class={props.class}>
                 <div class="marginRight10">
@@ -233,6 +316,7 @@ export function ButtonIcon(props) {
           </button>
         </div>
       );
+<<<<<<< Updated upstream
 
     } else { //Display Icon after text
         return (
@@ -242,6 +326,13 @@ export function ButtonIcon(props) {
             class={props.class}
             onClick={HandleClick}
           >
+=======
+    } else {
+      //Display Icon after text
+      return (
+        <div class={divClass()}>
+          <button id={props.id} class={props.class} onClick={HandleClick}>
+>>>>>>> Stashed changes
             <div class="flex">
               <div class={props.class}>
                   <div class="marginRight10">
@@ -264,6 +355,7 @@ export function ButtonIcon(props) {
   }
 }
 
+<<<<<<< Updated upstream
 export function MIDIDeviceReloadButton(props) {
   if(props.label == undefined) props.label = "Reload";
   if(props.class == undefined) props.class = "";
@@ -273,6 +365,20 @@ export function MIDIDeviceReloadButton(props) {
   if(props.width == undefined) props.width = "20";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
+=======
+export function MIDIDeviceReloadButton(rawProps) {
+  const props = mergeProps(
+    {
+      label: "Reload",
+      class: "",
+      id: "midiReloadBtn",
+      width: "20",
+      hFlip: false,
+      vFlip: false,
+    },
+    rawProps,
+  );
+>>>>>>> Stashed changes
 
   function handleClick() {
     // console.log("CLICKED on reload button");
@@ -318,16 +424,23 @@ export function AvailableMIDIDevicesUIElement(props) {
   )
 }
 
-export function EmailLoginUIElement(props) {
+export function EmailLoginUIElement(rawProps) {
+  const props = mergeProps(
+    { class: "", id: "emailLogin", width: "30", hFlip: false, vFlip: false },
+    rawProps,
+  );
   const [infoText, setInfoText] = createSignal("");
   
   if(props.class == undefined) props.class = "";
   if(props.id == undefined) props.id = "emailLogin";
 
+<<<<<<< Updated upstream
   if(props.width == undefined) props.width = "30";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
 
+=======
+>>>>>>> Stashed changes
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
 
@@ -553,6 +666,7 @@ export function EmailForgotPasswordUIElement(props) {
   )
 }
 
+<<<<<<< Updated upstream
 export function IconTextInputUIElement(props) {
   if(props.class == undefined) props.class = "flex justifySpace";
   if(props.id == undefined) props.id = "textInput";
@@ -569,6 +683,25 @@ export function IconTextInputUIElement(props) {
   if(props.type == undefined) props.type = "";
   if(props.placeholder == undefined) props.placeholder = "My cool Placeholder";
   if(props.label == undefined) props.label = "";
+=======
+export function IconTextInputUIElement(rawProps) {
+  const props = mergeProps(
+    {
+      class: "flex justifySpace",
+      id: "textInput",
+      icon: "ep:warn-triangle-filled",
+      iconFirst: false,
+      width: "30",
+      hFlip: false,
+      vFlip: false,
+      required: false,
+      type: "",
+      placeholder: "My cool Placeholder",
+      label: "",
+    },
+    rawProps,
+  );
+>>>>>>> Stashed changes
 
   function HandleValueChange(event) {
     if(props.onChange != undefined) {
@@ -601,10 +734,18 @@ export function IconTextInputUIElement(props) {
   )
 }
 
+<<<<<<< Updated upstream
 export function ClickableText(props) {
   if(props.label == undefined) props.label="Click on me!"
   if(props.href == undefined) props.href = "";
   if(props.class == undefined) props.class = "clickableText textAlignCenter";
+=======
+export function ClickableText(rawProps) {
+  const props = mergeProps(
+    { label: "Click on me!", href: "", class: "clickableText textAlignCenter" },
+    rawProps,
+  );
+>>>>>>> Stashed changes
 
   function HandleClick() {
     if(props.onClick != undefined) {
@@ -619,6 +760,7 @@ export function ClickableText(props) {
   )
 }
 
+<<<<<<< Updated upstream
 export function ServiceLogin(props) {
   if(props.class == undefined) props.class = "iconButton justifyCenter";
   if(props.label == undefined) props.label = "Sign in with";
@@ -628,6 +770,21 @@ export function ServiceLogin(props) {
   if(props.width == undefined) props.width = "30";
   if(props.hFlip == undefined) props.hFlip = false;
   if(props.vFlip == undefined) props.vFlip = false;
+=======
+export function ServiceLogin(rawProps) {
+  const props = mergeProps(
+    {
+      class: "iconButton justifyCenter",
+      label: "Sign in with",
+      id: "myCoolService",
+      icon: "zondicons:key",
+      width: "30",
+      hFlip: false,
+      vFlip: false,
+    },
+    rawProps,
+  );
+>>>>>>> Stashed changes
 
   function HandleClick() {
     // console.log("SERVICE LOGIN");
@@ -740,7 +897,41 @@ export function NumberSliderUIElement(props) {
             onChange={props.onChange}
           />
       </div>
+<<<<<<< Updated upstream
     )
+=======
+    </div>
+  );
+}
+
+export function CheckboxUIElement(props) {
+  return (
+    <div class="flexContainer">
+      <div>{props.name}</div>
+      <CheckboxInput checked={props.checked} onChange={props.onChange} />
+    </div>
+  );
+}
+
+export function NumberSliderUIElement(rawProps) {
+  const props = mergeProps(
+    { name: "define props.name pls", vertical: false },
+    rawProps,
+  );
+
+  if (props.vertical) {
+    return (
+      <div class="flexContainer">
+        <div class="textAlignRight">{props.name}</div>
+        <NumberSliderComboVertical
+          factor={props.factor}
+          minMaxStep={props.minMaxStep}
+          value={props.value}
+          onChange={props.onChange}
+        />
+      </div>
+    );
+>>>>>>> Stashed changes
   } else {
     return(
       <div class="flexContainer">
@@ -794,6 +985,7 @@ export function JsonFileUploader(props) {
   );
 }
 
+<<<<<<< Updated upstream
 export function MIDIDropdownUIElement(props) {
   if(props.divClass == undefined) props.divClass = "flex";
   if(props.class === undefined) props.class = "dropdown"
@@ -803,6 +995,19 @@ export function MIDIDropdownUIElement(props) {
   const [devices, setDevices] = createSignal(["", ""]);
   const [options, setOptions] = createSignal(<option value="">No MIDI devices found</option>);
   if(props.class === undefined) props.class = "";
+=======
+export function MIDIDropdownUIElement(rawProps) {
+  const props = mergeProps(
+    { divClass: "flex", class: "dropdown", label: "MIDI Devices" },
+    rawProps,
+  );
+
+  const [selectedOption, setSelectedOption] = createSignal("");
+  const [devices, setDevices] = createSignal(["", ""]);
+  const [options, setOptions] = createSignal(
+    <option value="">No MIDI devices found</option>,
+  );
+>>>>>>> Stashed changes
 
   const loadDevices = async () => {
     const loadedDevices = await inputManager.GetMIDIDevices();
@@ -854,8 +1059,13 @@ export function MIDIDropdownUIElement(props) {
   )
 }
 
+<<<<<<< Updated upstream
 export function BPM(props) {
   if(props.class === undefined) props.class = "textAlignCenter";
+=======
+export function BPM(rawProps) {
+  const props = mergeProps({ class: "textAlignCenter" }, rawProps);
+>>>>>>> Stashed changes
   const [bpm, setBPM] = createSignal(0);
 
   function GetBPM() {
@@ -872,10 +1082,17 @@ export function BPM(props) {
   )
 }
 
-export function OpenSettingsButton(props) {
+export function OpenSettingsButton(rawProps) {
+  const props = mergeProps(
+    { width: "35", icon: "ic:baseline-arrow-forward-ios" },
+    rawProps,
+  );
   var panel;
+<<<<<<< Updated upstream
   if(props.width == undefined) props.width = "35";
   if(props.icon == undefined) props.icon = "ic:baseline-arrow-forward-ios";
+=======
+>>>>>>> Stashed changes
   const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   createEffect(() => {
@@ -959,9 +1176,17 @@ export function OpenSettingsButton(props) {
   )
 }
 
+<<<<<<< Updated upstream
 export function StartText(props) {
   if(props.label == undefined) props.label = "No MIDI toy loaded, add a toy to start"
   if(props.id == undefined) props.id = "startText";
+=======
+export function StartText(rawProps) {
+  const props = mergeProps(
+    { label: "No MIDI toy loaded, add a toy to start", id: "startText" },
+    rawProps,
+  );
+>>>>>>> Stashed changes
 
   const [text, setText] = createSignal(props.label);
 
@@ -996,9 +1221,14 @@ export function StartText(props) {
 }
 
 //Debug tool
+<<<<<<< Updated upstream
 export function ChannelObserverUIElement(props) {
   if(props.channel === undefined) props.channel = 1;
   if(props.class === undefined) props.class = "width20";
+=======
+export function ChannelObserverUIElement(rawProps) {
+  const props = mergeProps({ channel: 1, class: "width20" }, rawProps);
+>>>>>>> Stashed changes
 
   const [holdingKeys, setHoldingKeys] = createSignal([]);
   
