@@ -1,10 +1,10 @@
-import { createSignal, createEffect } from 'solid-js';
-import { Icon } from '@iconify-icon/solid';
+import { createSignal, createEffect, mergeProps } from "solid-js";
+import { Icon } from "@iconify-icon/solid";
 import { InputManager } from "@inputmanager";
-import { CanvasManager} from "@canvasmanager"
+import { CanvasManager } from "@canvasmanager";
 import { MIDIInputModule } from "@input/MIDIInputModule";
-import {ToyManager} from "@toymanager";
-import {FirebaseManager} from "@firebaseManager"
+import { ToyManager } from "@toymanager";
+import { FirebaseManager } from "@firebaseManager";
 
 const inputManager = new InputManager();
 const frameManager = new CanvasManager();
@@ -12,28 +12,31 @@ const midiInputModule = new MIDIInputModule();
 const toyManager = new ToyManager();
 const firebaseManager = new FirebaseManager();
 
-export function DetailsFillerCenter(props) {
-  if(props.summeryName == undefined) props.summeryName = "";
-  if(props.content == undefined) props.content = <></>;  
-  if(props.detailClass == undefined) props.detailClass = "marginAuto width95";
-  if(props.summeryClass == undefined) props.summeryClass = "textAlignCenter marginAuto";
+export function DetailsFillerCenter(rawProps) {
+  const props = mergeProps(
+    {
+      summeryName: "",
+      content: <></>,
+      detailClass: "marginAuto width95",
+      summeryClass: "textAlignCenter marginAuto",
+    },
+    rawProps,
+  );
 
   return (
-      <details class={props.detailClass}>
-        <summary class={props.summeryClass}>
-          {props.summeryName}
-        </summary>
-        <br />
-        {props.content}
-      </details>
-    );
+    <details class={props.detailClass}>
+      <summary class={props.summeryClass}>{props.summeryName}</summary>
+      <br />
+      {props.content}
+    </details>
+  );
 }
 
-export function SliderInput(props) {
+export function SliderInput(rawProps) {
+  const props = mergeProps({ class: "sliderInput " }, rawProps);
   const [value, setValue] = createSignal(props.value);
-  if(props.class == undefined) props.class = "sliderInput ";
   var factor = props.factor;
-  if(factor == undefined) factor = 1;
+  if (factor == undefined) factor = 1;
 
   // Synchronize the value prop with changes from the outside
   createEffect(() => {
@@ -45,25 +48,25 @@ export function SliderInput(props) {
     setValue(newValue);
     props.onChange(newValue / factor);
   };
-  
-  return(
+
+  return (
     <input
-        class={props.class}
-        type="range"
-        min={props.minMaxStep[0]}
-        max={props.minMaxStep[1]}
-        step={props.minMaxStep[2]}
-        value={value() * factor}
-        onChange={handleChange}
+      class={props.class}
+      type="range"
+      min={props.minMaxStep[0]}
+      max={props.minMaxStep[1]}
+      step={props.minMaxStep[2]}
+      value={value() * factor}
+      onChange={handleChange}
     />
   );
 }
 
-export function NumberInput(props) {
+export function NumberInput(rawProps) {
+  const props = mergeProps({ class: "numberInput" }, rawProps);
   const [value, setValue] = createSignal(props.value);
-  if(props.class == undefined) props.class = "numberInput";
   var factor = props.factor;
-  if(factor == undefined) factor = 1;
+  if (factor == undefined) factor = 1;
 
   createEffect(() => {
     setValue(props.value);
@@ -72,7 +75,7 @@ export function NumberInput(props) {
   const handleChange = (event) => {
     const newValue = parseInt(event.target.value);
     setValue(newValue);
-    props.onChange(newValue / factor); 
+    props.onChange(newValue / factor);
   };
 
   return (
@@ -88,44 +91,49 @@ export function NumberInput(props) {
   );
 }
 
-export function TextInput(props) {
-  if(props.placeholder == undefined) props.placeholder = "Cool Placeholder";
-  if(props.id == undefined) props.id = "";
-  if(props.class == undefined) props.class = "textInput";
-  if(props.type == undefined) props.type = "";
-  if(props.required == undefined) props.required = false;
-  if(props.value == undefined) props.value = "";
+export function TextInput(rawProps) {
+  const props = mergeProps(
+    {
+      placeholder: "Cool Placeholder",
+      id: "",
+      class: "textInput",
+      type: "",
+      required: false,
+      value: "",
+    },
+    rawProps,
+  );
 
   function HandleOnChange(event) {
     if (props.onChange !== undefined) {
       // console.log(event.target.value);
       props.onChange(event.target.value);
     }
-  };
+  }
 
-  if(props.required) {
-    return(
-      <input 
-      type={props.type}
-      class={props.class}
-      id={props.id}
-      placeholder={props.placeholder}
-      value={props.value}
-      onChange={HandleOnChange}
-      required
+  if (props.required) {
+    return (
+      <input
+        type={props.type}
+        class={props.class}
+        id={props.id}
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={HandleOnChange}
+        required
       />
-    )
+    );
   } else {
-    return(
-      <input 
-      type={props.type}
-      class={props.class}
-      id={props.id}
-      placeholder={props.placeholder}
-      onChange={HandleOnChange}
-      value={props.value}
+    return (
+      <input
+        type={props.type}
+        class={props.class}
+        id={props.id}
+        placeholder={props.placeholder}
+        onChange={HandleOnChange}
+        value={props.value}
       />
-    )
+    );
   }
 }
 
@@ -151,150 +159,145 @@ export function CheckboxInput(props) {
   );
 }
 
-export function Button(props) {
-  if(props.class == undefined) props.class = "thinButton";
-  if(props.divClass == undefined) props.divClass = props.class;
-  if(props.label == undefined) props.label = "Please Set Label";
-  if(props.id == undefined) props.id = "";
+export function Button(rawProps) {
+  const props = mergeProps(
+    { class: "thinButton", label: "Please Set Label", id: "" },
+    rawProps,
+  );
+  const divClass = () => props.divClass ?? props.class;
 
   const handleClick = () => {
     props.onClick();
   };
 
   return (
-    <div class={props.divClass}>
-      <button
-        class={props.class}
-        id={props.id}
-        onClick={handleClick}
-      >
+    <div class={divClass()}>
+      <button class={props.class} id={props.id} onClick={handleClick}>
         {props.label}
       </button>
     </div>
   );
 }
 
-export function ButtonIcon(props) {
-  if(props.class == undefined) props.class = "iconButton";
-  if(props.divClass == undefined) props.divClass = props.class;
-  if(props.label == undefined) props.label = "";
-  if(props.id == undefined) props.id = "";
-
-  if(props.icon == undefined) props.icon = "mdi-light:alert";
-  if(props.iconFirst == undefined) props.iconFirst = true;
-  if(props.width == undefined) props.width = "20";
-  if(props.hFlip == undefined) props.hFlip = false;
-  if(props.vFlip == undefined) props.vFlip = false;
+export function ButtonIcon(rawProps) {
+  const props = mergeProps(
+    {
+      class: "iconButton",
+      label: "",
+      id: "",
+      icon: "mdi-light:alert",
+      iconFirst: true,
+      width: "20",
+      hFlip: false,
+      vFlip: false,
+    },
+    rawProps,
+  );
+  const divClass = () => props.divClass ?? props.class;
 
   function HandleClick() {
-    if(props.onClick != undefined) {
+    if (props.onClick != undefined) {
       props.onClick();
     }
-  };
+  }
 
-  if(props.label == "") { //no label
+  if (props.label == "") {
+    //no label
     return (
-      <div class={props.divClass}>
-        <button
-          id={props.id}
-          onClick={HandleClick}
-          class={props.class}
-        >
+      <div class={divClass()}>
+        <button id={props.id} onClick={HandleClick} class={props.class}>
           <div>
-            <Icon icon={props.icon} class="marginAuto" width={props.width} hFlip={props.hFlip} vFlip={props.vFlip} />
+            <Icon
+              icon={props.icon}
+              class="marginAuto"
+              width={props.width}
+              hFlip={props.hFlip}
+              vFlip={props.vFlip}
+            />
           </div>
         </button>
       </div>
     );
   } else {
-    if(props.iconFirst) { //Display icon before text
+    if (props.iconFirst) {
+      //Display icon before text
       return (
-        <div class={props.divClass} >
-          <button
-            id={props.id}
-            class={props.class}
-            onClick={HandleClick}
-          >
+        <div class={divClass()}>
+          <button id={props.id} class={props.class} onClick={HandleClick}>
             <div class="flex justifyCenter">
               <div class={props.class}>
                 <div class="marginRight10">
-                  <Icon 
+                  <Icon
                     icon={props.icon}
-                    width={props.width} 
-                    hFlip={props.hFlip} 
-                    vFlip={props.vFlip} 
+                    width={props.width}
+                    hFlip={props.hFlip}
+                    vFlip={props.vFlip}
                   />
                 </div>
+                <div>{props.label}</div>
+              </div>
+            </div>
+          </button>
+        </div>
+      );
+    } else {
+      //Display Icon after text
+      return (
+        <div class={divClass()}>
+          <button id={props.id} class={props.class} onClick={HandleClick}>
+            <div class="flex">
+              <div class={props.class}>
+                <div class="marginRight10">{props.label}</div>
                 <div>
-                  {props.label}
+                  <Icon
+                    icon={props.icon}
+                    width={props.width}
+                    hFlip={props.hFlip}
+                    vFlip={props.vFlip}
+                  />
                 </div>
               </div>
             </div>
           </button>
         </div>
       );
-
-    } else { //Display Icon after text
-        return (
-          <div class={props.divClass} >
-          <button
-            id={props.id}
-            class={props.class}
-            onClick={HandleClick}
-          >
-            <div class="flex">
-              <div class={props.class}>
-                  <div class="marginRight10">
-                    {props.label}
-                  </div>
-                <div>
-                  <Icon 
-                    icon={props.icon}
-                    width={props.width} 
-                    hFlip={props.hFlip} 
-                    vFlip={props.vFlip} 
-                  />
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
-        );
     }
   }
 }
 
-export function MIDIDeviceReloadButton(props) {
-  if(props.label == undefined) props.label = "Reload";
-  if(props.class == undefined) props.class = "";
-  if(props.id == undefined) props.id = "midiReloadBtn";
-
-  // if(props.icon == undefined) props.icon = "mdi-light:alert";
-  if(props.width == undefined) props.width = "20";
-  if(props.hFlip == undefined) props.hFlip = false;
-  if(props.vFlip == undefined) props.vFlip = false;
+export function MIDIDeviceReloadButton(rawProps) {
+  const props = mergeProps(
+    {
+      label: "Reload",
+      class: "",
+      id: "midiReloadBtn",
+      width: "20",
+      hFlip: false,
+      vFlip: false,
+    },
+    rawProps,
+  );
 
   function handleClick() {
     // console.log("CLICKED on reload button");
     midiInputModule.LoadMIDIDevices();
   }
 
-  return(
-      <ButtonIcon
-        // id={props.id}
-        // class="iconButton marginAuto"
-        
-        icon="mdi:reload"
-        label={props.label}
-        onClick={() => handleClick}
-  
-        width={props.width}
-        hFlip={props.hFlip}
-        vFlip={props.vFlip}
-      />
+  return (
+    <ButtonIcon
+      // id={props.id}
+      // class="iconButton marginAuto"
+
+      icon="mdi:reload"
+      label={props.label}
+      onClick={() => handleClick}
+      width={props.width}
+      hFlip={props.hFlip}
+      vFlip={props.vFlip}
+    />
     // <div class="marginAuto">
     // </div>
-  )
+  );
 }
 
 export function AvailableMIDIDevicesUIElement(props) {
@@ -302,52 +305,50 @@ export function AvailableMIDIDevicesUIElement(props) {
 
   function UpdateSignal() {
     const devices = inputManager.GetMIDIDevices();
-  
-    const deviceElements = devices.map((device, index) => (
-      // <div key={index}>{device}</div>
-      [device] + " "
-    ));
-      setMidiDevices(deviceElements);
+
+    const deviceElements = devices.map(
+      (device, index) =>
+        // <div key={index}>{device}</div>
+        [device] + " ",
+    );
+    setMidiDevices(deviceElements);
   }
-  
+
   frameManager.SubscribeHalfFramerate(UpdateSignal);
-  return(
+  return (
     <div>
       <h3> MIDI Devices: {midiDevices} </h3>
     </div>
-  )
+  );
 }
 
-export function EmailLoginUIElement(props) {
+export function EmailLoginUIElement(rawProps) {
+  const props = mergeProps(
+    { class: "", id: "emailLogin", width: "30", hFlip: false, vFlip: false },
+    rawProps,
+  );
   const [infoText, setInfoText] = createSignal("");
-  
-  if(props.class == undefined) props.class = "";
-  if(props.id == undefined) props.id = "emailLogin";
-
-  if(props.width == undefined) props.width = "30";
-  if(props.hFlip == undefined) props.hFlip = false;
-  if(props.vFlip == undefined) props.vFlip = false;
 
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
 
   function HandleLogin() {
-    console.log("HANDLE email login")
+    console.log("HANDLE email login");
 
     firebaseManager.EmailSignIn(email(), password());
-    if(props.onLogin != undefined) {
+    if (props.onLogin != undefined) {
       props.onLogin();
     }
   }
 
   function HandleRegister() {
-    if(props.onRegister != undefined) {
+    if (props.onRegister != undefined) {
       props.onRegister();
     }
   }
 
   function HandleForgotPassword() {
-    if(props.onPasswordForgot != undefined) {
+    if (props.onPasswordForgot != undefined) {
       props.onPasswordForgot();
     }
   }
@@ -362,35 +363,47 @@ export function EmailLoginUIElement(props) {
     // password = event.target.value;
   }
 
-  return(
+  return (
     <div id={props.id}>
       <h3 class="textAlignCenter">Sign In with Email</h3>
       <div>
-          <IconTextInputUIElement 
-            icon="fontisto:email"
-            required={true} 
-            type="email" 
-            placeholder="E-Mail"
-            onChange={HandleEmailChange(event)}
-          />
-        <IconTextInputUIElement 
-            icon="bi:key"
-            required={true} 
-            type="password" 
-            placeholder="Password"
-            onChange={HandlePasswordChange(event)}
-          />
+        <IconTextInputUIElement
+          icon="fontisto:email"
+          required={true}
+          type="email"
+          placeholder="E-Mail"
+          onChange={HandleEmailChange(event)}
+        />
+        <IconTextInputUIElement
+          icon="bi:key"
+          required={true}
+          type="password"
+          placeholder="Password"
+          onChange={HandlePasswordChange(event)}
+        />
       </div>
       <div class="marginTop10 width100 justifyEnd">
         <div class="flex justifyEnd">
-          <ClickableText class=" textAlignRight justifyEnd paddingTop10 clickableText" onClick={HandleRegister} label="register" />
-          <Button class="width40 thinButton" label="Login" onClick={HandleLogin} />
+          <ClickableText
+            class=" textAlignRight justifyEnd paddingTop10 clickableText"
+            onClick={HandleRegister}
+            label="register"
+          />
+          <Button
+            class="width40 thinButton"
+            label="Login"
+            onClick={HandleLogin}
+          />
         </div>
-        <ClickableText class=" textAlignRight justifyEnd paddingTop10 clickableText" onClick={HandleForgotPassword} label="Forgot password?" />
+        <ClickableText
+          class=" textAlignRight justifyEnd paddingTop10 clickableText"
+          onClick={HandleForgotPassword}
+          label="Forgot password?"
+        />
       </div>
       <div class="textAlignCenter marginTop10"> {infoText()} </div>
     </div>
-  )
+  );
 }
 
 export function EmailSignUpUIElement(props) {
@@ -405,28 +418,27 @@ export function EmailSignUpUIElement(props) {
   }
 
   async function HandleEmailSignUp() {
-    if(password() == repeatPassword() && email().includes("@")) {
-      if(password().length >= 6) {
-        if(username().length >= 3) {
+    if (password() == repeatPassword() && email().includes("@")) {
+      if (password().length >= 6) {
+        if (username().length >= 3) {
           // console.log("email: " + email() + " pw: " + password())
-          var result = await firebaseManager.EmailSignUp(email(), password(), username());
-          if(result) {
+          var result = await firebaseManager.EmailSignUp(
+            email(),
+            password(),
+            username(),
+          );
+          if (result) {
             setInfoText("Created account!");
-            if(props.onClick != undefined) {
+            if (props.onClick != undefined) {
               props.onClick();
-            }        
-          }
-          
-          else setInfoText("Something went wrong...");
-
+            }
+          } else setInfoText("Something went wrong...");
         } else {
-          setInfoText("Please choose a longer username")
+          setInfoText("Please choose a longer username");
         }
-
       } else {
         setInfoText("Password must be at least 6 characters long");
       }
-
     } else {
       setInfoText("Please check your email and password");
     }
@@ -434,46 +446,44 @@ export function EmailSignUpUIElement(props) {
 
   return (
     <div class="">
-        <h3 class="textAlignCenter">Create new Account</h3>
-        <IconTextInputUIElement 
-            icon="fontisto:email"
-            placeholder="E-Mail"
-            type="email"
-            onChange={(value) => setEmail(value)}
+      <h3 class="textAlignCenter">Create new Account</h3>
+      <IconTextInputUIElement
+        icon="fontisto:email"
+        placeholder="E-Mail"
+        type="email"
+        onChange={(value) => setEmail(value)}
+      />
+      <IconTextInputUIElement
+        icon="mdi:account-outline"
+        placeholder="Username"
+        type="username"
+        onChange={(value) => setUsername(value)}
+      />
+      <br></br>
+      <IconTextInputUIElement
+        icon="bi:key-fill"
+        placeholder="Password"
+        type="password"
+        onChange={(value) => setPassword(value)}
+      />
+      <IconTextInputUIElement
+        icon="bi:key"
+        placeholder="Repeat Password"
+        type="password"
+        onChange={(value) => setRepeatPassword(value)}
+      />
+      <br></br>
+      <div class="textAlignRight">{infoText()}</div>
+      <br></br>
+      <div class="justifyEnd flex">
+        <Button
+          class="thinButton width50"
+          label="Submit"
+          onClick={SubmitCredentials}
         />
-        <IconTextInputUIElement 
-            icon="mdi:account-outline"
-            placeholder="Username"
-            type="username"
-            onChange={(value) => setUsername(value)}
-        />
-        <br></br>
-        <IconTextInputUIElement 
-            icon="bi:key-fill"
-            placeholder="Password"
-            type="password"
-            onChange={(value) => setPassword(value)}
-        />
-        <IconTextInputUIElement
-            icon="bi:key"
-            placeholder="Repeat Password"
-            type="password"
-            onChange={(value) => setRepeatPassword(value)}
-        />
-        <br></br>
-        <div class="textAlignRight">
-          {infoText()}
-        </div>
-        <br></br>
-        <div class="justifyEnd flex">
-          <Button 
-              class="thinButton width50"
-              label="Submit"
-              onClick={SubmitCredentials}
-          />
-        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export function UpdateUsernameUIElement(props) {
@@ -481,32 +491,30 @@ export function UpdateUsernameUIElement(props) {
   const [infoText, setInfoText] = createSignal("");
 
   function HandleSubmit() {
-    if(username().length > 3) {
+    if (username().length > 3) {
       firebaseManager.UpdateUsername(username());
     } else setInfoText("Please choose a longer username");
   }
 
-  return(
+  return (
     <div>
-        <h3 class="textAlignCenter">Change Username</h3>
-        <IconTextInputUIElement 
-            icon="mdi:account-outline"
-            placeholder="Username"
-            type="username"
-            onChange={(value) => setUsername(value)}
+      <h3 class="textAlignCenter">Change Username</h3>
+      <IconTextInputUIElement
+        icon="mdi:account-outline"
+        placeholder="Username"
+        type="username"
+        onChange={(value) => setUsername(value)}
+      />
+      <div class="justifyEnd flex">
+        <div class="textAlignRight width40 marginAuto">{infoText()}</div>
+        <Button
+          class="thinButton width50"
+          label="Change"
+          onClick={HandleSubmit}
         />
-        <div class="justifyEnd flex">
-          <div class="textAlignRight width40 marginAuto">
-            {infoText()}
-          </div>
-          <Button 
-              class="thinButton width50"
-              label="Change"
-              onClick={HandleSubmit}
-          />
-        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export function EmailForgotPasswordUIElement(props) {
@@ -514,69 +522,67 @@ export function EmailForgotPasswordUIElement(props) {
   const [infoText, setInfoText] = createSignal("");
 
   async function HandleSubmit() {
-    if(email().includes("@")) {
+    if (email().includes("@")) {
       var worked = await firebaseManager.SendPasswordResetEmail(email());
-      if(worked == true) {
+      if (worked == true) {
         setInfoText("Sent Recovery E-Mail");
       } else {
         setInfoText("Error: Please check your E-Mail");
       }
-      
     } else {
       setInfoText("Please check your E-Mail");
     }
-    if(props.onClick != undefined) {
+    if (props.onClick != undefined) {
       props.onClick();
     }
   }
 
-  return(
+  return (
     <div>
-        <h3 class="textAlignCenter">Recover Account</h3>
-        <IconTextInputUIElement 
-            icon="fontisto:email"
-            placeholder="E-Mail"    
-            onChange={(event) => setEmail(event)}                
+      <h3 class="textAlignCenter">Recover Account</h3>
+      <IconTextInputUIElement
+        icon="fontisto:email"
+        placeholder="E-Mail"
+        onChange={(event) => setEmail(event)}
+      />
+      <br></br>
+      <div class="flex justifyEnd">
+        <Button
+          class="thinButton width50"
+          label="Submit"
+          onClick={HandleSubmit}
         />
-        <br></br>
-        <div class="flex justifyEnd">
-          <Button 
-              class="thinButton width50"
-              label="Submit"
-              onClick={HandleSubmit}
-          />
-        </div>
-        <div class="textAlignRight">
-          {infoText()}
-        </div>
+      </div>
+      <div class="textAlignRight">{infoText()}</div>
     </div>
-  )
+  );
 }
 
-export function IconTextInputUIElement(props) {
-  if(props.class == undefined) props.class = "flex justifySpace";
-  if(props.id == undefined) props.id = "textInput";
-  
-  //Icon
-  if(props.icon == undefined) props.icon = "ep:warn-triangle-filled";
-  if(props.iconFirst == undefined) props.iconFirst = false;
-  if(props.width == undefined) props.width = "30";
-  if(props.hFlip == undefined) props.hFlip = false;
-  if(props.vFlip == undefined) props.vFlip = false;
-
-  //Text input
-  if(props.required == undefined) props.required = false;
-  if(props.type == undefined) props.type = "";
-  if(props.placeholder == undefined) props.placeholder = "My cool Placeholder";
-  if(props.label == undefined) props.label = "";
+export function IconTextInputUIElement(rawProps) {
+  const props = mergeProps(
+    {
+      class: "flex justifySpace",
+      id: "textInput",
+      icon: "ep:warn-triangle-filled",
+      iconFirst: false,
+      width: "30",
+      hFlip: false,
+      vFlip: false,
+      required: false,
+      type: "",
+      placeholder: "My cool Placeholder",
+      label: "",
+    },
+    rawProps,
+  );
 
   function HandleValueChange(event) {
-    if(props.onChange != undefined) {
+    if (props.onChange != undefined) {
       props.onChange(event.target.value);
     }
   }
-  
-  return(
+
+  return (
     <div class={props.class}>
       <div class="marginAuto">
         <Icon
@@ -584,61 +590,64 @@ export function IconTextInputUIElement(props) {
           width={props.width}
           hFlip={props.hFlip}
           vFlip={props.vFlip}
-          />
+        />
       </div>
-      <div class="marginAuto paddingLeftRight10">
-        {props.label}
-      </div>
+      <div class="marginAuto paddingLeftRight10">{props.label}</div>
 
-      <TextInput 
-        required={props.required} 
+      <TextInput
+        required={props.required}
         id={props.id}
         type={props.type}
         placeholder={props.placeholder}
         onChange={HandleValueChange}
       />
     </div>
-  )
+  );
 }
 
-export function ClickableText(props) {
-  if(props.label == undefined) props.label="Click on me!"
-  if(props.href == undefined) props.href = "";
-  if(props.class == undefined) props.class = "clickableText textAlignCenter";
+export function ClickableText(rawProps) {
+  const props = mergeProps(
+    { label: "Click on me!", href: "", class: "clickableText textAlignCenter" },
+    rawProps,
+  );
 
   function HandleClick() {
-    if(props.onClick != undefined) {
+    if (props.onClick != undefined) {
       props.onClick();
     } else console.log("NO ON CLICK FUNCTION DEFINED");
   }
 
-  return(
+  return (
     <div class={props.class} onClick={HandleClick}>
       <a>{props.label}</a>
     </div>
-  )
+  );
 }
 
-export function ServiceLogin(props) {
-  if(props.class == undefined) props.class = "iconButton justifyCenter";
-  if(props.label == undefined) props.label = "Sign in with";
-  if(props.id == undefined) props.id = "myCoolService";
-
-  if(props.icon == undefined) props.icon = "zondicons:key";
-  if(props.width == undefined) props.width = "30";
-  if(props.hFlip == undefined) props.hFlip = false;
-  if(props.vFlip == undefined) props.vFlip = false;
+export function ServiceLogin(rawProps) {
+  const props = mergeProps(
+    {
+      class: "iconButton justifyCenter",
+      label: "Sign in with",
+      id: "myCoolService",
+      icon: "zondicons:key",
+      width: "30",
+      hFlip: false,
+      vFlip: false,
+    },
+    rawProps,
+  );
 
   function HandleClick() {
     // console.log("SERVICE LOGIN");
-    if(props.onClick != undefined) {
+    if (props.onClick != undefined) {
       props.onClick();
-    } else console.log("NO SERVICE FUNCTION")
-  };
+    } else console.log("NO SERVICE FUNCTION");
+  }
 
-  return(
+  return (
     <div id={props.id}>
-      <ButtonIcon 
+      <ButtonIcon
         class={props.class}
         icon={props.icon}
         width={props.width}
@@ -648,8 +657,7 @@ export function ServiceLogin(props) {
         onClick={HandleClick}
       />
     </div>
-  )
-
+  );
 }
 
 export function SelectedMIDIDeviceUIElement(props) {
@@ -658,101 +666,100 @@ export function SelectedMIDIDeviceUIElement(props) {
   function UpdateSignal() {
     setMidiDevice(inputManager.GetSelectedMIDIDevice());
   }
-  
+
   frameManager.SubscribeHalfFramerate(UpdateSignal);
-  return(
+  return (
     <div>
       <h3> MIDI Devices: {midiDevice} </h3>
     </div>
-  )
+  );
 }
 
 export function NumberSliderCombo(props) {
-  return(
+  return (
     <div class="flexContainer justifyEnd widthAuto">
       <NumberInput
+        factor={props.factor}
+        minMaxStep={props.minMaxStep}
+        value={props.value}
+        onChange={props.onChange}
+      />
+      <div class="marginLeft10">
+        <SliderInput
           factor={props.factor}
           minMaxStep={props.minMaxStep}
           value={props.value}
           onChange={props.onChange}
-      />
-      <div class="marginLeft10">
-        <SliderInput
-            factor={props.factor}
-            minMaxStep={props.minMaxStep}
-            value={props.value}
-            onChange={props.onChange}
         />
       </div>
     </div>
-  )
+  );
 }
 
 export function NumberSliderComboVertical(props) {
-  return(
+  return (
     <div>
       <div class="flexList">
-          <div class="sliderContainer">
-            <SliderInput
-                class="verticalSlider"
-                factor={props.factor}
-                minMaxStep={props.minMaxStep}
-                value={props.value}
-                onChange={props.onChange}
-            />
-        </div>
-        <NumberInput
-            factor={props.factor}
-            minMaxStep={props.minMaxStep}
-            value={props.value}
-            onChange={props.onChange}
-        />
-        Cool Text
-      </div>
-    </div>
-  )
-}
-
-export function CheckboxUIElement(props) {
-  return(
-    <div class="flexContainer">
-      <div>{props.name}</div>
-      <CheckboxInput 
-        checked={props.checked}
-        onChange={props.onChange}
-      />
-    </div>
-  )
-}
-
-export function NumberSliderUIElement(props) {
-  if(props.name == undefined) props.name = "define props.name pls";
-  if(props.vertical == undefined) props.vertical = false;
-  
-  if(props.vertical) {
-    return(
-      <div class="flexContainer">
-        <div class="textAlignRight">{props.name}</div>
-          <NumberSliderComboVertical 
+        <div class="sliderContainer">
+          <SliderInput
+            class="verticalSlider"
             factor={props.factor}
             minMaxStep={props.minMaxStep}
             value={props.value}
             onChange={props.onChange}
           />
+        </div>
+        <NumberInput
+          factor={props.factor}
+          minMaxStep={props.minMaxStep}
+          value={props.value}
+          onChange={props.onChange}
+        />
+        Cool Text
       </div>
-    )
-  } else {
-    return(
+    </div>
+  );
+}
+
+export function CheckboxUIElement(props) {
+  return (
+    <div class="flexContainer">
+      <div>{props.name}</div>
+      <CheckboxInput checked={props.checked} onChange={props.onChange} />
+    </div>
+  );
+}
+
+export function NumberSliderUIElement(rawProps) {
+  const props = mergeProps(
+    { name: "define props.name pls", vertical: false },
+    rawProps,
+  );
+
+  if (props.vertical) {
+    return (
       <div class="flexContainer">
-        <div class="width50">{props.name}</div>
-        <NumberSliderCombo 
+        <div class="textAlignRight">{props.name}</div>
+        <NumberSliderComboVertical
           factor={props.factor}
           minMaxStep={props.minMaxStep}
           value={props.value}
           onChange={props.onChange}
         />
       </div>
-    )
+    );
+  } else {
+    return (
+      <div class="flexContainer">
+        <div class="width50">{props.name}</div>
+        <NumberSliderCombo
+          factor={props.factor}
+          minMaxStep={props.minMaxStep}
+          value={props.value}
+          onChange={props.onChange}
+        />
+      </div>
+    );
   }
 }
 
@@ -760,7 +767,7 @@ export function JsonFileUploader(props) {
   const handleFileSelect = (event) => {
     const files = event.target.files;
     // const file = event.target.files[0];
-    
+
     if (files.length > 0) {
       // console.log("UPLOADED file count = " + files.length);
       Array.from(files).forEach((file) => {
@@ -770,7 +777,7 @@ export function JsonFileUploader(props) {
         reader.onload = () => {
           const json = JSON.parse(reader.result);
           props.onFileUpload(file.name, json);
-        }
+        };
         //Read plain text in
         reader.readAsText(file);
       });
@@ -779,34 +786,36 @@ export function JsonFileUploader(props) {
 
   return (
     <div>
-        <label htmlFor="file-input" className="file-input-button">
-          select file(s) to upload
-        </label>
-        <input 
-        type="file" 
-        accept=".json" 
-        multiple 
-        onChange={handleFileSelect} 
+      <label htmlFor="file-input" className="file-input-button">
+        select file(s) to upload
+      </label>
+      <input
+        type="file"
+        accept=".json"
+        multiple
+        onChange={handleFileSelect}
         id="file-input"
-        style={{ display: 'none' }}
-        />
+        style={{ display: "none" }}
+      />
     </div>
   );
 }
 
-export function MIDIDropdownUIElement(props) {
-  if(props.divClass == undefined) props.divClass = "flex";
-  if(props.class === undefined) props.class = "dropdown"
-  if(props.label === undefined) props.label = "MIDI Devices";
+export function MIDIDropdownUIElement(rawProps) {
+  const props = mergeProps(
+    { divClass: "flex", class: "dropdown", label: "MIDI Devices" },
+    rawProps,
+  );
 
   const [selectedOption, setSelectedOption] = createSignal("");
   const [devices, setDevices] = createSignal(["", ""]);
-  const [options, setOptions] = createSignal(<option value="">No MIDI devices found</option>);
-  if(props.class === undefined) props.class = "";
+  const [options, setOptions] = createSignal(
+    <option value="">No MIDI devices found</option>,
+  );
 
   const loadDevices = async () => {
     const loadedDevices = await inputManager.GetMIDIDevices();
-    if(loadedDevices != undefined && loadedDevices !== devices()) {
+    if (loadedDevices != undefined && loadedDevices !== devices()) {
       // console.log("Loaded devices:", loadedDevices);
       setDevices(loadedDevices);
       LoadOptions(loadedDevices);
@@ -838,72 +847,68 @@ export function MIDIDropdownUIElement(props) {
   //Display one empty option
   return (
     <div class={props.divClass}>
-        <div>
-          <h3 class="textAlignCenter">{props.label}</h3>
-          <MIDIDeviceReloadButton />
-        </div>
-          <select
-            class="dropdown"
-            value={selectedOption()} 
-            onFocus={() => loadDevices()} 
-            onChange={(event) => UpdateDeviceSelection(event.target.value)}
-          >
-            {options()}
-          </select>
+      <div>
+        <h3 class="textAlignCenter">{props.label}</h3>
+        <MIDIDeviceReloadButton />
+      </div>
+      <select
+        class="dropdown"
+        value={selectedOption()}
+        onFocus={() => loadDevices()}
+        onChange={(event) => UpdateDeviceSelection(event.target.value)}
+      >
+        {options()}
+      </select>
     </div>
-  )
+  );
 }
 
-export function BPM(props) {
-  if(props.class === undefined) props.class = "textAlignCenter";
+export function BPM(rawProps) {
+  const props = mergeProps({ class: "textAlignCenter" }, rawProps);
   const [bpm, setBPM] = createSignal(0);
 
   function GetBPM() {
     setBPM(inputManager.GetBPM());
-  };
+  }
 
   frameManager.SubscribeFullFramerate(GetBPM);
-  return(
-    <h2
-      class={props.class}
-    >
-      BPM: {bpm}
-    </h2>
-  )
+  return <h2 class={props.class}>BPM: {bpm}</h2>;
 }
 
-export function OpenSettingsButton(props) {
+export function OpenSettingsButton(rawProps) {
+  const props = mergeProps(
+    { width: "35", icon: "ic:baseline-arrow-forward-ios" },
+    rawProps,
+  );
   var panel;
-  if(props.width == undefined) props.width = "35";
-  if(props.icon == undefined) props.icon = "ic:baseline-arrow-forward-ios";
   const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   createEffect(() => {
-    if(settingsOpen()) {
+    if (settingsOpen()) {
       HideButton();
     } else {
       ShowButton();
     }
-  })
+  });
 
   function OpenSettings() {
     var panel = document.getElementById("settingsPanel");
-    if(panel != undefined) {
-        panel.style.display = "block";
-        HideButton();
+    if (panel != undefined) {
+      panel.style.display = "block";
+      HideButton();
     }
   }
 
   function HideButton() {
     var button = document.getElementById("openSettingsButton");
-    if(button != undefined) {
+    if (button != undefined) {
       button.style.display = "none";
     }
   }
 
   function ShowButton() {
     var button = document.getElementById("openSettingsButton");
-    if(button != undefined) {
+    if (button != undefined) {
       button.style.display = "block";
     }
   }
@@ -911,28 +916,28 @@ export function OpenSettingsButton(props) {
   function CheckAllEmpty(toys) {
     var toys = toyManager.GetToys();
     var allEmpty = true;
-    if(toys != undefined) {
+    if (toys != undefined) {
       toys.forEach((element) => {
-        if(!element.toyType.includes("Empty")){
+        if (!element.toyType.includes("Empty")) {
           allEmpty = false;
           return;
         }
-      })
-      
-      if(allEmpty) return true;
+      });
+
+      if (allEmpty) return true;
       else return false;
     }
   }
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     document.addEventListener("mousemove", (event) => {
-      if(panel != undefined) {
-        if(panel.style.display != "block") {
-          if(CheckAllEmpty()) {
+      if (panel != undefined) {
+        if (panel.style.display != "block") {
+          if (CheckAllEmpty()) {
             ShowButton();
           } else {
             if (event.clientY < window.innerHeight / 4) {
-              if(event.clientX < window.innerHeight / 4) {
+              if (event.clientX < window.innerHeight / 4) {
                 ShowButton();
               } else HideButton();
             } else HideButton();
@@ -943,76 +948,75 @@ export function OpenSettingsButton(props) {
   }
 
   function GetPanel() {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       panel = document.getElementById("settingsPanel");
     }
   }
 
   frameManager.SubscribeOneFPS(GetPanel);
-  return(
+  return (
     <ButtonIcon
       id="openSettingsButton"
       icon={props.icon}
       width={props.width}
       onClick={() => OpenSettings()}
     />
-  )
+  );
 }
 
-export function StartText(props) {
-  if(props.label == undefined) props.label = "No MIDI toy loaded, add a toy to start"
-  if(props.id == undefined) props.id = "startText";
+export function StartText(rawProps) {
+  const props = mergeProps(
+    { label: "No MIDI toy loaded, add a toy to start", id: "startText" },
+    rawProps,
+  );
 
   const [text, setText] = createSignal(props.label);
 
   function CheckAllEmpty() {
     var toys = toyManager.GetToys();
     var allEmpty = true;
-    if(toys != undefined) {
+    if (toys != undefined) {
       toys.forEach((element) => {
-        if(!element.toyType.includes("Empty")){
+        if (!element.toyType.includes("Empty")) {
           allEmpty = false;
           return;
         }
-      })
-      
-      if(allEmpty) return true;
+      });
+
+      if (allEmpty) return true;
       else return false;
     }
   }
 
   function TextSetter() {
     // console.log("SETTING Text");
-    if(CheckAllEmpty()) setText(props.label)
-    else setText(""); 
+    if (CheckAllEmpty()) setText(props.label);
+    else setText("");
   }
 
   frameManager.SubscribeOneFPS(TextSetter);
-  return(
+  return (
     <h1 id={props.id} class="noSelect">
       {text()}
     </h1>
-  )
+  );
 }
 
 //Debug tool
-export function ChannelObserverUIElement(props) {
-  if(props.channel === undefined) props.channel = 1;
-  if(props.class === undefined) props.class = "width20";
+export function ChannelObserverUIElement(rawProps) {
+  const props = mergeProps({ channel: 1, class: "width20" }, rawProps);
 
   const [holdingKeys, setHoldingKeys] = createSignal([]);
-  
+
   function UpdateHoldingKeys() {
     // console.log("GET holding keys");
     setHoldingKeys(inputManager.GetHoldingKeys(props.channel).toString());
   }
   frameManager.SubscribeHalfFramerate(UpdateHoldingKeys);
-  
-  return(
-    <h3
-      class={props.class}
-    >
+
+  return (
+    <h3 class={props.class}>
       Channel {props.channel}: {holdingKeys}
     </h3>
-  )
+  );
 }

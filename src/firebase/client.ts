@@ -1,22 +1,30 @@
-import { firebaseConfig } from '@env';
-import { browserLocalPersistence, getAuth } from 'firebase/auth';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import { firebaseConfig } from "@env";
+import { browserLocalPersistence, getAuth } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
-if (!firebase.apps.length) {
+export let app: firebase.app.App | undefined;
+export let auth: ReturnType<typeof getAuth> | undefined;
+export let db: ReturnType<typeof getFirestore> | undefined;
+
+// Only initialise Firebase in the browser — Astro runs this module server-side
+// during static generation, where there are no valid credentials.
+if (typeof window !== "undefined") {
+  if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-export let app;
-export let auth = getAuth(app);
-export let db = getFirestore(app);
+  app = firebase.app();
+  auth = getAuth(app);
+  db = getFirestore(app);
+}
 
 let user;
 let userID = undefined;
 
 async function AutoLogin() {
-    SetUser(auth.currentUser);
+  if (auth) SetUser(auth.currentUser);
 }
 
 export function SetUser(u) {
@@ -35,26 +43,30 @@ export function GetUserID() {
 }
 
 export async function SetLocalPersistence() {
-   await auth.setPersistence(browserLocalPersistence)
-   .then((result) => {
-       AutoLogin();
-   })
+  if (!auth) return;
+  await auth
+    .setPersistence(browserLocalPersistence)
+    .then(() => {
+      AutoLogin();
+    });
 }
 
-SetLocalPersistence();
+if (typeof window !== "undefined") {
+  SetLocalPersistence();
+}
 
 async function uploadData() {
-    if(auth.currentUser == null || auth.currentUser == undefined) {
-        console.log("USER is UNDEFINED");
-        return;
-    } else console.log(auth.currentUser);
+  if (!auth || auth.currentUser == null || auth.currentUser == undefined) {
+    console.log("USER is UNDEFINED");
+    return;
+  } else console.log(auth.currentUser);
     const data = {
       name: "John Doe",
       age: 25,
     };
   
     try {
-      await setDoc(doc(db, "data", "one"), data);
+      await setDoc(doc(db!, "data", "one"), data);
       console.log("Document written successfully");
     } catch (error) {
       console.log("Error writing document:", error);
