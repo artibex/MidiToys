@@ -9,10 +9,10 @@ export class MIDIInputModule {
 
   constructor() {
     if (MIDIInputModule.instance) {
-      return MIDIInputModule.instance
+      return MIDIInputModule.instance;
     }
-    MIDIInputModule.instance = this
-  
+    MIDIInputModule.instance = this;
+
     this.inputManager = new InputManager();
     this.LoadMIDIDevices();
   }
@@ -20,14 +20,14 @@ export class MIDIInputModule {
   async LoadMIDIDevices() {
     // console.log("LOAD MIDI devices");
     this.midiInputs = [];
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     if (navigator.requestMIDIAccess) {
       const midiAccess = await navigator.requestMIDIAccess();
-      
+
       for (let input of midiAccess.inputs.values()) {
         if (!this.midiInputs.includes(input)) {
           this.midiInputs.push(input);
-          if(this.targetInput == undefined) this.BindMIDIInput(input);
+          if (this.targetInput == undefined) this.BindMIDIInput(input);
           // console.log("MIDI DEVICE = " + input.name as string);
         }
       }
@@ -35,8 +35,8 @@ export class MIDIInputModule {
       // console.log("WebMIDI is not supported in this browser.");
     }
   }
-  public BindMIDIInput(input : WebMidi.MIDIInput) {
-    if(this.targetInput != undefined) this.UnbindMIDIInput(this.targetInput);
+  public BindMIDIInput(input: WebMidi.MIDIInput) {
+    if (this.targetInput != undefined) this.UnbindMIDIInput(this.targetInput);
     // console.log("BIND MIDI Device = " + input.name as string);
     input.onmidimessage = this.HandleMIDIMessage.bind(this);
     this.targetInput = input;
@@ -51,22 +51,21 @@ export class MIDIInputModule {
     this.inputManager.GetMIDIInput(message);
   }
 
-  public GetMIDIDevices(): WebMidi.MIDIInput[]  {
+  public GetMIDIDevices(): WebMidi.MIDIInput[] {
     // this.LoadMIDIDevices();
     return this.midiInputs;
   }
 
   public GetSelectedDevice(): WebMidi.MIDIInput {
-    if(this.targetInput != undefined) return this.targetInput;
+    if (this.targetInput != undefined) return this.targetInput;
     else return undefined;
   }
 
   public SetTargetDevice(device: string) {
     this.midiInputs.forEach((element) => {
-      if(element.name == device) {
+      if (element.name == device) {
         this.BindMIDIInput(element);
       }
-    })
+    });
   }
-
 }

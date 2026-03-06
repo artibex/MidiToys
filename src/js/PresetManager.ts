@@ -5,50 +5,53 @@ import { ToyManager } from "@miditoy/ToyManager";
 const firebaseManager = new FirebaseManager();
 
 //Manages your presets for toys
-export class PresetManager{
+export class PresetManager {
   static instance: PresetManager;
 
   constructor() {
     if (PresetManager.instance) {
       return PresetManager.instance;
-      }
-      PresetManager.instance = this;
+    }
+    PresetManager.instance = this;
   }
 
   //Filter by toy type presets from the local storage
   FilterPresetsLocal(toyType: string) {
-      const matchingItemsLocal = [];
-      var search = toyType.toLowerCase().replace(/\s/g, '');
+    const matchingItemsLocal = [];
+    var search = toyType.toLowerCase().replace(/\s/g, "");
 
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-    
-        if (key.includes(search)) {
-          const item = localStorage.getItem(key);
-          matchingItemsLocal.push({ key, item });
-        }
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+
+      if (key.includes(search)) {
+        const item = localStorage.getItem(key);
+        matchingItemsLocal.push({ key, item });
       }
-    
-      // console.log(matchingItems);
-      return matchingItemsLocal;
+    }
+
+    // console.log(matchingItems);
+    return matchingItemsLocal;
   }
 
   //Filter by toy type presets online
   async FilterMyPresetsOnline(toyType: string) {
-    toyType = toyType.toLowerCase().replace(/\s/g, '');
+    toyType = toyType.toLowerCase().replace(/\s/g, "");
     var data = await firebaseManager.ReadMyPresets(toyType);
     return data;
   }
 
   async SearchPresetsOnline(toyType: string, searchStr: string) {
-    toyType = toyType.toLowerCase().replace(/\s/g, '');
+    toyType = toyType.toLowerCase().replace(/\s/g, "");
     console.log("SearchPresetsOnline");
-    var data = await firebaseManager.SearchPresetsByPresetName(toyType, searchStr);
+    var data = await firebaseManager.SearchPresetsByPresetName(
+      toyType,
+      searchStr,
+    );
     return data;
   }
 
   async GetNewesPresets(toyType: string) {
-    toyType = toyType.toLowerCase().replace(/\s/g, '');
+    toyType = toyType.toLowerCase().replace(/\s/g, "");
     var data = await firebaseManager.GetNewesPresets(toyType);
     return data;
   }
@@ -64,15 +67,15 @@ export class PresetManager{
     var jsonData = data;
 
     // console.log("JSON data =" + jsonData);
-    
-    if(jsonData == undefined) {
+
+    if (jsonData == undefined) {
       // console.log("JSON is undefined");
       return;
     }
-    var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, '');
+    var toyType = jsonData.toyType.toLowerCase().replace(/\s/g, "");
 
     const deleteStr = toyType + "/" + id;
-    
+
     //console.log(toyType);
     // console.log(deleteStr);
 
@@ -83,7 +86,7 @@ export class PresetManager{
   //Returns a valid JSO object or undiefined
   GetValidJSON(data) {
     // console.log("not valid JSON = " + data);
-    
+
     try {
       const jsonObj = JSON.parse(data);
       return jsonObj;
@@ -97,23 +100,23 @@ export class PresetManager{
         const jsonObj = JSON.parse(data.data);
         return jsonObj;
       } catch {}
-    
-    return data;
+
+      return data;
     }
   }
-    
+
   //Delete EVERYTHING out of local storage
   ClearLocalStorage() {
     localStorage.clear();
   }
 
   SaveNewPresetLocal(presetName: string, toy: any) {
-    if(toy != undefined && toy != null) {
+    if (toy != undefined && toy != null) {
       // const toyType = toy.toyType;
-      const toyType = toy.toyType.toLowerCase().replace(/\s/g, '');
+      const toyType = toy.toyType.toLowerCase().replace(/\s/g, "");
       const jsonObj = JSON.stringify(toy.ToJSON());
       // presetName = presetName.toLowerCase().replace(/\s/g, '');
-      if(jsonObj == null || jsonObj == undefined) {
+      if (jsonObj == null || jsonObj == undefined) {
         // console.log("ERROR: JSON is null");
         return;
       }
@@ -126,31 +129,36 @@ export class PresetManager{
 
   SaveNewPresetOnline(presetName: string, toy: any) {
     console.log("SaveNewPresetOnline");
-    if(toy == undefined) {
+    if (toy == undefined) {
       console.log("toy is undefined");
       return;
     }
-    const toyType = toy.toyType.toLowerCase().replace(/\s/g, '');
+    const toyType = toy.toyType.toLowerCase().replace(/\s/g, "");
     const jsonObj = toy.ToJSON();
-    
-    firebaseManager.UploadNewPreset(presetName, jsonObj, toyType, true)
+
+    firebaseManager.UploadNewPreset(presetName, jsonObj, toyType, true);
   }
 
   async SaveExistingPresetOnline(presetName: string, presetData) {
-    if(presetName.length < 3) return false;
-    if(presetData == undefined || presetData == "") return false;
-    
+    if (presetName.length < 3) return false;
+    if (presetData == undefined || presetData == "") return false;
+
     var jsonObj = this.GetValidJSON(presetData);
-    if(jsonObj == undefined) return false;
-    if(jsonObj.toyType == undefined || jsonObj.toyType == "") return false;
-    
-    var b = await firebaseManager.UploadNewPreset(presetName, presetData, jsonObj.toyType, true);
-    if(b) return true;
+    if (jsonObj == undefined) return false;
+    if (jsonObj.toyType == undefined || jsonObj.toyType == "") return false;
+
+    var b = await firebaseManager.UploadNewPreset(
+      presetName,
+      presetData,
+      jsonObj.toyType,
+      true,
+    );
+    if (b) return true;
     else return false;
   }
 
   SaveNewPresetUploadLocal(saveName: string, jsonObj: string) {
-    if(saveName && jsonObj != undefined) {
+    if (saveName && jsonObj != undefined) {
       const saveNameNoExtension = saveName.toLowerCase().replace(/\.json$/, "");
       localStorage.setItem(saveNameNoExtension, jsonObj);
     }

@@ -1,10 +1,10 @@
 @font-face {
-  font-family: 'BigJohn';
-  src: url('../fonts/BIGJOHN.otf') format('opentype');
+  font-family: "BigJohn";
+  src: url("../fonts/BIGJOHN.otf") format("opentype");
 }
 @font-face {
-  font-family: 'SlimJoe';
-  src: url('../fonts/SlimJoe.otf') format('opentype');
+  font-family: "SlimJoe";
+  src: url("../fonts/SlimJoe.otf") format("opentype");
 }
 
 :root {
@@ -20,7 +20,8 @@
   --text-hover-color: yellow;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -37,16 +38,18 @@ body {
   background-color: var(--body-background-color);
 }
 
-main{
+main {
   width: min(65ch, 100% - 4rem);
   margin-inline: auto;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: "BigJohn", sans-serif;
 }
 
-h1{
+h1 {
   padding: 0px;
   margin: 0px;
   font-size: 20pt;
@@ -54,16 +57,18 @@ h1{
 h2 {
   font-size: 16pt;
 }
-h3{
+h3 {
   font-size: 13pt;
 }
 
-img,svg,video{
+img,
+svg,
+video {
   max-width: 100%;
   display: block;
 }
 
-.positionFixed{
+.positionFixed {
   position: fixed;
   top: 0px;
 }
@@ -86,7 +91,7 @@ button:hover {
   border: 1px solid var(--item-hover-color);
   color: var(--text-hover-color);
 }
-.thinButton{
+.thinButton {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 10px;
@@ -94,7 +99,7 @@ button:hover {
   font-family: "SlimJoe", sans-serif;
   word-break: break-word;
 }
-.thinButtonActive{
+.thinButtonActive {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 10px;
@@ -105,7 +110,7 @@ button:hover {
   word-break: break-word;
 }
 
-.squareButton{
+.squareButton {
   padding: 3px;
   font-family: "SlimJoe", sans-serif;
   text-align: center;
@@ -113,23 +118,23 @@ button:hover {
   height: 100%; */
 }
 
-.channelButton{
+.channelButton {
   padding-top: 0px;
   padding-bottom: 3px;
   text-align: center;
   margin: auto;
 }
-.channelButtonActiv{
+.channelButtonActiv {
   padding-top: 0px;
   padding-bottom: 3px;
   text-align: center;
   margin: auto;
 
   color: black;
-  background-color: var(--item-hover-color)
+  background-color: var(--item-hover-color);
 }
 
-.iconButton{
+.iconButton {
   display: flex;
   padding: 5px;
   font-family: "SlimJoe", sans-serif;
@@ -149,7 +154,7 @@ button:hover {
   border: 1px var(--border-color) dashed;
   /* padding-top: 5px;
   padding-bottom: 5px; */
-  padding: 10px;  
+  padding: 10px;
   justify-content: space-around;
 }
 
@@ -200,11 +205,11 @@ details[open] summary {
   /* font-size: 14pt; */
 }
 
-.noSelect{
+.noSelect {
   user-select: none;
 }
 
-.alignLeft{
+.alignLeft {
   justify-content: start;
   align-items: center;
 }
@@ -214,22 +219,22 @@ details[open] summary {
   align-items: center;
 }
 
-.alignCenter{
+.alignCenter {
   justify-content: center;
   align-items: center;
 }
 
-.textAlignLeft{
+.textAlignLeft {
   text-align: left;
 }
-.textAlignCenter{
+.textAlignCenter {
   text-align: center;
 }
-.textAlignRight{
+.textAlignRight {
   text-align: right;
 }
 
-.marginAuto{
+.marginAuto {
   margin: auto;
 }
 .marginTopBottomAuto {
@@ -237,29 +242,28 @@ details[open] summary {
   margin-bottom: auto;
 }
 
-
-.paddingTopBottom0{
+.paddingTopBottom0 {
   padding-top: 0px;
   padding-bottom: 0px;
 }
 
-.paddingLeftRight10{
+.paddingLeftRight10 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-.paddingTop10{
+.paddingTop10 {
   padding-top: 10px;
 }
-.paddingTop20{
+.paddingTop20 {
   padding-top: 20px;
 }
 
-.padding10{
+.padding10 {
   padding: 10px;
 }
 
-.paddingAuto{
+.paddingAuto {
   padding: auto;
 }
 
@@ -276,38 +280,38 @@ details[open] summary {
 .marginRight5 {
   margin-right: 5px;
 }
-.marginRight10{
+.marginRight10 {
   margin-right: 10px;
 }
-.marginRight20{
+.marginRight20 {
   margin-right: 20px;
 }
 
-.marginLeft5{
+.marginLeft5 {
   margin-left: 5px;
 }
-.marginLeft20{
+.marginLeft20 {
   margin-left: 20px; /* add margin to the right of the heading */
 }
-.marginLeft10{
+.marginLeft10 {
   margin-left: 10px; /* add margin to the right of the heading */
 }
-.marginLeft20Percent{
+.marginLeft20Percent {
   margin-left: 20%;
 }
-.marginRight20Percent{
+.marginRight20Percent {
   margin-right: 20%;
 }
-.marginRight40Percent{
+.marginRight40Percent {
   margin-right: 40%;
 }
 .widthAuto {
   width: auto;
 }
-.width100{
+.width100 {
   width: 100%;
 }
-.width95{
+.width95 {
   width: 95%;
 }
 
@@ -317,48 +321,48 @@ details[open] summary {
 .width70 {
   width: 70%;
 }
-.width60{
+.width60 {
   width: 60%;
 }
-.width50{
+.width50 {
   width: 50%;
 }
-.width40{
+.width40 {
   width: 40%;
 }
-.width30{
+.width30 {
   width: 30%;
 }
-.width20{
+.width20 {
   width: 20%;
 }
-.width10{
+.width10 {
   width: 10%;
 }
-.width5{
+.width5 {
   width: 5%;
 }
 
-.heightAuto{
+.heightAuto {
   height: auto;
 }
-.height100{
+.height100 {
   height: 100%;
 }
 
-.height95{
+.height95 {
   height: 95%;
 }
-.height80{
+.height80 {
   height: 80%;
 }
-.height50{
+.height50 {
   height: 50%;
 }
-.height20{
+.height20 {
   height: 20%;
 }
-.height10{
+.height10 {
   height: 10%;
 }
 
@@ -381,7 +385,7 @@ details[open] summary {
   height: 100%;
   width: 100%;
 }
-.overflowAuto{
+.overflowAuto {
   overflow: auto;
 }
 
@@ -393,25 +397,25 @@ details[open] summary {
   border: 1px dashed var(--border-color);
   cursor: pointer;
 }
-.file-input-button:hover{
+.file-input-button:hover {
   background-color: var(--item-hover-color);
   text-decoration: underline;
 }
 
-.top1{
+.top1 {
   top: 1%;
   position: fixed;
 }
-.top2{
+.top2 {
   top: 10%;
   position: fixed;
 }
 
-.flex{
+.flex {
   display: flex;
 }
 
-.flexContainer{
+.flexContainer {
   display: flex;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -420,23 +424,22 @@ details[open] summary {
   height: 99%;
   /* width: 100%; */
 }
-.justifyEnd{
+.justifyEnd {
   justify-content: end;
   /* align-items: end; */
 }
-.justifyStart{
+.justifyStart {
   justify-content: start;
   align-items: start;
 }
-.justifySpace{
+.justifySpace {
   justify-content: space-between;
 }
-.justifyCenter{
+.justifyCenter {
   justify-content: center;
   vertical-align: auto;
   text-align: center;
 }
-
 
 .flexList {
   display: flex;
@@ -446,7 +449,7 @@ details[open] summary {
   height: 100%; /* Set the height of the container to make it expand to the full height */
 }
 
-.clickableText{
+.clickableText {
   color: var(--text-hover-color);
   text-decoration: underline;
   font-size: 12pt;
@@ -454,7 +457,7 @@ details[open] summary {
   /* Hover effect */
   transition: color 0.3s ease;
 }
-.clickableText:hover{
+.clickableText:hover {
   color: var(--text-color);
   text-decoration: none;
   cursor: pointer;
@@ -462,7 +465,7 @@ details[open] summary {
 
 .numberInput {
   appearance: textfield;
-  
+
   text-align: center;
   /* align-items: end; */
   padding: 10px;
@@ -483,7 +486,7 @@ details[open] summary {
   outline: 1px solid var(--border-hover-color);
   color: var(--text-hover-color);
 }
-.numberInput:hover{
+.numberInput:hover {
   outline: 1px solid var(--border-hover-color);
 }
 .numberInput::-webkit-inner-spin-button,
@@ -504,11 +507,11 @@ details[open] summary {
   outline: 1px solid var(--border-hover-color);
   color: var(--text-hover-color);
 }
-.textInput:hover{
+.textInput:hover {
   outline: 1px solid;
 }
 
-.sliderInput{
+.sliderInput {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -541,7 +544,7 @@ details[open] summary {
   /* transform-origin: right top; */
 }
 
-.toggleInput{
+.toggleInput {
   appearance: none;
   border-radius: 5px;
   background-color: var(--item-background-color);
@@ -549,7 +552,7 @@ details[open] summary {
   width: 15vh;
   height: 25px;
 }
-.toggleInput:hover{
+.toggleInput:hover {
   background-color: var(--item-hover-color);
 }
 .toggleInput:checked:hover {
@@ -618,6 +621,6 @@ details[open] summary {
 .toyCanvasDebug {
   width: 100%;
   height: 420px;
-  overflow: hidden;    /* add other styles as desired */
+  overflow: hidden; /* add other styles as desired */
   outline: 1px solid var(--border-color);
 }

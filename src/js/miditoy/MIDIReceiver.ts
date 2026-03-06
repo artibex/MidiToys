@@ -10,7 +10,7 @@ export class MIDIReceiver {
 
   useRegExp: boolean = false;
   targetRegExp: RegExp;
-  
+
   lastIndexValue: number = -1;
   velocityValue: number = 0;
   holdingKeys: string[]; //Stores last detected holding keys
@@ -19,7 +19,9 @@ export class MIDIReceiver {
   constructor(targetChannel: number, targetNote: string) {
     this.targetChannel = targetChannel;
     this.targetNote = targetNote;
-    this.targetRegExp = new RegExp(MIDIDataTable.MIDIStringNoteToRegExp(targetNote) as RegExp);
+    this.targetRegExp = new RegExp(
+      MIDIDataTable.MIDIStringNoteToRegExp(targetNote) as RegExp,
+    );
     //console.log("CREATED MIDI Receiver. TargetNote: " + targetNote);
   }
 
@@ -30,17 +32,21 @@ export class MIDIReceiver {
     let targetIndex = -1;
 
     //Check for corresponding key, one way or another
-    if(this.useRegExp) {
-      targetIndex = holdingKeys.findIndex((element) => element.match(this.targetRegExp));
+    if (this.useRegExp) {
+      targetIndex = holdingKeys.findIndex((element) =>
+        element.match(this.targetRegExp),
+      );
     } else {
-      targetIndex = holdingKeys.findIndex((element) => element.match(this.targetNote));
+      targetIndex = holdingKeys.findIndex((element) =>
+        element.match(this.targetNote),
+      );
     }
-    
+
     if (targetIndex !== -1) {
-        // console.log("FOUND key in holding keys. " + targetIndex[targetIndex])
-        this.lastIndexValue = targetIndex;
-        this.velocityValue = velocityValues[targetIndex];
-        return true;
+      // console.log("FOUND key in holding keys. " + targetIndex[targetIndex])
+      this.lastIndexValue = targetIndex;
+      this.velocityValue = velocityValues[targetIndex];
+      return true;
     } else {
       return false;
     }

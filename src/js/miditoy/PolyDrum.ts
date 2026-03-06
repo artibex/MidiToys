@@ -1,226 +1,229 @@
 import { MIDIReceiver } from "@midireceiver";
 import { MIDIToy } from "@miditoy";
-import * as paper from 'paper';
+import * as paper from "paper";
 
 export class PolyDrum extends MIDIToy {
-    // shapes: paper.Path[] = [];
-    shapeLimit: number = 10;
-    polySides: number = 3;
+  // shapes: paper.Path[] = [];
+  shapeLimit: number = 10;
+  polySides: number = 3;
 
-    startSize: number = 500;
+  startSize: number = 500;
 
-    xSizeChange: number = 0.98;
-    ySizeChange: number = 0.98;
+  xSizeChange: number = 0.98;
+  ySizeChange: number = 0.98;
 
-    alphaDecrease: number = 0.01;
-    rotationSpeed: number = 0;
+  alphaDecrease: number = 0.01;
+  rotationSpeed: number = 0;
 
-    //Stroke settings
-    strokeWidth: number = 10;
-    strokeWidthDecrease: number = 1
+  //Stroke settings
+  strokeWidth: number = 10;
+  strokeWidthDecrease: number = 1;
 
-    xSpawnPos: number = this.w * 0.5;
-    ySpawnPos: number = this.h * 0.5;
-    xSpawnOffset: number = 1;
-    ySpawnOffset: number = 1;
+  xSpawnPos: number = this.w * 0.5;
+  ySpawnPos: number = this.h * 0.5;
+  xSpawnOffset: number = 1;
+  ySpawnOffset: number = 1;
 
-    minWidth: number = this.w * 0.5;
-    maxWidth: number = this.w * 0.5;
+  minWidth: number = this.w * 0.5;
+  maxWidth: number = this.w * 0.5;
 
-    minHeight: number = this.h * 0.5;
-    maxHeight: number = this.h * 0.5;
+  minHeight: number = this.h * 0.5;
+  maxHeight: number = this.h * 0.5;
 
-    xSpawnScale: number = 1;
-    ySpawnScale: number = 1;
+  xSpawnScale: number = 1;
+  ySpawnScale: number = 1;
 
-    constructor(targetChannel: number) {
-        super("PolyDrum", targetChannel, 24, 12, true);
-        // console.log("CREATED PolyDrum");
-        // console.log(this.receiver.length);
-        this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
-        this.LoadDefaultColors();
-        this.SetupKeyboard();
-    }
+  constructor(targetChannel: number) {
+    super("PolyDrum", targetChannel, 24, 12, true);
+    // console.log("CREATED PolyDrum");
+    // console.log(this.receiver.length);
+    this.inputManager.Subscribe(targetChannel, this.InputEvent.bind(this));
+    this.LoadDefaultColors();
+    this.SetupKeyboard();
+  }
 
-    LoadDefaultColors() {
-        this.fillColor = new paper.Color(0,0,0,0.4);
-        this.strokeColor = new paper.Color(1);
-        this.accentColor = new paper.Color(0,0,0,0);
-    }
+  LoadDefaultColors() {
+    this.fillColor = new paper.Color(0, 0, 0, 0.4);
+    this.strokeColor = new paper.Color(1);
+    this.accentColor = new paper.Color(0, 0, 0, 0);
+  }
 
-    ApplyColors() {
-        this.paperLayer.children.forEach(element => {
-            var s = element as paper.Path.RegularPolygon;
+  ApplyColors() {
+    this.paperLayer.children.forEach((element) => {
+      var s = element as paper.Path.RegularPolygon;
 
-            s.fillColor = this.fillColor;
-            s.strokeColor = this.strokeColor;
-        });
-    }
+      s.fillColor = this.fillColor;
+      s.strokeColor = this.strokeColor;
+    });
+  }
 
-    ApplySettings() {
-        //Sorry, nothing
-    }
+  ApplySettings() {
+    //Sorry, nothing
+  }
 
-    ToJSON() {
+  ToJSON() {
     return {
-        //MIDIToy data
-        ...this.GetBaseJSON(),
+      //MIDIToy data
+      ...this.GetBaseJSON(),
 
-        //Class specific data
-        shapeLimit: this.shapeLimit,
-        polySides: this.polySides,
-        startSize: this.startSize,
-        sizeIncrease: this.xSizeChange,
-        alphaDecrease: this.alphaDecrease,
-        rotationSpeed: this.rotationSpeed,
-        strokeWidth: this.strokeWidth,
-        strokeWidthDecrease: this.strokeWidthDecrease,
-        
-        ySpawnOffset: this.ySpawnOffset,
-        xSpawnOffset: this.xSpawnOffset,
-        
-        xSpawnScale: this.xSpawnScale,
-        ySpawnScale: this.ySpawnScale,
+      //Class specific data
+      shapeLimit: this.shapeLimit,
+      polySides: this.polySides,
+      startSize: this.startSize,
+      sizeIncrease: this.xSizeChange,
+      alphaDecrease: this.alphaDecrease,
+      rotationSpeed: this.rotationSpeed,
+      strokeWidth: this.strokeWidth,
+      strokeWidthDecrease: this.strokeWidthDecrease,
 
-        xSizeChange: this.xSizeChange,
-        ySizeChange: this.ySizeChange
-        };
+      ySpawnOffset: this.ySpawnOffset,
+      xSpawnOffset: this.xSpawnOffset,
+
+      xSpawnScale: this.xSpawnScale,
+      ySpawnScale: this.ySpawnScale,
+
+      xSizeChange: this.xSizeChange,
+      ySizeChange: this.ySizeChange,
+    };
+  }
+  LoadJSON(data: any) {
+    //MIDIToy Loading
+
+    //Class specific loading
+    this.shapeLimit = data.shapeLimit;
+    this.polySides = data.polySides;
+    this.startSize = data.startSize;
+    this.xSizeChange = data.sizeIncrease;
+    this.alphaDecrease = data.alphaDecrease;
+    this.rotationSpeed = data.rotationSpeed;
+    this.strokeWidth = data.strokeWidth;
+    this.strokeWidthDecrease = data.strokeWidthDecrease;
+
+    this.xSpawnOffset = data.xSpawnOffset;
+    this.ySpawnOffset = data.ySpawnOffset;
+
+    this.xSpawnScale = data.xSpawnScale;
+    this.ySpawnScale = data.ySpawnScale;
+
+    this.xSizeChange = data.xSizeChange;
+    this.ySizeChange = data.ySizeChange;
+
+    this.LoadBaseJSON(data);
+    // this.SetupKeyboard();
+    // this.TriggerToyChangedEvent();
+  }
+
+  SetupKeyboard() {
+    this.RemoveChildrenFromLayer();
+    this.SpawnShape(120);
+    this.SetupMIDIReceiver(this.numberOfKeys, this.useRegExp);
+    // this.paperLayer.addChild(this.paperGroup);
+  }
+
+  frameCount: number = 0;
+  UpdateKeyboard() {
+    this.UpdateShapes();
+  }
+
+  ChangePolySideCount() {
+    var rand = Math.random();
+
+    if (rand > 0.5) {
+      if (this.polySides < 10) this.polySides += 1;
+      else this.polySides -= 1;
+    } else {
+      if (this.polySides > 2) this.polySides -= 1;
+      else this.polySides += 1;
     }
-    LoadJSON(data: any) {
-        //MIDIToy Loading
+  }
 
-        //Class specific loading
-        this.shapeLimit = data.shapeLimit;
-        this.polySides = data.polySides;
-        this.startSize = data.startSize;
-        this.xSizeChange = data.sizeIncrease;
-        this.alphaDecrease = data.alphaDecrease;
-        this.rotationSpeed = data.rotationSpeed;
-        this.strokeWidth = data.strokeWidth;
-        this.strokeWidthDecrease = data.strokeWidthDecrease;
-        
-        this.xSpawnOffset = data.xSpawnOffset;
-        this.ySpawnOffset = data.ySpawnOffset;
-
-        this.xSpawnScale = data.xSpawnScale;
-        this.ySpawnScale = data.ySpawnScale;
-
-        this.xSizeChange = data.xSizeChange;
-        this.ySizeChange = data.ySizeChange;
-
-        this.LoadBaseJSON(data);
-        // this.SetupKeyboard();
-        // this.TriggerToyChangedEvent();
-    }
-
-    SetupKeyboard() {
-        this.RemoveChildrenFromLayer();
-        this.SpawnShape(120);
-        this.SetupMIDIReceiver(this.numberOfKeys, this.useRegExp);
-        // this.paperLayer.addChild(this.paperGroup);
-    }
-
-    frameCount: number = 0;
-    UpdateKeyboard() {
-        this.UpdateShapes();
-    }
-
-    ChangePolySideCount() {
-        var rand = Math.random();
-
-        if(rand > 0.5) {
-            if(this.polySides < 10) this.polySides += 1;
-            else this.polySides -= 1;
-        } 
-        else {
-            if(this.polySides > 2) this.polySides -= 1;
-            else this.polySides += 1;
-        }
-    }
-
-    InputEvent(onEvent: boolean) {
-        if(!onEvent) {
-            return;
-        }
-
-        let holdingKeys = this.inputManager.GetHoldingKeys(this.targetChannel);
-        let velocities = this.inputManager.GetVelocity(this.targetChannel);
-        this.bpm = this.inputManager.GetBPM();
-
-        this.receiver.forEach(element => {
-            let r = element;
-            if(r.GetMIDIInput(holdingKeys, velocities)) {
-                // console.log("FOUND key, spawn square");
-                this.SpawnShape(r.GetVelocity());
-            }
-        })
-
-        // if(holdingKeys.length > 0) {
-        //     this.SpawnSquare();
-        // }
+  InputEvent(onEvent: boolean) {
+    if (!onEvent) {
+      return;
     }
 
-    SpawnShape(velocity: number) {
-        // console.log("DRAW shape");
-        let xSpawn = this.xSpawnPos * this.xSpawnOffset;
-        let ySpawn = this.ySpawnPos * this.ySpawnOffset;
+    let holdingKeys = this.inputManager.GetHoldingKeys(this.targetChannel);
+    let velocities = this.inputManager.GetVelocity(this.targetChannel);
+    this.bpm = this.inputManager.GetBPM();
 
-        let point = new paper.Point(xSpawn, ySpawn);
-        let poly = new paper.Path.RegularPolygon(point, this.polySides, this.startSize);
-        poly.fillColor = new paper.Color(this.fillColor);
-        poly.strokeColor = new paper.Color(this.strokeColor);
-        poly.strokeWidth = this.strokeWidth + velocity/10;
-        poly.scale([this.xSpawnScale, this.ySpawnScale]);
+    this.receiver.forEach((element) => {
+      let r = element;
+      if (r.GetMIDIInput(holdingKeys, velocities)) {
+        // console.log("FOUND key, spawn square");
+        this.SpawnShape(r.GetVelocity());
+      }
+    });
 
-        this.paperLayer.addChild(poly);
-        // this.paperGroup.addChild(poly);
+    // if(holdingKeys.length > 0) {
+    //     this.SpawnSquare();
+    // }
+  }
 
-        if(this.paperLayer != undefined) {
-            if (this.paperLayer.children.length > this.shapeLimit) {
-                // console.log("REMOVE shape from layer, too many!");
-                // console.log("LAYER children  count = " + this.paperLayer.children.length);
-                this.paperLayer.firstChild.remove();
-            } 
-            // else {
-            //     console.log("Paper layer not full yet. Chilren = " + this.paperLayer.children.length);
-            // }
-        }
+  SpawnShape(velocity: number) {
+    // console.log("DRAW shape");
+    let xSpawn = this.xSpawnPos * this.xSpawnOffset;
+    let ySpawn = this.ySpawnPos * this.ySpawnOffset;
+
+    let point = new paper.Point(xSpawn, ySpawn);
+    let poly = new paper.Path.RegularPolygon(
+      point,
+      this.polySides,
+      this.startSize,
+    );
+    poly.fillColor = new paper.Color(this.fillColor);
+    poly.strokeColor = new paper.Color(this.strokeColor);
+    poly.strokeWidth = this.strokeWidth + velocity / 10;
+    poly.scale(this.xSpawnScale, this.ySpawnScale);
+
+    this.paperLayer.addChild(poly);
+    // this.paperGroup.addChild(poly);
+
+    if (this.paperLayer != undefined) {
+      if (this.paperLayer.children.length > this.shapeLimit) {
+        // console.log("REMOVE shape from layer, too many!");
+        // console.log("LAYER children  count = " + this.paperLayer.children.length);
+        this.paperLayer.firstChild.remove();
+      }
+      // else {
+      //     console.log("Paper layer not full yet. Chilren = " + this.paperLayer.children.length);
+      // }
     }
+  }
 
-    UpdateShapes() {
-        var alphaDecrease = this.alphaDecrease;
-        var strokeWidthDecrease = this.strokeWidthDecrease;
-        var rotationSpeed = this.rotationSpeed;
+  UpdateShapes() {
+    var alphaDecrease = this.alphaDecrease;
+    var strokeWidthDecrease = this.strokeWidthDecrease;
+    var rotationSpeed = this.rotationSpeed;
 
-        let indexValue: number = 0;
-        
-        this.paperLayer.children.forEach(element => {
-            var poly = element as paper.Path.RegularPolygon;
+    let indexValue: number = 0;
 
-            var newStrokeColor = poly.strokeColor.clone();
-            var newFillColor = poly.fillColor.clone();
-            newStrokeColor.alpha -= alphaDecrease;
-            newFillColor.alpha -= alphaDecrease;
+    this.paperLayer.children.forEach((element) => {
+      var poly = element as paper.Path.RegularPolygon;
 
-            poly.set({
-                scaling: poly.scaling.multiply([this.xSizeChange, this.ySizeChange]),
-                strokeWidth: poly.strokeWidth * strokeWidthDecrease,
-                strokeColor: newStrokeColor,
-                fillColor: newFillColor
-            });
-            
-            var center = poly.bounds.center;
-            poly.rotate(rotationSpeed, center);
+      var newStrokeColor = poly.strokeColor.clone();
+      var newFillColor = poly.fillColor.clone();
+      newStrokeColor.alpha -= alphaDecrease;
+      newFillColor.alpha -= alphaDecrease;
 
-            // if(poly.strokeColor.alpha <= 0 && poly.fillColor.alpha <= 0) {
-            //     this.RemoveShape(poly);
-            // }
-            indexValue++;
-        })
-    }
+      poly.set({
+        scaling: poly.scaling.multiply([this.xSizeChange, this.ySizeChange]),
+        strokeWidth: poly.strokeWidth * strokeWidthDecrease,
+        strokeColor: newStrokeColor,
+        fillColor: newFillColor,
+      });
 
-    RemoveShape(shape) {
-        // console.log("REMOVING shape from layer");
-        this.paperLayer.remove(shape);
-    }
+      var center = poly.bounds.center;
+      poly.rotate(rotationSpeed, center);
+
+      // if(poly.strokeColor.alpha <= 0 && poly.fillColor.alpha <= 0) {
+      //     this.RemoveShape(poly);
+      // }
+      indexValue++;
+    });
+  }
+
+  RemoveShape(shape) {
+    // console.log("REMOVING shape from layer");
+    this.paperLayer.remove(shape);
+  }
 }
