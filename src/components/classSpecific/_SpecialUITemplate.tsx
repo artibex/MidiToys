@@ -5,77 +5,75 @@ import * as utils from "@utils";
 import * as ui from "@ui";
 
 var toyManager = new ToyManager();
-const canvasManager = new CanvasManager
-
+const canvasManager = new CanvasManager();
 
 //This is a template to create a UI for a ToyClass
-export default function SetupContainer( props: {channel: number}) {
-    var toy;
-    var channel = props.channel;
-    const [useEffect, setUseEffect] = createSignal(true);
+export default function SetupContainer(props: { channel: number }) {
+  var toy;
+  var channel = props.channel;
+  const [useEffect, setUseEffect] = createSignal(true);
 
-    const [toyTypeName, setToyTypeName] = createSignal("ToyType");
-    //Special settings
+  const [toyTypeName, setToyTypeName] = createSignal("ToyType");
+  //Special settings
 
-    createEffect(() => {
-        if(useEffect()) {
-            UpdateToyValues();
-            // console.log("TRIGGER SPECIAL effect");
-        }
-    })
-
-    function UpdateComponent() {
-        LoadToy();
+  createEffect(() => {
+    if (useEffect()) {
+      UpdateToyValues();
+      // console.log("TRIGGER SPECIAL effect");
     }
+  });
 
-    function LoadToy() {
-        var t = utils.InitToy(channel, toy, UpdateComponent);
-        if(toy != t) {
-            toy = t;
-            toy.SubscribeToToyChangedEvent(UpdateUIValues);
-            UpdateUIValues();
-        }
-    }
-
-    function UpdateUIValues() {
-        // console.log("UPDATE SPECIAL UI values");
-        if (typeof window !== 'undefined') {
-            if(toy != undefined) {
-                setUseEffect(false);
-
-                setUseEffect(true);
-            }
-        }
-    }
-    function UpdateToyValues() {
-        // console.log("UPDATE GraviBoard toy values");
-        if (typeof window !== 'undefined') {
-            if(toy != undefined) {
-                
-                try {
-                    //Reload Keyboard
-                    toy.ApplySettings();
-                } catch {}
-            }
-        }
-    }
-    function Reload() {
-        try{toy.SetupKeyboard()}
-        catch{}
-    }
-
-    function RenderUI() {
-        return(
-            <>
-
-            </>
-        )
-    }
-
-    //Init Component
+  function UpdateComponent() {
     LoadToy();
-    canvasManager.SubscribeOneFPS(UpdateComponent);
-    return (
-        <ui.DetailsFillerCenter summeryName={toyTypeName() + " Settings"} content={RenderUI()}  />
-    )
+  }
+
+  function LoadToy() {
+    var t = utils.InitToy(channel, toy, UpdateComponent);
+    if (toy != t) {
+      toy = t;
+      toy.SubscribeToToyChangedEvent(UpdateUIValues);
+      UpdateUIValues();
+    }
+  }
+
+  function UpdateUIValues() {
+    // console.log("UPDATE SPECIAL UI values");
+    if (typeof window !== "undefined") {
+      if (toy != undefined) {
+        setUseEffect(false);
+
+        setUseEffect(true);
+      }
+    }
+  }
+  function UpdateToyValues() {
+    // console.log("UPDATE GraviBoard toy values");
+    if (typeof window !== "undefined") {
+      if (toy != undefined) {
+        try {
+          //Reload Keyboard
+          toy.ApplySettings();
+        } catch {}
+      }
+    }
+  }
+  function Reload() {
+    try {
+      toy.SetupKeyboard();
+    } catch {}
+  }
+
+  function RenderUI() {
+    return <></>;
+  }
+
+  //Init Component
+  LoadToy();
+  canvasManager.SubscribeOneFPS(UpdateComponent);
+  return (
+    <ui.DetailsFillerCenter
+      summeryName={toyTypeName() + " Settings"}
+      content={RenderUI()}
+    />
+  );
 }

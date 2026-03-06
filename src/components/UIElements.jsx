@@ -1,4 +1,4 @@
-import { createSignal, createEffect, mergeProps } from "solid-js";
+import { createSignal, createEffect } from "solid-js";
 import { Icon } from "@iconify-icon/solid";
 import { InputManager } from "@inputmanager";
 import { CanvasManager } from "@canvasmanager";
@@ -12,16 +12,12 @@ const midiInputModule = new MIDIInputModule();
 const toyManager = new ToyManager();
 const firebaseManager = new FirebaseManager();
 
-export function DetailsFillerCenter(rawProps) {
-  const props = mergeProps(
-    {
-      summeryName: "",
-      content: <></>,
-      detailClass: "marginAuto width95",
-      summeryClass: "textAlignCenter marginAuto",
-    },
-    rawProps,
-  );
+export function DetailsFillerCenter(props) {
+  if (props.summeryName == undefined) props.summeryName = "";
+  if (props.content == undefined) props.content = <></>;
+  if (props.detailClass == undefined) props.detailClass = "marginAuto width95";
+  if (props.summeryClass == undefined)
+    props.summeryClass = "textAlignCenter marginAuto";
 
   return (
     <details class={props.detailClass}>
@@ -32,9 +28,9 @@ export function DetailsFillerCenter(rawProps) {
   );
 }
 
-export function SliderInput(rawProps) {
-  const props = mergeProps({ class: "sliderInput " }, rawProps);
+export function SliderInput(props) {
   const [value, setValue] = createSignal(props.value);
+  if (props.class == undefined) props.class = "sliderInput ";
   var factor = props.factor;
   if (factor == undefined) factor = 1;
 
@@ -62,9 +58,9 @@ export function SliderInput(rawProps) {
   );
 }
 
-export function NumberInput(rawProps) {
-  const props = mergeProps({ class: "numberInput" }, rawProps);
+export function NumberInput(props) {
   const [value, setValue] = createSignal(props.value);
+  if (props.class == undefined) props.class = "numberInput";
   var factor = props.factor;
   if (factor == undefined) factor = 1;
 
@@ -91,18 +87,13 @@ export function NumberInput(rawProps) {
   );
 }
 
-export function TextInput(rawProps) {
-  const props = mergeProps(
-    {
-      placeholder: "Cool Placeholder",
-      id: "",
-      class: "textInput",
-      type: "",
-      required: false,
-      value: "",
-    },
-    rawProps,
-  );
+export function TextInput(props) {
+  if (props.placeholder == undefined) props.placeholder = "Cool Placeholder";
+  if (props.id == undefined) props.id = "";
+  if (props.class == undefined) props.class = "textInput";
+  if (props.type == undefined) props.type = "";
+  if (props.required == undefined) props.required = false;
+  if (props.value == undefined) props.value = "";
 
   function HandleOnChange(event) {
     if (props.onChange !== undefined) {
@@ -159,19 +150,18 @@ export function CheckboxInput(props) {
   );
 }
 
-export function Button(rawProps) {
-  const props = mergeProps(
-    { class: "thinButton", label: "Please Set Label", id: "" },
-    rawProps,
-  );
-  const divClass = () => props.divClass ?? props.class;
+export function Button(props) {
+  if (props.class == undefined) props.class = "thinButton";
+  if (props.divClass == undefined) props.divClass = props.class;
+  if (props.label == undefined) props.label = "Please Set Label";
+  if (props.id == undefined) props.id = "";
 
   const handleClick = () => {
     props.onClick();
   };
 
   return (
-    <div class={divClass()}>
+    <div class={props.divClass}>
       <button class={props.class} id={props.id} onClick={handleClick}>
         {props.label}
       </button>
@@ -179,21 +169,17 @@ export function Button(rawProps) {
   );
 }
 
-export function ButtonIcon(rawProps) {
-  const props = mergeProps(
-    {
-      class: "iconButton",
-      label: "",
-      id: "",
-      icon: "mdi-light:alert",
-      iconFirst: true,
-      width: "20",
-      hFlip: false,
-      vFlip: false,
-    },
-    rawProps,
-  );
-  const divClass = () => props.divClass ?? props.class;
+export function ButtonIcon(props) {
+  if (props.class == undefined) props.class = "iconButton";
+  if (props.divClass == undefined) props.divClass = props.class;
+  if (props.label == undefined) props.label = "";
+  if (props.id == undefined) props.id = "";
+
+  if (props.icon == undefined) props.icon = "mdi-light:alert";
+  if (props.iconFirst == undefined) props.iconFirst = true;
+  if (props.width == undefined) props.width = "20";
+  if (props.hFlip == undefined) props.hFlip = false;
+  if (props.vFlip == undefined) props.vFlip = false;
 
   function HandleClick() {
     if (props.onClick != undefined) {
@@ -204,7 +190,7 @@ export function ButtonIcon(rawProps) {
   if (props.label == "") {
     //no label
     return (
-      <div class={divClass()}>
+      <div class={props.divClass}>
         <button id={props.id} onClick={HandleClick} class={props.class}>
           <div>
             <Icon
@@ -222,7 +208,7 @@ export function ButtonIcon(rawProps) {
     if (props.iconFirst) {
       //Display icon before text
       return (
-        <div class={divClass()}>
+        <div class={props.divClass}>
           <button id={props.id} class={props.class} onClick={HandleClick}>
             <div class="flex justifyCenter">
               <div class={props.class}>
@@ -243,7 +229,7 @@ export function ButtonIcon(rawProps) {
     } else {
       //Display Icon after text
       return (
-        <div class={divClass()}>
+        <div class={props.divClass}>
           <button id={props.id} class={props.class} onClick={HandleClick}>
             <div class="flex">
               <div class={props.class}>
@@ -265,18 +251,15 @@ export function ButtonIcon(rawProps) {
   }
 }
 
-export function MIDIDeviceReloadButton(rawProps) {
-  const props = mergeProps(
-    {
-      label: "Reload",
-      class: "",
-      id: "midiReloadBtn",
-      width: "20",
-      hFlip: false,
-      vFlip: false,
-    },
-    rawProps,
-  );
+export function MIDIDeviceReloadButton(props) {
+  if (props.label == undefined) props.label = "Reload";
+  if (props.class == undefined) props.class = "";
+  if (props.id == undefined) props.id = "midiReloadBtn";
+
+  // if(props.icon == undefined) props.icon = "mdi-light:alert";
+  if (props.width == undefined) props.width = "20";
+  if (props.hFlip == undefined) props.hFlip = false;
+  if (props.vFlip == undefined) props.vFlip = false;
 
   function handleClick() {
     // console.log("CLICKED on reload button");
@@ -322,12 +305,15 @@ export function AvailableMIDIDevicesUIElement(props) {
   );
 }
 
-export function EmailLoginUIElement(rawProps) {
-  const props = mergeProps(
-    { class: "", id: "emailLogin", width: "30", hFlip: false, vFlip: false },
-    rawProps,
-  );
+export function EmailLoginUIElement(props) {
   const [infoText, setInfoText] = createSignal("");
+
+  if (props.class == undefined) props.class = "";
+  if (props.id == undefined) props.id = "emailLogin";
+
+  if (props.width == undefined) props.width = "30";
+  if (props.hFlip == undefined) props.hFlip = false;
+  if (props.vFlip == undefined) props.vFlip = false;
 
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
@@ -558,23 +544,22 @@ export function EmailForgotPasswordUIElement(props) {
   );
 }
 
-export function IconTextInputUIElement(rawProps) {
-  const props = mergeProps(
-    {
-      class: "flex justifySpace",
-      id: "textInput",
-      icon: "ep:warn-triangle-filled",
-      iconFirst: false,
-      width: "30",
-      hFlip: false,
-      vFlip: false,
-      required: false,
-      type: "",
-      placeholder: "My cool Placeholder",
-      label: "",
-    },
-    rawProps,
-  );
+export function IconTextInputUIElement(props) {
+  if (props.class == undefined) props.class = "flex justifySpace";
+  if (props.id == undefined) props.id = "textInput";
+
+  //Icon
+  if (props.icon == undefined) props.icon = "ep:warn-triangle-filled";
+  if (props.iconFirst == undefined) props.iconFirst = false;
+  if (props.width == undefined) props.width = "30";
+  if (props.hFlip == undefined) props.hFlip = false;
+  if (props.vFlip == undefined) props.vFlip = false;
+
+  //Text input
+  if (props.required == undefined) props.required = false;
+  if (props.type == undefined) props.type = "";
+  if (props.placeholder == undefined) props.placeholder = "My cool Placeholder";
+  if (props.label == undefined) props.label = "";
 
   function HandleValueChange(event) {
     if (props.onChange != undefined) {
@@ -605,11 +590,10 @@ export function IconTextInputUIElement(rawProps) {
   );
 }
 
-export function ClickableText(rawProps) {
-  const props = mergeProps(
-    { label: "Click on me!", href: "", class: "clickableText textAlignCenter" },
-    rawProps,
-  );
+export function ClickableText(props) {
+  if (props.label == undefined) props.label = "Click on me!";
+  if (props.href == undefined) props.href = "";
+  if (props.class == undefined) props.class = "clickableText textAlignCenter";
 
   function HandleClick() {
     if (props.onClick != undefined) {
@@ -624,19 +608,15 @@ export function ClickableText(rawProps) {
   );
 }
 
-export function ServiceLogin(rawProps) {
-  const props = mergeProps(
-    {
-      class: "iconButton justifyCenter",
-      label: "Sign in with",
-      id: "myCoolService",
-      icon: "zondicons:key",
-      width: "30",
-      hFlip: false,
-      vFlip: false,
-    },
-    rawProps,
-  );
+export function ServiceLogin(props) {
+  if (props.class == undefined) props.class = "iconButton justifyCenter";
+  if (props.label == undefined) props.label = "Sign in with";
+  if (props.id == undefined) props.id = "myCoolService";
+
+  if (props.icon == undefined) props.icon = "zondicons:key";
+  if (props.width == undefined) props.width = "30";
+  if (props.hFlip == undefined) props.hFlip = false;
+  if (props.vFlip == undefined) props.vFlip = false;
 
   function HandleClick() {
     // console.log("SERVICE LOGIN");
@@ -730,11 +710,9 @@ export function CheckboxUIElement(props) {
   );
 }
 
-export function NumberSliderUIElement(rawProps) {
-  const props = mergeProps(
-    { name: "define props.name pls", vertical: false },
-    rawProps,
-  );
+export function NumberSliderUIElement(props) {
+  if (props.name == undefined) props.name = "define props.name pls";
+  if (props.vertical == undefined) props.vertical = false;
 
   if (props.vertical) {
     return (
@@ -801,17 +779,17 @@ export function JsonFileUploader(props) {
   );
 }
 
-export function MIDIDropdownUIElement(rawProps) {
-  const props = mergeProps(
-    { divClass: "flex", class: "dropdown", label: "MIDI Devices" },
-    rawProps,
-  );
+export function MIDIDropdownUIElement(props) {
+  if (props.divClass == undefined) props.divClass = "flex";
+  if (props.class === undefined) props.class = "dropdown";
+  if (props.label === undefined) props.label = "MIDI Devices";
 
   const [selectedOption, setSelectedOption] = createSignal("");
   const [devices, setDevices] = createSignal(["", ""]);
   const [options, setOptions] = createSignal(
     <option value="">No MIDI devices found</option>,
   );
+  if (props.class === undefined) props.class = "";
 
   const loadDevices = async () => {
     const loadedDevices = await inputManager.GetMIDIDevices();
@@ -863,8 +841,8 @@ export function MIDIDropdownUIElement(rawProps) {
   );
 }
 
-export function BPM(rawProps) {
-  const props = mergeProps({ class: "textAlignCenter" }, rawProps);
+export function BPM(props) {
+  if (props.class === undefined) props.class = "textAlignCenter";
   const [bpm, setBPM] = createSignal(0);
 
   function GetBPM() {
@@ -875,12 +853,10 @@ export function BPM(rawProps) {
   return <h2 class={props.class}>BPM: {bpm}</h2>;
 }
 
-export function OpenSettingsButton(rawProps) {
-  const props = mergeProps(
-    { width: "35", icon: "ic:baseline-arrow-forward-ios" },
-    rawProps,
-  );
+export function OpenSettingsButton(props) {
   var panel;
+  if (props.width == undefined) props.width = "35";
+  if (props.icon == undefined) props.icon = "ic:baseline-arrow-forward-ios";
   const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   createEffect(() => {
@@ -964,11 +940,10 @@ export function OpenSettingsButton(rawProps) {
   );
 }
 
-export function StartText(rawProps) {
-  const props = mergeProps(
-    { label: "No MIDI toy loaded, add a toy to start", id: "startText" },
-    rawProps,
-  );
+export function StartText(props) {
+  if (props.label == undefined)
+    props.label = "No MIDI toy loaded, add a toy to start";
+  if (props.id == undefined) props.id = "startText";
 
   const [text, setText] = createSignal(props.label);
 
@@ -1003,8 +978,9 @@ export function StartText(rawProps) {
 }
 
 //Debug tool
-export function ChannelObserverUIElement(rawProps) {
-  const props = mergeProps({ channel: 1, class: "width20" }, rawProps);
+export function ChannelObserverUIElement(props) {
+  if (props.channel === undefined) props.channel = 1;
+  if (props.class === undefined) props.class = "width20";
 
   const [holdingKeys, setHoldingKeys] = createSignal([]);
 

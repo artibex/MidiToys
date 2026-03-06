@@ -1,4 +1,4 @@
-# 🎵 Midi Toys 🎵 
+# 🎵 Midi Toys 🎵
 
 [![License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Astro](https://img.shields.io/badge/Astro-🚀-red.svg)](https://astro.build/)
@@ -10,9 +10,11 @@
 A website built with Astro Webframework, SolidJS, JavaScript, TypeScript, and Paper.js to create a visualizer that can be controlled via MIDI hardware.
 
 ## Overview 📖
+
 Create stunning visuals in your browser powered by your MIDI devices.
 
 ## Features 🚀
+
 - Support for 16 MIDI channels
 - Apply toys to channels
 - Lots of settings for available toys
@@ -20,29 +22,35 @@ Create stunning visuals in your browser powered by your MIDI devices.
 - Download or upload toy presets in .json format
 
 ## Installation ⚙️
+
 No installation required. All up-to-date browsers should be able to run the web app. If not, let me know!
 
 #### [Open App](https://artibex.github.io/MidiToys/)
 
 ## Setup 🎛️
+
 - Plug in your MIDI hardware, make sure your device can see it.
 - Give your browser access to your MIDI hardware.
 - If no hardware is detected, try reloading the page.
 
 ## Usage 🎹
+
 At first, there will be no toys selected. Click in the top left on "Settings" and add a new toy.
 A basic keyboard mapping for channel 1 is also available. It is recommended to use this tool with MIDI.
 
 Use the following keyboard keys to send a signal:
+
 - W, E, T, Z, U
 - A, S, D, F, G, H, J, K
 
-
 ## Contributing 🤝
+
 Please consider helping out with feedback, finding bugs, or creating content.
 
 ## Social 🌐
+
 [![Reddit Logo](https://www.redditstatic.com/about/assets/reddit-logo.png)](https://www.reddit.com/r/miditoys/)
 
 ## License 📄
+
 This project is licensed under the [GPL-3.0 License](LICENSE). The GPL-3.0
