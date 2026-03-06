@@ -1,7 +1,9 @@
 {
   // "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "moduleResolution": "node", // Add this line
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "baseUrl": ".",

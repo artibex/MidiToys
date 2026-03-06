@@ -35,9 +35,9 @@ var title = utils.GetPageTitle();
         toyManager.CreateEmptyToys();
     </script>
 
-    <SettingsPanel client:idle />
-    <ui.StartText client:idle />
-    <ui.OpenSettingsButton client:idle />
+    <SettingsPanel client:only="solid-js" />
+    <ui.StartText client:only="solid-js" />
+    <ui.OpenSettingsButton client:only="solid-js" />
     <canvas id="toyCanvas" class="toyCanvas"></canvas>
 
     </body>

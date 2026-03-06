@@ -1,6 +1,6 @@
 import { InputManager } from "@inputmanager";
 import { ToyManager } from "@toymanager";
-import * as paper from "paper";
+import paper from "paper";
 
 export class CanvasManager {
   private static instance: CanvasManager;

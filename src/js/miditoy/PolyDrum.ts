@@ -1,6 +1,6 @@
 import { MIDIReceiver } from "@midireceiver";
 import { MIDIToy } from "@miditoy";
-import * as paper from "paper";
+import paper from "paper";
 
 export class PolyDrum extends MIDIToy {
   // shapes: paper.Path[] = [];

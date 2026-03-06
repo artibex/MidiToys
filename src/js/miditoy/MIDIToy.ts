@@ -3,7 +3,7 @@ import { MIDIReceiver } from "@midireceiver";
 import { InputManager } from "@inputmanager";
 import { ToyManager } from "@toymanager";
 import { RGBA, Vector2D } from "@interfaces";
-import * as paper from "paper";
+import paper from "paper";
 
 //Abstract class that forms the base of every MIDIToy
 export abstract class MIDIToy {

@@ -1,7 +1,7 @@
 import { MIDIReceiver } from "@midireceiver";
 import { MIDIToy } from "@miditoy";
 import { Vector2D } from "@interfaces";
-import * as paper from "paper";
+import paper from "paper";
 
 export class GraviBoard extends MIDIToy {
   // shapes: paper.Path[] = [];
